@@ -4,7 +4,7 @@
   "description": "TOFLIT18 datascape.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "import": "babel-node ./scripts/import.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,9 @@
   },
   "homepage": "https://github.com/medialab/toflit18#readme",
   "dependencies": {
-    "seraph": "^0.13.1"
+    "babel": "^5.6.14",
+    "highland": "^2.5.1",
+    "seraph": "^0.13.1",
+    "yargs": "^3.14.0"
   }
 }
