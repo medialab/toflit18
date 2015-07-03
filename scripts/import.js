@@ -5,12 +5,12 @@
  * Script aiming at importing the project's sources into a neo4j database which
  * will be used by the datascape.
  */
-import seraph from 'seraph';
 import {argv} from 'yargs';
-import parseCsv from 'csv-parse';
+import {parse as parseCsv, stringify as stringifyCsv} from 'csv';
 import {default as h} from 'highland';
 import {db as dbConfig} from '../config.json';
 import fs from 'fs';
+import _ from 'lodash';
 
 /**
  * Reading arguments
@@ -19,6 +19,8 @@ const filePath = argv.file;
 
 if (!filePath)
   throw Error('No file given.');
+
+console.log('Starting CSV data conversion...');
 
 /**
  * Parsing the file
@@ -31,19 +33,82 @@ readStream = h(readStream)
   // .take(1000)
   .each(importer);
 
-readStream.on('end', commit);
+const nodesWriteStream = fs.createWriteStream('./nodes.csv', 'utf-8'),
+      edgesWriteStream = fs.createWriteStream('./edges.csv', 'utf-8');
 
 /**
  * Main process
  */
-const DB = seraph({
-  server: `http://${dbConfig.host}:${dbConfig.port}`,
-  user: dbConfig.user,
-  pass: dbConfig.password
-});
 
-const batch = DB.batch();
-batch.query('USING PERIODIC COMMIT 10000');
+// Possible properties
+const POSSIBLE_NODE_PROPERTIES = [
+  'no',
+  'quantity',
+  'value',
+  'unit_price',
+  'year',
+  'import',
+  'sheet',
+  'remarks',
+  'name',
+  'path',
+  'type'
+];
+
+const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
+  .map((p, i) => [p, i])
+  .zipObject()
+  .value();
+
+const NODE_PROPERTIES_TYPES = POSSIBLE_NODE_PROPERTIES.slice(0);
+NODE_PROPERTIES_TYPES[5] = 'import:boolean';
+
+// Mapping, and out streams
+class Builder {
+  constructor() {
+
+    // Properties
+    this.nodesCount = 0;
+    this.nodesStream = h();
+    this.edgesStream = h();
+
+    // Piping
+    this.nodesStream
+      .pipe(stringifyCsv({delimiter: ','}))
+      .pipe(nodesWriteStream);
+
+    this.edgesStream
+      .pipe(stringifyCsv({delimiter: ','}))
+      .pipe(edgesWriteStream);
+
+    // Writing headers
+    this.nodesStream.write(NODE_PROPERTIES_TYPES.concat(':LABEL', ':ID'));
+    this.edgesStream.write([':START_ID', ':END_ID', ':TYPE']);
+  }
+
+  save(data, label) {
+    const row = _({})
+      .merge(_.mapValues(NODE_PROPERTIES_MAPPING, x => ''))
+      .merge(data)
+      .pairs()
+      .sortBy(e => NODE_PROPERTIES_MAPPING[e[0]])
+      .map(e => e[1])
+      .concat([label, this.nodesCount])
+      .value();
+
+    this.nodesStream.write(row);
+
+    return this.nodesCount++;
+  }
+
+  relate(source, predicate, target) {
+    const row = [source, target, predicate];
+
+    this.edgesStream.write(row);
+  }
+}
+
+const builder = new Builder();
 
 const indexes = {
   directions: {},
@@ -57,9 +122,7 @@ const indexes = {
 function indexedNode(index, label, key, data) {
   let node = indexes[index][key];
   if (!node) {
-    node = batch.save(data);
-    batch.label(node, label);
-
+    node = builder.save(data, label);
     indexes[index][key] = node;
   }
 
@@ -72,7 +135,7 @@ function importer(csvLine) {
   const isImport = /imp/i.test(csvLine.exportsimports);
 
   // Creating a flow node
-  const flowNode = batch.save({
+  const flowNode = builder.save({
     no: +csvLine.numrodeligne,
     quantity: csvLine.quantit,
     value: +csvLine.value,
@@ -85,8 +148,7 @@ function importer(csvLine) {
 
     // TODO: drop the unused properties
     remarks: csvLine.remarks
-  });
-  batch.label(flowNode, 'Flow');
+  }, 'Flow');
 
   // Operator
   if (csvLine.dataentryby) {
@@ -94,7 +156,7 @@ function importer(csvLine) {
       name: csvLine.dataentryby
     });
 
-    batch.relate(flowNode, 'TRANSCRIBED_BY', operatorNode);
+    builder.relate(flowNode, 'TRANSCRIBED_BY', operatorNode);
   }
 
   // Source
@@ -105,7 +167,7 @@ function importer(csvLine) {
       type: csvLine.sourcetype
     });
 
-    batch.relate(flowNode, 'TRANSCRIBED_FROM', sourceNode);
+    builder.relate(flowNode, 'TRANSCRIBED_FROM', sourceNode);
   }
 
   // Product
@@ -114,7 +176,7 @@ function importer(csvLine) {
       name: csvLine.marchandises
     });
 
-    batch.relate(flowNode, 'OF', productNode);
+    builder.relate(flowNode, 'OF', productNode);
   }
 
   // Direction
@@ -124,9 +186,9 @@ function importer(csvLine) {
     });
 
     if (isImport)
-      batch.relate(flowNode, 'FROM', directionNode);
+      builder.relate(flowNode, 'FROM', directionNode);
     else
-      batch.relate(flowNode, 'TO', directionNode);
+      builder.relate(flowNode, 'TO', directionNode);
   }
 
   // Country
@@ -136,9 +198,9 @@ function importer(csvLine) {
     });
 
     if (!isImport)
-      batch.relate(flowNode, 'FROM', countryNode);
+      builder.relate(flowNode, 'FROM', countryNode);
     else
-      batch.relate(flowNode, 'TO', countryNode);
+      builder.relate(flowNode, 'TO', countryNode);
   }
 
   // Units
@@ -147,20 +209,10 @@ function importer(csvLine) {
       name: csvLine.quantity_unit
     });
 
-    batch.relate(flowNode, 'VALUE_IN', productNode);
+    builder.relate(flowNode, 'VALUE_IN', productNode);
   }
 
-  // TODO: don't process when value is null
   // TODO: bureaux
   // TODO: origin
   // TODO: normalize unit_price
-}
-
-function commit() {
-  console.log('Committing to the database...');
-
-  batch.commit(function(err) {
-    if (err) return console.error(err);
-    console.log('Done!');
-  });
 }
