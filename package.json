@@ -4,7 +4,8 @@
   "description": "TOFLIT18 datascape.",
   "main": "index.js",
   "scripts": {
-    "import": "babel-node ./scripts/import.js"
+    "import": "babel-node ./scripts/import.js",
+    "test": "mocha -R spec --compilers js:babel/register ./test/endpoint.js"
   },
   "repository": {
     "type": "git",
@@ -35,5 +36,8 @@
     "highland": "^2.5.1",
     "lodash": "^3.10.0",
     "yargs": "^3.14.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5"
   }
 }

@@ -29,8 +29,8 @@ let readStream = fs.createReadStream(filePath)
   .pipe(parseCsv({delimiter: ',', columns: true}));
 
 readStream = h(readStream)
-  // .drop(5000)
-  // .take(1000)
+  .drop(5000)
+  .take(1000)
   .each(importer);
 
 const nodesWriteStream = fs.createWriteStream('./nodes.csv', 'utf-8'),
@@ -42,12 +42,13 @@ const nodesWriteStream = fs.createWriteStream('./nodes.csv', 'utf-8'),
 
 // Possible properties
 const POSSIBLE_NODE_PROPERTIES = [
-  'no',
+  'no:int',
   'quantity',
   'value',
   'unit_price',
+  'normalized_year:int'
   'year',
-  'import',
+  'import:boolean',
   'sheet',
   'remarks',
   'name',
@@ -56,12 +57,11 @@ const POSSIBLE_NODE_PROPERTIES = [
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
-  .map((p, i) => [p, i])
+  .map((p, i) => [p.split(':')[0], i])
   .zipObject()
   .value();
 
-const NODE_PROPERTIES_TYPES = POSSIBLE_NODE_PROPERTIES.slice(0);
-NODE_PROPERTIES_TYPES[5] = 'import:boolean';
+const NODE_PROPERTIES_TYPES = POSSIBLE_NODE_PROPERTIES;
 
 // Mapping, and out streams
 class Builder {
