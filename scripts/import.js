@@ -9,13 +9,16 @@ import {argv} from 'yargs';
 import {parse as parseCsv, stringify as stringifyCsv} from 'csv';
 import {default as h} from 'highland';
 import {db as dbConfig} from '../config.json';
+import {normalizeYear} from '../lib/republican_calendar';
+import {cleanText} from '../lib/clean';
 import fs from 'fs';
 import _ from 'lodash';
 
 /**
  * Reading arguments
  */
-const filePath = argv.file;
+const filePath = argv.file || argv.f,
+      classificationsPath = argv.classifications || argv.c;
 
 if (!filePath)
   throw Error('No file given.');
@@ -31,13 +34,14 @@ let readStream = fs.createReadStream(filePath)
 readStream = h(readStream)
   .drop(5000)
   .take(1000)
+  .map(l => _.mapValues(l, cleanText))
   .each(importer);
 
 const nodesWriteStream = fs.createWriteStream('./nodes.csv', 'utf-8'),
       edgesWriteStream = fs.createWriteStream('./edges.csv', 'utf-8');
 
 /**
- * Main process
+ * Helpers
  */
 
 // Possible properties
@@ -46,7 +50,7 @@ const POSSIBLE_NODE_PROPERTIES = [
   'quantity',
   'value',
   'unit_price',
-  'normalized_year:int'
+  'normalized_year:int',
   'year',
   'import:boolean',
   'sheet',
@@ -129,6 +133,9 @@ function indexedNode(index, label, key, data) {
   return node;
 }
 
+/**
+ * Consuming the flows.
+ */
 function importer(csvLine) {
 
   // Direction
@@ -143,6 +150,7 @@ function importer(csvLine) {
 
     // TODO: translate the year into computable format
     year: csvLine.year,
+    normalized_year: normalizeYear(csvLine.year),
     import: isImport,
     sheet: +csvLine.sheet,
 
@@ -215,4 +223,11 @@ function importer(csvLine) {
   // TODO: bureaux
   // TODO: origin
   // TODO: normalize unit_price
+}
+
+/**
+ * Consuming the classifications.
+ */
+function classificationsImporter(csvLine) {
+
 }
