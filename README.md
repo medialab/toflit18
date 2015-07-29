@@ -1,3 +1,3 @@
 # TOFLIT 18
 
-Repository holding the sources of the TOFLIT18's datascape.
+Repository holding the source code of the TOFLIT18's datascape.
