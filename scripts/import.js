@@ -15,27 +15,53 @@ import fs from 'fs';
 import _ from 'lodash';
 
 /**
+ * Paths
+ */
+const BDD_CENTRALE_PATH = '/base_centrale/bdd_centrale.csv',
+      CLASSIFICATIONS_PATH = '/Traitement des marchandises, pays, unités',
+      ORTHOGRAPHIC_CLASSIFICATION = CLASSIFICATIONS_PATH + '/bdd_marchandises_normalisees_orthographique.csv'
+
+/**
  * Reading arguments
  */
-const filePath = argv.file || argv.f,
-      classificationsPath = argv.classifications || argv.c;
+const dataPath = argv.path || argv.p;
 
-if (!filePath)
-  throw Error('No file given.');
+if (!dataPath)
+  throw Error('No data path provided.');
 
-console.log('Starting CSV data conversion...');
+console.log('Reading csv files from "' + dataPath + '"');
+console.log('Processing flows...');
 
 /**
  * Parsing the file
  */
-let readStream = fs.createReadStream(filePath)
+let readStream = fs.createReadStream(dataPath + BDD_CENTRALE_PATH)
   .pipe(parseCsv({delimiter: ',', columns: true}));
 
+// Getting the flows
 readStream = h(readStream)
-  .drop(5000)
-  .take(1000)
+  // .drop(5000)
+  // .take(1000)
   .map(l => _.mapValues(l, cleanText))
-  .each(importer);
+  .each(importer)
+  .on('end', function() {
+
+    console.log('Processing product classifications...');
+
+    console.log('  -- Orthographic normalization');
+
+    // Parsing orthographic simplifications for products
+    const csvData = fs.readFileSync(dataPath + ORTHOGRAPHIC_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: '\t'}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          original: cleanText(line[0]),
+          modified: cleanText(line[1])
+        }))
+        .forEach(orthographicProducts);
+    });
+  });
 
 const nodesWriteStream = fs.createWriteStream('./nodes.csv', 'utf-8'),
       edgesWriteStream = fs.createWriteStream('./edges.csv', 'utf-8');
@@ -57,7 +83,9 @@ const POSSIBLE_NODE_PROPERTIES = [
   'remarks',
   'name',
   'path',
-  'type'
+  'type',
+  'model',
+  'slug'
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -124,10 +152,10 @@ const indexes = {
 };
 
 function indexedNode(index, label, key, data) {
-  let node = indexes[index][key];
+  let node = index[key];
   if (!node) {
     node = builder.save(data, label);
-    indexes[index][key] = node;
+    index[key] = node;
   }
 
   return node;
@@ -160,7 +188,7 @@ function importer(csvLine) {
 
   // Operator
   if (csvLine.dataentryby) {
-    const operatorNode = indexedNode('operators', 'Operator', csvLine.dataentryby, {
+    const operatorNode = indexedNode(indexes.operators, 'Operator', csvLine.dataentryby, {
       name: csvLine.dataentryby
     });
 
@@ -169,7 +197,7 @@ function importer(csvLine) {
 
   // Source
   if (csvLine.source) {
-    const sourceNode = indexedNode('sources', 'Source', csvLine.source, {
+    const sourceNode = indexedNode(indexes.sources, 'Source', csvLine.source, {
       name: csvLine.source,
       path: csvLine.sourcepath,
       type: csvLine.sourcetype
@@ -180,7 +208,7 @@ function importer(csvLine) {
 
   // Product
   if (csvLine.marchandises) {
-    const productNode = indexedNode('products', 'Product', csvLine.marchandises, {
+    const productNode = indexedNode(indexes.products, 'Product', csvLine.marchandises, {
       name: csvLine.marchandises
     });
 
@@ -189,7 +217,7 @@ function importer(csvLine) {
 
   // Direction
   if (csvLine.direction) {
-    const directionNode = indexedNode('directions', 'Direction', csvLine.direction, {
+    const directionNode = indexedNode(indexes.directions, 'Direction', csvLine.direction, {
       name: csvLine.direction
     });
 
@@ -201,7 +229,7 @@ function importer(csvLine) {
 
   // Country
   if (csvLine.pays) {
-    const countryNode = indexedNode('countries', 'Country', csvLine.pays, {
+    const countryNode = indexedNode(indexes.countries, 'Country', csvLine.pays, {
       name: csvLine.pays
     });
 
@@ -213,7 +241,7 @@ function importer(csvLine) {
 
   // Units
   if (csvLine.quantity_unit) {
-    const productNode = indexedNode('units', 'Unit', csvLine.quantity_unit, {
+    const productNode = indexedNode(indexes.units, 'Unit', csvLine.quantity_unit, {
       name: csvLine.quantity_unit
     });
 
@@ -223,11 +251,48 @@ function importer(csvLine) {
   // TODO: bureaux
   // TODO: origin
   // TODO: normalize unit_price
+  // TODO: check external flows
 }
 
 /**
  * Consuming the classifications.
  */
-function classificationsImporter(csvLine) {
+const classificationIndexes = {
+  orthographic: {}
+};
 
+let orthographicClassificationNode;
+
+function orthographicProducts(line) {
+  if (!orthographicClassificationNode)
+    orthographicClassificationNode = builder.save(
+      {
+        name: 'Orthographic Normalization',
+        model: 'Product',
+        slug: 'orthographic_normalization'
+      },
+      'Classification'
+    );
+
+  const alreadyLinked = !!classificationIndexes.orthographic[line.modified];
+
+
+  const classifiedNode = indexedNode(
+    classificationIndexes.orthographic,
+    'ClassifiedProduct',
+    line.modified,
+    {name: line.modified}
+  );
+
+  const targetNode = indexes.products[line.original];
+
+  if (targetNode === undefined) {
+    console.log(`      > "${line.original}" not found!`);
+  }
+
+  if (!alreadyLinked)
+    builder.relate(orthographicClassificationNode, 'HAS', classifiedNode);
+
+  if (targetNode !== undefined)
+    builder.relate(classifiedNode, 'AGGREGATES', targetNode);
 }
