@@ -221,7 +221,7 @@ function importer(csvLine) {
     // TODO: translate the year into computable format
     year: csvLine.year,
     normalized_year: normalizeYear(csvLine.year),
-    import: isImport,
+    import: '' + isImport,
     sheet: +csvLine.sheet,
 
     // TODO: drop the unused properties
