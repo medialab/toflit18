@@ -154,6 +154,7 @@ const INDEXES = {
   directions: {},
   countries: {},
   operators: {},
+  origins: {},
   products: {},
   sources: {},
   units: {}
@@ -268,6 +269,15 @@ function importer(csvLine) {
     BUILDER.relate(flowNode, 'OF', productNode);
   }
 
+  // Origin
+  if (csvLine.origine) {
+    const originNode = indexedNode(INDEXES.origins, 'Origin', csvLine.origine, {
+      name: csvLine.origine
+    });
+
+    BUILDER.relate(originNode, 'ORIGINATES_FROM', flowNode);
+  }
+
   // Direction
   if (csvLine.direction) {
     const directionNode = indexedNode(INDEXES.directions, 'Direction', csvLine.direction, {
@@ -302,7 +312,6 @@ function importer(csvLine) {
   }
 
   // TODO: bureaux
-  // TODO: origin
   // TODO: normalize unit_price
 }
 
