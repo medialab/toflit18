@@ -16,7 +16,7 @@ const YEAR_INDEX = {
   '11': 1803,
   '12': 1804,
   '13': 1805,
-  '14': 1805
+  '14': 1806
 };
 
 describe('Republican calendar', function() {
@@ -27,6 +27,8 @@ describe('Republican calendar', function() {
         assert.strictEqual(normalizeYear('An ' + nb), year);
       })
       .value();
+
+    assert.strictEqual(normalizeYear('An 14 & 1806'), 1806);
   });
 
   it('should throw when the year is invalid.', function() {
