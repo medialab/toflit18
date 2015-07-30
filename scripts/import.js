@@ -113,7 +113,7 @@ const POSSIBLE_NODE_PROPERTIES = [
   'year',
   'import:boolean',
   'sheet',
-  'remarks',
+  'remark',
   'name',
   'path',
   'type',
@@ -197,7 +197,8 @@ readStream = h(readStream)
         .slice(1)
         .map(line => ({
           original: cleanText(line[0]),
-          modified: cleanText(line[1])
+          modified: cleanText(line[1]),
+          remark: cleanText(line[2])
         }))
         .forEach(orthographicProducts);
     });
@@ -212,21 +213,21 @@ function importer(csvLine) {
   const isImport = /imp/i.test(csvLine.exportsimports);
 
   // Creating a flow node
-  const flowNode = BUILDER.save({
+  const nodeData = {
     no: +csvLine.numrodeligne,
     quantity: csvLine.quantit,
     value: +csvLine.value,
     unit_price: csvLine.prix_unitaire,
-
-    // TODO: translate the year into computable format
     year: csvLine.year,
     normalized_year: normalizeYear(csvLine.year),
     import: '' + isImport,
-    sheet: +csvLine.sheet,
+    sheet: +csvLine.sheet
+  };
 
-    // TODO: drop the unused properties
-    remarks: csvLine.remarks
-  }, 'Flow');
+  if (csvLine.remarks)
+    nodeData.remark = csvLine.remarks;
+
+  const flowNode = BUILDER.save(nodeData, 'Flow');
 
   // Operator
   if (csvLine.dataentryby) {
@@ -316,12 +317,18 @@ function orthographicProducts(line) {
 
   const alreadyLinked = !!CLASSIFICATION_INDEXES.orthographic[line.modified];
 
+  const nodeData = {
+    name: line.modified
+  };
+
+  if (line.remark)
+    nodeData.remark = line.remark;
 
   const classifiedNode = indexedNode(
     CLASSIFICATION_INDEXES.orthographic,
     'ClassifiedProduct',
     line.modified,
-    {name: line.modified}
+    nodeData
   );
 
   const targetNode = INDEXES.products[line.original];
