@@ -147,7 +147,7 @@ console.log('Processing flows...');
 const BUILDER = new Builder();
 
 // Creating the TOFLIT18 user
-const TOFLIT18 = BUILDER.save({name: 'toflit18'}, 'User');
+const TOFLIT18_USER = BUILDER.save({name: 'toflit18'}, 'User');
 
 // Indexes
 const INDEXES = {
@@ -162,6 +162,16 @@ const INDEXES = {
 const CLASSIFICATION_INDEXES = {
   orthographic: {}
 };
+
+const CLASSIFICATION_NODES = {
+  orthographic: BUILDER.save({
+    name: 'Orthographic Normalization',
+    model: 'Product',
+    slug: 'orthographic_normalization'
+  }, 'Classification')
+};
+
+BUILDER.relate(CLASSIFICATION_NODES.orthographic, 'CREATED_BY', TOFLIT18_USER);
 
 
 /**
@@ -299,22 +309,7 @@ function importer(csvLine) {
 /**
  * Consuming the classifications.
  */
-let orthographicClassificationNode;
-
 function orthographicProducts(line) {
-  if (!orthographicClassificationNode) {
-    orthographicClassificationNode = BUILDER.save(
-      {
-        name: 'Orthographic Normalization',
-        model: 'Product',
-        slug: 'orthographic_normalization'
-      },
-      'Classification'
-    );
-
-    BUILDER.relate(orthographicClassificationNode, 'CREATED_BY', TOFLIT18);
-  }
-
   const alreadyLinked = !!CLASSIFICATION_INDEXES.orthographic[line.modified];
 
   const nodeData = {
@@ -333,12 +328,12 @@ function orthographicProducts(line) {
 
   const targetNode = INDEXES.products[line.original];
 
-  if (targetNode === undefined) {
-    console.log(`      > "${line.original}" not found!`);
-  }
+  // if (targetNode === undefined) {
+  //   console.log(`      > "${line.original}" not found!`);
+  // }
 
   if (!alreadyLinked)
-    BUILDER.relate(orthographicClassificationNode, 'HAS', classifiedNode);
+    BUILDER.relate(CLASSIFICATION_INDEXES.roots.orthographic, 'HAS', classifiedNode);
 
   if (targetNode !== undefined)
     BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
