@@ -52,7 +52,7 @@ readStream = h(readStream)
 
     // Parsing orthographic simplifications for products
     const csvData = fs.readFileSync(dataPath + ORTHOGRAPHIC_CLASSIFICATION, 'utf-8');
-    parseCsv(csvData, {delimiter: '\t'}, function(err, data) {
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
       data
         .slice(1)
         .map(line => ({
