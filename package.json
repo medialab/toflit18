@@ -1,7 +1,7 @@
 {
   "name": "toflit18",
   "version": "0.0.1",
-  "description": "TOFLIT18 datascape.",
+  "description": "TOFLIT18's datascape.",
   "main": "index.js",
   "scripts": {
     "import": "babel-node ./scripts/import.js",
