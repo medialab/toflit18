@@ -4,6 +4,7 @@
   "description": "TOFLIT18's datascape.",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon --exec npm start",
     "import": "babel-node ./scripts/import.js",
     "postinstall": "cd client && npm install",
     "start": "babel-node ./scripts/start.js",
@@ -43,6 +44,7 @@
     "highland": "^2.5.1",
     "lodash": "^3.10.0",
     "morgan": "^1.6.1",
+    "nodemon": "^1.4.1",
     "yargs": "^3.14.0"
   },
   "devDependencies": {
