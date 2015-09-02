@@ -8,6 +8,6 @@ import React, {Component} from 'react';
 
 export default class App {
   render() {
-    return <div>Hello World!</div>;
+    return <div id="main">Hello World!</div>;
   }
 }
