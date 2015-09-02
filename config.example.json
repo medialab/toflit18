@@ -1,4 +1,9 @@
 {
+  "api": {
+    "allowedOrigins": ["http://localhost:2000"],
+    "port": 4000,
+    "secret": "merrain"
+  },
   "db": {
     "host": "localhost",
     "port": 7474,
