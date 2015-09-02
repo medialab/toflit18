@@ -97,7 +97,8 @@ function indexedNode(index, label, key, data) {
  */
 const BDD_CENTRALE_PATH = '/base_centrale/bdd_centrale.csv',
       CLASSIFICATIONS_PATH = '/Traitement des marchandises, pays, unités',
-      ORTHOGRAPHIC_CLASSIFICATION = CLASSIFICATIONS_PATH + '/bdd_marchandises_normalisees_orthographique.csv';
+      ORTHOGRAPHIC_CLASSIFICATION = CLASSIFICATIONS_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
+      COUNTRY_CLASSIFICATIONS = CLASSIFICATIONS_PATH + '/bdd_pays.csv';
 
 /**
  * Constants
