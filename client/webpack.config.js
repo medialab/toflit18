@@ -14,24 +14,27 @@ module.exports = {
     publicPath: '/build/',
     library: 'app'
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-  ],
   module: {
     loaders: [
 
-      // ES6 and jsx
+      // ES6
       {
-        test: /\.jsx?$/,
-        exclude: /(node_modules)/,
+        test: /\.js$/,
+        include: path.join(__dirname, 'js'),
         loaders: ['babel-loader']
+      },
+
+      // JSX
+      {
+        test: /\.jsx$/,
+        include: path.join(__dirname, 'js'),
+        loaders: ['react-hot', 'babel-loader']
       },
 
       // JSON configuration file
       {
         test: /\.json$/,
-        exclude: /node_modules/,
+        include: path.join(__dirname) + '/config.json',
         loader: 'json-loader'
       }
     ]
