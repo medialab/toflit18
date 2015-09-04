@@ -114,11 +114,11 @@ const POSSIBLE_NODE_PROPERTIES = [
   'year',
   'import:boolean',
   'sheet',
-  'remark',
   'name',
   'path',
   'type',
   'model',
+  'note',
   'slug'
 ];
 
@@ -210,7 +210,7 @@ readStream = h(readStream)
         .map(line => ({
           original: cleanText(line[0]),
           modified: cleanText(line[1]),
-          remark: cleanText(line[2])
+          note: cleanText(line[2])
         }))
         .forEach(orthographicProducts);
     });
@@ -237,7 +237,7 @@ function importer(csvLine) {
   };
 
   if (csvLine.remarks)
-    nodeData.remark = csvLine.remarks;
+    nodeData.note = csvLine.remarks;
 
   const flowNode = BUILDER.save(nodeData, 'Flow');
 
@@ -326,8 +326,8 @@ function orthographicProducts(line) {
     name: line.modified
   };
 
-  if (line.remark)
-    nodeData.remark = line.remark;
+  if (line.note)
+    nodeData.note = line.note;
 
   const classifiedNode = indexedNode(
     CLASSIFICATION_INDEXES.orthographic,
