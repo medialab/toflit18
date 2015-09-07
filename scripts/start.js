@@ -7,5 +7,4 @@
 import {api as config} from '../config.json';
 import app from '../api/app';
 
-console.log('Server started!');
 app.listen(config.port);
