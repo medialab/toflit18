@@ -8,7 +8,8 @@
 import {argv} from 'yargs';
 import {parse as parseCsv, stringify as stringifyCsv} from 'csv';
 import {default as h} from 'highland';
-import {db as dbConfig} from '../config.json';
+import {db as dbConfig, api as apiConfig} from '../config.json';
+import {hash} from '../lib/crytpo';
 import {normalizeYear} from '../lib/republican_calendar';
 import {cleanText} from '../lib/clean';
 import fs from 'fs';
@@ -148,7 +149,10 @@ console.log('Processing flows...');
 const BUILDER = new Builder();
 
 // Creating the TOFLIT18 user
-const TOFLIT18_USER = BUILDER.save({name: 'toflit18'}, 'User');
+const TOFLIT18_USER = BUILDER.save({
+  name: 'toflit18',
+  password: hash(apiConfig.secret)
+}, 'User');
 
 // Indexes
 const INDEXES = {

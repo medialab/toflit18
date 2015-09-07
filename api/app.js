@@ -11,8 +11,13 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import session from 'express-session';
+import responses from './responses';
 
+/**
+ * Initialization.
+ */
 const ENV = process.env.NODE_ENV || 'dev';
+responses(express);
 
 /**
  * Configuring the application.
