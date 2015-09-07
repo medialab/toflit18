@@ -9,7 +9,7 @@ import {argv} from 'yargs';
 import {parse as parseCsv, stringify as stringifyCsv} from 'csv';
 import {default as h} from 'highland';
 import {db as dbConfig, api as apiConfig} from '../config.json';
-import {hash} from '../lib/crytpo';
+import {hash} from '../lib/crypto';
 import {normalizeYear} from '../lib/republican_calendar';
 import {cleanText} from '../lib/clean';
 import fs from 'fs';
@@ -120,7 +120,8 @@ const POSSIBLE_NODE_PROPERTIES = [
   'type',
   'model',
   'note',
-  'slug'
+  'slug',
+  'password'
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -347,7 +348,7 @@ function orthographicProducts(line) {
   // }
 
   if (!alreadyLinked)
-    BUILDER.relate(CLASSIFICATION_INDEXES.roots.orthographic, 'HAS', classifiedNode);
+    BUILDER.relate(CLASSIFICATION_NODES.orthographic, 'HAS', classifiedNode);
 
   if (targetNode !== undefined)
     BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
