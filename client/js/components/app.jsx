@@ -17,7 +17,7 @@ export default class App extends Component {
       <div id="main">
         <Addressbar onChange={this.onHashChange}
                     value="/#/home" />
-        Hello World!
+        Hello World this is us!
       </div>
     );
   }

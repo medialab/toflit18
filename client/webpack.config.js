@@ -1,11 +1,19 @@
 var webpack = require('webpack'),
-    path = require('path');
+    path = require('path'),
+    ProgressBar = require('progress'),
+    _ = require('lodash');
+
+var fmt = ' [:bar] :percent';
+
+var bar = new ProgressBar(fmt, {
+  total: 100,
+  width: 30
+});
 
 module.exports = {
   devtool: '#cheap-module-eval-source-map',
   entry: [
-    'webpack-dev-server/client?http://localhost:2000',
-    'webpack/hot/only-dev-server',
+    'webpack-hot-middleware/client',
     './js/main.jsx'
   ],
   output: {
@@ -14,21 +22,22 @@ module.exports = {
     publicPath: '/build/',
     library: 'app'
   },
+  plugins: [
+    new webpack.NoErrorsPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.ProgressPlugin(function(percentage, message) {
+      bar.fmt = _.padRight((message || 'Done!'), 25, ' ') + fmt;
+      bar.update(percentage);
+    })
+  ],
   module: {
     loaders: [
 
-      // ES6
+      // ES6 & JSX
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         include: path.join(__dirname, 'js'),
         loaders: ['babel-loader']
-      },
-
-      // JSX
-      {
-        test: /\.jsx$/,
-        include: path.join(__dirname, 'js'),
-        loaders: ['react-hot', 'babel-loader']
       },
 
       // JSON configuration file
