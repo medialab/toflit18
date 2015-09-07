@@ -24,7 +24,8 @@ const model = {
       function(err, results) {
         if (err) return err;
 
-        return callback(null, results[0].user);
+        const user = results[0] ? results[0].user.properties : null;
+        return callback(null, user);
       }
     );
   }

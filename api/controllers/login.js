@@ -14,7 +14,17 @@ const controller = [
       password: 'string'
     },
     action(req, res) {
-      return res.ok({hello: 'world'});
+      model.authenticate(req.body.name, req.body.password, function(err, user) {
+        if (err) return res.serverError(err);
+        if (!user) return res.unauthorized();
+
+        // Setting session
+        req.session.user = user;
+        req.session.authenticated = true;
+
+        // Sending response
+        return res.ok({name: user.name});
+      });
     }
   }
 ];
