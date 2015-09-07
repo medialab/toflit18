@@ -35,4 +35,35 @@ export default function(express) {
 
     this.status(404).json(response);
   };
+
+  /**
+   * Bad Request.
+   */
+  express.response.badRequest = function(expecting) {
+    const response = {
+      status: 'error',
+      error: {
+        code: 400,
+        title: 'Bad Request',
+      }
+    };
+
+    if (expecting)
+      response.error.expecting = expecting;
+
+    return this.status(400).json(response);
+  };
+
+  /**
+   * Unauthorized.
+   */
+  express.response.unauthorized = function() {
+    this.status(401).json({
+      status: 'error',
+      error: {
+        code: 401,
+        title: 'Unauthorized'
+      }
+    });
+  };
 }

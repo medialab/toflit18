@@ -3,7 +3,7 @@
  * ====================
  *
  */
-import database from '../database';
+import database from '../connection';
 import {hash} from '../../lib/crypto';
 import {user as queries} from '../queries';
 

@@ -11,7 +11,36 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import session from 'express-session';
+import middlewares from './middlewares';
 import responses from './responses';
+import loginController from './controllers/login';
+
+/**
+ * Helpers.
+ */
+function createRouter(routes, auth, additionalMiddlewares) {
+  const router = express.Router();
+
+  routes.forEach(function(route) {
+    const args = [route.url];
+
+    if (auth)
+      args.push(auth);
+
+    if (route.validate)
+      args.push(middlewares.validate(route.validate));
+
+    if (additionalMiddlewares)
+      additionalMiddlewares.forEach(m => args.push(m));
+
+    args.push(route.action);
+
+    (route.methods || ['GET'])
+      .forEach(m => router[m.toLowerCase()].apply(router, args));
+  });
+
+  return router;
+}
 
 /**
  * Initialization.
@@ -51,9 +80,15 @@ app.use(cookieParser());
 app.use(session(sessionOptions));
 
 /**
- * Routing.
+ * Routing & Mounting.
  */
-app.get('/hey', (_, res) => res.json({hey: 'ho'}));
+
+// Creating routers from controllers
+const loginRouter = createRouter(loginController);
+
+// Mounting
+app.use(loginRouter);
+app.use((_, res) => res.notFound());
 
 /**
  * Exporting.
