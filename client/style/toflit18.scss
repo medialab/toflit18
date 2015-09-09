@@ -4,6 +4,39 @@
  *
  * The main stylesheet used by the client application.
  */
-#main {
-  color: blue;
+
+/**
+ * Globals
+ */
+* {
+  font-family: Roboto, sans-serif;
+}
+
+html, body, #mount, #main, main {
+  height: 100%;
+}
+
+/**
+ * Layout
+ */
+.full-height {
+  height: 100%;
+}
+
+.screen-third {
+  height: 30%;
+}
+
+.login-card {
+  position: relative;
+  top: -150px;
+
+  .col {
+    background-color: white;
+  }
+
+  & > .row > .col {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
 }
