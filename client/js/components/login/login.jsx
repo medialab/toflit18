@@ -10,7 +10,7 @@ export default class Login extends Component {
   render() {
     return (
       <div className="full-height">
-        <div className="screen-third section">
+        <div className="screen-third section top-banner">
           <div className="container">
             <div className="row">
               <div className="col s12">

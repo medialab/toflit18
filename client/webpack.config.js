@@ -31,6 +31,7 @@ module.exports = {
     })
   ],
   module: {
+    noParse: /djax-client/,
     loaders: [
 
       // ES6 & JSX
@@ -45,6 +46,12 @@ module.exports = {
         test: /\.json$/,
         include: path.join(__dirname) + '/config.json',
         loader: 'json-loader'
+      },
+
+      // Fonts
+      {
+        test: /\.(ttf|eot|svg|woff2?)(\?[a-z0-9]+)?$/,
+        loader: 'file-loader'
       }
     ]
   }
