@@ -23,7 +23,7 @@ export default class Login extends Component {
           <div className="row">
             <div className="col s8 offset-s2 z-depth-2">
               <div className="container">
-                <h3>Login</h3>
+                <h3>TOFLIT18</h3>
                 <div className="row">
                   <div className="input-field col s12">
                     <input id="name" type="text" className="validate" />
