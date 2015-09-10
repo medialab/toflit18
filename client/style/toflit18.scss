@@ -11,7 +11,8 @@
  */
 
 // Colors
-$background-color: #f5f5f5;
+$background-color: #F5F5F5;
+$light-border:     #E7E7E7;
 
 $sweet-promises:   #F2DEBD;
 $inspiring-words:  #E2C18B;
@@ -22,12 +23,20 @@ $old-blue:         #4F7178;
 /**
  * Overriding Bootstrap variables.
  */
+
+// Fonts
 $font-family-sans-serif:     Merriweather, "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-family-serif:          Merriweather, Georgia, "Times New Roman", Times, serif;
 $font-family-monospace:      Menlo, Monaco, Consolas, "Courier New", monospace;
 $font-family-base:           $font-family-sans-serif;
 
-// Finally importing bootstrap.
+// Buttons
+$btn-primary-bg:  $old-blue;
+
+// Forms
+$input-border-focus:     $old-blue;
+
+// Import
 @import "bootstrap/bootstrap";
 
 /**
@@ -60,11 +69,34 @@ h1 {
 
 .navbar {
   background-color: white;
-  border: 1px solid #e7e7e7;
+  border: 1px solid $light-border;
   border-top: 1px solid white;
 
   .navbar-brand {
     color: #777;
     font-family: Montserrat, Arial, sans-serif;
+    margin-right: 50px;
   }
+
+  .nav-link {
+    font-variant: small-caps;
+    text-transform: lowercase;
+    letter-spacing: 2px;
+    color: #777 !important;
+    font-size: 15px;
+  }
+}
+
+/**
+ * Login.
+ */
+.login-container {
+  position: relative;
+  top: 100px;
+}
+
+.login-card {
+  background-color: white;
+  border: 1px solid $light-border;
+  padding: 40px;
 }

@@ -19,3 +19,13 @@
 
 Selecteurs de classifications
 Système d'utilisateurs/organisation/namespaces
+
+* Utiliser de la gamification sur la création des agrégations.
+* Indiquer le niveau de récursion de la classification.
+
+* Indiquer le nombre d'occurrence dans le niveau n-1.
+* Indiquer les pourcentages de couverture.
+* Possibilité de récupérer des informations sur les flux en questions pour des raisons pratiques.
+* Déterminer le footprint d'une occurrence de modèle.
+
+* Accès à des dictionnaires pour des raisons de pratique.
