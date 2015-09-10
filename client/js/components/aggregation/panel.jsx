@@ -9,7 +9,7 @@ import React, {Component} from 'react';
 export default class AggregationPanel extends Component {
   render() {
     return (
-      <div>Hello Aggregation!</div>
+      <h1>Hello Aggregation!</h1>
     );
   }
 }

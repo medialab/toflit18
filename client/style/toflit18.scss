@@ -4,43 +4,67 @@
  *
  * The main stylesheet used by the client application.
  */
+@import "fonts";
 
 /**
- * Globals
+ * Custom variables.
  */
-* {
-  font-family: Roboto, sans-serif;
-}
 
-html, body, #mount, #main, main {
+// Colors
+$background-color: #f5f5f5;
+
+$sweet-promises:   #F2DEBD;
+$inspiring-words:  #E2C18B;
+$dust-sun:         #E4AF8E;
+$poison-blusher:   #BF8176;
+$old-blue:         #4F7178;
+
+/**
+ * Overriding Bootstrap variables.
+ */
+$font-family-sans-serif:     Merriweather, "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-serif:          Merriweather, Georgia, "Times New Roman", Times, serif;
+$font-family-monospace:      Menlo, Monaco, Consolas, "Courier New", monospace;
+$font-family-base:           $font-family-sans-serif;
+
+// Finally importing bootstrap.
+@import "bootstrap/bootstrap";
+
+/**
+ * Globals.
+ */
+html, body {
   height: 100%;
+  background-color: $background-color;
 }
 
 /**
- * Layout
+ * Layout.
  */
 .full-height {
   height: 100%;
 }
 
-.screen-third {
-  height: 30%;
+/**
+ * Titles.
+ */
+h1 {
+  font-family: Montserrat, Arial, sans-serif;
+  font-weight: bold;
 }
 
-.top-banner {
-  background-color: #4F7178;
+.navbar-emphasis {
+  height: 3px;
+  background-color: $poison-blusher;
 }
 
-.login-card {
-  position: relative;
-  top: -150px;
+.navbar {
+  background-color: white;
+  border: 1px solid #e7e7e7;
+  border-top: 1px solid white;
 
-  .col {
-    background-color: white;
-  }
-
-  & > .row > .col {
-    padding-top: 30px;
-    padding-bottom: 30px;
+  .navbar-brand {
+    color: #777;
+    font-family: Montserrat, Arial, sans-serif;
   }
 }

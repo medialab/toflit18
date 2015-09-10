@@ -11,7 +11,6 @@ import client from './client';
 import tree from './tree';
 
 // Stylesheet
-require('!style!css!sass!../style/materialize/materialize.scss');
 require('!style!css!sass!../style/toflit18.scss');
 
 // Rendering the app

@@ -6,6 +6,7 @@
  */
 import React, {Component} from 'react';
 import Addressbar from 'react-addressbar';
+import NavBar from './navbar.jsx';
 import Login from './login/login.jsx';
 import AggregationPanel from './aggregation/panel.jsx';
 
@@ -36,7 +37,8 @@ export default class App extends Component {
       <div id="main">
         <Addressbar onChange={this.onHashChange.bind(this)}
                     value={'/#/' + route} />
-        <main>
+        <NavBar />
+        <main className="container">
           {Component ? <Component /> : <div>Not Found!</div>}
         </main>
       </div>
