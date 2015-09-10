@@ -8,11 +8,11 @@ import React, {Component} from 'react';
 import Addressbar from 'react-addressbar';
 import NavBar from './navbar.jsx';
 import Login from './login/login.jsx';
-import AggregationPanel from './aggregation/panel.jsx';
+import ClassificationPanel from './classification/panel.jsx';
 
 const ROUTER = (route) => {
   return ({
-    aggregation: AggregationPanel,
+    classification: ClassificationPanel,
     login: Login
   })[route];
 };

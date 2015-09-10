@@ -9,10 +9,13 @@ import {api as config} from '../config.json';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import compress from 'compression';
 import morgan from 'morgan';
 import session from 'express-session';
 import middlewares from './middlewares';
 import responses from './responses';
+
+import classificationController from './controllers/classification';
 import loginController from './controllers/login';
 
 /**
@@ -78,16 +81,19 @@ app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(cookieParser());
 app.use(session(sessionOptions));
+app.use(compress());
 
 /**
  * Routing & Mounting.
  */
 
 // Creating routers from controllers
-const loginRouter = createRouter(loginController);
+const loginRouter = createRouter(loginController),
+      classificationRouter = createRouter(classificationController);
 
 // Mounting
 app.use(loginRouter);
+app.use('/classifications', classificationRouter);
 app.use((_, res) => res.notFound());
 
 /**

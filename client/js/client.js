@@ -13,10 +13,22 @@ const client = new Client({
     baseUrl: endpoint
   },
 
+  defaults: {
+    contentType: 'application/json',
+    dataType: 'json',
+    xhrFields: {
+      withCredentials: true
+    }
+  },
+
   services: {
     log: {
       type: 'POST',
       url: '/login'
+    },
+
+    test: {
+      url: '/classifications/test'
     }
   }
 });
