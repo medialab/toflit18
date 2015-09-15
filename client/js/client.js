@@ -6,7 +6,6 @@
  */
 import {endpoint} from '../config.json';
 import Client from 'djax-client';
-import tree from './tree';
 
 const client = new Client({
   settings: {

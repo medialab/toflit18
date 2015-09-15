@@ -32,7 +32,7 @@
     "json-loader": "^0.5.2",
     "node-sass": "^3.3.2",
     "progress": "^1.1.8",
-    "react-addressbar": "^0.1.2",
+    "react-addressbar": "^0.1.4",
     "react-transform-catch-errors": "^0.1.1",
     "react-transform-webpack-hmr": "^0.1.2",
     "redbox-react": "^1.0.1",
@@ -43,9 +43,10 @@
     "webpack-hot-middleware": "^2.0.0"
   },
   "dependencies": {
-    "baobab": "^2.0.0-rc1",
+    "baobab": "dev",
+    "baobab-react": "dev",
     "djax-client": "^0.1.0",
-    "react": "^0.14.0-beta3",
-    "react-dom": "^0.14.0-beta3"
+    "react": "^0.14.0-rc1",
+    "react-dom": "^0.14.0-rc1"
   }
 }

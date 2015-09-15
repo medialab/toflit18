@@ -11,6 +11,12 @@ export default class Button extends Component {
     const kind = this.props.kind,
           cls = `btn btn-${kind}`;
 
-    return <button type="button" className={cls}>{this.props.children}</button>
+    return (
+      <button type="button"
+              className={cls}
+              onClick={this.props.onClick}>
+        {this.props.children}
+      </button>
+    );
   }
 }

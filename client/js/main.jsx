@@ -5,17 +5,20 @@
  * Launching the app.
  */
 import React from 'react';
+import {root} from 'baobab-react/higher-order';
 import {render} from 'react-dom';
 import App from './components/app.jsx';
 import client from './client';
-import tree from './tree';
+import state from './state';
 
 // Stylesheet
 require('!style!css!sass!../style/toflit18.scss');
 
+const RootedApp = root(App, state);
+
 // Rendering the app
-render(<App />, document.getElementById('mount'));
+render(<RootedApp />, document.getElementById('mount'));
 
 // Exposing the app for debugging purposes
-tree.client = client;
-export default tree;
+state.client = client;
+export default state;

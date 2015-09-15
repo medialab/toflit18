@@ -4,17 +4,13 @@
  *
  * Creating the Baobab state tree used by the whole application to function.
  */
-import Baobab from 'baobab';
+import Baobab, {monkey} from 'baobab';
 import {
   isLogged
 } from './facets';
 
 const defaultState = {
-  user: null,
-  $isLogged: [
-    ['user'],
-    isLogged
-  ]
+  user: null
 };
 
 const tree = new Baobab(defaultState);
