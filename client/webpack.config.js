@@ -31,7 +31,6 @@ module.exports = {
     })
   ],
   module: {
-    noParse: /djax-client/,
     loaders: [
 
       // ES6 & JSX

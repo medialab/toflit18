@@ -36,6 +36,9 @@ export default class Login extends Component {
  * Login form
  */
 @branch({
+  cursors: {
+    counter: ['counter']
+  },
   actions: {
     submit: attemptLogin
   }
@@ -78,6 +81,7 @@ class LoginForm extends Component {
                  placeholder="..." />
         </fieldset>
         <Button kind="primary" onClick={() => this.submit()}>Connect</Button>
+        <div>{this.props.counter}</div>
       </div>
     );
   }
