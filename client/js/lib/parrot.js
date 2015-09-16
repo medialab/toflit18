@@ -2,9 +2,9 @@
  * Parrot Abstraction
  * ===================
  *
- * The parrot abstraction can sit upon the desired baobab tree and will fetch
- * data using a server API to fill the tree's with it whenever some specific
- * paths are accessed and returning unsatisfactory data.
+ * The parrot abstraction can sit upon a baobab tree to oversee some of its
+ * branches. If one of the branches returns unsatisfactory data, the parrot
+ * will trigger automatically some API calls to retrieve the missing data.
  */
 
 /**
