@@ -40,6 +40,4 @@ if (module.hot)  {
   });
 }
 
-
-
 export default state;
