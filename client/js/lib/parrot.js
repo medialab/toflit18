@@ -51,17 +51,17 @@ export default class Parrot {
     // Properties
     this.tree = tree;
     this.rules = [];
-    this.currentCalls = {};
+    this.locks = {};
 
     // Adding rules
     const rules = definition.rules || [];
-    rules.forEach(rule => this.rules.push(rule));
+    rules.forEach(rule => this.rules.push([this.rules.length, rule]));
 
     // Hooking on the tree's get event
     this.listener = ({data: {data, solvedPath}}) => {
 
       // Filtering the relevant rules
-      const relevantRules = this.rules.filter(rule => {
+      const relevantRules = this.rules.filter(([i, rule]) => {
 
         // If there is no path, we skip
         if (!rule.path)
@@ -81,12 +81,36 @@ export default class Parrot {
       });
 
       // Resolving actions
-      relevantRules.forEach(rule => {
+      relevantRules.forEach(([i, rule]) => {
 
+        // If no fetcher were defined, we just stop there
         if (typeof rule.get !== 'function')
           return;
 
+        // If said call has already been made, we don't trigger it twice
+        if (this.locks[i])
+          return;
+
+        // TODO: deal with synchronous & non-promise cases
         const promise = rule.get();
+        this.locks[i] = promise;
+
+        // Toggling flag
+        if (rule.flag)
+          this.tree.set(rule.flag, true);
+
+        // Upon completion, we will clear the lock
+        const completion = () => {
+          delete this.locks[i];
+
+          // Resetting flag
+          if (rule.flag)
+            this.tree.set(rule.flag, false);
+        };
+
+        promise
+          .then(completion)
+          .fail(completion);
       });
     };
 
