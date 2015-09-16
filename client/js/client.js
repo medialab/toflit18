@@ -22,7 +22,7 @@ const client = new Client({
 
   services: {
     log: {
-      type: 'POST',
+      method: 'POST',
       url: '/login'
     },
 
