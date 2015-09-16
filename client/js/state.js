@@ -10,6 +10,9 @@ import {
 } from './facets';
 
 const defaultState = {
+  flags: {
+    logged: monkey(['user'], isLogged)
+  },
   user: null
 };
 

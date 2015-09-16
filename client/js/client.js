@@ -21,6 +21,10 @@ const client = new Client({
   },
 
   services: {
+    session: {
+      url: '/session'
+    },
+
     log: {
       method: 'POST',
       url: '/login'

@@ -7,6 +7,15 @@ import model from '../model/user';
 
 const controller = [
   {
+    url: '/session',
+    action(req, res) {
+      if (req.session.authenticated)
+        return res.ok({name: req.session.user.name});
+      else
+        return res.ok(null);
+    }
+  },
+  {
     url: '/login',
     methods: ['POST'],
     validate: {

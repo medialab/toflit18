@@ -36,9 +36,6 @@ export default class Login extends Component {
  * Login form
  */
 @branch({
-  cursors: {
-    counter: ['counter']
-  },
   actions: {
     submit: attemptLogin
   }
@@ -48,27 +45,33 @@ class LoginForm extends Component {
     super(props);
 
     this.state = {
-      username: null,
+      name: null,
       password: null
     };
   }
 
   submit() {
-    console.log('Submit!');
-    this.props.actions.submit();
+    const {name, password} = this.state;
+
+    if (name && password)
+      this.props.actions.submit(name, password);
   }
 
   render() {
+
+    const keySubmit = (e) => e.which === 13 && this.submit();
+
     return (
       <div>
         <fieldset className="form-group">
-          <label htmlFor="name">Username</label>
+          <label htmlFor="name">name</label>
           <input type="text"
                  className="form-control"
                  id="name"
-                 onChange={e => this.setState({username: e.target.value})}
-                 value={this.state.username}
+                 onChange={e => this.setState({name: e.target.value})}
+                 value={this.state.name}
                  placeholder="..."
+                 onKeyPress={keySubmit}
                  autoFocus />
         </fieldset>
         <fieldset className="form-group">
@@ -78,10 +81,10 @@ class LoginForm extends Component {
                  id="password"
                  onChange={e => this.setState({password: e.target.value})}
                  value={this.state.password}
-                 placeholder="..." />
+                 placeholder="..."
+                 onKeyPress={keySubmit} />
         </fieldset>
         <Button kind="primary" onClick={() => this.submit()}>Connect</Button>
-        <div>{this.props.counter}</div>
       </div>
     );
   }
