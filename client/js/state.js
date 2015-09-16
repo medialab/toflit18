@@ -13,7 +13,8 @@ const defaultState = {
   flags: {
     logged: monkey(['user'], isLogged)
   },
-  user: null
+  route: 'classification',
+  user: null,
 };
 
 const tree = new Baobab(defaultState);

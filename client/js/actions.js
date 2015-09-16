@@ -4,6 +4,20 @@
  *
  * Functions used to update the tree.
  */
+
+/**
+ * Checking the user session
+ */
+export function checkSession(tree) {
+  tree.client.session(function(err, data) {
+    if (data)
+      tree.set('user', data.result);
+  });
+}
+
+/**
+ * Simple attempt to log
+ */
 export function attemptLogin(tree, name, password) {
   const flag = tree.select('flags', 'login');
 
@@ -12,7 +26,7 @@ export function attemptLogin(tree, name, password) {
     return;
 
   flag.set(true);
-  tree.client.log({data: {name, password}}, function(err, data) {
+  tree.client.login({data: {name, password}}, function(err, data) {
     flag.set(false);
 
     if (err)

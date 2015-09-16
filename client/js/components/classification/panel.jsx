@@ -6,19 +6,10 @@
  */
 import React, {Component} from 'react';
 
-// TEMP
-import client from '../../client';
-
 export default class ClassificationPanel extends Component {
-  componentDidMount() {
-    client.test((err, data) => this.setState({data: data}));
-  }
-
   render() {
     return (
-      <ul>
-        {this.state && this.state.data.map(e => <li key={e.classified.name}>{e.classified.name}</li>)}
-      </ul>
+      <div>Classification Panel</div>
     );
   }
 }

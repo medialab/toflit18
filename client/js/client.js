@@ -21,14 +21,14 @@ const client = new Client({
   },
 
   services: {
-    session: {
-      url: '/session'
-    },
+    session: '/session',
 
-    log: {
+    login: {
       method: 'POST',
       url: '/login'
     },
+
+    logout: '/logout',
 
     test: {
       url: '/classifications/test'

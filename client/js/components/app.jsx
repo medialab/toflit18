@@ -5,33 +5,37 @@
  * Root component for the application.
  */
 import React, {Component} from 'react';
+import {branch} from 'baobab-react/decorators';
 import Addressbar from 'react-addressbar';
 import NavBar from './navbar.jsx';
 import Login from './login/login.jsx';
 import ClassificationPanel from './classification/panel.jsx';
 
-const ROUTER = (route) => {
+const ROUTER = (logged, route) => {
+  if (!logged)
+    return Login
+
   return ({
     classification: ClassificationPanel,
-    login: Login
   })[route];
 };
 
-export default class App extends Component {
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {route: 'login'};
+@branch({
+  cursors: {
+    logged: ['flags', 'logged'],
+    route: ['route']
   }
-
+})
+export default class App extends Component {
   onHashChange(url) {
     const hash = location.hash.split('/').slice(1);
-    this.setState({route: hash});
+
+    // TODO: add an action here
   }
 
   render() {
-    const route = this.state.route,
-          Component = ROUTER(route);
+    const {route, logged} = this.props,
+          Component = ROUTER(logged, route);
 
     return (
       <div id="main">

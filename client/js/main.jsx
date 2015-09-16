@@ -8,6 +8,7 @@ import React from 'react';
 import {root} from 'baobab-react/higher-order';
 import {render} from 'react-dom';
 import App from './components/app.jsx';
+import {checkSession} from './actions';
 import makeParrot from './parrot';
 import client from './client';
 import state from './state';
@@ -23,6 +24,9 @@ render(<RootedApp />, document.getElementById('mount'));
 // Binding client
 let parrot = makeParrot(state, client);
 state.client = client;
+
+// Checking the user's session
+checkSession(state);
 
 // Hot-reloading logic
 if (module.hot)  {

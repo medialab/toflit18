@@ -35,6 +35,16 @@ const controller = [
         return res.ok({name: user.name});
       });
     }
+  },
+  {
+    url: '/logout',
+    action(req, res) {
+      req.session.destroy(err => {
+        if (err) return res.serverError(err);
+
+        return res.ok();
+      });
+    }
   }
 ];
 
