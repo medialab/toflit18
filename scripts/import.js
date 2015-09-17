@@ -121,7 +121,8 @@ const POSSIBLE_NODE_PROPERTIES = [
   'model',
   'note',
   'slug',
-  'password'
+  'password',
+  'description'
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -174,7 +175,8 @@ const CLASSIFICATION_NODES = {
   orthographic: BUILDER.save({
     name: 'Orthographic Normalization',
     model: 'Product',
-    slug: 'orthographic_normalization'
+    slug: 'orthographic_normalization',
+    description: 'Fixing the source\'s somewhat faulty orthograph.'
   }, 'Classification')
 };
 
