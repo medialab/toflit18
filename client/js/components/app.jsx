@@ -37,7 +37,7 @@ export default class App extends Component {
 
   render() {
     const {route, logged} = this.props,
-          Component = ROUTER(logged, route);
+          Route = ROUTER(logged, route);
 
     return (
       <div id="main">
@@ -45,7 +45,7 @@ export default class App extends Component {
                     value={'/#/' + (logged ? route : 'login')} />
         <NavBar />
         <main className="container">
-          {Component ? <Component /> : <div>Not Found!</div>}
+          {Route ? <Route /> : <div>Not Found!</div>}
         </main>
       </div>
     );

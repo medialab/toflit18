@@ -11,10 +11,10 @@
  */
 
 // Colors
-$light-grey:  #F5F5F5;
-$medium-grey: #E7E7E7;
-$dark:        #555;
-$darker:      #333;
+$light-grey:       #F5F5F5;
+$medium-grey:      #E7E7E7;
+$dark:             #555;
+$darker:           #333;
 
 $sweet-promises:   #F2DEBD;
 $inspiring-words:  #E2C18B;
@@ -44,9 +44,13 @@ $input-border-focus:     $old-blue;
 /**
  * Globals.
  */
-html, body {
+html, body, #mount, #main {
   height: 100%;
   background-color: $light-grey;
+}
+
+main {
+  position: relative;
 }
 
 /**
@@ -76,7 +80,7 @@ h1 {
   line-height: 35px;
 
   .navbar-brand {
-    line-height: 47px;
+    line-height: 49px;
     padding: 0px;
     color: #777;
     font-family: Montserrat, Arial, sans-serif;
@@ -112,6 +116,15 @@ h1 {
 }
 
 /**
+ * Components.
+ */
+.panel {
+  background-color: white;
+  border: 1px solid $medium-grey;
+  padding: 40px;
+}
+
+/**
  * Login.
  */
 .login-container {
@@ -119,8 +132,13 @@ h1 {
   top: 100px;
 }
 
-.login-card {
-  background-color: white;
-  border: 1px solid $medium-grey;
-  padding: 40px;
+/**
+ * Classification.
+ */
+#classification {
+
+  // Crossroads
+  .crossroads-wrapper {
+    padding: 150px;
+  }
 }

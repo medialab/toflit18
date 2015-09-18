@@ -20,7 +20,7 @@ export default class Login extends Component {
         <Row>
           <Col md={2} />
           <Col md={8}>
-            <div className="login-card">
+            <div className="card panel">
               <h2>Login</h2>
               <hr />
               <LoginForm />

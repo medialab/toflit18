@@ -18,6 +18,10 @@ const defaultState = {
     }
   },
   route: 'classification',
+  subRoute: null,
+  state: {
+    classification: {}
+  },
   user: null,
 };
 

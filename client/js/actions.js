@@ -13,6 +13,13 @@ export function changeRoute(tree, newRoute) {
 }
 
 /**
+ * Changing the current subroute
+ */
+export function changeSubroute(tree, newSubroute) {
+  tree.set('subroute', newSubroute);
+}
+
+/**
  * Checking the user session
  */
 export function checkSession(tree) {
