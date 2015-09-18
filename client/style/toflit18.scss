@@ -60,6 +60,10 @@ main {
   height: 100%;
 }
 
+.overflow {
+  overflow-y: scroll;
+}
+
 /**
  * Titles.
  */
@@ -121,7 +125,6 @@ h1 {
 .panel {
   background-color: white;
   border: 1px solid $medium-grey;
-  padding: 40px;
 }
 
 /**
@@ -130,6 +133,10 @@ h1 {
 .login-container {
   position: relative;
   top: 100px;
+
+  .login-panel {
+    padding: 40px;
+  }
 }
 
 /**
@@ -140,5 +147,30 @@ h1 {
   // Crossroads
   .crossroads-wrapper {
     padding: 150px;
+  }
+
+  .browser-wrapper {
+    padding: 15px;
+    height: calc(100vh - 60px);
+
+    .panel {
+      padding: 20px;
+    }
+
+    .classifications-list {
+      padding-left: 10px;
+      list-style-type: none;
+
+      .item {
+        background-color: $light-grey;
+        padding: 10px;
+        cursor: pointer;
+        margin-bottom: 10px;
+
+        &:hover {
+          background-color: $medium-grey;
+        }
+      }
+    }
   }
 }

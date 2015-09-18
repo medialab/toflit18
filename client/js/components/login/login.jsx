@@ -20,7 +20,7 @@ export default class Login extends Component {
         <Row>
           <Col md={2} />
           <Col md={8}>
-            <div className="card panel">
+            <div className="panel login-panel">
               <h2>Login</h2>
               <hr />
               <LoginForm />
@@ -68,7 +68,7 @@ class LoginForm extends Component {
     return (
       <div>
         <fieldset className="form-group">
-          <label htmlFor="name">name</label>
+          <label htmlFor="name">Name</label>
           <input type="text"
                  className="form-control"
                  id="name"
