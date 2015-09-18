@@ -7,6 +7,7 @@
  */
 import React from 'react';
 import {Row, Col} from '../bootstrap/grid.jsx';
+import {fill} from 'lodash';
 
 /**
  * !!!TEMP!!! : Sample data.
@@ -51,6 +52,9 @@ function Browser() {
             <div className="panel full-height">
               <h4>Entities</h4>
               <hr />
+              <div className="partial-height overflow">
+                <EntitiesList />
+              </div>
             </div>
           </Col>
         </Row>
@@ -77,6 +81,28 @@ function Classification({data: {name, author}}) {
   return (
     <li className="item">
       <span>{name}</span> (<em>{author}</em>)
+    </li>
+  );
+}
+
+/**
+ * Entities list.
+ */
+function EntitiesList({items}) {
+  return (
+    <ul className="entities-list">
+      {(fill(new Array(60), '')).map((_, i) => <Entity key={i} />)}
+    </ul>
+  );
+}
+
+/**
+ * Entity.
+ */
+function Entity() {
+  return (
+    <li className="item">
+      Hello coucou!
     </li>
   );
 }

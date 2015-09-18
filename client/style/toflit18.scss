@@ -157,7 +157,27 @@ h1 {
       padding: 20px;
     }
 
+    .partial-height {
+      height: calc(100% - 60px);
+    }
+
     .classifications-list {
+      padding-left: 10px;
+      list-style-type: none;
+
+      .item {
+        background-color: $light-grey;
+        padding: 10px;
+        cursor: pointer;
+        margin-bottom: 10px;
+
+        &:hover {
+          background-color: $medium-grey;
+        }
+      }
+    }
+
+    .entities-list {
       padding-left: 10px;
       list-style-type: none;
 
