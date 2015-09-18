@@ -4,6 +4,9 @@
  *
  */
 import React, {Component} from 'react';
+import {changeRoute} from '../actions';
+import {branch} from 'baobab-react/decorators';
+import cls from 'classnames';
 
 const LINKS = [
   {
@@ -11,13 +14,24 @@ const LINKS = [
     url: 'exploration'
   },
   {
-    label: 'Collections',
-    url: 'collections'
+    label: 'Classification',
+    url: 'classification'
   }
 ];
 
+@branch({
+  actions: {
+    navigate: changeRoute
+  },
+  cursors: {
+    route: ['route']
+  }
+})
 export default class NavBar extends Component {
   render() {
+    const route = this.props.route,
+          navigate = this.props.actions.navigate;
+
     return (
       <div>
         <div className="navbar-emphasis" />
@@ -26,7 +40,9 @@ export default class NavBar extends Component {
             <a className="navbar-brand" href="#">TOFLIT18</a>
             <ul className="nav navbar-nav">
               {LINKS.map(l => (
-                <li className="nav-item" key={l.url}>
+                <li className={cls('nav-item', l.url === route && 'active')}
+                    key={l.url}
+                    onClick={navigate.bind(null, l.url)}>
                   <a className="nav-link" href="#">{l.label}</a>
                 </li>
               ))}

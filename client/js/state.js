@@ -11,7 +11,11 @@ import {
 
 const defaultState = {
   flags: {
-    logged: monkey(['user'], isLogged)
+    logged: monkey(['user'], isLogged),
+    login: {
+      failed: false,
+      loading: false
+    }
   },
   route: 'classification',
   user: null,

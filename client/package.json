@@ -45,7 +45,9 @@
   "dependencies": {
     "baobab": "dev",
     "baobab-react": "dev",
+    "classnames": "^2.1.3",
     "djax-client": "^0.1.1",
+    "ladda": "^0.9.8",
     "react": "^0.14.0-rc1",
     "react-dom": "^0.14.0-rc1"
   }

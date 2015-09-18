@@ -6,6 +6,13 @@
  */
 
 /**
+ * Changing the current route
+ */
+export function changeRoute(tree, newRoute) {
+  tree.set('route', newRoute);
+}
+
+/**
  * Checking the user session
  */
 export function checkSession(tree) {
@@ -19,19 +26,22 @@ export function checkSession(tree) {
  * Simple attempt to log
  */
 export function attemptLogin(tree, name, password) {
-  const flag = tree.select('flags', 'login');
+  const flags = tree.select('flags', 'login');
 
   // Already attempting to log?
-  if (flag.get())
+  if (flags.get('loading'))
     return;
 
-  flag.set(true);
+  flags.set('loading', true);
   tree.client.login({data: {name, password}}, function(err, data) {
-    flag.set(false);
+    flags.set('loading', false);
 
-    if (err)
+    if (err) {
+      flags.set('failed', true);
       return;
+    }
 
+    flags.set('failed', false);
     tree.set('user', data.result);
   });
 }

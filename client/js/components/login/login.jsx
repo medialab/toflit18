@@ -38,6 +38,9 @@ export default class Login extends Component {
 @branch({
   actions: {
     submit: attemptLogin
+  },
+  cursors: {
+    flags: ['flags', 'login']
   }
 })
 class LoginForm extends Component {
@@ -58,6 +61,7 @@ class LoginForm extends Component {
   }
 
   render() {
+    const {flags} = this.props;
 
     const keySubmit = (e) => e.which === 13 && this.submit();
 
@@ -84,7 +88,10 @@ class LoginForm extends Component {
                  placeholder="..."
                  onKeyPress={keySubmit} />
         </fieldset>
-        <Button kind="primary" onClick={() => this.submit()}>Connect</Button>
+        {flags.failed && <div className="alert alert-danger">Unrecognized name/password combination.</div>}
+        <Button loading={flags.loading}
+                kind="primary"
+                onClick={() => this.submit()}>Connect</Button>
       </div>
     );
   }

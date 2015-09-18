@@ -10,6 +10,7 @@ import Addressbar from 'react-addressbar';
 import NavBar from './navbar.jsx';
 import Login from './login/login.jsx';
 import ClassificationPanel from './classification/panel.jsx';
+import ExplorationPanel from './exploration/panel.jsx';
 
 const ROUTER = (logged, route) => {
   if (!logged)
@@ -17,6 +18,7 @@ const ROUTER = (logged, route) => {
 
   return ({
     classification: ClassificationPanel,
+    exploration: ExplorationPanel
   })[route];
 };
 
@@ -40,7 +42,7 @@ export default class App extends Component {
     return (
       <div id="main">
         <Addressbar onChange={this.onHashChange.bind(this)}
-                    value={'/#/' + route} />
+                    value={'/#/' + (logged ? route : 'login')} />
         <NavBar />
         <main className="container">
           {Component ? <Component /> : <div>Not Found!</div>}
