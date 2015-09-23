@@ -47,7 +47,7 @@ class Builder {
 
     // Writing headers
     this.nodesStream.write(NODE_PROPERTIES_TYPES.concat(':LABEL', ':ID'));
-    this.edgesStream.write([':START_ID', ':END_ID', ':TYPE']);
+    this.edgesStream.write([':START_ID', ':END_ID', ':TYPE', 'ligne:int', 'sheet:int']);
   }
 
   save(data, label) {
@@ -65,8 +65,11 @@ class Builder {
     return this.nodesCount++;
   }
 
-  relate(source, predicate, target) {
+  relate(source, predicate, target, data) {
     const row = [source, target, predicate];
+
+    if (data)
+      row.push(data.ligne || '', data.sheet || '');
 
     this.edgesStream.write(row);
   }
@@ -99,6 +102,8 @@ function indexedNode(index, label, key, data) {
 const BDD_CENTRALE_PATH = '/base_centrale/bdd_centrale.csv',
       CLASSIFICATIONS_PATH = '/Traitement des marchandises, pays, unités',
       ORTHOGRAPHIC_CLASSIFICATION = CLASSIFICATIONS_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
+      SIMPLIFICATION = CLASSIFICATIONS_PATH + '/bdd_marchandises_simplifiees.csv',
+      OTHER_CLASSIFICATIONS = CLASSIFICATIONS_PATH + '/bdd_marchandises_classifiees.csv',
       COUNTRY_CLASSIFICATIONS = CLASSIFICATIONS_PATH + '/bdd_pays.csv';
 
 /**
@@ -122,7 +127,8 @@ const POSSIBLE_NODE_PROPERTIES = [
   'note',
   'slug',
   'password',
-  'description'
+  'description',
+  'padding'
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -160,11 +166,16 @@ const TOFLIT18_USER = BUILDER.save({
 const INDEXES = {
   directions: {},
   countries: {},
+  offices: {},
   operators: {},
   origins: {},
   products: {},
   sources: {},
   units: {}
+};
+
+const EDGE_INDEXES = {
+  offices: new Set()
 };
 
 const CLASSIFICATION_INDEXES = {
@@ -176,7 +187,8 @@ const CLASSIFICATION_NODES = {
     name: 'Orthographic Normalization',
     model: 'Product',
     slug: 'orthographic_normalization',
-    description: 'Fixing the source\'s somewhat faulty orthograph.'
+    description: 'Fixing the source\'s somewhat faulty orthograph.',
+    padding: 'limbo'
   }, 'Classification')
 };
 
@@ -229,18 +241,16 @@ readStream = h(readStream)
 function importer(csvLine) {
 
   // Direction
-  const isImport = /imp/i.test(csvLine.exportsimports);
+  const isImport = /(imp|sortie)/i.test(csvLine.exportsimports);
 
   // Creating a flow node
   const nodeData = {
-    no: +csvLine.numrodeligne,
     quantity: csvLine.quantit,
     value: +csvLine.value,
     unit_price: csvLine.prix_unitaire,
     year: csvLine.year,
     normalized_year: normalizeYear(csvLine.year),
     import: '' + isImport,
-    sheet: +csvLine.sheet
   };
 
   if (csvLine.remarks)
@@ -265,7 +275,10 @@ function importer(csvLine) {
       type: csvLine.sourcetype
     });
 
-    BUILDER.relate(flowNode, 'TRANSCRIBED_FROM', sourceNode);
+    BUILDER.relate(flowNode, 'TRANSCRIBED_FROM', sourceNode, {
+      line: +csvLine.numrodeligne,
+      sheet: +csvLine.sheet
+    });
   }
 
   // Product
@@ -286,8 +299,29 @@ function importer(csvLine) {
     BUILDER.relate(originNode, 'ORIGINATES_FROM', flowNode);
   }
 
+  // Office
+  if (csvLine.bureaux) {
+    const officeNode = indexedNode(INDEXES.offices, 'Office', csvLine.bureaux, {
+      name: csvLine.bureaux
+    });
+
+    if (isImport)
+      BUILDER.relate(flowNode, 'FROM', officeNode);
+    else
+      BUILDER.relate(flowNode, 'TO', officeNode);
+
+    if (csvLine.direction && !EDGE_INDEXES.offices.has(csvLine.bureaux)) {
+      const directionNode = indexedNode(INDEXES.directions, 'Direction', csvLine.direction, {
+        name: csvLine.direction
+      });
+
+      BUILDER.relate(directionNode, 'GATHERS', officeNode);
+      EDGE_INDEXES.offices.add(csvLine.bureaux);
+    }
+  }
+
   // Direction
-  if (csvLine.direction) {
+  if (csvLine.direction && !csvLine.bureaux) {
     const directionNode = indexedNode(INDEXES.directions, 'Direction', csvLine.direction, {
       name: csvLine.direction
     });
@@ -319,7 +353,6 @@ function importer(csvLine) {
     BUILDER.relate(flowNode, 'VALUE_IN', productNode);
   }
 
-  // TODO: bureaux
   // TODO: normalize unit_price
 }
 
