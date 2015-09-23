@@ -28,8 +28,8 @@ import _ from 'lodash';
 class Builder {
   constructor() {
 
-    const nodesWriteStream = fs.createWriteStream('./nodes.csv', 'utf-8'),
-          edgesWriteStream = fs.createWriteStream('./edges.csv', 'utf-8');
+    const nodesWriteStream = fs.createWriteStream('./.output/nodes.csv', 'utf-8'),
+          edgesWriteStream = fs.createWriteStream('./.output/edges.csv', 'utf-8');
 
     // Properties
     this.nodesCount = 0;
