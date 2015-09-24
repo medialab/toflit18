@@ -13,7 +13,7 @@ import {fill, indexBy} from 'lodash';
 import fs from 'fs';
 
 /**
- * Useful constantss
+ * Useful constants
  */
 const LIMIT = 10000;
 
@@ -46,10 +46,6 @@ async.series([
    * Building the sources file.
    */
   function retrieveSources(callback) {
-
-    // OVERRIDE
-    return callback();
-
     const sourcesStream = h();
 
     sourcesStream
@@ -125,8 +121,6 @@ async.series([
     let classifications,
         rows;
 
-    return callback();
-
     console.log('Building products\' classifications...');
 
     async.series([
@@ -168,18 +162,21 @@ async.series([
         }, next);
       },
       function writeRows(next) {
-        const stream = h();
+        const stream = h(),
+              writer = fs.createWriteStream('./.output/bdd_products.csv', 'utf-8');
 
         stream
           .pipe(stringify({delimiter: ','}))
-          .pipe(fs.createWriteStream('./.output/bdd_products.csv', 'utf-8'));
+          .pipe(writer);
+
+        writer.on('finish', () => next());
 
         stream.write(['source'].concat(classifications.map(c => c.properties.slug)));
 
         for (let i = 0, l = rows.length; i < l; i++)
           stream.write(rows[i]);
 
-        return next();
+        return stream.end();
       }
     ], callback);
   },
@@ -190,8 +187,6 @@ async.series([
   function retrieveCountriesClassifications(callback) {
     let classifications,
         rows;
-
-    return callback();
 
     console.log('Building countries\' classifications...');
 
@@ -231,18 +226,21 @@ async.series([
         }, next);
       },
       function(next) {
-        const stream = h();
+        const stream = h(),
+              writer = fs.createWriteStream('./.output/bdd_countries.csv', 'utf-8');
 
         stream
           .pipe(stringify({delimiter: ','}))
-          .pipe(fs.createWriteStream('./.output/bdd_countries.csv', 'utf-8'));
+          .pipe(writer);
+
+        writer.on('finish', () => next());
 
         stream.write(['source'].concat(classifications.map(c => c.properties.slug)));
 
         for (let i = 0, l = rows.length; i < l; i++)
           stream.write(rows[i]);
 
-        return next();
+        return stream.end();
       }
     ], callback);
   },
@@ -251,6 +249,8 @@ async.series([
    * Composing the bdd_courante file.
    */
   function composing(callback) {
+    console.log('Composing bdd_courante.csv...');
+
     const productsCsv = fs.readFileSync('./.output/bdd_products.csv', 'utf-8'),
           countriesCsv = fs.readFileSync('./.output/bdd_countries.csv', 'utf-8');
 
