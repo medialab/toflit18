@@ -18,7 +18,7 @@ rm -rf $NEO4J_PATH/data/graph.db &&
 
 # Creating the new database
 rm -rf graph.db &&
-$NEO4J_PATH/bin/neo4j-import --into graph.db --nodes ./nodes.csv --relationships ./edges.csv &&
+$NEO4J_PATH/bin/neo4j-import --into graph.db --nodes ./.output/nodes.csv --relationships ./.output/edges.csv &&
 
 # Replacing the database
 mv graph.db $NEO4J_PATH/data/ &&

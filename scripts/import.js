@@ -11,7 +11,7 @@ import {default as h} from 'highland';
 import {db as dbConfig, api as apiConfig} from '../config.json';
 import {hash} from '../lib/crypto';
 import {normalizeYear} from '../lib/republican_calendar';
-import {cleanText} from '../lib/clean';
+import {cleanText, cleanNumber} from '../lib/clean';
 import fs from 'fs';
 import _ from 'lodash';
 
@@ -113,9 +113,9 @@ const BDD_CENTRALE_PATH = '/base_centrale/bdd_centrale.csv',
 // Possible properties
 const POSSIBLE_NODE_PROPERTIES = [
   'no:int',
-  'quantity',
-  'value',
-  'unit_price',
+  'quantity:float',
+  'value:float',
+  'unit_price:float',
   'normalized_year:int',
   'year',
   'import:boolean',
@@ -354,13 +354,40 @@ function importer(csvLine) {
 
   // Creating a flow node
   const nodeData = {
-    quantity: csvLine.quantit,
-    value: +csvLine.value,
-    unit_price: csvLine.prix_unitaire,
     year: csvLine.year,
     normalized_year: normalizeYear(csvLine.year),
     import: '' + isImport,
   };
+
+  // Value
+  if (csvLine.value) {
+    const realValue = cleanNumber(csvLine.value);
+
+    if (realValue)
+      nodeData.value = realValue;
+    else if (realValue !== 0)
+      console.log('  !! Weird value:', csvLine.value);
+  }
+
+  // Quantity
+  if (csvLine.quantit) {
+    const realQuantity = cleanNumber(csvLine.quantit);
+
+    if (realQuantity)
+      nodeData.quantity = realQuantity;
+    else if (realQuantity !== 0)
+      console.log('  !! Weird quantity:', csvLine.quantit);
+  }
+
+  // Unit price
+  if (csvLine.prix_unitaire) {
+    const realPrice = cleanNumber(csvLine.prix_unitaire);
+
+    if (realPrice)
+      nodeData.unit_price = realPrice;
+    else if (realPrice !== 0)
+      console.log('  !! Weird unit price:', csvLine.prix_unitaire);
+  }
 
   if (csvLine.remarks)
     nodeData.note = csvLine.remarks;
