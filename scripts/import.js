@@ -47,7 +47,7 @@ class Builder {
 
     // Writing headers
     this.nodesStream.write(NODE_PROPERTIES_TYPES.concat(':LABEL', ':ID'));
-    this.edgesStream.write([':START_ID', ':END_ID', ':TYPE', 'ligne:int', 'sheet:int']);
+    this.edgesStream.write([':START_ID', ':END_ID', ':TYPE', 'line:int', 'sheet:int']);
   }
 
   save(data, label) {
@@ -69,7 +69,7 @@ class Builder {
     const row = [source, target, predicate];
 
     if (data)
-      row.push(data.ligne || '', data.sheet || '');
+      row.push(data.line || '', data.sheet || '');
 
     this.edgesStream.write(row);
   }
@@ -405,7 +405,7 @@ function importer(csvLine) {
       name: csvLine.origine
     });
 
-    BUILDER.relate(originNode, 'ORIGINATES_FROM', flowNode);
+    BUILDER.relate(flowNode, 'ORIGINATES_FROM', originNode);
   }
 
   // Office

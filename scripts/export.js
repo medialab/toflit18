@@ -6,14 +6,14 @@
  */
 import database from '../api/connection';
 import {exporter as queries} from '../api/queries';
-import {stringify} from 'csv';
+import {parse, stringify} from 'csv';
 import async from 'async';
 import {default as h} from 'highland';
 import {fill, indexBy} from 'lodash';
 import fs from 'fs';
 
 /**
- * Useful constantS
+ * Useful constantss
  */
 const LIMIT = 10000;
 
@@ -54,7 +54,7 @@ async.series([
 
     sourcesStream
         .pipe(stringify({delimiter: ','}))
-        .pipe(fs.createWriteStream('./.output/sources.csv', 'utf-8'));
+        .pipe(fs.createWriteStream('./.output/bdd_centrale.csv', 'utf-8'));
 
     sourcesStream.write(SOURCES_HEADERS);
 
@@ -125,6 +125,8 @@ async.series([
     let classifications,
         rows;
 
+    return callback();
+
     console.log('Building products\' classifications...');
 
     async.series([
@@ -169,8 +171,8 @@ async.series([
         const stream = h();
 
         stream
-            .pipe(stringify({delimiter: ','}))
-            .pipe(fs.createWriteStream('./.output/bdd_products.csv', 'utf-8'));
+          .pipe(stringify({delimiter: ','}))
+          .pipe(fs.createWriteStream('./.output/bdd_products.csv', 'utf-8'));
 
         stream.write(['source'].concat(classifications.map(c => c.properties.slug)));
 
@@ -188,6 +190,8 @@ async.series([
   function retrieveCountriesClassifications(callback) {
     let classifications,
         rows;
+
+    return callback();
 
     console.log('Building countries\' classifications...');
 
@@ -230,8 +234,8 @@ async.series([
         const stream = h();
 
         stream
-            .pipe(stringify({delimiter: ','}))
-            .pipe(fs.createWriteStream('./.output/bdd_countries.csv', 'utf-8'));
+          .pipe(stringify({delimiter: ','}))
+          .pipe(fs.createWriteStream('./.output/bdd_countries.csv', 'utf-8'));
 
         stream.write(['source'].concat(classifications.map(c => c.properties.slug)));
 
@@ -241,5 +245,56 @@ async.series([
         return next();
       }
     ], callback);
+  },
+
+  /**
+   * Composing the bdd_courante file.
+   */
+  function composing(callback) {
+    const productsCsv = fs.readFileSync('./.output/bdd_products.csv', 'utf-8'),
+          countriesCsv = fs.readFileSync('./.output/bdd_countries.csv', 'utf-8');
+
+    async.parallel({
+      products: next => parse(productsCsv, {delimiter: ','}, next),
+      countries: next => parse(countriesCsv, {delimiter: ','}, next)
+    }, function(err, classifications) {
+      if (err) return callback(err);
+
+      const indexes = {
+        products: indexBy(classifications.products.slice(1), e => e[0]),
+        countries: indexBy(classifications.countries.slice(1), e => e[0]),
+      };
+
+      const writeStream = h();
+
+      writeStream
+        .pipe(stringify({delimiter: ','}))
+        .pipe(fs.createWriteStream('./.output/bdd_courante.csv', 'utf-8'));
+
+      // Streaming the sources file
+      const readStream = fs.createReadStream('./.output/bdd_centrale.csv')
+        .pipe(parse({delimiter: ','}));
+
+      let head = true;
+
+      h(readStream)
+        .each(line => {
+
+          if (head) {
+            writeStream.write(line
+              .concat(classifications.products[0].slice(1).map(h => 'product_' + h))
+              .concat(classifications.countries[0].slice(1).map(h => 'country_' + h))
+            );
+            head = false;
+          }
+          else {
+            writeStream.write(line
+              .concat((indexes.products[line[6]] || []).slice(1))
+              .concat((indexes.countries[line[15]] || []).slice(1))
+            );
+          }
+        })
+        .on('end', callback);
+    });
   }
 ], err => err && console.error(err));
