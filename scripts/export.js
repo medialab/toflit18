@@ -9,8 +9,12 @@ import {exporter as queries} from '../api/queries';
 import {stringify} from 'csv';
 import async from 'async';
 import {default as h} from 'highland';
+import {fill, indexBy} from 'lodash';
 import fs from 'fs';
 
+/**
+ * Useful constantS
+ */
 const LIMIT = 10000;
 
 const SOURCES_HEADERS = [
@@ -36,8 +40,15 @@ const SOURCES_HEADERS = [
 
 console.log('Exporting the Neo4j database...');
 
-async.waterfall([
+async.series([
+
+  /**
+   * Building the sources file.
+   */
   function retrieveSources(callback) {
+
+    // OVERRIDE
+    return callback();
 
     const sourcesStream = h();
 
@@ -53,8 +64,6 @@ async.waterfall([
     async.forever(function(next) {
       database.cypher({query: queries.sources, params: {offset: skip, limit: LIMIT}}, function(err, data) {
         if (err) return next(err);
-        if (!data.length || data.length < LIMIT)
-          return next(new Error('end-of-results'));
 
         batches++;
         skip += LIMIT;
@@ -95,10 +104,142 @@ async.waterfall([
           ]);
         }
 
-        next();
+        // Should we stop?
+        if (!data.length || data.length < LIMIT)
+          return next(new Error('end-of-results'));
+        else
+          return next();
       });
     }, function(err) {
-      callback(err);
+      if (err.message === 'end-of-results')
+        return callback();
+      else
+        return callback(err);
     });
+  },
+
+  /**
+   * Retrieving the products' classification.
+   */
+  function retrieveProductsClassifications(callback) {
+    let classifications,
+        rows;
+
+    console.log('Building products\' classifications...');
+
+    async.series([
+      function getProducts(next) {
+        database.cypher(queries.products, function(err, data) {
+          if (err) return next(err);
+
+          rows = data.map(e => [e.product]);
+          return next();
+        });
+      },
+      function getClassifications(next) {
+        database.cypher({query: queries.classifications, params: {model: 'Product'}}, function(err, data) {
+          if (err) return next(err);
+
+          classifications = data.map(e => e.classification);
+          return next();
+        });
+      },
+      function buildRows(next) {
+        async.eachSeries(classifications, function(classification, nextClassification) {
+          database.cypher({query: queries.classifiedProducts, params: {id: classification._id}}, function(err, data) {
+            if (err) return next(err);
+
+            const index = indexBy(data, 'item');
+
+            for (let i = 0, l = rows.length; i < l; i++) {
+              const row = rows[i],
+                    sourceProduct = row[0];
+
+              row.push((index[sourceProduct] || {}).group);
+            }
+
+            // NOTE: Orphans?
+            // data.filter(e => !e.item)
+
+            return nextClassification();
+          });
+        }, next);
+      },
+      function writeRows(next) {
+        const stream = h();
+
+        stream
+            .pipe(stringify({delimiter: ','}))
+            .pipe(fs.createWriteStream('./.output/bdd_products.csv', 'utf-8'));
+
+        stream.write(['source'].concat(classifications.map(c => c.properties.slug)));
+
+        for (let i = 0, l = rows.length; i < l; i++)
+          stream.write(rows[i]);
+
+        return next();
+      }
+    ], callback);
+  },
+
+  /**
+   * Retrieving the countries' classification.
+   */
+  function retrieveCountriesClassifications(callback) {
+    let classifications,
+        rows;
+
+    console.log('Building countries\' classifications...');
+
+    async.series([
+      function(next) {
+        database.cypher(queries.countries, function(err, data) {
+          if (err) return next(err);
+
+          rows = data.map(e => [e.country]);
+          return next();
+        });
+      },
+      function(next) {
+        database.cypher({query: queries.classifications, params: {model: 'Country'}}, function(err, data) {
+          if (err) return next(err);
+
+          classifications = data.map(e => e.classification);
+          return next();
+        });
+      },
+      function(next) {
+        async.eachSeries(classifications, function(classification, nextClassification) {
+          database.cypher({query: queries.classifiedCountries, params: {id: classification._id}}, function(err, data) {
+            if (err) return next(err);
+
+            const index = indexBy(data, 'item');
+
+            for (let i = 0, l = rows.length; i < l; i++) {
+              const row = rows[i],
+                    sourceProduct = row[0];
+
+              row.push((index[sourceProduct] || {}).group);
+            }
+
+            return nextClassification();
+          });
+        }, next);
+      },
+      function(next) {
+        const stream = h();
+
+        stream
+            .pipe(stringify({delimiter: ','}))
+            .pipe(fs.createWriteStream('./.output/bdd_countries.csv', 'utf-8'));
+
+        stream.write(['source'].concat(classifications.map(c => c.properties.slug)));
+
+        for (let i = 0, l = rows.length; i < l; i++)
+          stream.write(rows[i]);
+
+        return next();
+      }
+    ], callback);
   }
 ], err => err && console.error(err));

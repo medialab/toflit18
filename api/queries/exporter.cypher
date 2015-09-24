@@ -24,4 +24,29 @@ RETURN
   unit.name AS unit
 
 SKIP {offset}
-LIMIT {limit}
+LIMIT {limit};
+
+// name: classifications
+// Get all the classification for the given model
+MATCH (c:Classification {model: {model}})
+RETURN c AS classification;
+
+// name: products
+MATCH (p:Product)
+RETURN p.name AS product;
+
+// name: countries
+MATCH (c:Country)
+RETURN c.name AS country;
+
+// name: classifiedProducts
+START c=node({id})
+MATCH (c)-[:HAS]->(group:ClassifiedProduct)
+OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Product)
+RETURN group.name AS group, item.name AS item;
+
+// name: classifiedCountries
+START c=node({id})
+MATCH (c)-[:HAS]->(group:ClassifiedCountry)
+OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Country)
+RETURN group.name AS group, item.name AS item;
