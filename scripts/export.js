@@ -273,7 +273,7 @@ async.series([
 
           return next();
         });
-      });
+      }, callback);
     });
   },
 
