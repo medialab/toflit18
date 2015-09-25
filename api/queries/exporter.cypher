@@ -28,7 +28,8 @@ LIMIT {limit};
 
 // name: classifications
 // Get all the classification for the given model
-MATCH (c:Classification {model: {model}})
+MATCH (c:Classification)
+WHERE c.model IN {models}
 RETURN c AS classification;
 
 // name: products
@@ -44,3 +45,9 @@ START c=node({id})
 MATCH (c)-[:HAS]->(group:ClassifiedItem)
 OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Item)
 RETURN group.name AS group, item.name AS item;
+
+// name: classifiedItems
+START c=node({id})
+MATCH (c)-[:HAS]->(group:ClassifiedItem)
+OPTIONAL MATCH (group)-[:AGGREGATES]->(item)
+RETURN group.name AS group, item.name AS item, group.note AS note;

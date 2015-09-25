@@ -217,7 +217,7 @@ const CLASSIFICATION_NODES = {
   product_medicinal: BUILDER.save({
     name: 'Medicinal products',
     model: 'Product',
-    slug: 'medicinal_products',
+    slug: 'medicinal',
     description: 'Gathering some medicinal products.',
     padding: 'limbo'
   }, 'Classification'),

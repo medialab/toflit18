@@ -16,6 +16,7 @@ import fs from 'fs';
  * Useful constants
  */
 const LIMIT = 10000;
+const ASYNC_NOOP = next => next();
 
 const SOURCES_HEADERS = [
   'line',
@@ -133,7 +134,7 @@ async.series([
         });
       },
       function getClassifications(next) {
-        database.cypher({query: queries.classifications, params: {model: 'Product'}}, function(err, data) {
+        database.cypher({query: queries.classifications, params: {models: ['Product']}}, function(err, data) {
           if (err) return next(err);
 
           classifications = data.map(e => e.classification);
@@ -197,7 +198,7 @@ async.series([
         });
       },
       function(next) {
-        database.cypher({query: queries.classifications, params: {model: 'Country'}}, function(err, data) {
+        database.cypher({query: queries.classifications, params: {models: ['Country']}}, function(err, data) {
           if (err) return next(err);
 
           classifications = data.map(e => e.classification);
@@ -240,6 +241,40 @@ async.series([
         return stream.end();
       }
     ], callback);
+  },
+
+  /**
+   * Creating one file per classification.
+   */
+  function oneByOneClassification(callback) {
+    console.log('Creating one file per classification');
+
+    database.cypher({query: queries.classifications, params: {models: ['Country', 'Product']}}, function(err, data) {
+      if (err) return callback(err);
+
+      const classifications = data.map(e => e.classification);
+
+      async.eachSeries(classifications, function(classification, next) {
+        database.cypher({query: queries.classifiedItems, params: {id: classification._id}}, function(err, rows) {
+          const stream = h(),
+                {model, slug} = classification.properties;
+
+          const filename = `./.output/classification_${model.toLowerCase()}_${slug}.csv`;
+
+          stream
+            .pipe(stringify({delimiter: ','}))
+            .pipe(fs.createWriteStream(filename,'utf-8'));
+
+          stream.write(['group', 'item', 'note']);
+
+          rows.forEach(function(row) {
+            stream.write([row.group, row.item, row.note]);
+          });
+
+          return next();
+        });
+      });
+    });
   },
 
   /**
