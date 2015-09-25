@@ -251,6 +251,14 @@ Object.keys(CLASSIFICATION_NODES).forEach(k => {
   CLASSIFICATION_INDEXES[k] = {};
 });
 
+BUILDER.relate(CLASSIFICATION_NODES.product_simplified, 'BASED_ON', CLASSIFICATION_NODES.product_orthographic);
+BUILDER.relate(CLASSIFICATION_NODES.product_categorized, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev2, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.product_medicinal, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev1, 'BASED_ON', CLASSIFICATION_NODES.product_sitcrev2);
+BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATION_NODES.country_orthographic);
+BUILDER.relate(CLASSIFICATION_NODES.country_grouped, 'BASED_ON', CLASSIFICATION_NODES.country_simplified);
+
 /**
  * Process
  * ========
