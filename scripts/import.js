@@ -312,9 +312,11 @@ readStream = h(readStream)
                   simplified: cleanText(line[0]),
                   categorized: cleanText(line[1]),
                   sitcrev1: cleanText(line[2]),
-                  sitcrev2: cleanText(line[3])
+                  sitcrev2: cleanText(line[3]),
+                  medicinal: +cleanText(line[4]) > 0 ? cleanText(line[0]) : null
                 }))
                 .forEach(categorizedProduct)
+                .forEach(medicinalProduct)
                 .forEach(sitcrev2Product)
                 .uniq('sitcrev2')
                 .forEach(sitcrev1Product)
@@ -333,7 +335,8 @@ readStream = h(readStream)
           original: cleanText(line[0]),
           orthographic: cleanText(line[1]),
           simplified: cleanText(line[2]),
-          grouped: cleanText(line[3])
+          grouped: cleanText(line[3]),
+          note: cleanText(line[4])
         }))
         .forEach(orthographicCountry)
         .uniq('orthographic')
@@ -488,214 +491,118 @@ function importer(csvLine) {
 
     BUILDER.relate(flowNode, 'VALUE_IN', productNode);
   }
-
-  // TODO: normalize unit_price
 }
 
 /**
  * Consuming the classifications.
  */
-function orthographicProduct(line) {
-  const alreadyLinked = !!CLASSIFICATION_INDEXES.product_orthographic[line.modified];
+function makeClassificationConsumer(groupIndex, groupNodes, itemIndex, groupKey, itemKey, opts={}) {
+  return function(line) {
+    if (opts.filterEmpty && !line[groupKey])
+      return;
 
-  const nodeData = {
-    name: line.modified
+    const alreadyLinked = !!groupIndex[line[groupKey]];
+
+    const nodeData = {
+      name: line[groupKey]
+    };
+
+    if (opts.shouldTakeNote && line.note)
+      nodeData.note = line.note;
+
+    const classifiedNode = indexedNode(
+      groupIndex,
+      'ClassifiedProduct',
+      line[groupKey],
+      nodeData
+    );
+
+    const targetNode = itemIndex[line[itemKey]];
+
+    if (!alreadyLinked)
+      BUILDER.relate(groupNodes, 'HAS', classifiedNode);
+
+    if (targetNode !== undefined)
+      BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
   };
-
-  if (line.note)
-    nodeData.note = line.note;
-
-  const classifiedNode = indexedNode(
-    CLASSIFICATION_INDEXES.product_orthographic,
-    'ClassifiedProduct',
-    line.modified,
-    nodeData
-  );
-
-  const targetNode = INDEXES.products[line.original];
-
-  if (!alreadyLinked)
-    BUILDER.relate(CLASSIFICATION_NODES.product_orthographic, 'HAS', classifiedNode);
-
-  if (targetNode !== undefined)
-    BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
 }
 
-function simplifiedProduct(line) {
-  const alreadyLinked = !!CLASSIFICATION_INDEXES.product_simplified[line.simplified];
+const orthographicProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_orthographic,
+  CLASSIFICATION_NODES.product_orthographic,
+  INDEXES.products,
+  'modified',
+  'original',
+  {shouldTakeNote: true}
+);
 
-  const nodeData = {
-    name: line.simplified
-  };
+const simplifiedProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_simplified,
+  CLASSIFICATION_NODES.product_simplified,
+  CLASSIFICATION_INDEXES.product_orthographic,
+  'simplified',
+  'orthographic'
+);
 
-  const classifiedNode = indexedNode(
-    CLASSIFICATION_INDEXES.product_simplified,
-    'ClassifiedProduct',
-    line.simplified,
-    nodeData
-  );
+const categorizedProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_categorized,
+  CLASSIFICATION_NODES.product_categorized,
+  CLASSIFICATION_INDEXES.product_simplified,
+  'categorized',
+  'simplified',
+  {filterEmpty: true, shouldTakeNote: true}
+);
 
-  const targetNode = CLASSIFICATION_INDEXES.product_orthographic[line.orthographic];
+const sitcrev2Product = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_sitcrev2,
+  CLASSIFICATION_NODES.product_sitcrev2,
+  CLASSIFICATION_INDEXES.product_simplified,
+  'sitcrev2',
+  'simplified',
+  {filterEmpty: true}
+);
 
-  if (!alreadyLinked)
-    BUILDER.relate(CLASSIFICATION_NODES.product_simplified, 'HAS', classifiedNode);
+const sitcrev1Product = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_sitcrev1,
+  CLASSIFICATION_NODES.product_sitcrev1,
+  CLASSIFICATION_INDEXES.product_sitcrev2,
+  'sitcrev1',
+  'sitcrev2',
+  {filterEmpty: true}
+);
 
-  if (targetNode !== undefined)
-    BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
-}
+const medicinalProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_medicinal,
+  CLASSIFICATION_NODES.product_medicinal,
+  CLASSIFICATION_INDEXES.product_simplified,
+  'medicinal',
+  'simplified',
+  {filterEmpty: true}
+);
 
-function categorizedProduct(line) {
-  if (!line.categorized)
-    return;
+const orthographicCountry = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.country_orthographic,
+  CLASSIFICATION_NODES.country_orthographic,
+  INDEXES.countries,
+  'orthographic',
+  'original',
+  {filterEmpty: true}
+);
 
-  const alreadyLinked = !!CLASSIFICATION_INDEXES.product_categorized[line.categorized];
+const simplifiedCountry = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.country_simplified,
+  CLASSIFICATION_NODES.country_simplified,
+  CLASSIFICATION_INDEXES.country_orthographic,
+  'simplified',
+  'orthographic',
+  {filterEmpty: true}
+);
 
-  const nodeData = {
-    name: line.categorized
-  };
-
-  const classifiedNode = indexedNode(
-    CLASSIFICATION_INDEXES.product_categorized,
-    'ClassifiedProduct',
-    line.categorized,
-    nodeData
-  );
-
-  const targetNode = CLASSIFICATION_INDEXES.product_simplified[line.simplified];
-
-  if (!alreadyLinked)
-    BUILDER.relate(CLASSIFICATION_NODES.product_categorized, 'HAS', classifiedNode);
-
-  if (targetNode !== undefined)
-    BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
-}
-
-function sitcrev2Product(line) {
-  if (!line.sitcrev2)
-    return;
-
-  const alreadyLinked = !!CLASSIFICATION_INDEXES.product_sitcrev2[line.sitcrev2];
-
-  const nodeData = {
-    name: line.sitcrev2
-  };
-
-  const classifiedNode = indexedNode(
-    CLASSIFICATION_INDEXES.product_sitcrev2,
-    'ClassifiedProduct',
-    line.sitcrev2,
-    nodeData
-  );
-
-  const targetNode = CLASSIFICATION_INDEXES.product_simplified[line.simplified];
-
-  if (!alreadyLinked)
-    BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev2, 'HAS', classifiedNode);
-
-  if (targetNode !== undefined)
-    BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
-}
-
-function sitcrev1Product(line) {
-  if (!line.sitcrev1)
-    return;
-
-  const alreadyLinked = !!CLASSIFICATION_INDEXES.product_sitcrev1[line.sitcrev1];
-
-  const nodeData = {
-    name: line.sitcrev1
-  };
-
-  const classifiedNode = indexedNode(
-    CLASSIFICATION_INDEXES.product_sitcrev1,
-    'ClassifiedProduct',
-    line.sitcrev1,
-    nodeData
-  );
-
-  const targetNode = CLASSIFICATION_INDEXES.product_sitcrev2[line.sitcrev2];
-
-  if (!alreadyLinked)
-    BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev1, 'HAS', classifiedNode);
-
-  if (targetNode !== undefined)
-    BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
-}
-
-function orthographicCountry(line) {
-  if (!line.orthographic)
-    return;
-
-  const alreadyLinked = !!CLASSIFICATION_INDEXES.country_orthographic[line.orthographic];
-
-  const nodeData = {
-    name: line.orthographic
-  };
-
-  const classifiedNode = indexedNode(
-    CLASSIFICATION_INDEXES.country_orthographic,
-    'ClassifiedCountry',
-    line.orthographic,
-    nodeData
-  );
-
-  const targetNode = INDEXES.countries[line.original];
-
-  if (!alreadyLinked)
-    BUILDER.relate(CLASSIFICATION_NODES.country_orthographic, 'HAS', classifiedNode);
-
-  if (targetNode !== undefined)
-    BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
-}
-
-function simplifiedCountry(line) {
-  if (!line.simplified)
-    return;
-
-  const alreadyLinked = !!CLASSIFICATION_INDEXES.country_simplified[line.simplified];
-
-  const nodeData = {
-    name: line.simplified
-  };
-
-  const classifiedNode = indexedNode(
-    CLASSIFICATION_INDEXES.country_simplified,
-    'ClassifiedCountry',
-    line.simplified,
-    nodeData
-  );
-
-  const targetNode = CLASSIFICATION_INDEXES.country_orthographic[line.orthographic];
-
-  if (!alreadyLinked)
-    BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'HAS', classifiedNode);
-
-  if (targetNode !== undefined)
-    BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
-}
-
-function groupedCountry(line) {
-  if (!line.grouped)
-    return;
-
-  const alreadyLinked = !!CLASSIFICATION_INDEXES.country_grouped[line.grouped];
-
-  const nodeData = {
-    name: line.grouped
-  };
-
-  const classifiedNode = indexedNode(
-    CLASSIFICATION_INDEXES.country_grouped,
-    'ClassifiedCountry',
-    line.grouped,
-    nodeData
-  );
-
-  const targetNode = CLASSIFICATION_INDEXES.country_simplified[line.simplified];
-
-  if (!alreadyLinked)
-    BUILDER.relate(CLASSIFICATION_NODES.country_grouped, 'HAS', classifiedNode);
-
-  if (targetNode !== undefined)
-    BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
-}
+const groupedCountry = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.country_grouped,
+  CLASSIFICATION_NODES.country_grouped,
+  CLASSIFICATION_INDEXES.country_simplified,
+  'grouped',
+  'simplified',
+  {filterEmpty: true}
+);
