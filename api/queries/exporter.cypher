@@ -2,6 +2,8 @@
 // Dumping the full sources
 MATCH (flow:Flow)
 
+WITH flow SKIP {offset}
+
 OPTIONAL MATCH (flow)-[:OF]->(product:Product)
 OPTIONAL MATCH (flow)-[transcription:TRANSCRIBED_FROM]->(source:Source)
 OPTIONAL MATCH (flow)-[:FROM|:TO]-(country:Country)
@@ -23,7 +25,6 @@ RETURN
   origin.name AS origin,
   unit.name AS unit
 
-SKIP {offset}
 LIMIT {limit};
 
 // name: classifications
