@@ -39,14 +39,8 @@ RETURN p.name AS product;
 MATCH (c:Country)
 RETURN c.name AS country;
 
-// name: classifiedProducts
+// name: classifiedItemsToSource
 START c=node({id})
-MATCH (c)-[:HAS]->(group:ClassifiedProduct)
-OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Product)
-RETURN group.name AS group, item.name AS item;
-
-// name: classifiedCountries
-START c=node({id})
-MATCH (c)-[:HAS]->(group:ClassifiedCountry)
-OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Country)
+MATCH (c)-[:HAS]->(group:ClassifiedItem)
+OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Item)
 RETURN group.name AS group, item.name AS item;

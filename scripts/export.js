@@ -142,7 +142,7 @@ async.series([
       },
       function buildRows(next) {
         async.eachSeries(classifications, function(classification, nextClassification) {
-          database.cypher({query: queries.classifiedProducts, params: {id: classification._id}}, function(err, data) {
+          database.cypher({query: queries.classifiedItemsToSource, params: {id: classification._id}}, function(err, data) {
             if (err) return next(err);
 
             const index = indexBy(data, 'item');
@@ -153,9 +153,6 @@ async.series([
 
               row.push((index[sourceProduct] || {}).group);
             }
-
-            // NOTE: Orphans?
-            // data.filter(e => !e.item)
 
             return nextClassification();
           });
@@ -209,7 +206,7 @@ async.series([
       },
       function(next) {
         async.eachSeries(classifications, function(classification, nextClassification) {
-          database.cypher({query: queries.classifiedCountries, params: {id: classification._id}}, function(err, data) {
+          database.cypher({query: queries.classifiedItemsToSource, params: {id: classification._id}}, function(err, data) {
             if (err) return next(err);
 
             const index = indexBy(data, 'item');

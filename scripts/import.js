@@ -57,7 +57,7 @@ class Builder {
       .pairs()
       .sortBy(e => NODE_PROPERTIES_MAPPING[e[0]])
       .map(e => e[1])
-      .concat([label, this.nodesCount])
+      .concat([[].concat(label || []).join(';'), this.nodesCount])
       .value();
 
     this.nodesStream.write(row);
@@ -422,7 +422,7 @@ function importer(csvLine) {
 
   // Product
   if (csvLine.marchandises || csvLine.marchandises === '') {
-    const productNode = indexedNode(INDEXES.products, 'Product', csvLine.marchandises, {
+    const productNode = indexedNode(INDEXES.products, ['Product', 'Item'], csvLine.marchandises, {
       name: csvLine.marchandises
     });
 
@@ -473,7 +473,7 @@ function importer(csvLine) {
 
   // Country
   if (csvLine.pays) {
-    const countryNode = indexedNode(INDEXES.countries, 'Country', csvLine.pays, {
+    const countryNode = indexedNode(INDEXES.countries, ['Country', 'Item'], csvLine.pays, {
       name: csvLine.pays
     });
 
@@ -512,7 +512,7 @@ function makeClassificationConsumer(groupIndex, groupNodes, itemIndex, groupKey,
 
     const classifiedNode = indexedNode(
       groupIndex,
-      'ClassifiedProduct',
+      'ClassifiedItem',
       line[groupKey],
       nodeData
     );
