@@ -267,10 +267,10 @@ async.series([
             .pipe(stringify({delimiter: ','}))
             .pipe(fs.createWriteStream(filename,'utf-8'));
 
-          stream.write(['group', 'item', 'note']);
+          stream.write(['group', 'item', 'note', 'outsider']);
 
           rows.forEach(function(row) {
-            stream.write([row.group, row.item, row.note]);
+            stream.write([row.group, row.item, row.note, row.outsider]);
           });
 
           return next();

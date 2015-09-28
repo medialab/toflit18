@@ -175,6 +175,8 @@ const INDEXES = {
   units: {}
 };
 
+const OUTSIDERS_INDEXES = {};
+
 const EDGE_INDEXES = {
   offices: new Set()
 };
@@ -186,7 +188,7 @@ const CLASSIFICATION_NODES = {
     slug: 'sources',
     description: 'Collecting the sources themselves.',
     padding: 'limbo',
-    source: true
+    source: '' + true
   }, 'Classification'),
   product_orthographic: BUILDER.save({
     name: 'Orthographic Normalization',
@@ -236,7 +238,7 @@ const CLASSIFICATION_NODES = {
     slug: 'sources',
     description: 'Collecting the sources themselves.',
     padding: 'limbo',
-    source: true
+    source: '' + true
   }, 'Classification'),
   country_orthographic: BUILDER.save({
     name: 'Orthographic Normalization',
@@ -559,8 +561,16 @@ function makeClassificationConsumer(groupIndex, groupNodes, itemIndex, groupKey,
     if (!alreadyLinked)
       BUILDER.relate(groupNodes, 'HAS', classifiedNode);
 
-    if (targetNode !== undefined)
+    if (targetNode !== undefined) {
       BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
+    }
+    else if (opts.outsiders) {
+      let outsiderNode = OUTSIDERS_INDEXES[line[itemKey]]
+      if (!outsiderNode)
+        outsiderNode = BUILDER.save({name: line[itemKey]}, ['OutsiderClassifiedItem', 'ClassifiedItem']);
+
+      BUILDER.relate(classifiedNode, 'AGGREGATES', outsiderNode);
+    }
   };
 }
 
@@ -570,7 +580,7 @@ const orthographicProduct = makeClassificationConsumer(
   INDEXES.products,
   'modified',
   'original',
-  {shouldTakeNote: true}
+  {shouldTakeNote: true, outsiders: true}
 );
 
 const simplifiedProduct = makeClassificationConsumer(
@@ -578,7 +588,8 @@ const simplifiedProduct = makeClassificationConsumer(
   CLASSIFICATION_NODES.product_simplified,
   CLASSIFICATION_INDEXES.product_orthographic,
   'simplified',
-  'orthographic'
+  'orthographic',
+  {outsiders: true}
 );
 
 const categorizedProduct = makeClassificationConsumer(
@@ -587,7 +598,7 @@ const categorizedProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_simplified,
   'categorized',
   'simplified',
-  {filterEmpty: true, shouldTakeNote: true}
+  {filterEmpty: true, shouldTakeNote: true, outsiders: true}
 );
 
 const sitcrev2Product = makeClassificationConsumer(
@@ -623,7 +634,7 @@ const orthographicCountry = makeClassificationConsumer(
   INDEXES.countries,
   'orthographic',
   'original',
-  {filterEmpty: true}
+  {filterEmpty: true, outsiders: true}
 );
 
 const simplifiedCountry = makeClassificationConsumer(
@@ -632,7 +643,7 @@ const simplifiedCountry = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.country_orthographic,
   'simplified',
   'orthographic',
-  {filterEmpty: true}
+  {filterEmpty: true, outsiders: true}
 );
 
 const groupedCountry = makeClassificationConsumer(
@@ -641,5 +652,5 @@ const groupedCountry = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.country_simplified,
   'grouped',
   'simplified',
-  {filterEmpty: true}
+  {filterEmpty: true, outsiders: true}
 );

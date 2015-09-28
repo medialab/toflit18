@@ -30,7 +30,7 @@ LIMIT {limit};
 // name: classifications
 // Get all the classification for the given model
 MATCH (c:Classification)
-WHERE c.model IN {models}
+WHERE not(has(c.source)) AND c.model IN {models}
 RETURN c AS classification;
 
 // name: products
@@ -51,11 +51,19 @@ RETURN group.name AS group, item.name AS item;
 START c=node({id})
 MATCH (c)-[:HAS]->(group:ClassifiedItem)
 OPTIONAL MATCH (group)-[:AGGREGATES]->(item)
-RETURN group.name AS group, item.name AS item, group.note AS note
+RETURN
+  group.name AS group,
+  item.name AS item,
+  group.note AS note,
+  item:OutsiderClassifiedItem AS outsider
 
 UNION ALL
 
 START c=node({id})
 MATCH (c)-[:BASED_ON]->(cp:Classification)-[:HAS]->(item)
 WHERE NOT (c)-[:AGGREGATES]->(item)
-RETURN "" AS group, item.name AS item, "" AS note;
+RETURN
+  "" AS group,
+  item.name AS item,
+  "" AS note,
+  false AS outsider;
