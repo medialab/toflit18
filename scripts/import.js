@@ -128,7 +128,8 @@ const POSSIBLE_NODE_PROPERTIES = [
   'slug',
   'password',
   'description',
-  'padding'
+  'padding',
+  'source:boolean'
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -179,6 +180,14 @@ const EDGE_INDEXES = {
 };
 
 const CLASSIFICATION_NODES = {
+  product_sources: BUILDER.save({
+    name: 'Sources',
+    model: 'Product',
+    slug: 'sources',
+    description: 'Collecting the sources themselves.',
+    padding: 'limbo',
+    source: true
+  }, 'Classification'),
   product_orthographic: BUILDER.save({
     name: 'Orthographic Normalization',
     model: 'Product',
@@ -221,6 +230,14 @@ const CLASSIFICATION_NODES = {
     description: 'Gathering some medicinal products.',
     padding: 'limbo'
   }, 'Classification'),
+  country_sources: BUILDER.save({
+    name: 'Sources',
+    model: 'Country',
+    slug: 'sources',
+    description: 'Collecting the sources themselves.',
+    padding: 'limbo',
+    source: true
+  }, 'Classification'),
   country_orthographic: BUILDER.save({
     name: 'Orthographic Normalization',
     model: 'Country',
@@ -251,11 +268,13 @@ Object.keys(CLASSIFICATION_NODES).forEach(k => {
   CLASSIFICATION_INDEXES[k] = {};
 });
 
+BUILDER.relate(CLASSIFICATION_NODES.product_orthographic, 'BASED_ON', CLASSIFICATION_NODES.product_sources);
 BUILDER.relate(CLASSIFICATION_NODES.product_simplified, 'BASED_ON', CLASSIFICATION_NODES.product_orthographic);
 BUILDER.relate(CLASSIFICATION_NODES.product_categorized, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev2, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_medicinal, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev1, 'BASED_ON', CLASSIFICATION_NODES.product_sitcrev2);
+BUILDER.relate(CLASSIFICATION_NODES.country_orthographic, 'BASED_ON', CLASSIFICATION_NODES.country_sources);
 BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATION_NODES.country_orthographic);
 BUILDER.relate(CLASSIFICATION_NODES.country_grouped, 'BASED_ON', CLASSIFICATION_NODES.country_simplified);
 
@@ -430,11 +449,16 @@ function importer(csvLine) {
 
   // Product
   if (csvLine.marchandises || csvLine.marchandises === '') {
+    const alreadyLinked = INDEXES.products[csvLine.marchandises];
+
     const productNode = indexedNode(INDEXES.products, ['Product', 'Item'], csvLine.marchandises, {
       name: csvLine.marchandises
     });
 
     BUILDER.relate(flowNode, 'OF', productNode);
+
+    if (!alreadyLinked)
+      BUILDER.relate(CLASSIFICATION_NODES.product_sources, 'HAS', productNode);
   }
 
   // Origin
@@ -481,6 +505,8 @@ function importer(csvLine) {
 
   // Country
   if (csvLine.pays) {
+    const alreadyLinked = INDEXES.countries[csvLine.pays];
+
     const countryNode = indexedNode(INDEXES.countries, ['Country', 'Item'], csvLine.pays, {
       name: csvLine.pays
     });
@@ -489,6 +515,9 @@ function importer(csvLine) {
       BUILDER.relate(flowNode, 'FROM', countryNode);
     else
       BUILDER.relate(flowNode, 'TO', countryNode);
+
+    if (!alreadyLinked)
+      BUILDER.relate(CLASSIFICATION_NODES.country_sources, 'HAS', countryNode);
   }
 
   // Units
