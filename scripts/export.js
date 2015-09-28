@@ -47,7 +47,7 @@ async.series([
   /**
    * Building the sources file.
    */
-  function retrieveSources(callback) {
+  ASYNC_NOOP || function retrieveSources(callback) {
     const sourcesStream = h();
 
     sourcesStream
@@ -120,7 +120,7 @@ async.series([
   /**
    * Retrieving the products' classification.
    */
-  function retrieveProductsClassifications(callback) {
+  ASYNC_NOOP || function retrieveProductsClassifications(callback) {
     let classifications,
         rows;
 
@@ -184,7 +184,7 @@ async.series([
   /**
    * Retrieving the countries' classification.
    */
-  function retrieveCountriesClassifications(callback) {
+  ASYNC_NOOP || function retrieveCountriesClassifications(callback) {
     let classifications,
         rows;
 
@@ -282,7 +282,7 @@ async.series([
   /**
    * Composing the bdd_courante file.
    */
-  function composing(callback) {
+  ASYNC_NOOP || function composing(callback) {
     console.log('Composing bdd_courante.csv...');
 
     const productsCsv = fs.readFileSync('./.output/bdd_products.csv', 'utf-8'),

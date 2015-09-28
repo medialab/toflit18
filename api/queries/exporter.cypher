@@ -51,4 +51,11 @@ RETURN group.name AS group, item.name AS item;
 START c=node({id})
 MATCH (c)-[:HAS]->(group:ClassifiedItem)
 OPTIONAL MATCH (group)-[:AGGREGATES]->(item)
-RETURN group.name AS group, item.name AS item, group.note AS note;
+RETURN group.name AS group, item.name AS item, group.note AS note
+
+UNION ALL
+
+START c=node({id})
+MATCH (c)-[:BASED_ON]->(cp:Classification)-[:HAS]->(item)
+WHERE NOT (c)-[:AGGREGATES]->(item)
+RETURN "" AS group, item.name AS item, "" AS note;
