@@ -254,12 +254,15 @@ async.series([
     database.cypher({query: queries.classifications, params: {models: ['Country', 'Product']}}, function(err, data) {
       if (err) return callback(err);
 
-      const classifications = data.map(e => e.classification);
+      const classifications = data.map(e => (e.classification.properties.parent = e.parent) && e.classification);
 
       async.eachSeries(classifications, function(classification, next) {
         database.cypher({query: queries.classifiedItems, params: {id: classification._id}}, function(err, rows) {
-          const stream = h(),
-                {model, slug} = classification.properties;
+          let stream = h(),
+              {model, slug, parent} = classification.properties;
+
+          if (parent === 'sources')
+            parent = model.toLowerCase();
 
           const filename = `./.output/classification_${model.toLowerCase()}_${slug}.csv`;
 
@@ -267,10 +270,10 @@ async.series([
             .pipe(stringify({delimiter: ','}))
             .pipe(fs.createWriteStream(filename,'utf-8'));
 
-          stream.write(['group', 'item', 'note', 'outsider']);
+          stream.write([slug, parent, 'note', 'outsider']);
 
           rows.forEach(function(row) {
-            stream.write([row.group, row.item, row.note, row.outsider]);
+            stream.write([row.group, row.item, row.note, '' + row.outsider]);
           });
 
           return next();

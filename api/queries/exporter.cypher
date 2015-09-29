@@ -1,5 +1,5 @@
 // name: sources
-// Dumping the full sources
+// Dumping the full sources.
 MATCH (flow:Flow)
 
 WITH flow SKIP {offset}
@@ -28,26 +28,30 @@ RETURN
 LIMIT {limit};
 
 // name: classifications
-// Get all the classification for the given model
-MATCH (c:Classification)
+// Get all the classification for the given model.
+MATCH (c:Classification)-[:BASED_ON]->(p:Classification)
 WHERE not(has(c.source)) AND c.model IN {models}
-RETURN c AS classification;
+RETURN c AS classification, p.slug AS parent;
 
 // name: products
+// Retrieving every source product.
 MATCH (p:Product)
 RETURN p.name AS product;
 
 // name: countries
+// Retrieving every source country.
 MATCH (c:Country)
 RETURN c.name AS country;
 
 // name: classifiedItemsToSource
+// Retrieving groups from a classification and mapping them to the sources.
 START c=node({id})
 MATCH (c)-[:HAS]->(group:ClassifiedItem)
 OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Item)
 RETURN group.name AS group, item.name AS item;
 
 // name: classifiedItems
+// Retrieving groups from a classification and mapping them to the matching items.
 START c=node({id})
 MATCH (c)-[:HAS]->(group:ClassifiedItem)
 OPTIONAL MATCH (group)-[:AGGREGATES]->(item)
