@@ -26,6 +26,9 @@ $old-blue:         #4F7178;
  * Overriding Bootstrap variables.
  */
 
+// Grids
+$grid-gutter-width:          10px !default;
+
 // Fonts
 $font-family-sans-serif:     Merriweather, "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-family-serif:          Merriweather, Georgia, "Times New Roman", Times, serif;

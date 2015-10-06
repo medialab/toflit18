@@ -6,33 +6,27 @@
  * choose one and edit it, or even create a new one `in medias res`.
  */
 import React from 'react';
+import {branch} from 'baobab-react/higher-order';
 import {Row, Col} from '../bootstrap/grid.jsx';
 import {fill} from 'lodash';
 
 /**
- * !!!TEMP!!! : Sample data.
+ * Helpers.
  */
-const PRODUCTS_CLASSIFICATIONS = [
-  {name: 'Source', author: 'toflit18'},
-  {name: 'Orthographic Normalization', author: 'toflit18'},
-  {name: 'Harmonization', author: 'toflit18'},
-  {name: 'Categorization', author: 'toflit18'},
-  {name: 'Produits médicinaux', author: 'Pierre Hollegien'},
-  {name: 'Drogues dures', author: 'Pierre Hollegien'},
-  {name: 'Shawarma', author: 'Guillaume Plique'}
-];
+function flattenTree(branch, list=[], level=0) {
+  list.push({...branch, level});
 
-const COUNTRIES_CLASSIFICATIONS = [
-  {name: 'Source', author: 'toflit18'},
-  {name: 'Classification Filstradt', author: 'Guillaume Daudin'},
-  {name: 'ONU', author: 'Guillaume Plique'},
-  {name: 'Vatican', author: 'Donato Ricci'}
-];
+  (branch.children || []).forEach(c => flattenTree(c, list, level + 1));
+
+  return list;
+}
 
 /**
  * Main component.
  */
-function Browser() {
+function Browser({classifications}) {
+  const {product, country} = (classifications || {});
+
   return (
     <div className="browser-wrapper">
       <div className="full-height">
@@ -41,11 +35,11 @@ function Browser() {
             <div className="panel full-height overflow">
               <h4>Products classifications</h4>
               <hr />
-              <ClassificationsList items={PRODUCTS_CLASSIFICATIONS} />
+              {product && <ClassificationsList items={flattenTree(product)} />}
               <br />
               <h4>Countries classifications</h4>
               <hr />
-              <ClassificationsList items={COUNTRIES_CLASSIFICATIONS} />
+              {country && <ClassificationsList items={flattenTree(country)} />}
             </div>
           </Col>
           <Col md={7} className="full-height">
@@ -69,7 +63,7 @@ function Browser() {
 function ClassificationsList({items}) {
   return (
     <ul className="classifications-list">
-      {items.map(data => <Classification key={data.name} data={data} />)}
+      {items.map(data => <Classification key={data.id} data={data} />)}
     </ul>
   );
 }
@@ -77,9 +71,11 @@ function ClassificationsList({items}) {
 /**
  * Classification.
  */
-function Classification({data: {name, author}}) {
+function Classification({data: {name, author, level}}) {
+  const offset = (level * 25) + 'px';
+
   return (
-    <li className="item">
+    <li className="item" style={{marginLeft: offset}}>
       <span>{name}</span> (<em>{author}</em>)
     </li>
   );
@@ -107,4 +103,8 @@ function Entity() {
   );
 }
 
-export default Browser;
+export default branch(Browser, {
+  cursors: {
+    classifications: ['data', 'classifications']
+  }
+});

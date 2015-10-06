@@ -21,6 +21,8 @@ const client = new Client({
   },
 
   services: {
+
+    // Login related
     session: '/session',
 
     login: {
@@ -30,9 +32,8 @@ const client = new Client({
 
     logout: '/logout',
 
-    test: {
-      url: '/classifications/test'
-    }
+    // Data related
+    classifications: '/classification'
   }
 });
 

@@ -10,13 +10,13 @@ export default function(state, client) {
   return new Parrot(state, {
     rules: [
       {
-        path: ['counter'],
-        get: client.test
-      },
-      {
-        path: ['dummy'],
-        flag: ['loadingDummy'],
-        get: client.log
+        path: ['data', 'classifications'],
+        get() {
+          return client.classifications(function(err, {result}) {
+            if (!err)
+              state.set(['data', 'classifications'], result);
+          });
+        }
       }
     ]
   });

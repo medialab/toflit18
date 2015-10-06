@@ -10,6 +10,13 @@ import {
 } from './facets';
 
 const defaultState = {
+
+  // Data
+  data: {
+    classifications: null
+  },
+
+  // Some generic UI flags
   flags: {
     logged: monkey(['user'], isLogged),
     login: {
@@ -17,11 +24,17 @@ const defaultState = {
       loading: false
     }
   },
+
+  // Routing information
   route: 'classification',
   subRoute: null,
+
+  // Specific states
   state: {
     classification: {}
   },
+
+  // User-related information
   user: null,
 };
 

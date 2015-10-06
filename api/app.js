@@ -93,7 +93,7 @@ const loginRouter = createRouter(loginController),
 
 // Mounting
 app.use(loginRouter);
-app.use('/classifications', classificationRouter);
+app.use('/classification', classificationRouter);
 app.use((_, res) => res.notFound());
 
 /**
