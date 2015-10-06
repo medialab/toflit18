@@ -36,7 +36,7 @@
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-webpack-hmr": "^0.1.2",
     "redbox-react": "^1.0.1",
-    "sass-loader": "^2.0.1",
+    "sass-loader": "^3.0.0",
     "style-loader": "^0.12.3",
     "webpack": "^1.9.6",
     "webpack-dev-middleware": "^1.2.0",

@@ -5,3 +5,4 @@ config.json
 *.log
 TODO.md
 .output
+*TODO.md
