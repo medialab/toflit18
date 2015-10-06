@@ -29,9 +29,6 @@ state.client = client;
 // Checking the user's session
 checkSession(state);
 
-// TODO: probably add an action for the route and run it when the page is first
-// accessed.
-
 // Hot-reloading logic
 if (module.hot)  {
   module.hot.accept('./client', function() {

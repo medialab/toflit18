@@ -1,0 +1,20 @@
+{
+  "ecmaFeatures": {
+    "jsx": true,
+    "modules": true
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "jsx-quotes": [1, "prefer-double"],
+    "curly": 0,
+    "eqeqeq": 0,
+    "quotes": [1, "single"],
+    "new-cap": 0,
+    "no-use-before-define": 0
+  }
+}

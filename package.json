@@ -7,6 +7,7 @@
     "dev": "nodemon --ext js,cypher --watch ./api --watch ./lib --exec npm start & (sleep 6 && cd client && npm run dev) && fg",
     "export": "babel-node ./scripts/export.js",
     "import": "babel-node ./scripts/import.js",
+    "lint": "eslint --ext .js --ext .jsx ./api ./lib ./test ./client/js",
     "postinstall": "mkdir -p .output && cd client && npm install",
     "start": "babel-node ./scripts/start.js",
     "test": "mocha -R spec --compilers js:babel/register ./test/endpoint.js"
@@ -54,6 +55,8 @@
     "yargs": "^3.14.0"
   },
   "devDependencies": {
+    "babel-eslint": "^4.1.3",
+    "eslint": "^1.6.0",
     "mocha": "^2.2.5"
   }
 }
