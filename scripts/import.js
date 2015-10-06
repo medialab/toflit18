@@ -535,7 +535,7 @@ function importer(csvLine) {
 /**
  * Consuming the classifications.
  */
-function makeClassificationConsumer(groupIndex, groupNodes, itemIndex, groupKey, itemKey, opts={}) {
+function makeClassificationConsumer(groupIndex, groupNode, itemIndex, groupKey, itemKey, opts={}) {
   return function(line) {
     if (opts.filterEmpty && !line[groupKey])
       return;
@@ -559,16 +559,17 @@ function makeClassificationConsumer(groupIndex, groupNodes, itemIndex, groupKey,
     const targetNode = itemIndex[line[itemKey]];
 
     if (!alreadyLinked)
-      BUILDER.relate(groupNodes, 'HAS', classifiedNode);
+      BUILDER.relate(groupNode, 'HAS', classifiedNode);
 
     if (targetNode !== undefined) {
       BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
     }
-    else if (opts.outsiders) {
+    else if (opts.outsiders && line[itemKey]) {
       let outsiderNode = OUTSIDERS_INDEXES[line[itemKey]]
       if (!outsiderNode)
         outsiderNode = BUILDER.save({name: line[itemKey]}, ['OutsiderClassifiedItem', 'ClassifiedItem']);
 
+      BUILDER.relate(groupNode, 'HAS', outsiderNode);
       BUILDER.relate(classifiedNode, 'AGGREGATES', outsiderNode);
     }
   };

@@ -53,21 +53,10 @@ RETURN group.name AS group, item.name AS item;
 // name: classifiedItems
 // Retrieving groups from a classification and mapping them to the matching items.
 START c=node({id})
-MATCH (c)-[:HAS]->(group:ClassifiedItem)
-OPTIONAL MATCH (group)-[:AGGREGATES]->(item)
+MATCH (c)-[:BASED_ON]->(:Classification)-[:HAS]->(item)
+OPTIONAL MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item)
 RETURN
   group.name AS group,
   item.name AS item,
   group.note AS note,
-  item:OutsiderClassifiedItem AS outsider
-
-UNION ALL
-
-START c=node({id})
-MATCH (c)-[:BASED_ON]->(cp:Classification)-[:HAS]->(item)
-WHERE NOT (c)-[:AGGREGATES]->(item)
-RETURN
-  "" AS group,
-  item.name AS item,
-  "" AS note,
-  false AS outsider;
+  item:OutsiderClassifiedItem AS outsider;
