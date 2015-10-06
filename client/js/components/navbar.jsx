@@ -4,33 +4,27 @@
  *
  */
 import React, {Component} from 'react';
-import {changeRoute} from '../actions/route';
-import {branch} from 'baobab-react/decorators';
+import {Link} from 'react-router';
 import cls from 'classnames';
 
 const LINKS = [
   {
     label: 'Exploration',
-    url: 'exploration'
+    url: '/exploration'
   },
   {
     label: 'Classification',
-    url: 'classification'
+    url: '/classification/browser'
   }
 ];
 
-@branch({
-  actions: {
-    navigate: changeRoute
-  },
-  cursors: {
-    route: ['route']
-  }
-})
 export default class NavBar extends Component {
+  static contextTypes = {
+    history: React.PropTypes.object
+  };
+
   render() {
-    const route = this.props.route,
-          navigate = this.props.actions.navigate;
+    const history = this.context.history;
 
     return (
       <div>
@@ -40,10 +34,10 @@ export default class NavBar extends Component {
             <a className="navbar-brand" href="#">TOFLIT18</a>
             <ul className="nav navbar-nav">
               {LINKS.map(l => (
-                <li className={cls('nav-item', l.url === route && 'active')}
-                    key={l.url}
-                    onClick={navigate.bind(null, l.url)}>
-                  <a className="nav-link" href="#">{l.label}</a>
+                <li className={cls('nav-item', {active: history.isActive(l.url)})}
+                    key={l.url}>
+                  <Link to={l.url}
+                        className="nav-link">{l.label}</Link>
                 </li>
               ))}
             </ul>

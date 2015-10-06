@@ -25,10 +25,6 @@ const defaultState = {
     }
   },
 
-  // Routing information
-  route: 'classification',
-  subRoute: null,
-
   // Specific states
   states: {
     classification: {

@@ -12,8 +12,10 @@ export default function(state, client) {
       {
         path: ['data', 'classifications'],
         get() {
-          return client.classifications(function(err, {result}) {
+          return client.classifications(function(err, data) {
             if (err) return;
+
+            const result = data.result;
 
             state.set(['data', 'classifications'], result);
             state.set(['states', 'classification', 'browser', 'selected'], result.product.id);

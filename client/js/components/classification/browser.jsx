@@ -26,7 +26,7 @@ function flattenTree(branch, list=[], level=0) {
 /**
  * Main component.
  */
-function Browser({classifications, selected}) {
+function ClassificationBrowser({classifications, selected}) {
   const {product, country} = (classifications || {});
 
   return (
@@ -117,7 +117,7 @@ function Entity() {
   );
 }
 
-export default branch(Browser, {
+export default branch(ClassificationBrowser, {
   cursors: {
     selected: ['states', 'classification', 'browser', 'selected'],
     classifications: ['data', 'classifications']
