@@ -8,7 +8,9 @@
 import React from 'react';
 import {branch} from 'baobab-react/higher-order';
 import {Row, Col} from '../bootstrap/grid.jsx';
+import {selectBrowserClassification} from '../../actions/selection';
 import {fill} from 'lodash';
+import cls from 'classnames';
 
 /**
  * Helpers.
@@ -24,7 +26,7 @@ function flattenTree(branch, list=[], level=0) {
 /**
  * Main component.
  */
-function Browser({classifications}) {
+function Browser({classifications, selected}) {
   const {product, country} = (classifications || {});
 
   return (
@@ -35,11 +37,13 @@ function Browser({classifications}) {
             <div className="panel full-height overflow">
               <h4>Products classifications</h4>
               <hr />
-              {product && <ClassificationsList items={flattenTree(product)} />}
+              {product && <ClassificationsList items={flattenTree(product)}
+                                               selected={selected} />}
               <br />
               <h4>Countries classifications</h4>
               <hr />
-              {country && <ClassificationsList items={flattenTree(country)} />}
+              {country && <ClassificationsList items={flattenTree(country)}
+                                               selected={selected} />}
             </div>
           </Col>
           <Col md={7} className="full-height">
@@ -60,10 +64,12 @@ function Browser({classifications}) {
 /**
  * Classification list.
  */
-function ClassificationsList({items}) {
+function ClassificationsList({items, selected}) {
   return (
     <ul className="classifications-list">
-      {items.map(data => <Classification key={data.id} data={data} />)}
+      {items.map(data => <ActionClassification key={data.id}
+                                               data={data}
+                                               active={selected === data.id} />)}
     </ul>
   );
 }
@@ -71,15 +77,23 @@ function ClassificationsList({items}) {
 /**
  * Classification.
  */
-function Classification({data: {name, author, level}}) {
+function Classification({actions, active, data: {id, name, author, level}}) {
   const offset = (level * 25) + 'px';
 
   return (
-    <li className="item" style={{marginLeft: offset}}>
+    <li className={cls('item', {active})}
+        style={{marginLeft: offset}}
+        onClick={e => actions.select(id)}>
       <span>{name}</span> (<em>{author}</em>)
     </li>
   );
 }
+
+const ActionClassification = branch(Classification, {
+  actions: {
+    select: selectBrowserClassification
+  }
+});
 
 /**
  * Entities list.
@@ -105,6 +119,7 @@ function Entity() {
 
 export default branch(Browser, {
   cursors: {
+    selected: ['states', 'classification', 'browser', 'selected'],
     classifications: ['data', 'classifications']
   }
 });

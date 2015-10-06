@@ -13,8 +13,10 @@ export default function(state, client) {
         path: ['data', 'classifications'],
         get() {
           return client.classifications(function(err, {result}) {
-            if (!err)
-              state.set(['data', 'classifications'], result);
+            if (err) return;
+
+            state.set(['data', 'classifications'], result);
+            state.set(['states', 'classification', 'browser', 'selected'], result.product.id);
           });
         }
       }

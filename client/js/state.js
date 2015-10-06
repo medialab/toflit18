@@ -30,8 +30,12 @@ const defaultState = {
   subRoute: null,
 
   // Specific states
-  state: {
-    classification: {}
+  states: {
+    classification: {
+      browser: {
+        selected: null
+      }
+    }
   },
 
   // User-related information

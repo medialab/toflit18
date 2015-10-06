@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../bootstrap/grid.jsx';
 import Button from '../bootstrap/button.jsx';
-import {attemptLogin} from '../../actions.js';
+import {attemptLogin} from '../../actions/session';
 
 /**
  * Panel

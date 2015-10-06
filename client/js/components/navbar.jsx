@@ -4,7 +4,7 @@
  *
  */
 import React, {Component} from 'react';
-import {changeRoute} from '../actions';
+import {changeRoute} from '../actions/route';
 import {branch} from 'baobab-react/decorators';
 import cls from 'classnames';
 

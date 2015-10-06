@@ -8,7 +8,7 @@ import React from 'react';
 import {branch} from 'baobab-react/higher-order';
 import {Row, Col} from '../bootstrap/grid.jsx';
 import Button from '../bootstrap/button.jsx';
-import {changeSubroute} from '../../actions';
+import {changeSubroute} from '../../actions/route';
 
 function Crossroads({actions: {navigate}}) {
   return (

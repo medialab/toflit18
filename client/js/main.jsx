@@ -8,7 +8,7 @@ import React from 'react';
 import {root} from 'baobab-react/higher-order';
 import {render} from 'react-dom';
 import App from './components/app.jsx';
-import {checkSession} from './actions';
+import {checkSession} from './actions/session';
 import makeParrot from './parrot';
 import client from './client';
 import state from './state';

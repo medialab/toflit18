@@ -1,23 +1,9 @@
 /**
- * TOFLIT18 Client Actions
- * ========================
+ * TOFLIT18 Session Actions
+ * =========================
  *
- * Functions used to update the tree.
+ * Actions related to the login or the user session.
  */
-
-/**
- * Changing the current route
- */
-export function changeRoute(tree, newRoute) {
-  tree.set('route', newRoute);
-}
-
-/**
- * Changing the current subroute
- */
-export function changeSubroute(tree, newSubroute) {
-  tree.set('subroute', newSubroute);
-}
 
 /**
  * Checking the user session
