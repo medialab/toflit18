@@ -4,14 +4,17 @@
  *
  * Actions related to the login or the user session.
  */
+import history from '../history';
 
 /**
  * Checking the user session
  */
 export function checkSession(tree) {
   tree.client.session(function(err, data) {
-    if (data)
+    if (data) {
       tree.set('user', data.result);
+      history.replaceState(null, '/');
+    }
   });
 }
 
@@ -36,5 +39,6 @@ export function attemptLogin(tree, name, password) {
 
     flags.set('failed', false);
     tree.set('user', data.result);
+    history.replaceState(null, '/');
   });
 }

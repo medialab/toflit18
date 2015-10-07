@@ -7,15 +7,13 @@
 import React, {Component} from 'react';
 import {Router, Route, IndexRoute, Redirect} from 'react-router';
 import PropTypes from 'baobab-react/prop-types';
-import {createHashHistory} from 'history';
 import App from './app.jsx';
 import Login from './login/login.jsx';
 import ClassificationPanel from './classification/panel.jsx';
 import ClassificationBrowser from './classification/browser.jsx';
 import ClassificationCrossroads from './classification/crossroads.jsx';
 import ExplorationPanel from './exploration/panel.jsx';
-
-const history = createHashHistory({queryKey: false});
+import history from '../history';
 
 export default class AppRouter extends Component {
   static contextTypes = {
