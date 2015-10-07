@@ -9,7 +9,7 @@
     "import": "babel-node ./scripts/import.js",
     "lint": "eslint --ext .js --ext .jsx ./api ./lib ./test ./client/js",
     "postinstall": "mkdir -p .output && cd client && npm install",
-    "start": "babel-node ./scripts/start.js",
+    "start": "babel-node --ignore node_modules ./scripts/start.js",
     "test": "mocha -R spec --compilers js:babel/register ./test/endpoint.js"
   },
   "repository": {
@@ -51,6 +51,7 @@
     "morgan": "^1.6.1",
     "neo4j": "^2.0.0-RC2",
     "nodemon": "^1.4.1",
+    "session-file-store": "0.0.21",
     "typology": "^1.0.0",
     "yargs": "^3.14.0"
   },

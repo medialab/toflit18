@@ -12,11 +12,16 @@ import cors from 'cors';
 import compress from 'compression';
 import morgan from 'morgan';
 import session from 'express-session';
+import createFileStore from 'session-file-store';
 import middlewares from './middlewares';
 import responses from './responses';
 
 import classificationController from './controllers/classification';
 import loginController from './controllers/login';
+
+const env = process.env.NODE_ENV || 'development';
+
+const FileStore = createFileStore(session);
 
 /**
  * Helpers.
@@ -75,6 +80,12 @@ const sessionOptions = {
   resave: true,
   saveUninitialized: true
 };
+
+// If dev, we would like to store sessions for convenience
+if (env === 'development')
+  sessionOptions.store = new FileStore({
+    path: __dirname + '/../.output/sessions'
+  });
 
 // Utilities
 app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
