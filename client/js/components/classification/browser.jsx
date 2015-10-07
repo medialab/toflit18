@@ -9,10 +9,14 @@ import React, {Component} from 'react';
 import {branch} from 'baobab-react/higher-order';
 import {Row, Col} from '../bootstrap/grid.jsx';
 import Button from '../bootstrap/button.jsx';
+import Loader from '../bootstrap/loader.jsx';
 import Infinite from '../misc/infinite.jsx';
-import {selectBrowserClassification} from '../../actions/selection';
-import {downloadClassification} from '../../actions/download';
 import cls from 'classnames';
+
+// Actions
+import {selectBrowserClassification} from '../../actions/selection';
+import {expandBrowserGroups} from '../../actions/data';
+import {downloadClassification} from '../../actions/download';
 
 /**
  * Main component.
@@ -39,13 +43,17 @@ export default class ClassificationBrowser extends Component {
                 <div className="partial-height overflow">
                   <h4>Products classifications</h4>
                   <hr />
-                  {product && <ClassificationsList items={product}
-                                                   selected={current.id} />}
+                  {product.length ?
+                    <ClassificationsList items={product}
+                                         selected={current.id} /> :
+                    <Loader />}
                   <br />
                   <h4>Countries classifications</h4>
                   <hr />
-                  {country && <ClassificationsList items={country}
-                                                   selected={current.id} />}
+                  {country.length ?
+                    <ClassificationsList items={country}
+                                         selected={current.id} /> :
+                    <Loader />}
                 </div>
                 <hr />
                 <div className="actions">
@@ -65,7 +73,7 @@ export default class ClassificationBrowser extends Component {
                 <h4>{current.name || '...'}</h4>
                 <hr />
                 <Infinite className="partial-height overflow"
-                          action={() => console.log('fire!')}>
+                          action={() => actions.expand(current.id)}>
                   <BranchedGroupsList />
                 </Infinite>
               </div>
@@ -117,7 +125,7 @@ const ActionClassification = branch(Classification, {
 function GroupsList({groups}) {
   return (
     <ul className="entities-list">
-      {groups.map(g => <Group key={g.id} {...g} />)}
+      {groups.length ? groups.map(g => <Group key={g.id} {...g} />) : <Loader />}
     </ul>
   );
 }
@@ -141,6 +149,7 @@ function Group({name}) {
 
 export default branch(ClassificationBrowser, {
   actions: {
+    expand: expandBrowserGroups,
     download: downloadClassification
   },
   cursors: {

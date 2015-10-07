@@ -6,6 +6,7 @@
  * behaviors.
  */
 import React, {Component} from 'react';
+import Loader from '../bootstrap/loader.jsx';
 import {debounce} from 'lodash';
 
 export default class Infinite extends Component {
@@ -41,7 +42,12 @@ export default class Infinite extends Component {
 
     const scrollHandler = e => this.handleScroll(e);
 
-    return <div className={className}
-                onScroll={debounce(scrollHandler, 500)}>{this.props.children}</div>;
+    return (
+      <div className={className}
+           onScroll={debounce(scrollHandler, 500)}>
+        {this.props.children}
+        {this.state.loading && <Loader />}
+      </div>
+    );
   }
 }

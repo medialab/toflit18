@@ -1,6 +1,6 @@
 /**
  * Bootstrap Button Components
- * =============================
+ * ============================
  *
  * Collection of Bootstrap v4 button-related components.
  */

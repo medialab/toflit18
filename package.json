@@ -47,6 +47,7 @@
     "express": "^4.13.3",
     "express-session": "^1.11.3",
     "highland": "^2.5.1",
+    "jquery": "^2.1.4",
     "lodash": "^3.10.0",
     "morgan": "^1.6.1",
     "neo4j": "^2.0.0-RC2",

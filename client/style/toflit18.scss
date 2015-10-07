@@ -84,6 +84,15 @@ main {
   overflow-y: auto;
 }
 
+.loader {
+  text-align: center;
+  margin: 10px;
+
+  & > button {
+    width: 40px !important;
+  }
+}
+
 /**
  * Titles.
  */
