@@ -18,8 +18,17 @@ const controller = [
   },
   {
     url: '/:id/groups',
+    validate: {
+      limit: '?string',
+      offset: '?string'
+    },
     action(req, res) {
-      return model.groups(+req.params.id, {}, function(err, groups) {
+      const opts = {
+        limit: +(req.query.limit || 100),
+        offset: +(req.query.offset || 0)
+      };
+
+      return model.groups(+req.params.id, opts, function(err, groups) {
         if (err) return res.serverError(err);
 
         return res.ok(groups);

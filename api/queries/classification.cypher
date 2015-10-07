@@ -14,7 +14,8 @@ START c=node({id})
 MATCH (c)-[:HAS]->(group)
 RETURN group AS group
 ORDER BY group.name
-LIMIT 100;
+SKIP {offset}
+LIMIT {limit};
 
 // name: export
 START c=node({id})

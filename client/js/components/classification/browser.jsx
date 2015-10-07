@@ -64,11 +64,10 @@ export default class ClassificationBrowser extends Component {
               <div className="panel full-height">
                 <h4>{current.name || '...'}</h4>
                 <hr />
-                <div className="partial-height overflow">
-                  <Infinite>
-                    <BranchedGroupsList />
-                  </Infinite>
-                </div>
+                <Infinite className="partial-height overflow"
+                          action={() => console.log('fire!')}>
+                  <BranchedGroupsList />
+                </Infinite>
               </div>
             </Col>
           </Row>

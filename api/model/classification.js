@@ -57,7 +57,7 @@ const model = {
 
   // Retrieving a sample of the classification's groups
   groups(id, opts, callback) {
-    return database.cypher({query: queries.groups, params: {id}}, function(err, results) {
+    return database.cypher({query: queries.groups, params: {id, ...opts}}, function(err, results) {
       if (err) return callback(err);
 
       const groups = results.map(row => {
