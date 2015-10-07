@@ -41,6 +41,7 @@ export default class AppRouter extends Component {
             </Route>
           </Route>
         </Route>
+        <Redirect from="*" to="/" />
       </Router>
     );
   }
