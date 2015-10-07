@@ -15,6 +15,16 @@ const controller = [
         return res.ok(classifications);
       });
     }
+  },
+  {
+    url: '/:id/groups',
+    action: function(req, res) {
+      return model.groups(+req.params.id, {}, function(err, groups) {
+        if (err) return res.serverError(err);
+
+        return res.ok(groups);
+      });
+    }
   }
 ];
 

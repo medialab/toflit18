@@ -33,7 +33,8 @@ const client = new Client({
     logout: '/logout',
 
     // Data related
-    classifications: '/classification'
+    classifications: '/classification',
+    groups: '/classification/:id/groups'
   }
 });
 

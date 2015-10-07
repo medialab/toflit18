@@ -46,7 +46,13 @@ const defaultState = {
   states: merge({
     classification: {
       browser: {
-        selected: null
+        selected: null,
+        current: monkey(
+          ['states', 'classification', 'browser', 'selected'],
+          ['data', 'classifications', 'index'],
+          (selected, index) => index[selected] || null
+        ),
+        rows: []
       }
     }
   }, storageState),
@@ -61,7 +67,9 @@ const tree = new Baobab(defaultState);
 const watcher = tree.watch({
   states: ['states']
 }).on('update', function() {
-  localStorage.setItem(storageKey, JSON.stringify(watcher.get().states));
+  const data = tree.serialize('states');
+
+  localStorage.setItem(storageKey, JSON.stringify(data));
 });
 
 export default tree;

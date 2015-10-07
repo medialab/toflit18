@@ -9,7 +9,6 @@ import React from 'react';
 import {branch} from 'baobab-react/higher-order';
 import {Row, Col} from '../bootstrap/grid.jsx';
 import {selectBrowserClassification} from '../../actions/selection';
-import {fill} from 'lodash';
 import cls from 'classnames';
 
 /**
@@ -37,10 +36,10 @@ function ClassificationBrowser({classifications, selected}) {
           </Col>
           <Col md={7} className="full-height">
             <div className="panel full-height">
-              <h4>Entities</h4>
+              <h4>Groups</h4>
               <hr />
               <div className="partial-height overflow">
-                <EntitiesList />
+                <BranchedGroupsList />
               </div>
             </div>
           </Col>
@@ -85,23 +84,29 @@ const ActionClassification = branch(Classification, {
 });
 
 /**
- * Entities list.
+ * Groups list.
  */
-function EntitiesList({items}) {
+function GroupsList({groups}) {
   return (
     <ul className="entities-list">
-      {(fill(new Array(60), '')).map((_, i) => <Entity key={i} />)}
+      {groups.map(g => <Group key={g.id} {...g} />)}
     </ul>
   );
 }
 
+const BranchedGroupsList = branch(GroupsList, {
+  cursors: {
+    groups: ['states', 'classification', 'browser', 'rows']
+  }
+});
+
 /**
- * Entity.
+ * Group.
  */
-function Entity() {
+function Group({name}) {
   return (
     <li className="item">
-      Hello coucou!
+      {name}
     </li>
   );
 }

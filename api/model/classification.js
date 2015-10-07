@@ -27,6 +27,8 @@ function makeTree(list, tree) {
  * Model.
  */
 const model = {
+
+  // Retrieving the list of every classifications
   getAll(callback) {
     return database.cypher(queries.getAll, function(err, results) {
       if (err) return callback(err);
@@ -48,6 +50,21 @@ const model = {
       };
 
       return callback(null, tree);
+    });
+  },
+
+  // Retrieving a sample of the classification's groups
+  groups(id, opts, callback) {
+    return database.cypher({query: queries.groups, params: {id}}, function(err, results) {
+
+      const groups = results.map(row => {
+        return {
+          ...row.group.properties,
+          id: row.group._id
+        };
+      });
+
+      return callback(null, groups);
     });
   }
 };
