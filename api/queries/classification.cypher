@@ -17,6 +17,15 @@ ORDER BY group.name
 SKIP {offset}
 LIMIT {limit};
 
+// name: searchGroups
+START c=node({id})
+MATCH (c)-[:HAS]->(group)
+WHERE group.name =~ {query}
+RETURN group AS group
+ORDER BY group.name
+SKIP {offset}
+LIMIT {limit};
+
 // name: export
 START c=node({id})
 MATCH (c)-[:BASED_ON]->(p:Classification)-[:HAS]->(item)

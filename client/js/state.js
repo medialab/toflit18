@@ -48,6 +48,7 @@ const defaultState = {
     classification: {
       browser: {
         selected: null,
+        query: '',
         current: monkey(
           ['states', 'classification', 'browser', 'selected'],
           ['data', 'classifications', 'index'],

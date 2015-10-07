@@ -27,7 +27,7 @@ export default class Infinite extends Component {
     const scrollBottom = scrollHeight - height,
           distanceToBottom = scrollBottom - scrollTop;
 
-    if (distanceToBottom < 200 &&
+    if (distanceToBottom < 500 &&
         !this.state.loading &&
         typeof this.props.action === 'function') {
 
@@ -44,8 +44,8 @@ export default class Infinite extends Component {
     }
   }
 
-  componentWillUpdate() {
-    if (this.currentCall)
+  componentWillUpdate(nextProps, nextState) {
+    if ((nextState.tracker !== this.state.tracker) && this.currentCall)
       this.currentCall.abort();
   }
 

@@ -6,7 +6,7 @@
  * choose one and edit it, or even create a new one `in medias res`.
  */
 import React, {Component} from 'react';
-import {branch} from 'baobab-react/higher-order';
+import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../bootstrap/grid.jsx';
 import Button from '../bootstrap/button.jsx';
 import Loader from '../bootstrap/loader.jsx';
@@ -21,6 +21,17 @@ import {downloadClassification} from '../../actions/download';
 /**
  * Main component.
  */
+@branch({
+  actions: {
+    expand: expandBrowserGroups,
+    download: downloadClassification
+  },
+  cursors: {
+    downloading: ['flags', 'downloading'],
+    current: ['states', 'classification', 'browser', 'current'],
+    classifications: ['data', 'classifications', 'flat']
+  }
+})
 export default class ClassificationBrowser extends Component {
   render() {
     let {
@@ -73,8 +84,9 @@ export default class ClassificationBrowser extends Component {
                 <h4>{current.name || '...'}</h4>
                 <hr />
                 <Infinite className="partial-height overflow"
-                          action={() => actions.expand(current)}>
-                  <BranchedGroupsList />
+                          action={() => actions.expand(current)}
+                          tracker={current.id}>
+                  <GroupsList />
                 </Infinite>
               </div>
             </Col>
@@ -91,9 +103,9 @@ export default class ClassificationBrowser extends Component {
 function ClassificationsList({items, selected}) {
   return (
     <ul className="classifications-list">
-      {items.map(data => <ActionClassification key={data.id}
-                                               data={data}
-                                               active={selected === data.id} />)}
+      {items.map(data => <Classification key={data.id}
+                                         data={data}
+                                         active={selected === data.id} />)}
     </ul>
   );
 }
@@ -101,40 +113,50 @@ function ClassificationsList({items, selected}) {
 /**
  * Classification.
  */
-function Classification({actions, active, data: {id, name, author, level}}) {
-  const offset = (level * 25) + 'px';
-
-  return (
-    <li className={cls('item', {active})}
-        style={{marginLeft: offset}}
-        onClick={e => actions.select(id)}>
-      <span>{name}</span> (<em>{author}</em>)
-    </li>
-  );
-}
-
-const ActionClassification = branch(Classification, {
+@branch({
   actions: {
     select: selectBrowserClassification
   }
-});
+})
+class Classification extends Component {
+  render() {
+    const {
+      actions,
+      active,
+      data: {id, name, author, level}
+    } = this.props;
+
+    const offset = (level * 25) + 'px';
+
+    return (
+      <li className={cls('item', {active})}
+          style={{marginLeft: offset}}
+          onClick={e => !active && actions.select(id)}>
+        <span>{name}</span> (<em>{author}</em>)
+      </li>
+    );
+  }
+}
 
 /**
  * Groups list.
  */
-function GroupsList({groups}) {
-  return (
-    <ul className="entities-list">
-      {groups.length ? groups.map(g => <Group key={g.id} {...g} />) : <Loader />}
-    </ul>
-  );
-}
-
-const BranchedGroupsList = branch(GroupsList, {
+@branch({
   cursors: {
     groups: ['states', 'classification', 'browser', 'rows']
   }
-});
+})
+class GroupsList extends Component {
+  render() {
+    const groups = this.props.groups;
+
+    return (
+      <ul className="entities-list">
+        {groups.length ? groups.map(g => <Group key={g.id} {...g} />) : <Loader />}
+      </ul>
+    );
+  }
+}
 
 /**
  * Group.
@@ -147,14 +169,4 @@ function Group({name}) {
   );
 }
 
-export default branch(ClassificationBrowser, {
-  actions: {
-    expand: expandBrowserGroups,
-    download: downloadClassification
-  },
-  cursors: {
-    downloading: ['flags', 'downloading'],
-    current: ['states', 'classification', 'browser', 'current'],
-    classifications: ['data', 'classifications', 'flat']
-  }
-});
+export default ClassificationBrowser;
