@@ -188,6 +188,10 @@ h1 {
 
     .partial-height {
       height: calc(100% - 65px);
+
+      &.twice {
+        height: calc(100% - 130px);
+      }
     }
 
     .actions {

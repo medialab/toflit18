@@ -15,8 +15,9 @@ import cls from 'classnames';
 
 // Actions
 import {selectBrowserClassification} from '../../actions/selection';
-import {expandBrowserGroups} from '../../actions/data';
+import {expandBrowserGroups, searchBrowserGroups} from '../../actions/data';
 import {downloadClassification} from '../../actions/download';
+import {linker} from '../../actions/factory';
 
 /**
  * Main component.
@@ -83,7 +84,9 @@ export default class ClassificationBrowser extends Component {
               <div className="panel full-height">
                 <h4>{current.name || '...'}</h4>
                 <hr />
-                <Infinite className="partial-height overflow"
+                <GroupQuery query="Hey joe" id={current.id} />
+                <hr />
+                <Infinite className="partial-height twice overflow"
                           action={() => actions.expand(current)}
                           tracker={current.id}>
                   <GroupsList />
@@ -139,6 +142,40 @@ class Classification extends Component {
 }
 
 /**
+ * Group query.
+ */
+@branch({
+  actions: {
+    search: searchBrowserGroups
+  }
+})
+class GroupQuery extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {query: null};
+  }
+
+  render() {
+    const search = this.props.actions.search,
+          id = this.props.id;
+
+    return (
+      <div className="input-group">
+        <input type="text"
+               className="form-control"
+               placeholder="Query..."
+               value={this.state.query}
+               onChange={e => this.setState({query: e.target.value})} />
+        <span className="input-group-btn">
+          <Button kind="secondary" onClick={(e) => search(id, this.state.query)}>Filter</Button>
+        </span>
+      </div>
+    );
+  }
+}
+
+/**
  * Groups list.
  */
 @branch({
@@ -152,7 +189,9 @@ class GroupsList extends Component {
 
     return (
       <ul className="entities-list">
-        {groups.length ? groups.map(g => <Group key={g.id} {...g} />) : <Loader />}
+        {groups.length ?
+          groups.map(g => <Group key={g.id} {...g} />) :
+          <span>No Results...</span>}
       </ul>
     );
   }

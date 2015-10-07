@@ -37,7 +37,8 @@ const client = new Client({
     // Data related
     classifications: '/classification',
     groups: '/classification/:id/groups',
-    export: '/classification/:id/export.json'
+    export: '/classification/:id/export.json',
+    searchGroups: '/classification/:id/groups/search/:query'
   }
 });
 

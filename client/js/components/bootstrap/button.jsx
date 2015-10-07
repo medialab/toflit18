@@ -33,7 +33,7 @@ export default class Button extends Component {
   }
 
   render() {
-    let {kind, disabled} = this.props,
+    let {kind, disabled, onClick} = this.props,
         cls = `btn btn-${kind} ladda-button`;
 
     if (disabled)
@@ -44,7 +44,7 @@ export default class Button extends Component {
               type="button"
               data-style="slide-left"
               className={cls}
-              onClick={e => !disabled && this.props.onClick(e)}>
+              onClick={e => !disabled && typeof onClick === 'function' && onClick(e)}>
         <span className="ladda-label">
           {this.props.children}
         </span>

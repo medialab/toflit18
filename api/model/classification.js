@@ -74,18 +74,24 @@ const model = {
 
   // Searching for groups
   searchGroups(id, opts, callback) {
-    return database.cypher({query: queries.search, params: {id, ...opts}}, function(err, results) {
-      if (err) return callback(err);
+    return database.cypher(
+      {
+        query: queries.searchGroups,
+        params: {...opts, id, query: searchRegex(opts.query)}
+      },
+      function(err, results) {
+        if (err) return callback(err);
 
-      const groups = results.map(row => {
-        return {
-          ...row.group.properties,
-          id: row.group._id
-        };
-      });
+        const groups = results.map(row => {
+          return {
+            ...row.group.properties,
+            id: row.group._id
+          };
+        });
 
-      return callback(null, groups);
-    });
+        return callback(null, groups);
+      }
+    );
   },
 
   // Exporting to csv

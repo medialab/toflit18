@@ -39,6 +39,27 @@ const controller = [
     }
   },
   {
+    url: '/:id/groups/search/:query',
+    validate: {
+      limit: '?string',
+      offset: '?string',
+      query: '?string'
+    },
+    action(req, res) {
+      const opts = {
+        limit: +(req.query.limit || limits.groups),
+        offset: +(req.query.offset || 0),
+        query: req.params.query
+      };
+
+      return model.searchGroups(+req.params.id, opts, function(err, groups) {
+        if (err) return res.serverError(err);
+
+        return res.ok(groups);
+      });
+    }
+  },
+  {
     url: '/:id/export.:ext',
     validate(req) {
       const ext = req.params.ext;
