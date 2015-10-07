@@ -15,12 +15,12 @@ import {
 
 // Reading from localStorage
 let storageState = {};
-try {
-  storageState = JSON.parse(localStorage.getItem(storageKey));
-}
-catch (e) {
-  console.error('Error while reading localStorage!');
-}
+// try {
+//   storageState = JSON.parse(localStorage.getItem(storageKey));
+// }
+// catch (e) {
+//   console.error('Error while reading localStorage!');
+// }
 
 const defaultState = {
 
@@ -64,12 +64,12 @@ const defaultState = {
 const tree = new Baobab(defaultState);
 
 // Watching over some paths that need serialization
-const watcher = tree.watch({
-  states: ['states']
-}).on('update', function() {
-  const data = tree.serialize('states');
+// const watcher = tree.watch({
+//   states: ['states']
+// }).on('update', function() {
+//   const data = tree.serialize('states');
 
-  localStorage.setItem(storageKey, JSON.stringify(data));
-});
+//   localStorage.setItem(storageKey, JSON.stringify(data));
+// });
 
 export default tree;

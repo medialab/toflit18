@@ -38,7 +38,8 @@ const model = {
           ...row.classification.properties,
           id: row.classification._id,
           author: row.author,
-          parent: row.parent
+          parent: row.parent,
+          nb_groups: row.nb_groups
         };
       });
 
