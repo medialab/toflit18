@@ -39,7 +39,8 @@ const defaultState = {
     login: {
       failed: false,
       loading: false
-    }
+    },
+    downloading: false
   },
 
   // Specific states

@@ -5,48 +5,77 @@
  * Displaying the existing classifications in order to let the user
  * choose one and edit it, or even create a new one `in medias res`.
  */
-import React from 'react';
+import React, {Component} from 'react';
 import {branch} from 'baobab-react/higher-order';
 import {Row, Col} from '../bootstrap/grid.jsx';
+import Button from '../bootstrap/button.jsx';
+import Infinite from '../misc/infinite.jsx';
 import {selectBrowserClassification} from '../../actions/selection';
+import {downloadClassification} from '../../actions/download';
 import cls from 'classnames';
 
 /**
  * Main component.
  */
-function ClassificationBrowser({classifications, selected}) {
-  const {product, country} = classifications;
+export default class ClassificationBrowser extends Component {
+  render() {
+    let {
+      actions,
+      classifications,
+      current,
+      downloading
+    } = this.props;
 
-  return (
-    <div className="browser-wrapper">
-      <div className="full-height">
-        <Row className="full-height">
-          <Col md={5} className="full-height">
-            <div className="panel full-height overflow">
-              <h4>Products classifications</h4>
-              <hr />
-              {product && <ClassificationsList items={product}
-                                               selected={selected} />}
-              <br />
-              <h4>Countries classifications</h4>
-              <hr />
-              {country && <ClassificationsList items={country}
-                                               selected={selected} />}
-            </div>
-          </Col>
-          <Col md={7} className="full-height">
-            <div className="panel full-height">
-              <h4>Groups</h4>
-              <hr />
-              <div className="partial-height overflow">
-                <BranchedGroupsList />
+    const {product, country} = classifications;
+
+    current = current || {};
+
+    return (
+      <div className="browser-wrapper">
+        <div className="full-height">
+          <Row className="full-height">
+            <Col md={5} className="full-height">
+              <div className="panel full-height">
+                <div className="partial-height overflow">
+                  <h4>Products classifications</h4>
+                  <hr />
+                  {product && <ClassificationsList items={product}
+                                                   selected={current.id} />}
+                  <br />
+                  <h4>Countries classifications</h4>
+                  <hr />
+                  {country && <ClassificationsList items={country}
+                                                   selected={current.id} />}
+                </div>
+                <hr />
+                <div className="actions">
+                  <Col md={6}>
+                    <Button kind="primary"
+                            onClick={() => actions.download(current.id)}
+                            disabled={current.source || false}
+                            loading={downloading}>
+                      Export
+                    </Button>
+                  </Col>
+                </div>
               </div>
-            </div>
-          </Col>
-        </Row>
+            </Col>
+            <Col md={7} className="full-height">
+              <div className="panel full-height">
+                <h4>{current.name || '...'}</h4>
+                <hr />
+                <div className="partial-height overflow">
+                  <Infinite>
+                    <BranchedGroupsList />
+                  </Infinite>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 /**
@@ -112,8 +141,12 @@ function Group({name}) {
 }
 
 export default branch(ClassificationBrowser, {
+  actions: {
+    download: downloadClassification
+  },
   cursors: {
-    selected: ['states', 'classification', 'browser', 'selected'],
+    downloading: ['flags', 'downloading'],
+    current: ['states', 'classification', 'browser', 'current'],
     classifications: ['data', 'classifications', 'flat']
   }
 });

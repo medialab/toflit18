@@ -6,6 +6,7 @@
 import database from '../connection';
 import {classification as queries} from '../queries';
 import {groupBy, find} from 'lodash';
+import {stringify} from 'csv';
 
 /**
  * Helpers.
@@ -57,6 +58,7 @@ const model = {
   // Retrieving a sample of the classification's groups
   groups(id, opts, callback) {
     return database.cypher({query: queries.groups, params: {id}}, function(err, results) {
+      if (err) return callback(err);
 
       const groups = results.map(row => {
         return {
@@ -66,6 +68,33 @@ const model = {
       });
 
       return callback(null, groups);
+    });
+  },
+
+  // Exporting to csv
+  export(id, callback) {
+    return database.cypher({query: queries.export, params: {id}}, function(err, results) {
+      if (err) return callback(err);
+      if (!results.length) return callback(null, null);
+
+      const {name, parent, model} = results[0];
+
+      const headers = [name, parent, 'note', 'outsider'];
+
+      const rows = results.slice(1).map(function(row) {
+        return [
+          row.group,
+          row.item,
+          row.note,
+          '' + row.outsider
+        ];
+      });
+
+      return stringify([headers].concat(rows), {}, function(err, csv) {
+        if (err) return callback(err);
+
+        return callback(null, {csv, name, model: model.toLowerCase()});
+      });
     });
   }
 };

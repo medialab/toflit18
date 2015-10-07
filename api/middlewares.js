@@ -31,6 +31,13 @@ const middlewares = {
   validate: function(def) {
     return function(req, res, next) {
 
+      if (typeof def === 'function') {
+        if (!def(req))
+          return res.badRequest();
+        else
+          return next();
+      }
+
       // Retrieving params
       const data = {};
       for (let k in def)

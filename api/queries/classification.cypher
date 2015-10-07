@@ -15,3 +15,16 @@ MATCH (c)-[:HAS]->(group)
 RETURN group AS group
 ORDER BY group.name
 LIMIT 100;
+
+// name: export
+START c=node({id})
+MATCH (c)-[:BASED_ON]->(p:Classification)-[:HAS]->(item)
+OPTIONAL MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item)
+RETURN
+  c.slug AS name,
+  p.slug AS parent,
+  c.model AS model,
+  group.name AS group,
+  item.name AS item,
+  group.note AS note,
+  item:OutsiderClassifiedItem AS outsider;

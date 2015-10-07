@@ -171,14 +171,18 @@ h1 {
 
   .browser-wrapper {
     padding: 15px;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 65px);
 
     .panel {
       padding: 20px;
     }
 
     .partial-height {
-      height: calc(100% - 60px);
+      height: calc(100% - 65px);
+    }
+
+    .actions {
+
     }
 
     .classifications-list {
