@@ -5,15 +5,32 @@
  * Creating the Baobab state tree used by the whole application to function.
  */
 import Baobab, {monkey} from 'baobab';
+import {storageKey} from '../config.json';
+import {merge} from 'lodash';
 import {
+  classificationsIndex,
+  flatClassifications,
   isLogged
-} from './facets';
+} from './monkeys';
+
+// Reading from localStorage
+let storageState = {};
+try {
+  storageState = JSON.parse(localStorage.getItem(storageKey));
+}
+catch (e) {
+  console.error('Error while reading localStorage!');
+}
 
 const defaultState = {
 
   // Data
   data: {
-    classifications: null
+    classifications: {
+      raw: null,
+      flat: monkey(['data', 'classifications', 'raw'], flatClassifications),
+      index: monkey(['data', 'classifications', 'flat'], classificationsIndex)
+    }
   },
 
   // Some generic UI flags
@@ -26,18 +43,25 @@ const defaultState = {
   },
 
   // Specific states
-  states: {
+  states: merge({
     classification: {
       browser: {
         selected: null
       }
     }
-  },
+  }, storageState),
 
   // User-related information
   user: null,
 };
 
 const tree = new Baobab(defaultState);
+
+// Watching over some paths that need serialization
+const watcher = tree.watch({
+  states: ['states']
+}).on('update', function() {
+  localStorage.setItem(storageKey, JSON.stringify(watcher.get().states));
+});
 
 export default tree;

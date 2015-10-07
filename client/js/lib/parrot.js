@@ -72,12 +72,14 @@ export default class Parrot {
             !rule.condition.call(this.tree, data))
           return false;
 
-        // If the gotten data fulfilling expectations?
-        if (typeof rule.expect === 'function' ? rule.expect(data) : !!data)
+        // Actually comparing the paths
+        if (!compare(rule.path, solvedPath))
           return false;
 
-        // Actually comparing the paths
-        return compare(rule.path, solvedPath);
+        // If the gotten data fulfilling expectations?
+        return !(
+          typeof rule.expect === 'function' ? rule.expect(data) : !!data
+        );
       });
 
       // Resolving actions

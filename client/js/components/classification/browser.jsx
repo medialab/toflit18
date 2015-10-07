@@ -13,21 +13,10 @@ import {fill} from 'lodash';
 import cls from 'classnames';
 
 /**
- * Helpers.
- */
-function flattenTree(branch, list=[], level=0) {
-  list.push({...branch, level});
-
-  (branch.children || []).forEach(c => flattenTree(c, list, level + 1));
-
-  return list;
-}
-
-/**
  * Main component.
  */
 function ClassificationBrowser({classifications, selected}) {
-  const {product, country} = (classifications || {});
+  const {product, country} = classifications;
 
   return (
     <div className="browser-wrapper">
@@ -37,12 +26,12 @@ function ClassificationBrowser({classifications, selected}) {
             <div className="panel full-height overflow">
               <h4>Products classifications</h4>
               <hr />
-              {product && <ClassificationsList items={flattenTree(product)}
+              {product && <ClassificationsList items={product}
                                                selected={selected} />}
               <br />
               <h4>Countries classifications</h4>
               <hr />
-              {country && <ClassificationsList items={flattenTree(country)}
+              {country && <ClassificationsList items={country}
                                                selected={selected} />}
             </div>
           </Col>
@@ -120,6 +109,6 @@ function Entity() {
 export default branch(ClassificationBrowser, {
   cursors: {
     selected: ['states', 'classification', 'browser', 'selected'],
-    classifications: ['data', 'classifications']
+    classifications: ['data', 'classifications', 'flat']
   }
 });
