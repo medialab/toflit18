@@ -1,6 +1,9 @@
 {
   "api": {
     "allowedOrigins": ["http://localhost:3000"],
+    "limits": {
+      "groups": 200
+    },
     "port": 4000,
     "secret": "merrain"
   },

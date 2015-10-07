@@ -73,7 +73,7 @@ export default class ClassificationBrowser extends Component {
                 <h4>{current.name || '...'}</h4>
                 <hr />
                 <Infinite className="partial-height overflow"
-                          action={() => actions.expand(current.id)}>
+                          action={() => actions.expand(current)}>
                   <BranchedGroupsList />
                 </Infinite>
               </div>

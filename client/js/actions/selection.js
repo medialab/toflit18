@@ -8,6 +8,7 @@ export function selectBrowserClassification(tree, id) {
   const state = tree.select('states', 'classification', 'browser');
 
   state.set('selected', id);
+  state.set('rows', []);
 
   // Fetching the necessary rows
   tree.client.groups({params: {id}}, function(err, data) {

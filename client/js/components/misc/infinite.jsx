@@ -14,6 +14,7 @@ export default class Infinite extends Component {
     super(props, context);
 
     this.state = {loading: false};
+    this.currentCall = null;
   }
 
   handleScroll({target}) {
@@ -29,12 +30,23 @@ export default class Infinite extends Component {
     if (distanceToBottom < 200 &&
         !this.state.loading &&
         typeof this.props.action === 'function') {
-      this.setState({loading: true});
 
       const promise = this.props.action(),
             reset = () => this.setState({loading: false});
+
+      if (!promise)
+        return;
+
+      this.currentCall = promise;
+      this.setState({loading: true});
+
       promise.then(reset, reset);
     }
+  }
+
+  componentWillUpdate() {
+    if (this.currentCall)
+      this.currentCall.abort();
   }
 
   render() {

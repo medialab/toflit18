@@ -4,12 +4,15 @@
  *
  * Actions in charge of data retrieval etc.
  */
-export function expandBrowserGroups(tree, id) {
+export function expandBrowserGroups(tree, classification) {
   const rows = tree.select('states', 'classification', 'browser', 'rows'),
         current = rows.get();
 
+  if (classification.nb_groups <= current.length)
+    return;
+
   return tree.client.groups(
-    {params: {id}, data: {offset: current.length}},
+    {params: {id: classification.id}, data: {offset: current.length}},
     function(err, data) {
       if (err) return;
 

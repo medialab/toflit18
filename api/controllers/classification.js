@@ -4,6 +4,9 @@
  *
  */
 import model from '../model/classification';
+import {api as apiConfig} from '../../config.json';
+
+const limits = apiConfig.limits;
 
 const controller = [
   {
@@ -24,7 +27,7 @@ const controller = [
     },
     action(req, res) {
       const opts = {
-        limit: +(req.query.limit || 100),
+        limit: +(req.query.limit || limits.groups),
         offset: +(req.query.offset || 0)
       };
 
