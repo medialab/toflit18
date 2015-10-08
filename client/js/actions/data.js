@@ -22,10 +22,8 @@ export function expandBrowserGroups(tree, classification) {
 }
 
 export function searchBrowserGroups(tree, id, query) {
-
-  console.log(query)
-  return tree.client.searchGroups(
-    {params: {id: id, query}},
+  return tree.client.groups(
+    {params: {id: id}, data: {query}},
     function(err, data) {
       if (err) return;
 

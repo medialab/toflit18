@@ -39,8 +39,7 @@ const client = new Client({
       contentType: 'application/x-www-form-urlencoded',
       url: '/classification/:id/groups'
     },
-    export: '/classification/:id/export.json',
-    searchGroups: '/classification/:id/groups/search/:query'
+    export: '/classification/:id/export.json'
   }
 });
 

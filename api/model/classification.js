@@ -58,26 +58,16 @@ const Model = {
 
   // Retrieving a sample of the classification's groups
   groups(id, opts, callback) {
-    return database.cypher({query: queries.groups, params: {id, ...opts}}, function(err, results) {
-      if (err) return callback(err);
+    const query = queries[opts.query ? 'searchGroups' : 'groups'];
 
-      const groups = results.map(row => {
-        return {
-          ...row.group.properties,
-          id: row.group._id
-        };
-      });
-
-      return callback(null, groups);
-    });
-  },
-
-  // Searching for groups
-  searchGroups(id, opts, callback) {
     return database.cypher(
       {
-        query: queries.searchGroups,
-        params: {...opts, id, query: searchRegex(opts.query)}
+        query,
+        params: {
+          ...opts,
+          id,
+          query: searchRegex(opts.query)
+        }
       },
       function(err, results) {
         if (err) return callback(err);
