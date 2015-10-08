@@ -175,8 +175,6 @@ const INDEXES = {
   units: {}
 };
 
-const OUTSIDERS_INDEXES = {};
-
 const EDGE_INDEXES = {
   offices: new Set()
 };
@@ -534,50 +532,73 @@ function importer(csvLine) {
 
 /**
  * Consuming the classifications.
+ *
+ * Note: This should be wildly refactored!
+ *
+ * Algorithm
+ * ---------
+ * 1. If (item not in index) => we have an outsider.
+ *    a. Create the outsider item in the index.
+ *    b. Relate parent-[:HAS]->outsiderItem.
+ * 2. Upsert the group w/ index.
+ * 3. Relate classification-[:HAS]->group.
+ * 4. Relate group-[:AGGREGATES]->item.
  */
-function makeClassificationConsumer(groupIndex, groupNode, itemIndex, groupKey, itemKey, opts={}) {
+function makeClassificationConsumer(groupIndex, classificationNode, parentNode, itemIndex, groupKey, itemKey, opts={}) {
   return function(line) {
+    const group = line[groupKey],
+          item = line[itemKey];
+
     if (opts.filterEmpty && !line[groupKey])
       return;
 
-    const alreadyLinked = !!groupIndex[line[groupKey]];
+    let itemNode = itemIndex[item];
+
+    if (!itemNode) {
+
+      // The item does not exist and is consequentially an outsider!
+      itemNode = indexedNode(
+        itemIndex,
+        ['ClassifiedItem', 'OutsiderClassifiedItem'],
+        item,
+        {name: item}
+      );
+
+      // Link to the parent classification
+      BUILDER.relate(parentNode, 'HAS', itemNode);
+    }
+
+    // Building the group node
+    const alreadyLinked = !!groupIndex[group];
 
     const nodeData = {
-      name: line[groupKey]
+      name: group
     };
 
+    // Adding the note only if required
     if (opts.shouldTakeNote && line.note)
       nodeData.note = line.note;
 
-    const classifiedNode = indexedNode(
+    const groupNode = indexedNode(
       groupIndex,
       'ClassifiedItem',
-      line[groupKey],
+      group,
       nodeData
     );
 
-    const targetNode = itemIndex[line[itemKey]];
-
+    // Linking the group to the classification on first run
     if (!alreadyLinked)
-      BUILDER.relate(groupNode, 'HAS', classifiedNode);
+      BUILDER.relate(classificationNode, 'HAS', groupNode);
 
-    if (targetNode !== undefined) {
-      BUILDER.relate(classifiedNode, 'AGGREGATES', targetNode);
-    }
-    else if (opts.outsiders && line[itemKey]) {
-      let outsiderNode = OUTSIDERS_INDEXES[line[itemKey]]
-      if (!outsiderNode)
-        outsiderNode = BUILDER.save({name: line[itemKey]}, ['OutsiderClassifiedItem', 'ClassifiedItem']);
-
-      BUILDER.relate(groupNode, 'HAS', outsiderNode);
-      BUILDER.relate(classifiedNode, 'AGGREGATES', outsiderNode);
-    }
+    // The group aggregates the item
+    BUILDER.relate(groupNode, 'AGGREGATES', itemNode);
   };
 }
 
 const orthographicProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_orthographic,
   CLASSIFICATION_NODES.product_orthographic,
+  CLASSIFICATION_NODES.product_sources,
   INDEXES.products,
   'modified',
   'original',
@@ -587,6 +608,7 @@ const orthographicProduct = makeClassificationConsumer(
 const simplifiedProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_simplified,
   CLASSIFICATION_NODES.product_simplified,
+  CLASSIFICATION_NODES.product_orthographic,
   CLASSIFICATION_INDEXES.product_orthographic,
   'simplified',
   'orthographic',
@@ -596,6 +618,7 @@ const simplifiedProduct = makeClassificationConsumer(
 const categorizedProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_categorized,
   CLASSIFICATION_NODES.product_categorized,
+  CLASSIFICATION_NODES.product_simplified,
   CLASSIFICATION_INDEXES.product_simplified,
   'categorized',
   'simplified',
@@ -605,6 +628,7 @@ const categorizedProduct = makeClassificationConsumer(
 const sitcrev2Product = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_sitcrev2,
   CLASSIFICATION_NODES.product_sitcrev2,
+  CLASSIFICATION_NODES.product_simplified,
   CLASSIFICATION_INDEXES.product_simplified,
   'sitcrev2',
   'simplified',
@@ -614,6 +638,7 @@ const sitcrev2Product = makeClassificationConsumer(
 const sitcrev1Product = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_sitcrev1,
   CLASSIFICATION_NODES.product_sitcrev1,
+  CLASSIFICATION_NODES.product_sitcrev2,
   CLASSIFICATION_INDEXES.product_sitcrev2,
   'sitcrev1',
   'sitcrev2',
@@ -623,6 +648,7 @@ const sitcrev1Product = makeClassificationConsumer(
 const medicinalProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_medicinal,
   CLASSIFICATION_NODES.product_medicinal,
+  CLASSIFICATION_NODES.product_simplified,
   CLASSIFICATION_INDEXES.product_simplified,
   'medicinal',
   'simplified',
@@ -632,6 +658,7 @@ const medicinalProduct = makeClassificationConsumer(
 const orthographicCountry = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.country_orthographic,
   CLASSIFICATION_NODES.country_orthographic,
+  CLASSIFICATION_NODES.country_sources,
   INDEXES.countries,
   'orthographic',
   'original',
@@ -641,6 +668,7 @@ const orthographicCountry = makeClassificationConsumer(
 const simplifiedCountry = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.country_simplified,
   CLASSIFICATION_NODES.country_simplified,
+  CLASSIFICATION_NODES.country_orthographic,
   CLASSIFICATION_INDEXES.country_orthographic,
   'simplified',
   'orthographic',
@@ -650,6 +678,7 @@ const simplifiedCountry = makeClassificationConsumer(
 const groupedCountry = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.country_grouped,
   CLASSIFICATION_NODES.country_grouped,
+  CLASSIFICATION_NODES.country_simplified,
   CLASSIFICATION_INDEXES.country_simplified,
   'grouped',
   'simplified',

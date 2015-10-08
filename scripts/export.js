@@ -136,7 +136,7 @@ async.series([
         });
       },
       function getClassifications(next) {
-        database.cypher({query: queries.classifications, params: {models: ['Product']}}, function(err, data) {
+        database.cypher({query: queries.classifications, params: {models: ['product']}}, function(err, data) {
           if (err) return next(err);
 
           classifications = data.map(e => e.classification);
@@ -200,7 +200,7 @@ async.series([
         });
       },
       function(next) {
-        database.cypher({query: queries.classifications, params: {models: ['Country']}}, function(err, data) {
+        database.cypher({query: queries.classifications, params: {models: ['country']}}, function(err, data) {
           if (err) return next(err);
 
           classifications = data.map(e => e.classification);
@@ -251,7 +251,7 @@ async.series([
   function oneByOneClassification(callback) {
     console.log('Creating one file per classification');
 
-    database.cypher({query: queries.classifications, params: {models: ['Country', 'Product']}}, function(err, data) {
+    database.cypher({query: queries.classifications, params: {models: ['country', 'product']}}, function(err, data) {
       if (err) return callback(err);
 
       const classifications = data.map(e => (e.classification.properties.parent = e.parent) && e.classification);
