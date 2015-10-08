@@ -10,8 +10,7 @@ import jquery from 'jquery';
 
 const client = new Client({
   settings: {
-    baseUrl: endpoint,
-    engine: jquery.ajax
+    baseUrl: endpoint
   },
 
   defaults: {
@@ -36,7 +35,10 @@ const client = new Client({
 
     // Data related
     classifications: '/classification',
-    groups: '/classification/:id/groups',
+    groups: {
+      contentType: 'application/x-www-form-urlencoded',
+      url: '/classification/:id/groups'
+    },
     export: '/classification/:id/export.json',
     searchGroups: '/classification/:id/groups/search/:query'
   }
