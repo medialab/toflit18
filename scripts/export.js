@@ -262,9 +262,9 @@ async.series([
               {model, slug, parent} = classification.properties;
 
           if (parent === 'sources')
-            parent = model.toLowerCase();
+            parent = model
 
-          const filename = `./.output/classification_${model.toLowerCase()}_${slug}.csv`;
+          const filename = `./.output/classification_${model}_${slug}.csv`;
 
           stream
             .pipe(stringify({delimiter: ','}))

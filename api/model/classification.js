@@ -28,7 +28,7 @@ function makeTree(list, tree) {
 /**
  * Model.
  */
-const model = {
+const Model = {
 
   // Retrieving the list of every classifications
   getAll(callback) {
@@ -45,7 +45,7 @@ const model = {
         };
       });
 
-      const groupedByModel = groupBy(classifications, c => c.model.toLowerCase());
+      const groupedByModel = groupBy(classifications, c => c.model);
 
       const tree = {
         product: makeTree(groupedByModel.product),
@@ -116,10 +116,10 @@ const model = {
       return stringify([headers].concat(rows), {}, function(err, csv) {
         if (err) return callback(err);
 
-        return callback(null, {csv, name, model: model.toLowerCase()});
+        return callback(null, {csv, name, model});
       });
     });
   }
 };
 
-export default model;
+export default Model;

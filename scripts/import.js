@@ -184,7 +184,7 @@ const EDGE_INDEXES = {
 const CLASSIFICATION_NODES = {
   product_sources: BUILDER.save({
     name: 'Sources',
-    model: 'Product',
+    model: 'product',
     slug: 'sources',
     description: 'Collecting the sources themselves.',
     padding: 'limbo',
@@ -192,49 +192,49 @@ const CLASSIFICATION_NODES = {
   }, 'Classification'),
   product_orthographic: BUILDER.save({
     name: 'Orthographic Normalization',
-    model: 'Product',
+    model: 'product',
     slug: 'orthographic_normalization',
     description: 'Fixing the source\'s somewhat faulty orthograph.',
     padding: 'limbo'
   }, 'Classification'),
   product_simplified: BUILDER.save({
     name: 'Simplification',
-    model: 'Product',
+    model: 'product',
     slug: 'simplification',
     description: 'Simplifying the source.',
     padding: 'limbo'
   }, 'Classification'),
   product_categorized: BUILDER.save({
     name: 'Categorization',
-    model: 'Product',
+    model: 'product',
     slug: 'categorization',
     description: 'Categorizing the various products.',
     padding: 'limbo'
   }, 'Classification'),
   product_sitcrev1: BUILDER.save({
     name: 'SITC Rev.1',
-    model: 'Product',
+    model: 'product',
     slug: 'sitc_rev1',
     description: 'SITC Rev.1',
     padding: 'limbo'
   }, 'Classification'),
   product_sitcrev2: BUILDER.save({
     name: 'SITC Rev.2',
-    model: 'Product',
+    model: 'product',
     slug: 'sitc_rev2',
     description: 'SITC Rev.2',
     padding: 'limbo'
   }, 'Classification'),
   product_medicinal: BUILDER.save({
     name: 'Medicinal products',
-    model: 'Product',
+    model: 'product',
     slug: 'medicinal',
     description: 'Gathering some medicinal products.',
     padding: 'limbo'
   }, 'Classification'),
   country_sources: BUILDER.save({
     name: 'Sources',
-    model: 'Country',
+    model: 'country',
     slug: 'sources',
     description: 'Collecting the sources themselves.',
     padding: 'limbo',
@@ -242,21 +242,21 @@ const CLASSIFICATION_NODES = {
   }, 'Classification'),
   country_orthographic: BUILDER.save({
     name: 'Orthographic Normalization',
-    model: 'Country',
+    model: 'country',
     slug: 'orthographic_normalization',
     description: 'Fixing the source\'s somewhat faulty orthograph.',
     padding: 'limbo'
   }, 'Classification'),
   country_simplified: BUILDER.save({
     name: 'Simplification',
-    model: 'Country',
+    model: 'country',
     slug: 'simplification',
     description: 'Simplifying the source.',
     padding: 'limbo'
   }, 'Classification'),
   country_grouped: BUILDER.save({
     name: 'Grouping',
-    model: 'Country',
+    model: 'country',
     slug: 'grouping',
     description: 'Grouping the countries for convenience.',
     padding: 'limbo'
