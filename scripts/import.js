@@ -6,6 +6,7 @@
  * will be used by the datascape.
  */
 import {argv} from 'yargs';
+import async from 'async';
 import {parse as parseCsv, stringify as stringifyCsv} from 'csv';
 import {default as h} from 'highland';
 import {db as dbConfig, api as apiConfig} from '../config.json';
@@ -101,6 +102,7 @@ function indexedNode(index, label, key, data) {
  */
 const BDD_CENTRALE_PATH = '/base_centrale/bdd_centrale.csv',
       CLASSIFICATIONS_PATH = '/Traitement des marchandises, pays, unités',
+      BDD_OUTSIDERS = CLASSIFICATIONS_PATH + '/marchandises_sourcees.csv',
       ORTHOGRAPHIC_CLASSIFICATION = CLASSIFICATIONS_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
       SIMPLIFICATION = CLASSIFICATIONS_PATH + '/bdd_marchandises_simplifiees.csv',
       OTHER_CLASSIFICATIONS = CLASSIFICATIONS_PATH + '/bdd_marchandises_classifiees.csv',
@@ -148,7 +150,6 @@ if (!DATA_PATH)
   throw Error('No data path provided.');
 
 console.log('Reading csv files from "' + DATA_PATH + '"');
-console.log('Processing flows...');
 
 /**
  * Basic instantiation
@@ -173,6 +174,12 @@ const INDEXES = {
   products: {},
   sources: {},
   units: {}
+};
+
+const OUTSIDER_INDEXES = {
+  fr: {},
+  sund: {},
+  belg: {}
 };
 
 const EDGE_INDEXES = {
@@ -278,6 +285,12 @@ BUILDER.relate(CLASSIFICATION_NODES.country_orthographic, 'BASED_ON', CLASSIFICA
 BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATION_NODES.country_orthographic);
 BUILDER.relate(CLASSIFICATION_NODES.country_grouped, 'BASED_ON', CLASSIFICATION_NODES.country_simplified);
 
+const OUTSIDER_SOURCES_NODES = {
+  fr: BUILDER.save({name: 'Hambourg'}, ['Source', 'ExternalSource']),
+  sund: BUILDER.save({name: 'Sund'}, ['Source', 'ExternalSource']),
+  belg: BUILDER.save({name: 'Belgium'}, ['Source', 'ExternalSource'])
+};
+
 /**
  * Process
  * ========
@@ -287,26 +300,49 @@ BUILDER.relate(CLASSIFICATION_NODES.country_grouped, 'BASED_ON', CLASSIFICATION_
  */
 
 /**
- * Parsing the file
+ * Parsing the files
  */
-let readStream = fs.createReadStream(DATA_PATH + BDD_CENTRALE_PATH)
-  .pipe(parseCsv({delimiter: ',', columns: true}));
+async.series({
 
-// Getting the flows
-readStream = h(readStream)
-  // .drop(5000)
-  // .take(1000)
-  .map(l => _.mapValues(l, cleanText))
-  .each(importer)
-  .on('end', function() {
+  flows(next) {
+    console.log('Processing flows...');
 
+    let readStream = fs.createReadStream(DATA_PATH + BDD_CENTRALE_PATH)
+      .pipe(parseCsv({delimiter: ',', columns: true}));
+
+    readStream = h(readStream)
+      .map(l => _.mapValues(l, cleanText))
+      .each(importer)
+      .on('end', () => next());
+  },
+
+  externalProduct(next) {
+    console.log('Processing outsider products...');
+
+    const csvData = fs.readFileSync(DATA_PATH + BDD_OUTSIDERS, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          name: cleanText(line[0]),
+          fr: line[1].trim() === '1',
+          sund: line[2].trim() === '1',
+          belg: line[3].trim() === '1'
+        }))
+        .forEach(outsiderProduct);
+
+      return next();
+    });
+  },
+
+  productOrthographic(next) {
     console.log('Processing classifications...');
 
     console.log('  -- Products orthographic normalization');
 
     // Parsing orthographic corrections for products
-    const opcsvData = fs.readFileSync(DATA_PATH + ORTHOGRAPHIC_CLASSIFICATION, 'utf-8');
-    parseCsv(opcsvData, {delimiter: ','}, function(err, data) {
+    const csvData = fs.readFileSync(DATA_PATH + ORTHOGRAPHIC_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
       data
         .slice(1)
         .map(line => ({
@@ -316,47 +352,59 @@ readStream = h(readStream)
         }))
         .forEach(orthographicProduct);
 
-        console.log('  -- Products simplification');
-
-        // Parsing raw simplification
-        const spcsvData = fs.readFileSync(DATA_PATH + SIMPLIFICATION, 'utf-8');
-        parseCsv(spcsvData, {delimiter: ','}, function(err, data) {
-          data
-            .slice(1)
-            .map(line => ({
-              orthographic: cleanText(line[0]),
-              simplified: cleanText(line[1])
-            }))
-            .forEach(simplifiedProduct);
-
-            console.log('  -- Products various classifications');
-
-            // Parsing various classifications
-            const vpcsvData = fs.readFileSync(DATA_PATH + OTHER_CLASSIFICATIONS, 'utf-8');
-            parseCsv(vpcsvData, {delimiter: ','}, function(err, data) {
-              _(data.slice(1))
-                .map(line => ({
-                  simplified: cleanText(line[0]),
-                  categorized: cleanText(line[1]),
-                  sitcrev1: cleanText(line[2]),
-                  sitcrev2: cleanText(line[3]),
-                  medicinal: +cleanText(line[4]) > 0 ? cleanText(line[0]) : null
-                }))
-                .forEach(categorizedProduct)
-                .forEach(medicinalProduct)
-                .forEach(sitcrev2Product)
-                .uniq('sitcrev2')
-                .forEach(sitcrev1Product)
-                .value();
-            });
-        });
+      return next();
     });
+  },
 
+  productSimplification(next) {
+    console.log('  -- Products simplification');
+
+    // Parsing raw simplification
+    const csvData = fs.readFileSync(DATA_PATH + SIMPLIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          orthographic: cleanText(line[0]),
+          simplified: cleanText(line[1])
+        }))
+        .forEach(simplifiedProduct);
+
+      return next();
+    });
+  },
+
+  productVarious(next) {
+    console.log('  -- Products various classifications');
+
+    // Parsing various classifications
+    const csvData = fs.readFileSync(DATA_PATH + OTHER_CLASSIFICATIONS, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      _(data.slice(1))
+        .map(line => ({
+          simplified: cleanText(line[0]),
+          categorized: cleanText(line[1]),
+          sitcrev1: cleanText(line[2]),
+          sitcrev2: cleanText(line[3]),
+          medicinal: +cleanText(line[4]) > 0 ? cleanText(line[0]) : null
+        }))
+        .forEach(categorizedProduct)
+        .forEach(medicinalProduct)
+        .forEach(sitcrev2Product)
+        .uniq('sitcrev2')
+        .forEach(sitcrev1Product)
+        .value();
+
+      return next();
+    });
+  },
+
+  countryVarious(next) {
     console.log('  -- Countries various classifications');
 
     // Parsing various classifications for countries
-    const occsvData = fs.readFileSync(DATA_PATH + COUNTRY_CLASSIFICATIONS, 'utf-8');
-    parseCsv(occsvData, {delimiter: ','}, function(err, data) {
+    const csvData = fs.readFileSync(DATA_PATH + COUNTRY_CLASSIFICATIONS, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
       _(data.slice(1))
         .map(line => ({
           original: cleanText(line[0]),
@@ -371,8 +419,11 @@ readStream = h(readStream)
         .uniq('simplified')
         .forEach(groupedCountry)
         .value();
+
+      return next();
     });
-  });
+  }
+}, err => err && console.error(err));
 
 /**
  * Consuming the flows.
@@ -531,15 +582,37 @@ function importer(csvLine) {
 }
 
 /**
+ * Consuming products coming from external sources.
+ */
+function outsiderProduct(line) {
+  const name = line.name,
+        nodeData = {name};
+
+  ['fr', 'sund', 'belg'].forEach(function(source) {
+    if (line[source]) {
+      if (OUTSIDER_INDEXES[source][name])
+        return;
+
+      const node = indexedNode(
+        OUTSIDER_INDEXES[source],
+        ['Product', 'OutsiderProduct'],
+        name,
+        nodeData
+      );
+
+      BUILDER.relate(node, 'TRANSCRIBED_FROM', OUTSIDER_SOURCES_NODES[source]);
+    }
+  });
+}
+
+/**
  * Consuming the classifications.
  *
  * Note: This should be wildly refactored!
  *
  * Algorithm
  * ---------
- * 1. If (item not in index) => we have an outsider.
- *    a. Create the outsider item in the index.
- *    b. Relate parent-[:HAS]->outsiderItem.
+ * 1. Checking both indexes to find the item. If no match, we drop it.
  * 2. Upsert the group w/ index.
  * 3. Relate classification-[:HAS]->group.
  * 4. Relate group-[:AGGREGATES]->item.
@@ -549,27 +622,13 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
     const group = line[groupKey],
           item = line[itemKey];
 
-    if (opts.filterEmpty && !line[groupKey])
+    if (!line[groupKey])
       return;
 
     let itemNode = itemIndex[item];
 
-    if (!itemNode) {
-
-      // The item does not exist and is consequentially an outsider!
-      itemNode = indexedNode(
-        itemIndex,
-        ['ClassifiedItem', 'OutsiderClassifiedItem'],
-        item,
-        {name: item}
-      );
-
-      // Link to the parent classification
-      BUILDER.relate(parentNode, 'HAS', itemNode);
-    }
-
     // Building the group node
-    const alreadyLinked = !!groupIndex[group];
+    let alreadyLinked = !!groupIndex[group];
 
     const nodeData = {
       name: group
@@ -586,12 +645,38 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
       nodeData
     );
 
-    // Linking the group to the classification on first run
-    if (!alreadyLinked)
-      BUILDER.relate(classificationNode, 'HAS', groupNode);
+    // From sources
+    if (itemNode) {
 
-    // The group aggregates the item
-    BUILDER.relate(groupNode, 'AGGREGATES', itemNode);
+      // Linking the group to the classification on first run
+      if (!alreadyLinked) {
+        BUILDER.relate(classificationNode, 'HAS', groupNode);
+        alreadyLinked = true;
+      }
+
+      // The group aggregates the item
+      BUILDER.relate(groupNode, 'AGGREGATES', itemNode);
+    }
+
+    if (!opts.outsiders)
+      return;
+
+    // Checking external sources
+    ['fr', 'sund', 'belg'].forEach(function(source) {
+      const outsiderNode = OUTSIDER_INDEXES[source][item];
+
+      if (!outsiderNode)
+        return;
+
+      // Linking the group to the classification on first run
+      if (!alreadyLinked) {
+        BUILDER.relate(classificationNode, 'HAS', groupNode);
+        alreadyLinked = true;
+      }
+
+      // The group aggregates the item
+      BUILDER.relate(groupNode, 'AGGREGATES', outsiderNode);
+    });
   };
 }
 
@@ -612,7 +697,7 @@ const simplifiedProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_orthographic,
   'simplified',
   'orthographic',
-  {outsiders: true}
+  {}
 );
 
 const categorizedProduct = makeClassificationConsumer(
@@ -622,7 +707,7 @@ const categorizedProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_simplified,
   'categorized',
   'simplified',
-  {filterEmpty: true, shouldTakeNote: true, outsiders: true}
+  {shouldTakeNote: true}
 );
 
 const sitcrev2Product = makeClassificationConsumer(
@@ -632,7 +717,7 @@ const sitcrev2Product = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_simplified,
   'sitcrev2',
   'simplified',
-  {filterEmpty: true}
+  {}
 );
 
 const sitcrev1Product = makeClassificationConsumer(
@@ -642,7 +727,7 @@ const sitcrev1Product = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_sitcrev2,
   'sitcrev1',
   'sitcrev2',
-  {filterEmpty: true}
+  {}
 );
 
 const medicinalProduct = makeClassificationConsumer(
@@ -652,7 +737,7 @@ const medicinalProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_simplified,
   'medicinal',
   'simplified',
-  {filterEmpty: true}
+  {}
 );
 
 const orthographicCountry = makeClassificationConsumer(
@@ -662,7 +747,7 @@ const orthographicCountry = makeClassificationConsumer(
   INDEXES.countries,
   'orthographic',
   'original',
-  {filterEmpty: true, outsiders: true}
+  {}
 );
 
 const simplifiedCountry = makeClassificationConsumer(
@@ -672,7 +757,7 @@ const simplifiedCountry = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.country_orthographic,
   'simplified',
   'orthographic',
-  {filterEmpty: true, outsiders: true}
+  {}
 );
 
 const groupedCountry = makeClassificationConsumer(
@@ -682,5 +767,5 @@ const groupedCountry = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.country_simplified,
   'grouped',
   'simplified',
-  {filterEmpty: true, outsiders: true}
+  {}
 );
