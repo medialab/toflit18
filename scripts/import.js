@@ -177,7 +177,6 @@ const INDEXES = {
 };
 
 const OUTSIDER_INDEXES = {
-  fr: {},
   sund: {},
   belg: {}
 };
@@ -286,7 +285,6 @@ BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATI
 BUILDER.relate(CLASSIFICATION_NODES.country_grouped, 'BASED_ON', CLASSIFICATION_NODES.country_simplified);
 
 const OUTSIDER_SOURCES_NODES = {
-  fr: BUILDER.save({name: 'Hambourg'}, ['Source', 'ExternalSource']),
   sund: BUILDER.save({name: 'Sund'}, ['Source', 'ExternalSource']),
   belg: BUILDER.save({name: 'Belgium'}, ['Source', 'ExternalSource'])
 };
@@ -325,10 +323,11 @@ async.series({
         .slice(1)
         .map(line => ({
           name: cleanText(line[0]),
-          fr: line[1].trim() === '1',
+          sources: line[1].trim() === '1',
           sund: line[2].trim() === '1',
           belg: line[3].trim() === '1'
         }))
+        .filter(row => !row.sources)
         .forEach(outsiderProduct);
 
       return next();
@@ -588,7 +587,7 @@ function outsiderProduct(line) {
   const name = line.name,
         nodeData = {name};
 
-  ['fr', 'sund', 'belg'].forEach(function(source) {
+  ['sund', 'belg'].forEach(function(source) {
     if (line[source]) {
       if (OUTSIDER_INDEXES[source][name])
         return;
@@ -662,7 +661,7 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
       return;
 
     // Checking external sources
-    ['fr', 'sund', 'belg'].forEach(function(source) {
+    ['sund', 'belg'].forEach(function(source) {
       const outsiderNode = OUTSIDER_INDEXES[source][item];
 
       if (!outsiderNode)
