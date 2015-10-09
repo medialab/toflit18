@@ -48,6 +48,7 @@ RETURN c.name AS country;
 START c=node({id})
 MATCH (c)-[:HAS]->(group:ClassifiedItem)
 OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Item)
+WHERE not(item:OutsiderItem)
 RETURN group.name AS group, item.name AS item;
 
 // name: classifiedItems
@@ -59,4 +60,14 @@ RETURN
   group.name AS group,
   item.name AS item,
   group.note AS note,
-  item:OutsiderClassifiedItem AS outsider;
+  "toflit18" AS source
+
+UNION ALL
+
+START c=node({id})
+MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item:OutsiderItem)-[:TRANSCRIBED_FROM]->(source:ExternalSource)
+RETURN
+  group.name AS group,
+  item.name AS item,
+  group.note AS note,
+  source.name AS source;

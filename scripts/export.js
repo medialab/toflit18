@@ -258,11 +258,13 @@ async.series([
 
       async.eachSeries(classifications, function(classification, next) {
         database.cypher({query: queries.classifiedItems, params: {id: classification._id}}, function(err, rows) {
+          if (err) return callback(err);
+
           let stream = h(),
               {model, slug, parent} = classification.properties;
 
           if (parent === 'sources')
-            parent = model
+            parent = model;
 
           const filename = `./.output/classification_${model}_${slug}.csv`;
 
@@ -270,10 +272,10 @@ async.series([
             .pipe(stringify({delimiter: ','}))
             .pipe(fs.createWriteStream(filename,'utf-8'));
 
-          stream.write([slug, parent, 'note', 'outsider']);
+          stream.write([parent, slug, 'note', 'source']);
 
           rows.forEach(function(row) {
-            stream.write([row.group, row.item, row.note, '' + row.outsider]);
+            stream.write([row.item, row.group, row.note, row.source]);
           });
 
           return next();

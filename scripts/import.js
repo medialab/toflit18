@@ -595,7 +595,7 @@ function outsiderProduct(line) {
 
       const node = indexedNode(
         OUTSIDER_INDEXES[source],
-        ['Product', 'OutsiderProduct'],
+        ['Item', 'Product', 'OutsiderItem', 'OutsiderProduct'],
         name,
         nodeData
       );
