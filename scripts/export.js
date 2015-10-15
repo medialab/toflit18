@@ -9,7 +9,7 @@ import {exporter as queries} from '../api/queries';
 import {parse, stringify} from 'csv';
 import async from 'async';
 import {default as h} from 'highland';
-import {fill, indexBy} from 'lodash';
+import _, {fill, indexBy} from 'lodash';
 import fs from 'fs';
 
 /**
@@ -273,6 +273,17 @@ async.series([
             .pipe(fs.createWriteStream(filename,'utf-8'));
 
           stream.write([parent, slug, 'note', 'source']);
+
+          rows = _(rows)
+            .groupBy('item')
+            .values()
+            .map(row => {
+              return {
+                ...row[0],
+                source: row.map(r => r.source).join(',')
+              };
+            })
+            .value();
 
           rows.forEach(function(row) {
             stream.write([row.item, row.group, row.note, row.source]);

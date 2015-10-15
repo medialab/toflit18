@@ -617,6 +617,9 @@ function outsiderProduct(line) {
  * 4. Relate group-[:AGGREGATES]->item.
  */
 function makeClassificationConsumer(groupIndex, classificationNode, parentNode, itemIndex, groupKey, itemKey, opts={}) {
+
+  const linkedItemIndex = new Set();
+
   return function(line) {
     const group = line[groupKey],
           item = line[itemKey];
@@ -647,6 +650,12 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
     // From sources
     if (itemNode) {
 
+      // Have we several group pointing to the same item?
+      if (linkedItemIndex.has(item)) {
+        console.log('  !! Warning: item is targeted by multiple groups:', item);
+        return;
+      }
+
       // Linking the group to the classification on first run
       if (!alreadyLinked) {
         BUILDER.relate(classificationNode, 'HAS', groupNode);
@@ -655,6 +664,7 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
 
       // The group aggregates the item
       BUILDER.relate(groupNode, 'AGGREGATES', itemNode);
+      linkedItemIndex.add(item);
     }
 
     if (!opts.outsiders)
