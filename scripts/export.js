@@ -9,7 +9,7 @@ import {exporter as queries} from '../api/queries';
 import {parse, stringify} from 'csv';
 import async from 'async';
 import {default as h} from 'highland';
-import _, {fill, indexBy} from 'lodash';
+import _, {fill, indexBy, omit} from 'lodash';
 import fs from 'fs';
 
 /**
@@ -272,7 +272,10 @@ async.series([
             .pipe(stringify({delimiter: ','}))
             .pipe(fs.createWriteStream(filename,'utf-8'));
 
-          stream.write([parent, slug, 'note', 'source']);
+          if (model === 'product')
+            stream.write([parent, slug, 'note', 'source']);
+          else
+            stream.write([parent, slug, 'note']);
 
           rows = _(rows)
             .groupBy('item')
@@ -286,7 +289,10 @@ async.series([
             .value();
 
           rows.forEach(function(row) {
-            stream.write([row.item, row.group, row.note, row.source]);
+            if (model === 'product')
+              stream.write([row.item, row.group, row.note, row.source]);
+            else
+              stream.write([row.item, row.group, row.note]);
           });
 
           return next();
@@ -340,7 +346,7 @@ async.series([
           else {
             writeStream.write(line
               .concat((indexes.products[line[6]] || []).slice(1))
-              .concat((indexes.countries[line[15]] || []).slice(1))
+              .concat((indexes.countries[line[16]] || []).slice(1))
             );
           }
         })
