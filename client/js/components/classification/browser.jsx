@@ -52,17 +52,19 @@ export default class ClassificationBrowser extends Component {
       <div className="browser-wrapper">
         <div className="full-height">
           <Row className="full-height">
+
             <Col md={5} className="full-height">
               <div className="panel full-height">
-                <div className="partial-height overflow">
-                  <h4>Products classifications</h4>
+                <h3>Classifications</h3>
+                <hr />
+                <div className="partial-height twice overflow">
+                  <h4>Products</h4>
                   <hr />
                   {product.length ?
                     <ClassificationsList items={product}
                                          selected={current.id} /> :
                     <Loader />}
-                  <br />
-                  <h4>Countries classifications</h4>
+                  <h4>Countries</h4>
                   <hr />
                   {country.length ?
                     <ClassificationsList items={country}
@@ -82,6 +84,7 @@ export default class ClassificationBrowser extends Component {
                 </div>
               </div>
             </Col>
+
             <Col md={7} className="full-height">
               <div className="panel full-height">
                 <h4>{current.name || '...'}</h4>
@@ -95,6 +98,7 @@ export default class ClassificationBrowser extends Component {
                 </Infinite>
               </div>
             </Col>
+
           </Row>
         </div>
       </div>
