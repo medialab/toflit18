@@ -18,8 +18,8 @@ export default class Login extends Component {
     return (
       <div className="login-container">
         <Row>
-          <Col md={2} />
-          <Col md={8}>
+          <Col md={3} />
+          <Col md={6}>
             <div className="panel login-panel">
               <h2>Login</h2>
               <hr />

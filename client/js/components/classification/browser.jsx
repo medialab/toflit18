@@ -14,18 +14,20 @@ import Infinite from '../misc/infinite.jsx';
 import cls from 'classnames';
 
 // Actions
-import {selectBrowserClassification} from '../../actions/selection';
-import {expandBrowserGroups, searchBrowserGroups} from '../../actions/data';
-import {downloadClassification} from '../../actions/download';
-import {linker} from '../../actions/factory';
+import {
+  download,
+  expand,
+  search,
+  select
+} from '../../actions/browser';
 
 /**
  * Main component.
  */
 @branch({
   actions: {
-    expand: expandBrowserGroups,
-    download: downloadClassification
+    expand,
+    download
   },
   cursors: {
     downloading: ['flags', 'downloading'],
@@ -118,7 +120,7 @@ function ClassificationsList({items, selected}) {
  */
 @branch({
   actions: {
-    select: selectBrowserClassification
+    select
   }
 })
 class Classification extends Component {
@@ -146,7 +148,7 @@ class Classification extends Component {
  */
 @branch({
   actions: {
-    search: searchBrowserGroups
+    search
   }
 })
 class GroupQuery extends Component {

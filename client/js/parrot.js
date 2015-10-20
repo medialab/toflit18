@@ -5,7 +5,7 @@
  * Defining data fetching rules.
  */
 import Parrot from './lib/parrot';
-import {selectBrowserClassification} from './actions/selection';
+import * as browser from './actions/browser';
 
 export default function(state, client) {
   return new Parrot(state, {
@@ -27,7 +27,7 @@ export default function(state, client) {
             const selection = state.select('states', 'classification', 'browser', 'selected');
 
             if (selection.get() === null)
-              selectBrowserClassification(state, result.product.id);
+              browser.select(state, result.product.id);
           });
         }
       }

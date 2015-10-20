@@ -28,8 +28,8 @@ const defaultState = {
   data: {
     classifications: {
       raw: null,
-      flat: monkey(['data', 'classifications', 'raw'], flatClassifications),
-      index: monkey(['data', 'classifications', 'flat'], classificationsIndex)
+      flat: monkey(['.', 'raw'], flatClassifications),
+      index: monkey(['.', 'flat'], classificationsIndex)
     }
   },
 
@@ -50,7 +50,7 @@ const defaultState = {
         selected: null,
         query: '',
         current: monkey(
-          ['states', 'classification', 'browser', 'selected'],
+          ['.', 'selected'],
           ['data', 'classifications', 'index'],
           (selected, index) => index[selected] || null
         ),
