@@ -9,7 +9,7 @@ import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../bootstrap/grid.jsx';
 import Button from '../bootstrap/button.jsx';
-import Loader from '../bootstrap/loader.jsx';
+import {Spinner, Waiter} from '../bootstrap/loaders.jsx';
 import Infinite from '../misc/infinite.jsx';
 import cls from 'classnames';
 
@@ -31,6 +31,7 @@ import {
   },
   cursors: {
     downloading: ['flags', 'downloading'],
+    loading: ['states', 'classification', 'browser', 'loading'],
     current: ['states', 'classification', 'browser', 'current'],
     classifications: ['data', 'classifications', 'flat']
   }
@@ -44,64 +45,98 @@ export default class ClassificationBrowser extends Component {
       downloading
     } = this.props;
 
-    const {product, country} = classifications;
-
     current = current || {};
 
     return (
       <div className="browser-wrapper">
         <div className="full-height">
           <Row className="full-height">
-
-            <Col md={5} className="full-height">
-              <div className="panel full-height">
-                <h3>Classifications</h3>
-                <hr />
-                <div className="partial-height twice overflow">
-                  <h4>Products</h4>
-                  <hr />
-                  {product.length ?
-                    <ClassificationsList items={product}
-                                         selected={current.id} /> :
-                    <Loader />}
-                  <h4>Countries</h4>
-                  <hr />
-                  {country.length ?
-                    <ClassificationsList items={country}
-                                         selected={current.id} /> :
-                    <Loader />}
-                </div>
-                <hr />
-                <div className="actions">
-                  <Col md={6}>
-                    <Button kind="primary"
-                            onClick={() => actions.download(current.id)}
-                            disabled={current.source || false}
-                            loading={downloading}>
-                      Export
-                    </Button>
-                  </Col>
-                </div>
-              </div>
-            </Col>
-
-            <Col md={7} className="full-height">
-              <div className="panel full-height">
-                <h4>{current.name || '...'}</h4>
-                <hr />
-                <GroupQuery query="Hey joe" id={current.id} />
-                <hr />
-                <Infinite className="partial-height twice overflow"
-                          action={() => actions.expand(current)}
-                          tracker={current.id}>
-                  <GroupsList />
-                </Infinite>
-              </div>
-            </Col>
-
+            <LeftPanel {...this.props} />
+            <RightPanel {...this.props} />
           </Row>
         </div>
       </div>
+    );
+  }
+}
+
+/**
+ * Left panel.
+ */
+class LeftPanel extends Component {
+  render() {
+    let {
+      actions,
+      current,
+      classifications: {product, country},
+      downloading
+    } = this.props;
+
+    current = current || {};
+
+    return (
+      <Col md={5} className="full-height">
+        <div className="panel full-height">
+          <h3>Classifications</h3>
+          <hr />
+          <div className="partial-height twice overflow">
+            <h4 className="classifications-category">Products</h4>
+            {product.length ?
+              <ClassificationsList items={product}
+                                   selected={current.id} /> :
+              <Waiter />}
+            <h4 className="classifications-category">Countries</h4>
+            {country.length ?
+              <ClassificationsList items={country}
+                                   selected={current.id} /> :
+              <Waiter />}
+          </div>
+          <hr />
+          <div className="actions">
+            <Col md={6}>
+              <Button kind="primary"
+                      onClick={() => actions.download(current.id)}
+                      disabled={current.source || false}
+                      loading={downloading}>
+                Export
+              </Button>
+            </Col>
+          </div>
+        </div>
+      </Col>
+    );
+  }
+}
+
+/**
+ * Right panel
+ */
+class RightPanel extends Component {
+  render() {
+    let {actions, current, loading} = this.props;
+
+    current = current || {};
+
+    let list = loading ?
+      <Waiter /> :
+      (
+        <Infinite className="partial-height twice overflow"
+                  action={() => actions.expand(current)}
+                  tracker={current.id}>
+          <GroupsList />
+        </Infinite>
+      );
+
+    return (
+      <Col md={7} className="full-height">
+        <div className="panel full-height">
+          <h4>{current.name || '...'}</h4>
+          <hr />
+          <GroupQuery query="Hey joe" id={current.id} loading={loading} />
+          <hr />
+          {list}
+        </div>
+      </Col>
     );
   }
 }
@@ -162,9 +197,15 @@ class GroupQuery extends Component {
     this.state = {query: null};
   }
 
+  submit() {
+    const query = this.state.query;
+
+    if (query)
+      return this.props.actions.search(this.props.id, query);
+  }
+
   render() {
-    const search = this.props.actions.search,
-          id = this.props.id;
+    const {id, loading} = this.props;
 
     return (
       <div className="input-group">
@@ -172,9 +213,14 @@ class GroupQuery extends Component {
                className="form-control"
                placeholder="Query..."
                value={this.state.query}
+               onKeyPress={(e) => e.which === 13 && this.submit()}
                onChange={e => this.setState({query: e.target.value})} />
         <span className="input-group-btn">
-          <Button kind="secondary" onClick={(e) => search(id, this.state.query)}>Filter</Button>
+          <Button kind="secondary"
+                  loading={loading}
+                  onClick={() => this.submit()}>
+            Filter
+          </Button>
         </span>
       </div>
     );

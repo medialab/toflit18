@@ -7,17 +7,22 @@
 import {enpoint} from '../../config.json';
 import {saveAs} from 'browser-filesaver';
 
+const PATH = ['states', 'classification', 'browser'];
+
 /**
  * Selecting a classification
  */
 export function select(tree, id) {
-  const state = tree.select('states', 'classification', 'browser');
+  const state = tree.select(PATH);
 
   state.set('selected', id);
   state.set('rows', []);
+  state.set('loading', true);
 
   // Fetching the necessary rows
   tree.client.groups({params: {id}}, function(err, data) {
+    state.set('loading', false);
+
     if (err) return;
 
     state.set('rows', data.result);
@@ -29,7 +34,7 @@ export function select(tree, id) {
  * Expand the rows displayed on screen.
  */
 export function expand(tree, classification) {
-  const rows = tree.select('states', 'classification', 'browser', 'rows'),
+  const rows = tree.select(PATH.concat('rows')),
         current = rows.get();
 
   if (classification.nb_groups <= current.length)
@@ -49,9 +54,13 @@ export function expand(tree, classification) {
  * Searching something specific.
  */
 export function search(tree, id, query) {
+  const loading = tree.select(PATH.concat('loading'));
+
+  loading.set(true);
   return tree.client.groups(
     {params: {id: id}, data: {query}},
     function(err, data) {
+      loading.set(false);
       if (err) return;
 
       tree.set(['states', 'classification', 'browser', 'rows'], data.result);

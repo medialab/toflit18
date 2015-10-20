@@ -6,7 +6,7 @@
  * behaviors.
  */
 import React, {Component} from 'react';
-import Loader from '../bootstrap/loader.jsx';
+import {Spinner} from '../bootstrap/loaders.jsx';
 import {debounce} from 'lodash';
 
 export default class Infinite extends Component {
@@ -58,7 +58,7 @@ export default class Infinite extends Component {
       <div className={className}
            onScroll={debounce(scrollHandler, 500)}>
         {this.props.children}
-        {this.state.loading && <Loader />}
+        {this.state.loading && <Spinner />}
       </div>
     );
   }

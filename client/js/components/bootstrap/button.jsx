@@ -39,12 +39,18 @@ export default class Button extends Component {
     if (disabled)
       cls += ' disabled';
 
+    let optional = {};
+
+    if (kind === 'secondary')
+      optional['data-spinner-color'] = '#373a3c';
+
     return (
       <button ref="button"
               type="button"
               data-style="slide-left"
               className={cls}
-              onClick={e => !disabled && typeof onClick === 'function' && onClick(e)}>
+              onClick={e => !disabled && typeof onClick === 'function' && onClick(e)}
+              {...optional}>
         <span className="ladda-label">
           {this.props.children}
         </span>

@@ -45,8 +45,13 @@ const defaultState = {
 
   // Specific states
   states: merge({
+
+    // Classification section
     classification: {
+
+      // Classification browser
       browser: {
+        loading: false,
         selected: null,
         query: '',
         current: monkey(

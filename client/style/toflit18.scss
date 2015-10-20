@@ -11,8 +11,11 @@
  */
 
 // Colors
+$text-black:       #373a3c;
+
 $light-grey:       #F5F5F5;
 $medium-grey:      #E7E7E7;
+$dark-grey:        #B8B8B8;
 $dark:             #555;
 $darker:           #333;
 
@@ -27,7 +30,7 @@ $old-blue:         #4F7178;
  */
 
 // Grids
-$grid-gutter-width:          10px !default;
+$grid-gutter-width:          10px;
 
 // Fonts
 $font-family-sans-serif:     Merriweather, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -36,10 +39,10 @@ $font-family-monospace:      Menlo, Monaco, Consolas, "Courier New", monospace;
 $font-family-base:           $font-family-sans-serif;
 
 // Buttons
-$btn-primary-bg:  $old-blue;
+$btn-primary-bg: $old-blue;
 
 // Forms
-$input-border-focus:     $old-blue;
+$input-border-focus: $old-blue;
 
 // Import
 @import "bootstrap/bootstrap";
@@ -101,6 +104,17 @@ h1 {
   font-weight: bold;
 }
 
+/**
+ * Loaders.
+ */
+.waiter {
+  text-align: center;
+  font-size: 2em;
+}
+
+/**
+ * Navbar.
+ */
 .navbar-emphasis {
   height: 3px;
   background-color: $poison-blusher;
@@ -194,8 +208,8 @@ h1 {
       }
     }
 
-    .actions {
-
+    .classifications-category {
+      padding-left: 10px;
     }
 
     .classifications-list {
@@ -213,7 +227,8 @@ h1 {
         }
 
         &.active {
-          @include stripes();
+          background-color: $dark-grey;
+          // @include stripes();
         }
       }
     }
