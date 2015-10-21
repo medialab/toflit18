@@ -7,5 +7,6 @@
 export function linker(path) {
   return function(tree, val) {
     tree.set(path, val);
+    return tree.commit();
   }
 }

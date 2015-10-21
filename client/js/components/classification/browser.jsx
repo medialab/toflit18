@@ -20,6 +20,7 @@ import {
   search,
   select
 } from '../../actions/browser';
+import {linker} from '../../actions/factory';
 
 /**
  * Main component.
@@ -132,7 +133,7 @@ class RightPanel extends Component {
         <div className="panel full-height">
           <h4>{current.name || '...'}</h4>
           <hr />
-          <GroupQuery query="Hey joe" id={current.id} loading={loading} />
+          <GroupQuery id={current.id} loading={loading} />
           <hr />
           {list}
         </div>
@@ -185,36 +186,41 @@ class Classification extends Component {
 /**
  * Group query.
  */
+const QUERY_PATH = ['states', 'classification', 'browser', 'query'];
+
 @branch({
+  cursors: {
+    query: QUERY_PATH
+  },
   actions: {
+    update: linker(QUERY_PATH),
     search
   }
 })
 class GroupQuery extends Component {
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {query: null};
-  }
-
   submit() {
-    const query = this.state.query;
+    const query = this.props.query;
 
     if (query)
       return this.props.actions.search(this.props.id, query);
   }
 
   render() {
-    const {id, loading} = this.props;
+    const {
+      actions,
+      id,
+      loading,
+      query
+    } = this.props;
 
     return (
       <div className="input-group">
         <input type="text"
                className="form-control"
                placeholder="Query..."
-               value={this.state.query}
+               value={query}
                onKeyPress={(e) => e.which === 13 && this.submit()}
-               onChange={e => this.setState({query: e.target.value})} />
+               onChange={e => actions.update(e.target.value)} />
         <span className="input-group-btn">
           <Button kind="secondary"
                   loading={loading}

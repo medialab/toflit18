@@ -17,6 +17,7 @@ export function select(tree, id) {
 
   state.set('selected', id);
   state.set('rows', []);
+  state.set('query', '');
   state.set('loading', true);
 
   // Fetching the necessary rows
