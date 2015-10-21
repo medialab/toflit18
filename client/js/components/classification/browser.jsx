@@ -314,7 +314,7 @@ function Group({name, items, source}) {
   return (
     <li className="item">
       <div>
-        {!source && <strong>({count})</strong>} {name}
+        {name} {!source && <em>({count} items)</em>}
       </div>
       {addendum}
     </li>
