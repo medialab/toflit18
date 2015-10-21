@@ -31,7 +31,10 @@ const client = new Client({
       url: '/login'
     },
 
-    logout: '/logout',
+    logout: {
+      method: 'POST',
+      url: '/logout'
+    },
 
     // Data related
     classifications: '/classification',

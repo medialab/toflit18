@@ -38,6 +38,7 @@ const controller = [
   },
   {
     url: '/logout',
+    methods: ['POST'],
     action(req, res) {
       req.session.destroy(err => {
         if (err) return res.serverError(err);

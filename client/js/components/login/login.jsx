@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../bootstrap/grid.jsx';
 import Button from '../bootstrap/button.jsx';
-import {attemptLogin} from '../../actions/session';
+import {login} from '../../actions/session';
 
 /**
  * Panel
@@ -37,7 +37,7 @@ export default class Login extends Component {
  */
 @branch({
   actions: {
-    submit: attemptLogin
+    submit: login
   },
   cursors: {
     flags: ['flags', 'login']

@@ -21,7 +21,7 @@ export function checkSession(tree) {
 /**
  * Simple attempt to log
  */
-export function attemptLogin(tree, name, password) {
+export function login(tree, name, password) {
   const flags = tree.select('flags', 'login');
 
   // Already attempting to log?
@@ -40,5 +40,14 @@ export function attemptLogin(tree, name, password) {
     flags.set('failed', false);
     tree.set('user', data.result);
     history.replaceState(null, '/');
+  });
+}
+
+/**
+ * Logout
+ */
+export function logout(tree) {
+  tree.client.logout(err => {
+    location.reload();
   });
 }

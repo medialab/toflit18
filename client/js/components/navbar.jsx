@@ -4,8 +4,10 @@
  *
  */
 import React, {Component} from 'react';
+import {branch} from 'baobab-react/decorators';
 import {Link} from 'react-router';
 import cls from 'classnames';
+import {logout} from '../actions/session';
 
 const LINKS = [
   {
@@ -18,6 +20,9 @@ const LINKS = [
   }
 ];
 
+@branch({
+  actions: {logout}
+})
 export default class NavBar extends Component {
   static contextTypes = {
     history: React.PropTypes.object
@@ -40,6 +45,12 @@ export default class NavBar extends Component {
                         className="nav-link">{l.label}</Link>
                 </li>
               ))}
+              <li className="nav-item pull-right">
+                <a className="nav-link logout"
+                   onClick={() => this.props.actions.logout()}>
+                  Logout
+                </a>
+              </li>
             </ul>
           </div>
         </nav>

@@ -160,6 +160,12 @@ h1 {
       }
     }
   }
+
+  .logout {
+    border-left: 1px solid $medium-grey;
+    padding-left: 15px;
+    cursor: pointer;
+  }
 }
 
 /**
