@@ -243,12 +243,7 @@ h1 {
       .item {
         background-color: $light-grey;
         padding: 10px;
-        cursor: pointer;
         margin-bottom: 10px;
-
-        &:hover {
-          background-color: $medium-grey;
-        }
       }
     }
   }
