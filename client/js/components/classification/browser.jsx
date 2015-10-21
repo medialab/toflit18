@@ -148,9 +148,11 @@ class RightPanel extends Component {
 function ClassificationsList({items, selected}) {
   return (
     <ul className="classifications-list">
-      {items.map(data => <Classification key={data.id}
-                                         data={data}
-                                         active={selected === data.id} />)}
+      {items.map((data, i) =>
+        <Classification key={data.id}
+                        data={data}
+                        parent={items[i - 1]}
+                        active={selected === data.id} />)}
     </ul>
   );
 }
@@ -168,16 +170,28 @@ class Classification extends Component {
     const {
       actions,
       active,
-      data: {id, name, author, level}
+      data: {id, name, author, level, nb_groups},
+      parent
     } = this.props;
 
     const offset = (level * 25) + 'px';
+
+    let itemsNotice = parent && [
+      ' for ',
+      <em key="groups">{parent.nb_groups}</em>,
+      ' items'
+    ];
 
     return (
       <li className={cls('item', {active})}
           style={{marginLeft: offset}}
           onClick={e => !active && actions.select(id)}>
-        <span>{name}</span> (<em>{author}</em>)
+        <div>
+          <strong>{name}</strong> (<em>{author}</em>)
+        </div>
+        <div className="addendum">
+          <em>{nb_groups}</em> groups{itemsNotice}.
+        </div>
       </li>
     );
   }
@@ -258,12 +272,36 @@ class GroupsList extends Component {
 /**
  * Group.
  */
-function Group({name}) {
+function Group({name, items}) {
+  const count = items.length;
+
+  let addendum
+
+  if (count)
+    addendum = (
+      <ul className="addendum">
+        {items.slice(0, 10).map((item, i) => (<Item key={i} name={item} />))}
+        {items.length > 10 && '[...]'}
+      </ul>
+    );
+
   return (
     <li className="item">
-      {name}
+      <div>
+        <strong>({count})</strong> {name}
+      </div>
+      {addendum}
     </li>
   );
 }
 
-export default ClassificationBrowser;
+/**
+ * Item.
+ */
+function Item({name}) {
+  return (
+    <li>
+      <em>{name}</em>
+    </li>
+  );
+}

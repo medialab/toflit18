@@ -75,6 +75,7 @@ const Model = {
         const groups = results.map(row => {
           return {
             ...row.group.properties,
+            items: row.items,
             id: row.group._id
           };
         });

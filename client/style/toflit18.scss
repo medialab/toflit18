@@ -196,6 +196,10 @@ h1 {
     padding: 15px;
     height: calc(100vh - 65px);
 
+    .addendum {
+      font-size: 0.7em;
+    }
+
     .panel {
       padding: 20px;
     }
@@ -228,7 +232,6 @@ h1 {
 
         &.active {
           background-color: $dark-grey;
-          // @include stripes();
         }
       }
     }

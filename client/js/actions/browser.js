@@ -35,18 +35,24 @@ export function select(tree, id) {
  * Expand the rows displayed on screen.
  */
 export function expand(tree, classification) {
-  const rows = tree.select(PATH.concat('rows')),
-        current = rows.get();
+  const state = tree.select(PATH),
+        current = state.get('rows'),
+        query = state.get('query');
 
   if (classification.nb_groups <= current.length)
     return;
 
+  const data = {offset: current.length};
+
+  if (query)
+    data.query = query;
+
   return tree.client.groups(
-    {params: {id: classification.id}, data: {offset: current.length}},
+    {params: {id: classification.id}, data},
     function(err, data) {
       if (err) return;
 
-      rows.concat(data.result);
+      state.concat('rows', data.result);
     }
   );
 }
