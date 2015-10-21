@@ -11,6 +11,7 @@ import {Row, Col} from '../bootstrap/grid.jsx';
 import Button from '../bootstrap/button.jsx';
 import {Spinner, Waiter} from '../bootstrap/loaders.jsx';
 import Infinite from '../misc/infinite.jsx';
+import {prettyPrint} from '../../lib/helpers';
 import cls from 'classnames';
 
 // Actions
@@ -124,7 +125,7 @@ class RightPanel extends Component {
         <Infinite className="partial-height twice overflow"
                   action={() => actions.expand(current)}
                   tracker={current.id}>
-          <GroupsList />
+          <GroupsList source={current.source} />
         </Infinite>
       );
 
@@ -151,7 +152,6 @@ function ClassificationsList({items, selected}) {
       {items.map((data, i) =>
         <Classification key={data.id}
                         data={data}
-                        parent={items[i - 1]}
                         active={selected === data.id} />)}
     </ul>
   );
@@ -170,17 +170,42 @@ class Classification extends Component {
     const {
       actions,
       active,
-      data: {id, name, author, level, nb_groups},
-      parent
+      data: {
+        id,
+        name,
+        author,
+        level,
+        groupsCount,
+        itemsCount,
+        unclassifiedItemsCount,
+        completion,
+        source
+      }
     } = this.props;
 
     const offset = (level * 25) + 'px';
 
-    let itemsNotice = parent && [
+    const itemsNotice = (itemsCount || null) && [
       ' for ',
-      <em key="groups">{parent.nb_groups}</em>,
+      <em key="groups">{prettyPrint(itemsCount)}</em>,
       ' items'
     ];
+
+    const missingCount = (unclassifiedItemsCount || null) && (
+      <span>
+        &nbsp;(<em className="red">-{prettyPrint(unclassifiedItemsCount)}</em>)
+      </span>
+    );
+
+    const completionNotice = !source && (
+      <div className="addendum">
+        <em>{prettyPrint(itemsCount - unclassifiedItemsCount)}</em> /
+        &nbsp;<em className="green">{prettyPrint(itemsCount)}</em>
+        {missingCount}
+        &nbsp;classified items
+        &nbsp;<em>({completion} %)</em>
+      </div>
+    );
 
     return (
       <li className={cls('item', {active})}
@@ -190,8 +215,9 @@ class Classification extends Component {
           <strong>{name}</strong> (<em>{author}</em>)
         </div>
         <div className="addendum">
-          <em>{nb_groups}</em> groups{itemsNotice}.
+          <em>{prettyPrint(groupsCount)}</em> groups{itemsNotice}.
         </div>
+        {completionNotice}
       </li>
     );
   }
@@ -257,12 +283,12 @@ class GroupQuery extends Component {
 })
 class GroupsList extends Component {
   render() {
-    const groups = this.props.groups;
+    const {groups, source} = this.props;
 
     return (
       <ul className="entities-list">
         {groups.length ?
-          groups.map(g => <Group key={g.id} {...g} />) :
+          groups.map(g => <Group source={source} key={g.id} {...g} />) :
           <span>No Results...</span>}
       </ul>
     );
@@ -272,7 +298,7 @@ class GroupsList extends Component {
 /**
  * Group.
  */
-function Group({name, items}) {
+function Group({name, items, source}) {
   const count = items.length;
 
   let addendum
@@ -288,7 +314,7 @@ function Group({name, items}) {
   return (
     <li className="item">
       <div>
-        <strong>({count})</strong> {name}
+        {!source && <strong>({count})</strong>} {name}
       </div>
       {addendum}
     </li>

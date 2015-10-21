@@ -4,11 +4,21 @@
 MATCH (c:Classification)-[:CREATED_BY]->(a:User)
 OPTIONAL MATCH (c)-[:BASED_ON]->(p:Classification)
 OPTIONAL MATCH (c)-[:HAS]->(group)
+
+WITH c, a, p, count(group) AS groupsCount
+OPTIONAL MATCH (p)-[:HAS]->(item)
+WITH c, a, p, groupsCount, count(item) AS itemsCount
+OPTIONAL MATCH (p)-[:HAS]->(item)
+WHERE NOT (item)<-[:AGGREGATES]-()<-[:HAS]-(c)
+WITH c, a, p, groupsCount, itemsCount, count(item) AS unclassifiedItemsCount
+
 RETURN
   c AS classification,
   a.name AS author,
   id(p) AS parent,
-  count(group) AS nb_groups;
+  groupsCount,
+  itemsCount,
+  unclassifiedItemsCount;
 
 // name: groups
 // Retireving a sample of groups for the given classification.

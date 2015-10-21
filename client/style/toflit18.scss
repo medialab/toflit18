@@ -15,7 +15,7 @@ $text-black:       #373a3c;
 
 $light-grey:       #F5F5F5;
 $medium-grey:      #E7E7E7;
-$dark-grey:        #B8B8B8;
+$dark-grey:        #D1D1D1;
 $dark:             #555;
 $darker:           #333;
 
@@ -48,23 +48,6 @@ $input-border-focus: $old-blue;
 @import "bootstrap/bootstrap";
 
 /**
- * Custom mixins.
- */
-@mixin stripes() {
-  background-size: 50px 50px;
-  background-color: rbgba(255, 255, 255, 0);
-  background-image: -webkit-linear-gradient(-45deg, rgba(0, 0, 0, .1) 25%, transparent 25%,
-                    transparent 50%, rgba(0, 0, 0, .1) 50%, rgba(0, 0, 0, .1) 75%,
-                    transparent 75%, transparent);
-  background-image: -moz-linear-gradient(-45deg, rgba(0, 0, 0, .1) 25%, transparent 25%,
-                    transparent 50%, rgba(0, 0, 0, .1) 50%, rgba(0, 0, 0, .1) 75%,
-                    transparent 75%, transparent);
-  background-image: linear-gradient(135deg, rgba(0, 0, 0, .1) 25%, transparent 25%,
-                    transparent 50%, rgba(0, 0, 0, .1) 50%, rgba(0, 0, 0, .1) 75%,
-                    transparent 75%, transparent);
-}
-
-/**
  * Globals.
  */
 html, body, #mount, #main {
@@ -74,6 +57,17 @@ html, body, #mount, #main {
 
 main {
   position: relative;
+}
+
+/**
+ * Semantic colouring.
+ */
+.red {
+  color: $poison-blusher;
+}
+
+.green {
+  color: $old-blue;
 }
 
 /**

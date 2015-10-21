@@ -25,6 +25,12 @@ function makeTree(list, tree) {
   return tree;
 }
 
+function computeCompletion(items, unclassified) {
+  return (
+    100 - ((unclassified * 100) / items)
+  ) | 0;
+}
+
 /**
  * Model.
  */
@@ -41,7 +47,10 @@ const Model = {
           id: row.classification._id,
           author: row.author,
           parent: row.parent,
-          nb_groups: row.nb_groups
+          groupsCount: row.groupsCount,
+          itemsCount: row.itemsCount,
+          unclassifiedItemsCount: row.unclassifiedItemsCount,
+          completion: computeCompletion(row.itemsCount, row.unclassifiedItemsCount)
         };
       });
 
