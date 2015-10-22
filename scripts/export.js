@@ -9,7 +9,7 @@ import {exporter as queries} from '../api/queries';
 import {parse, stringify} from 'csv';
 import async from 'async';
 import {default as h} from 'highland';
-import _, {fill, indexBy, omit} from 'lodash';
+import _, {fill, indexBy, omit, uniq} from 'lodash';
 import fs from 'fs';
 
 /**
@@ -47,7 +47,9 @@ async.series([
   /**
    * Building the sources file.
    */
-  function retrieveSources(callback) {
+  ASYNC_NOOP || function retrieveSources(callback) {
+    console.log('Building sources...');
+
     const sourcesStream = h();
 
     sourcesStream
@@ -131,7 +133,17 @@ async.series([
         database.cypher(queries.products, function(err, data) {
           if (err) return next(err);
 
-          rows = data.map(e => [e.product]);
+          rows = _(data)
+            .groupBy('product')
+            .values()
+            .map(row => {
+              return [
+                _(row).map('source').uniq().sortBy().join(','),
+                row[0].product
+              ];
+            })
+            .value();
+
           return next();
         });
       },
@@ -152,9 +164,10 @@ async.series([
 
             for (let i = 0, l = rows.length; i < l; i++) {
               const row = rows[i],
-                    sourceProduct = row[0];
+                    sourceProduct = row[1],
+                    matching = index[sourceProduct] || {};
 
-              row.push((index[sourceProduct] || {}).group);
+              row.push(matching.group);
             }
 
             return nextClassification();
@@ -171,7 +184,7 @@ async.series([
 
         writer.on('finish', () => next());
 
-        stream.write(['source'].concat(classifications.map(c => c.properties.slug)));
+        stream.write(['sources', 'product'].concat(classifications.map(c => c.properties.slug)));
 
         for (let i = 0, l = rows.length; i < l; i++)
           stream.write(rows[i]);
@@ -235,7 +248,7 @@ async.series([
 
         writer.on('finish', () => next());
 
-        stream.write(['source'].concat(classifications.map(c => c.properties.slug)));
+        stream.write(['country'].concat(classifications.map(c => c.properties.slug)));
 
         for (let i = 0, l = rows.length; i < l; i++)
           stream.write(rows[i]);
@@ -272,27 +285,13 @@ async.series([
             .pipe(stringify({delimiter: ','}))
             .pipe(fs.createWriteStream(filename,'utf-8'));
 
-          if (model === 'product')
-            stream.write([parent, slug, 'note', 'source']);
-          else
-            stream.write([parent, slug, 'note']);
+          stream.write([parent, slug, 'note']);
 
-          rows = _(rows)
-            .groupBy('item')
-            .values()
-            .map(row => {
-              return {
-                ...row[0],
-                source: row.map(r => r.source).join(',')
-              };
-            })
-            .value();
+          // Distinct item lines
+          rows = uniq(rows, row => row.item);
 
           rows.forEach(function(row) {
-            if (model === 'product')
-              stream.write([row.item, row.group, row.note, row.source]);
-            else
-              stream.write([row.item, row.group, row.note]);
+            stream.write([row.item, row.group, row.note]);
           });
 
           return next();
@@ -304,7 +303,7 @@ async.series([
   /**
    * Composing the bdd_courante file.
    */
-  function composing(callback) {
+  ASYNC_NOOP || function composing(callback) {
     console.log('Composing bdd_courante.csv...');
 
     const productsCsv = fs.readFileSync('./.output/bdd_products.csv', 'utf-8'),

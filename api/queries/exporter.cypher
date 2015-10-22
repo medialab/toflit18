@@ -39,7 +39,8 @@ RETURN c AS classification, p.slug AS parent;
 // Retrieving every source product.
 //------------------------------------------------------------------------------
 MATCH (p:Product)
-RETURN p.name AS product;
+OPTIONAL MATCH (p)-[:TRANSCRIBED_FROM]->(source)
+RETURN p.name AS product, coalesce(source.name, "toflit18") AS source;
 
 // name: countries
 // Retrieving every source country.
@@ -53,8 +54,9 @@ RETURN c.name AS country;
 START c=node({id})
 MATCH (c)-[:HAS]->(group:ClassifiedItem)
 OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Item)
-WHERE not(item:OutsiderItem)
-RETURN group.name AS group, item.name AS item;
+RETURN
+  group.name AS group,
+  item.name AS item;
 
 // name: classifiedItems
 // Retrieving groups from a classification and mapping them to the matching items.
@@ -65,8 +67,7 @@ OPTIONAL MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item)
 RETURN
   group.name AS group,
   item.name AS item,
-  group.note AS note,
-  "toflit18" AS source
+  group.note AS note
 
 UNION ALL
 
@@ -75,5 +76,4 @@ MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item:OutsiderItem)-[:TR
 RETURN
   group.name AS group,
   item.name AS item,
-  group.note AS note,
-  source.name AS source;
+  group.note AS note;
