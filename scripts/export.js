@@ -47,7 +47,7 @@ async.series([
   /**
    * Building the sources file.
    */
-  ASYNC_NOOP || function retrieveSources(callback) {
+  function retrieveSources(callback) {
     console.log('Building sources...');
 
     const sourcesStream = h();
@@ -303,7 +303,7 @@ async.series([
   /**
    * Composing the bdd_courante file.
    */
-  ASYNC_NOOP || function composing(callback) {
+  function composing(callback) {
     console.log('Composing bdd_courante.csv...');
 
     const productsCsv = fs.readFileSync('./.output/bdd_products.csv', 'utf-8'),

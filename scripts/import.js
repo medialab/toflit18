@@ -178,7 +178,8 @@ const INDEXES = {
 
 const OUTSIDER_INDEXES = {
   sund: {},
-  belg: {}
+  belg: {},
+  unknown: {}
 };
 
 const EDGE_INDEXES = {
@@ -326,7 +327,8 @@ async.series({
           name: cleanText(line[0]),
           sources: line[1].trim() === '1',
           sund: line[2].trim() === '1',
-          belg: line[3].trim() === '1'
+          belg: line[3].trim() === '1',
+          unknown: line[4].trim() === '0'
         }))
         .filter(row => !row.sources)
         .forEach(outsiderProduct);
@@ -588,7 +590,7 @@ function outsiderProduct(line) {
   const name = line.name,
         nodeData = {name};
 
-  ['sund', 'belg'].forEach(function(source) {
+  ['sund', 'belg', 'unknown'].forEach(function(source) {
     if (line[source]) {
       if (OUTSIDER_INDEXES[source][name])
         return;
@@ -672,7 +674,7 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
       return;
 
     // Checking external sources
-    ['sund', 'belg'].forEach(function(source) {
+    ['sund', 'belg', 'unknown'].forEach(function(source) {
       const outsiderNode = OUTSIDER_INDEXES[source][item];
 
       if (!outsiderNode)
