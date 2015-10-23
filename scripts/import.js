@@ -595,6 +595,9 @@ function outsiderProduct(line) {
       if (OUTSIDER_INDEXES[source][name])
         return;
 
+      if (source === 'unknown' && INDEXES.products[name])
+        return;
+
       const node = indexedNode(
         OUTSIDER_INDEXES[source],
         ['Item', 'Product', 'OutsiderItem', 'OutsiderProduct'],
