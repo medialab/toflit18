@@ -28,7 +28,9 @@ describe('Classification patching', function() {
         {group: 'fruits', item: 'apple'},
         {group: 'colors', item: 'blue'},
         {group: 'colors', item: 'purple'},
-        {group: null, item: 'yellow'}
+        {group: null, item: 'yellow'},
+        {group: 'names', item: 'Ney'},
+        {group: 'names', item: 'Davout'}
       ];
 
       const newer =[
@@ -37,7 +39,9 @@ describe('Classification patching', function() {
         {group: 'fruits', item: 'apple'},
         {group: 'colors', item: 'blue'},
         {group: null, item: 'purple'},
-        {group: 'colors', item: 'yellow'}
+        {group: 'colors', item: 'yellow'},
+        {group: 'generals', item: 'Ney'},
+        {group: 'generals', item: 'Davout'}
       ];
 
       console.log(applyPatch(older, newer));
