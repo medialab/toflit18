@@ -47,6 +47,9 @@ export function login(tree, name, password) {
  * Logout
  */
 export function logout(tree) {
+  if (!tree.get('flags', 'logged'))
+    return;
+
   tree.client.logout(err => {
     location.reload();
   });

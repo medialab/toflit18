@@ -21,7 +21,10 @@ const LINKS = [
 ];
 
 @branch({
-  actions: {logout}
+  actions: {logout},
+  cursors: {
+    logged: ['flags', 'logged']
+  }
 })
 export default class NavBar extends Component {
   static contextTypes = {
@@ -29,7 +32,17 @@ export default class NavBar extends Component {
   };
 
   render() {
-    const history = this.context.history;
+    const history = this.context.history,
+          logged = this.props.logged;
+
+    const logoutButton = (
+      <li className="nav-item pull-right">
+        <a className="nav-link logout"
+           onClick={() => this.props.actions.logout()}>
+          Logout
+        </a>
+      </li>
+    );
 
     return (
       <div>
@@ -45,12 +58,7 @@ export default class NavBar extends Component {
                         className="nav-link">{l.label}</Link>
                 </li>
               ))}
-              <li className="nav-item pull-right">
-                <a className="nav-link logout"
-                   onClick={() => this.props.actions.logout()}>
-                  Logout
-                </a>
-              </li>
+              {logged && logoutButton}
             </ul>
           </div>
         </nav>
