@@ -76,22 +76,24 @@ class LeftPanel extends Component {
 
     current = current || {};
 
+    const list = (
+      <div className="full-height">
+        <h4 className="classifications-category">Products</h4>
+        <ClassificationsList items={product}
+                             selected={current.id} />
+        <h4 className="classifications-category">Countries</h4>
+        <ClassificationsList items={country}
+                             selected={current.id} />
+      </div>
+    );
+
     return (
       <Col md={5} className="full-height">
         <div className="panel full-height">
           <h3>Classifications</h3>
           <hr />
           <div className="partial-height twice overflow">
-            <h4 className="classifications-category">Products</h4>
-            {product.length ?
-              <ClassificationsList items={product}
-                                   selected={current.id} /> :
-              <Waiter />}
-            <h4 className="classifications-category">Countries</h4>
-            {country.length ?
-              <ClassificationsList items={country}
-                                   selected={current.id} /> :
-              <Waiter />}
+            {(!product || !product.length) ? <Waiter /> : list}
           </div>
           <hr />
           <div className="actions">
