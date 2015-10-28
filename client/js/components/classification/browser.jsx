@@ -342,8 +342,6 @@ class Group extends Component {
       );
     }
 
-
-
     return (
       <li className="item">
         <div>
