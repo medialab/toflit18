@@ -300,27 +300,59 @@ class GroupsList extends Component {
 /**
  * Group.
  */
-function Group({name, items, source}) {
-  const count = items.length;
+const MAX_NUMBER_OF_DISPLAYED_ITEMS = 5;
 
-  let addendum
+class Group extends Component {
+  constructor(props, context) {
+    super(props, context);
 
-  if (count)
-    addendum = (
-      <ul className="addendum">
-        {items.slice(0, 10).map((item, i) => (<Item key={i} name={item} />))}
-        {items.length > 10 && '[...]'}
-      </ul>
+    this.state = {opened: false};
+  }
+
+  toggle() {
+    this.setState({opened: !this.state.opened});
+  }
+
+  render() {
+    const {name, items, source} = this.props,
+          opened = this.state.opened,
+          count = items.length;
+
+    let addendum;
+
+    // Addendum if there are items in the group
+    if (count) {
+
+      // Potential ellipsis
+      const ellipsis = (
+        <span className="ellipsis"
+              title="Click to expand"
+              onClick={() => this.toggle()}>[...]</span>
+      );
+
+      const itemsToDisplay = !opened ?
+        items.slice(0, MAX_NUMBER_OF_DISPLAYED_ITEMS) :
+        items;
+
+      addendum = (
+        <ul className="addendum">
+          {itemsToDisplay.map((item, i) => (<Item key={i} name={item} />))}
+          {(!opened && items.length > MAX_NUMBER_OF_DISPLAYED_ITEMS) && ellipsis}
+        </ul>
+      );
+    }
+
+
+
+    return (
+      <li className="item">
+        <div>
+          {name} {!source && <em>({count} items)</em>}
+        </div>
+        {addendum}
+      </li>
     );
-
-  return (
-    <li className="item">
-      <div>
-        {name} {!source && <em>({count} items)</em>}
-      </div>
-      {addendum}
-    </li>
-  );
+  }
 }
 
 /**

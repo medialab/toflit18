@@ -245,6 +245,14 @@ h1 {
         padding: 10px;
         margin-bottom: 10px;
       }
+
+      .ellipsis {
+        cursor: pointer;
+
+        &:hover {
+          font-weight: bold;
+        }
+      }
     }
   }
 }
