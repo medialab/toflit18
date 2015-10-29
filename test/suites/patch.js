@@ -21,7 +21,7 @@ describe('Classification patching', function() {
 
   describe('Patch', function() {
 
-    it('should work?', function() {
+    it('should detect the correct operations.', function() {
       const older =[
         {group: 'fruits', item: 'mango'},
         {group: 'fruits', item: 'papaya'},
@@ -30,7 +30,11 @@ describe('Classification patching', function() {
         {group: 'colors', item: 'purple'},
         {group: null, item: 'yellow'},
         {group: 'names', item: 'Ney'},
-        {group: 'names', item: 'Davout'}
+        {group: 'names', item: 'Davout'},
+        {group: 'days', item: 'Tuesday'},
+        {group: 'days', item: 'Monday'},
+        {group: 'date', item: 'February'},
+        {group: 'date', item: 'October'}
       ];
 
       const newer =[
@@ -41,10 +45,35 @@ describe('Classification patching', function() {
         {group: null, item: 'purple'},
         {group: 'colors', item: 'yellow'},
         {group: 'generals', item: 'Ney'},
-        {group: 'generals', item: 'Davout'}
+        {group: 'generals', item: 'Davout'},
+        {group: 'week', item: 'Tuesday'},
+        {group: 'week', item: 'Monday'},
+        {group: 'week', item: 'Thursday'},
+        {group: 'month', item: 'November'},
+        {group: 'month', item: 'February'},
+        {group: 'month', item: 'October'}
       ];
 
-      console.log(applyPatch(older, newer));
+      assert.deepEqual(
+        applyPatch(older, newer),
+        [
+          // Renaming groups
+          {type: 'renameGroup', from: 'names', to: 'generals'},
+          {type: 'renameGroup', from: 'days', to: 'week'},
+          {type: 'renameGroup', from: 'date', to: 'month'},
+
+          // Adding groups
+          {type: 'addGroup', name: 'exoticFruits'},
+
+          // Moving items
+          {type: 'moveItem', from: 'fruits', to: 'exoticFruits', item: 'mango'},
+          {type: 'moveItem', from: 'fruits', to: 'exoticFruits', item: 'papaya'},
+          {type: 'moveItem', from: 'colors', to: null, item: 'purple'},
+          {type: 'moveItem', from: null, to: 'colors', item: 'yellow'},
+          {type: 'moveItem', from: null, to: 'week', item: 'Thursday'},
+          {type: 'moveItem', from: null, to: 'month', item: 'November'}
+        ]
+      );
     });
   });
 });
