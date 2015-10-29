@@ -1,7 +1,20 @@
 import assert from 'assert';
-import {applyPatch, checkIntegrity} from '../../lib/patch';
+import {applyPatch, checkConsistency, checkIntegrity} from '../../lib/patch';
 
 describe('Classification patching', function() {
+
+  describe('Inconsistencies', function() {
+    it('should be possible to search the given patch for inconsistencies.', function() {
+      const patch = [
+        {group: 'fruits', item: 'mango'},
+        {group: 'fruits', item: 'papaya'},
+        {group: 'fruits', item: 'apple'},
+        {group: 'exotic', item: 'mango'}
+      ];
+
+      console.log(checkConsistency(patch));
+    });
+  });
 
   describe('Integrity', function() {
 
@@ -22,7 +35,7 @@ describe('Classification patching', function() {
   describe('Patch', function() {
 
     it('should detect the correct operations.', function() {
-      const older =[
+      const older = [
         {group: 'fruits', item: 'mango'},
         {group: 'fruits', item: 'papaya'},
         {group: 'fruits', item: 'apple'},
@@ -37,7 +50,7 @@ describe('Classification patching', function() {
         {group: 'date', item: 'October'}
       ];
 
-      const newer =[
+      const newer = [
         {group: 'exoticFruits', item: 'mango'},
         {group: 'exoticFruits', item: 'papaya'},
         {group: 'fruits', item: 'apple'},
