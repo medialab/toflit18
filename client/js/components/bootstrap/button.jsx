@@ -58,3 +58,9 @@ export default class Button extends Component {
     );
   }
 }
+
+export class ButtonGroup extends Component {
+  render() {
+    return <div className="btn-group" role="group">{this.props.children}</div>;
+  }
+}

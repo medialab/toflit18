@@ -8,7 +8,7 @@
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../bootstrap/grid.jsx';
-import Button from '../bootstrap/button.jsx';
+import Button, {ButtonGroup} from '../bootstrap/button.jsx';
 import {Spinner, Waiter} from '../bootstrap/loaders.jsx';
 import Infinite from '../misc/infinite.jsx';
 import {prettyPrint} from '../../lib/helpers';
@@ -97,13 +97,26 @@ class LeftPanel extends Component {
           </div>
           <hr />
           <div className="actions">
-            <Col md={6}>
+            <Col md={3}>
               <Button kind="primary"
                       onClick={() => actions.download(current.id)}
                       disabled={current.source || false}
                       loading={downloading}>
                 Export
               </Button>
+            </Col>
+            <Col md={9}>
+              <ButtonGroup>
+                <Button kind="secondary">
+                  Update
+                </Button>
+                <Button kind="secondary">
+                  Create From
+                </Button>
+                <Button kind="secondary">
+                  Fork
+                </Button>
+              </ButtonGroup>
             </Col>
           </div>
         </div>
