@@ -40,6 +40,7 @@ $font-family-base:           $font-family-sans-serif;
 
 // Buttons
 $btn-primary-bg: $old-blue;
+$btn-danger-bg:  $poison-blusher;
 
 // Forms
 $input-border-focus: $old-blue;
@@ -102,7 +103,6 @@ h1 {
  * Loaders.
  */
 .waiter {
-  text-align: center;
   font-size: 2em;
 }
 

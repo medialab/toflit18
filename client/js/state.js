@@ -66,7 +66,8 @@ const defaultState = {
       modal: {
         patch: null,
         type: null,
-        step: 'upload'
+        step: 'upload',
+        inconsistencies: null
       }
     }
   }, storageState),

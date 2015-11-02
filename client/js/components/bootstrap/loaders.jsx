@@ -44,6 +44,10 @@ export class Spinner extends Component {
  * Three moving little dots...
  */
 export class Waiter extends Component {
+  static defaultProps = {
+    align: 'center'
+  };
+
   constructor() {
     super();
 
@@ -63,8 +67,9 @@ export class Waiter extends Component {
   }
 
   render() {
-    const dots = this.state.dots.replace(/\./g, '\u00b7');
+    const dots = this.state.dots.replace(/\./g, '\u00b7'),
+          align = this.props.align;
 
-    return <div className="waiter">{dots}&nbsp;</div>
+    return <div className="waiter" style={{textAlign: align}}>{dots}&nbsp;</div>
   }
 }

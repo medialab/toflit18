@@ -7,6 +7,7 @@
  */
 import csvParser from 'papaparse';
 import {cleanText} from '../../../lib/clean';
+import {checkConsistency} from '../../../lib/patch';
 import _ from 'lodash';
 
 export function parse(tree, file, options) {
@@ -30,6 +31,14 @@ export function parse(tree, file, options) {
         .value();
 
       cursor.set('patch', data);
+
+      // Checking consistency of CSV file
+      const report = checkConsistency(data);
+
+      if (report.length)
+        cursor.set('inconsistencies', report);
+      else
+        cursor.set('step', 'review');
     }
   });
 }

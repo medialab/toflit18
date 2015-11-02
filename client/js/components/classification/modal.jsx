@@ -8,11 +8,11 @@ import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../bootstrap/grid.jsx';
 import FileInput from '../misc/file.jsx';
+import {Waiter} from '../bootstrap/loaders.jsx';
 
 import {
   parse
 } from '../../actions/patch';
-
 
 /**
  * Main component.
@@ -30,6 +30,8 @@ export default class ClassificationModal extends Component {
   render() {
     const {actions, modal, target} = this.props;
 
+    const hasInconsistencies = !!(modal.inconsistencies || []).length;
+
     return (
       <div className="modal-wrapper">
         <Row className="full-height">
@@ -38,7 +40,9 @@ export default class ClassificationModal extends Component {
               <ModalTitle name={target.name}
                           model={target.model}
                           action={modal.type} />
-              <Step1 parser={actions.parse} />
+              <Upload parser={actions.parse} />
+              {hasInconsistencies && <ConsistencyReport report={modal.inconsistencies} />}
+              {modal.step === 'review' && <Review />}
             </div>
           </Col>
         </Row>
@@ -73,9 +77,9 @@ class ModalTitle extends Component {
 }
 
 /**
- * Step 1.
+ * Upload form.
  */
-class Step1 extends Component {
+class Upload extends Component {
   render() {
     const parser = this.props.parser;
 
@@ -105,6 +109,52 @@ class Step1 extends Component {
           </Col>
         </Row>
         <hr />
+      </div>
+    );
+  }
+}
+
+/**
+ * Consistency step.
+ */
+class ConsistencyReport extends Component {
+  render() {
+    const report = this.props.report;
+
+    return (
+      <div>
+        <h5 className="red">There seems to be some consistency issues with your file:</h5>
+        <ul className="consistency-report">
+          {report.map(error => <InconsistentItem key={error.item} error={error} />)}
+        </ul>
+      </div>
+    );
+  }
+}
+
+/**
+ * Inconsistent item.
+ */
+class InconsistentItem extends Component {
+  render() {
+    const error = this.props.error;
+
+    const text = `Line n°${error.index} - the "${error.item}" item has been ` +
+                 `linked to ${error.groups.length} groups.`;
+
+    return <li>{text}</li>;
+  }
+}
+
+/**
+ * Review step.
+ */
+class Review extends Component {
+  render() {
+    return (
+      <div>
+        <h4>Review</h4>
+        <Waiter align="left" />
       </div>
     );
   }

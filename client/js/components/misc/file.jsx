@@ -7,6 +7,7 @@
  */
 import React, {Component, PropTypes} from 'react';
 import Button from '../bootstrap/button.jsx';
+import {uniqueId} from 'lodash';
 
 export default class FileInput extends Component {
   static PropTypes = {
@@ -17,6 +18,7 @@ export default class FileInput extends Component {
     super(props, context);
 
     this.state = {
+      id: uniqueId(),
       uploaded: false,
       name: null
     };
@@ -47,6 +49,14 @@ export default class FileInput extends Component {
     reader.readAsText(file);
   }
 
+  reset() {
+    this.setState({
+      id: uniqueId(),
+      uploaded: false,
+      name: null
+    });
+  }
+
   render() {
     const fileChosen = this.state.uploaded,
           name = this.state.name;
@@ -55,6 +65,7 @@ export default class FileInput extends Component {
       <div>
         <input ref="file"
                type="file"
+               key={this.state.id}
                style={{display: 'none'}}
                onChange={e => this.handleChange(e)}/>
         <div className="input-group">
@@ -63,8 +74,13 @@ export default class FileInput extends Component {
                  disabled={true}
                  placeholder={fileChosen ? name : '...'} />
           <span className="input-group-btn">
+            {fileChosen &&
+              <Button kind="danger" onClick={() => this.reset()}>
+                ✖
+              </Button>
+            }
             <Button kind={fileChosen ? 'primary' : 'secondary'}
-                    onClick={(e) => this.handleClick(e)}>
+                    onClick={(e) => !fileChosen && this.handleClick(e)}>
               {fileChosen ? '✔' : 'Choose File'}
             </Button>
           </span>
