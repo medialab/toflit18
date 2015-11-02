@@ -53,7 +53,7 @@
     "morgan": "^1.6.1",
     "neo4j": "^2.0.0-RC2",
     "nodemon": "^1.4.1",
-    "session-file-store": "0.0.21",
+    "session-file-store": "0.0.22",
     "typology": "^1.0.0",
     "yargs": "^3.14.0"
   },
