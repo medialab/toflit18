@@ -36,7 +36,7 @@ module.exports = {
       // ES6 & JSX
       {
         test: /\.jsx?$/,
-        include: path.join(__dirname, 'js'),
+        include: [path.join(__dirname, 'js'), path.resolve(__dirname, '../lib')],
         loaders: ['babel-loader']
       },
 

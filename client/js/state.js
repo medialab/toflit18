@@ -64,6 +64,7 @@ const defaultState = {
 
       // Classification modal
       modal: {
+        patch: null,
         type: null,
         step: 'upload'
       }

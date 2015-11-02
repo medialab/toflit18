@@ -7,12 +7,20 @@
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../bootstrap/grid.jsx';
+import FileInput from '../misc/file.jsx';
+
+import {
+  parse
+} from '../../actions/patch';
 
 
 /**
  * Main component.
  */
 @branch({
+  actions: {
+    parse
+  },
   cursors: {
     target: ['states', 'classification', 'browser', 'current'],
     modal: ['states', 'classification', 'modal']
@@ -20,14 +28,17 @@ import {Row, Col} from '../bootstrap/grid.jsx';
 })
 export default class ClassificationModal extends Component {
   render() {
-    const {modal, target} = this.props;
+    const {actions, modal, target} = this.props;
 
     return (
       <div className="modal-wrapper">
         <Row className="full-height">
           <Col md={12} className="full-height">
             <div className="panel full-height">
-              <ModalTitle name={target.name} action={modal.type} />
+              <ModalTitle name={target.name}
+                          model={target.model}
+                          action={modal.type} />
+              <Step1 parser={actions.parse} />
             </div>
           </Col>
         </Row>
@@ -41,20 +52,58 @@ export default class ClassificationModal extends Component {
  */
 class ModalTitle extends Component {
   render() {
-    const {name, action} = this.props;
+    const {action, name, model} = this.props;
 
     let title;
 
     if (action === 'update')
-      title = `Updating "${name}"`;
+      title = `Updating "${name} (${model})"`;
     else if (action === 'fork')
-      title = `Forking "${name}"`;
+      title = `Forking "${name} (${model})"`;
     else if (action === 'create')
-      title = `Creating from "${name}"`;
+      title = `Creating from "${name} (${model})"`;
 
     return (
       <div>
-        <h2>{title}</h2>
+        <h3>{title}</h3>
+        <hr />
+      </div>
+    );
+  }
+}
+
+/**
+ * Step 1.
+ */
+class Step1 extends Component {
+  render() {
+    const parser = this.props.parser;
+
+    return (
+      <div>
+        <Row>
+          <Col md={6}>
+            <FileInput onFile={file => parser(file)}/>
+          </Col>
+          <Col md={3}>
+            <input type="text"
+                   className="form-control"
+                   placeholder="delimiter [ , ]" />
+          </Col>
+          <Col md={3}>
+            <input type="text"
+                   className="form-control"
+                   placeholder={'escape character [ " ]'} />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={12} className="explanation">
+            <em>
+              Here, there should be some recapitulative text about the expected format,
+              the desired headers and what should be inside each column...
+            </em>
+          </Col>
+        </Row>
         <hr />
       </div>
     );

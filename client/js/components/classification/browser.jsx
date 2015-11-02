@@ -107,14 +107,19 @@ class LeftPanel extends Component {
             </Col>
             <Col md={9}>
               <ButtonGroup>
-                <Button kind="secondary" onClick={() => actions.modal('update')}>
-                  Update
-                </Button>
-                <Button kind="secondary" onClick={() => actions.modal('create')}>
+                <Button kind="secondary"
+                        onClick={() => actions.modal('create')}>
                   Create From
                 </Button>
-                <Button kind="secondary" onClick={() => actions.modal('fork')}>
+                <Button kind="secondary"
+                        disabled={current.source || false}
+                        onClick={() => actions.modal('fork')}>
                   Fork
+                </Button>
+                <Button kind="secondary"
+                        disabled={current.source || false}
+                        onClick={() => actions.modal('update')}>
+                  Update
                 </Button>
               </ButtonGroup>
             </Col>
