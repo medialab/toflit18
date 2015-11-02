@@ -8,6 +8,8 @@ import {enpoint} from '../../config.json';
 import {saveAs} from 'browser-filesaver';
 import history from '../history';
 
+import {reset as resetModal} from './patch';
+
 const PATH = ['states', 'classification', 'browser'];
 
 /**
@@ -103,7 +105,7 @@ export function modal(tree, type) {
   const modal = tree.select('states', 'classification', 'modal');
 
   modal.set('type', type);
-  modal.set('step', 'upload');
+  resetModal(tree);
 
   history.replaceState(null, '/classification/modal');
 }

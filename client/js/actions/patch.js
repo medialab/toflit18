@@ -13,6 +13,17 @@ import _ from 'lodash';
 const MODAL_PATH = ['states', 'classification', 'modal'];
 
 /**
+ * Reset the modal.
+ */
+export function reset(tree) {
+  const cursor = tree.select(MODAL_PATH);
+  cursor.set('patch', null);
+  cursor.set('step', 'upload');
+  cursor.set('inconsistencies', null);
+  cursor.set('review', null);
+}
+
+/**
  * Parsing the received csv file.
  */
 export function parse(tree, file, options) {

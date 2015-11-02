@@ -47,7 +47,8 @@ describe('Classification patching', function() {
         {group: 'days', item: 'Tuesday'},
         {group: 'days', item: 'Monday'},
         {group: 'date', item: 'February'},
-        {group: 'date', item: 'October'}
+        {group: 'date', item: 'October'},
+        {group: null, item: 'loner'}
       ];
 
       const newer = [
@@ -64,7 +65,8 @@ describe('Classification patching', function() {
         {group: 'week', item: 'Thursday'},
         {group: 'month', item: 'November'},
         {group: 'month', item: 'February'},
-        {group: 'month', item: 'October'}
+        {group: 'month', item: 'October'},
+        {group: null, item: 'loner'}
       ];
 
       assert.deepEqual(

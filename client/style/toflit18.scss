@@ -71,6 +71,13 @@ main {
   color: $old-blue;
 }
 
+.green-glyph {
+  color: white;
+  font-weight: bold;
+  background-color: $old-blue;
+  font-size: 20px;
+}
+
 /**
  * Layout.
  */
@@ -273,7 +280,23 @@ h1 {
         padding: 15px;
         list-style-type: none;
 
-        .item {
+        & > .item {
+          font-size: 0.9em;
+          background-color: $light-grey;
+          padding: 10px;
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    .operations-report {
+
+      & ul {
+        max-height: 3000px;
+        list-style-type: none;
+        padding: 15px;
+
+        & > .item {
           font-size: 0.9em;
           background-color: $light-grey;
           padding: 10px;

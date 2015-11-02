@@ -50,6 +50,10 @@ export default class FileInput extends Component {
   }
 
   reset() {
+
+    if (typeof this.props.onReset === 'function')
+      this.props.onReset();
+
     this.setState({
       id: uniqueId(),
       uploaded: false,

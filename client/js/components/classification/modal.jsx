@@ -9,6 +9,7 @@ import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../bootstrap/grid.jsx';
 import FileInput from '../misc/file.jsx';
 import {Waiter} from '../bootstrap/loaders.jsx';
+import {groupBy} from 'lodash';
 
 import * as patchActions from '../../actions/patch';
 
@@ -38,7 +39,7 @@ export default class ClassificationModal extends Component {
               <ModalTitle name={target.name}
                           model={target.model}
                           action={modal.type} />
-              <Upload parser={actions.parse} />
+              <Upload parser={actions.parse} reset={actions.reset} />
               {hasInconsistencies && <ConsistencyReport report={modal.inconsistencies} />}
               {modal.step === 'review' &&
                 <Review get={actions.review.bind(null, target.id)}
@@ -82,13 +83,13 @@ class ModalTitle extends Component {
  */
 class Upload extends Component {
   render() {
-    const parser = this.props.parser;
+    const {parser, reset} = this.props;
 
     return (
       <div>
         <Row>
           <Col md={6}>
-            <FileInput onFile={file => parser(file)}/>
+            <FileInput onFile={file => parser(file)} onReset={reset} />
           </Col>
           <Col md={3}>
             <input type="text"
@@ -222,24 +223,58 @@ class Integrity extends Component {
  */
 class Operations extends Component {
   render() {
-    const operations = this.props.data;
+    const operations = this.props.data,
+          groups = groupBy(operations, 'type');
 
     return (
       <div>
         <Row className="operations-report full-height">
           <hr />
-          Operations to be applied (<strong>{operations.length}</strong>)
+          Operations to be applied
           <br />
           <em className="explanation">
             Exhaustive list of operations that will be applied to the database will
             you decide to submit your patch.
           </em>
           <hr />
+          <strong>{operations.length}</strong> <str>total</str>
+          <br />
+          <strong>{(groups.addGroup || []).length}</strong> <em>new groups</em>
+          <br />
+          <strong>{(groups.renameGroup || []).length}</strong> <em>renamed groups</em>
+          <br />
+          <strong>{(groups.moveItem || []).length}</strong> <em>item moves</em>
+          <hr />
           <ul className="overflow">
-            <li>Hello world</li>
+            {operations.map((o, i) => <Operation key={i} {...o} />)}
           </ul>
         </Row>
       </div>
     );
+  }
+}
+
+/**
+ * Operation.
+ */
+class Operation extends Component {
+  render() {
+    const data = this.props;
+
+    let body = null;
+
+    if (data.type === 'addGroup')
+      body = <li className="item"><Glyph />&nbsp;<em>{data.name}</em></li>;
+
+    return body;
+  }
+}
+
+/**
+ * Operation glyph.
+ */
+class Glyph extends Component {
+  render() {
+    return (<span className="green-glyph">+</span>);
   }
 }
