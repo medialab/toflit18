@@ -18,6 +18,7 @@ import cls from 'classnames';
 import {
   download,
   expand,
+  modal,
   search,
   select
 } from '../../actions/browser';
@@ -29,7 +30,8 @@ import {linker} from '../../actions/factory';
 @branch({
   actions: {
     expand,
-    download
+    download,
+    modal
   },
   cursors: {
     downloading: ['flags', 'downloading'],
@@ -51,12 +53,10 @@ export default class ClassificationBrowser extends Component {
 
     return (
       <div className="browser-wrapper">
-        <div className="full-height">
-          <Row className="full-height">
-            <LeftPanel {...this.props} />
-            <RightPanel {...this.props} />
-          </Row>
-        </div>
+        <Row className="full-height">
+          <LeftPanel {...this.props} />
+          <RightPanel {...this.props} />
+        </Row>
       </div>
     );
   }
@@ -107,13 +107,13 @@ class LeftPanel extends Component {
             </Col>
             <Col md={9}>
               <ButtonGroup>
-                <Button kind="secondary">
+                <Button kind="secondary" onClick={() => actions.modal('update')}>
                   Update
                 </Button>
-                <Button kind="secondary">
+                <Button kind="secondary" onClick={() => actions.modal('create')}>
                   Create From
                 </Button>
-                <Button kind="secondary">
+                <Button kind="secondary" onClick={() => actions.modal('fork')}>
                   Fork
                 </Button>
               </ButtonGroup>

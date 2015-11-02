@@ -187,11 +187,7 @@ h1 {
  */
 #classification {
 
-  // Crossroads
-  .crossroads-wrapper {
-    padding: 150px;
-  }
-
+  // Browser
   .browser-wrapper {
     padding: 15px;
     height: calc(100vh - 65px);
@@ -254,5 +250,11 @@ h1 {
         }
       }
     }
+  }
+
+  // Modal
+  .modal-wrapper {
+    padding: 15px;
+    height: calc(100vh - 65px);
   }
 }

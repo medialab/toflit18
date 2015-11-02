@@ -60,6 +60,12 @@ const defaultState = {
           (selected, index) => index[selected] || null
         ),
         rows: []
+      },
+
+      // Classification modal
+      modal: {
+        type: null,
+        step: 'upload'
       }
     }
   }, storageState),

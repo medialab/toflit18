@@ -6,6 +6,7 @@
  */
 import {enpoint} from '../../config.json';
 import {saveAs} from 'browser-filesaver';
+import history from '../history';
 
 const PATH = ['states', 'classification', 'browser'];
 
@@ -93,4 +94,16 @@ export function download(tree, id) {
 
     return saveAs(blob, filename);
   });
+}
+
+/**
+ * Triggering a modal.
+ */
+export function modal(tree, type) {
+  const modal = tree.select('states', 'classification', 'modal');
+
+  modal.set('type', type);
+  modal.set('step', 'upload');
+
+  history.replaceState(null, '/classification/modal');
 }
