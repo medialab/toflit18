@@ -10,17 +10,15 @@ import {Row, Col} from '../bootstrap/grid.jsx';
 import FileInput from '../misc/file.jsx';
 import {Waiter} from '../bootstrap/loaders.jsx';
 
-import {
-  parse
-} from '../../actions/patch';
+import * as patchActions from '../../actions/patch';
+
+// TODO: decide whether to separate panels
 
 /**
  * Main component.
  */
 @branch({
-  actions: {
-    parse
-  },
+  actions: patchActions,
   cursors: {
     target: ['states', 'classification', 'browser', 'current'],
     modal: ['states', 'classification', 'modal']
@@ -42,7 +40,10 @@ export default class ClassificationModal extends Component {
                           action={modal.type} />
               <Upload parser={actions.parse} />
               {hasInconsistencies && <ConsistencyReport report={modal.inconsistencies} />}
-              {modal.step === 'review' && <Review />}
+              {modal.step === 'review' &&
+                <Review get={actions.review.bind(null, target.id)}
+                        loading={modal.loading}
+                        review={modal.review} />}
             </div>
           </Col>
         </Row>
@@ -108,7 +109,6 @@ class Upload extends Component {
             </em>
           </Col>
         </Row>
-        <hr />
       </div>
     );
   }
@@ -150,11 +150,95 @@ class InconsistentItem extends Component {
  * Review step.
  */
 class Review extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    if (!props.review)
+      props.get();
+  }
+
   render() {
+    const {loading, review} = this.props;
+
+    const body = (loading || !review) ?
+      <Waiter align="left" /> :
+      (
+        <div>
+          <Integrity data={review.integrity} />
+          <Operations data={review.operations} />
+        </div>
+      );
+
+    return (
+      <div className="review">
+        {body}
+      </div>
+    );
+  }
+}
+
+/**
+ * Integrity.
+ */
+class Integrity extends Component {
+  render() {
+    const {extraneous, missing} = this.props.data;
+
     return (
       <div>
-        <h4>Review</h4>
-        <Waiter align="left" />
+        <Row className="integrity-report full-height">
+          <Col md={6} className="extraneous full-height">
+            <hr />
+            Extraneous items (<strong>{extraneous.length}</strong>)
+            <br />
+            <em className="explanation">
+              Items present in your patch but missing from the database.
+            </em>
+            <hr />
+            <ul className="overflow">
+              {extraneous.map(item => <li key={`extraneous-${item}`} className="item">{item}</li>)}
+            </ul>
+          </Col>
+          <Col md={6} className="missing full-height">
+            <hr />
+            Missing items (<strong>{missing.length}</strong>)
+            <br />
+            <em className="explanation">
+              Items present in the database but missing from your patch.
+            </em>
+            <hr />
+            <ul className="overflow">
+              {missing.map(item => <li key={`missing-${item}`} className="item">{item}</li>)}
+            </ul>
+          </Col>
+        </Row>
+      </div>
+    );
+  }
+}
+
+/**
+ * Operations.
+ */
+class Operations extends Component {
+  render() {
+    const operations = this.props.data;
+
+    return (
+      <div>
+        <Row className="operations-report full-height">
+          <hr />
+          Operations to be applied (<strong>{operations.length}</strong>)
+          <br />
+          <em className="explanation">
+            Exhaustive list of operations that will be applied to the database will
+            you decide to submit your patch.
+          </em>
+          <hr />
+          <ul className="overflow">
+            <li>Hello world</li>
+          </ul>
+        </Row>
       </div>
     );
   }

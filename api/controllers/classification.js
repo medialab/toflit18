@@ -67,6 +67,21 @@ const controller = [
         }
       });
     }
+  },
+  {
+    url: '/:id/review',
+    methods: ['POST'],
+    validate: {
+      patch: 'array'
+    },
+    action(req, res) {
+      return model.review(+req.params.id, req.body.patch, function(err, result) {
+        if (err) return res.serverError(err);
+        if (!result) return res.notFound();
+
+        return res.ok(result);
+      });
+    }
   }
 ];
 

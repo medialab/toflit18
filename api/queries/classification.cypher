@@ -21,7 +21,7 @@ RETURN
   unclassifiedItemsCount;
 
 // name: groups
-// Retireving a sample of groups for the given classification.
+// Retrieving a sample of groups for the given classification.
 //------------------------------------------------------------------------------
 START c=node({id})
 MATCH (c)-[:HAS]->(group)
@@ -52,6 +52,16 @@ WITH group, item ORDER BY item.name
 WITH group, collect(item.name) AS items
 
 RETURN group, items;
+
+// name: allGroups
+// Retrieving every groups for the given classification.
+//------------------------------------------------------------------------------
+START c=node({id})
+MATCH (c)-[:BASED_ON]->(:Classification)-[:HAS]->(item)
+OPTIONAL MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item)
+RETURN
+  group.name AS group,
+  item.name AS item;
 
 // name: export
 // Exporting data about the given classification in order to produce a CSV file.

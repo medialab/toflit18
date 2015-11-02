@@ -42,7 +42,11 @@ const client = new Client({
       contentType: 'application/x-www-form-urlencoded',
       url: '/classification/:id/groups'
     },
-    export: '/classification/:id/export.json'
+    export: '/classification/:id/export.json',
+    review: {
+      method: 'POST',
+      url: '/classification/:id/review'
+    }
   }
 });
 

@@ -10,8 +10,13 @@ import {cleanText} from '../../../lib/clean';
 import {checkConsistency} from '../../../lib/patch';
 import _ from 'lodash';
 
+const MODAL_PATH = ['states', 'classification', 'modal'];
+
+/**
+ * Parsing the received csv file.
+ */
 export function parse(tree, file, options) {
-  const cursor = tree.select('states', 'classification', 'modal');
+  const cursor = tree.select(MODAL_PATH);
 
   csvParser.parse(file.content, {
     skipEmptyLines: true,
@@ -23,8 +28,8 @@ export function parse(tree, file, options) {
         .drop(1)
         .map(row => {
           return {
-            item: cleanText(row[0]),
-            group: cleanText(row[1]),
+            item: cleanText(row[0]) || null,
+            group: cleanText(row[1]) || null,
             note: cleanText(row[2]) || null
           };
         })
@@ -40,5 +45,26 @@ export function parse(tree, file, options) {
       else
         cursor.set('step', 'review');
     }
+  });
+}
+
+/**
+ * Asking our server to perform the review of the given patch.
+ */
+export function review(tree, id) {
+  const cursor = tree.select(MODAL_PATH),
+        {step, patch} = cursor.get();
+
+  if (step !== 'review')
+    return;
+
+  cursor.set('loading', true);
+  tree.client.review({params: {id}, data: {patch}}, function(err, data) {
+    cursor.set('loading', false);
+
+    if (err || !data.result)
+      return;
+
+    cursor.set('review', data.result);
   });
 }

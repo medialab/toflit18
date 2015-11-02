@@ -6,8 +6,9 @@
 import database from '../connection';
 import {classification as queries} from '../queries';
 import {searchRegex} from '../helpers';
-import {groupBy, find} from 'lodash';
+import {groupBy, find, map} from 'lodash';
 import {stringify} from 'csv';
+import {applyPatch, checkIntegrity} from '../../lib/patch';
 
 /**
  * Helpers.
@@ -118,6 +119,25 @@ const Model = {
 
         return callback(null, {csv, name, model});
       });
+    });
+  },
+
+  // Review the given patch for the given classification
+  review(id, patch, callback)  {
+    return database.cypher({query: queries.allGroups, params: {id}}, function(err, classification) {
+      if (err) return callback(err);
+      if (!classification.length) return callback(null, null);
+
+      // Checking integrity
+      const integrity = checkIntegrity(
+        map(classification, 'item'),
+        map(patch, 'item')
+      );
+
+      // Applying the patch
+      const operations = applyPatch(classification, patch);
+
+      return callback(null, {integrity, operations});
     });
   }
 };

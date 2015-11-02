@@ -255,7 +255,6 @@ h1 {
   // Modal
   .modal-wrapper {
     padding: 15px;
-    height: calc(100vh - 65px);
 
     .panel {
       padding: 20px;
@@ -264,6 +263,23 @@ h1 {
     .explanation {
       margin-top: 10px;
       font-size: 0.9em;
+    }
+
+    .integrity-report {
+
+      .extraneous > ul, .missing > ul {
+        height: 300px;
+        border: 1px solid $medium-grey;
+        padding: 15px;
+        list-style-type: none;
+
+        .item {
+          font-size: 0.9em;
+          background-color: $light-grey;
+          padding: 10px;
+          margin-bottom: 10px;
+        }
+      }
     }
   }
 }

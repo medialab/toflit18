@@ -74,15 +74,15 @@ export default class FileInput extends Component {
                  disabled={true}
                  placeholder={fileChosen ? name : '...'} />
           <span className="input-group-btn">
-            {fileChosen &&
+            {fileChosen ?
               <Button kind="danger" onClick={() => this.reset()}>
                 ✖
+              </Button> :
+              <Button kind={fileChosen ? 'primary' : 'secondary'}
+                      onClick={(e) => !fileChosen && this.handleClick(e)}>
+                Choose File
               </Button>
             }
-            <Button kind={fileChosen ? 'primary' : 'secondary'}
-                    onClick={(e) => !fileChosen && this.handleClick(e)}>
-              {fileChosen ? '✔' : 'Choose File'}
-            </Button>
           </span>
         </div>
       </div>

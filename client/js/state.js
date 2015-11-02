@@ -13,15 +13,6 @@ import {
   isLogged
 } from './monkeys';
 
-// Reading from localStorage
-let storageState = {};
-// try {
-//   storageState = JSON.parse(localStorage.getItem(storageKey));
-// }
-// catch (e) {
-//   console.error('Error while reading localStorage!');
-// }
-
 const defaultState = {
 
   // Data
@@ -44,7 +35,7 @@ const defaultState = {
   },
 
   // Specific states
-  states: merge({
+  states: {
 
     // Classification section
     classification: {
@@ -64,27 +55,20 @@ const defaultState = {
 
       // Classification modal
       modal: {
+        loading: false,
         patch: null,
         type: null,
         step: 'upload',
-        inconsistencies: null
+        inconsistencies: null,
+        review: null
       }
     }
-  }, storageState),
+  },
 
   // User-related information
   user: null,
 };
 
 const tree = new Baobab(defaultState);
-
-// Watching over some paths that need serialization
-// const watcher = tree.watch({
-//   states: ['states']
-// }).on('update', function() {
-//   const data = tree.serialize('states');
-
-//   localStorage.setItem(storageKey, JSON.stringify(data));
-// });
 
 export default tree;
