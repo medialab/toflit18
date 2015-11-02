@@ -256,5 +256,9 @@ h1 {
   .modal-wrapper {
     padding: 15px;
     height: calc(100vh - 65px);
+
+    .panel {
+      padding: 20px;
+    }
   }
 }
