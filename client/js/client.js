@@ -45,7 +45,7 @@ const client = new Client({
     export: '/classification/:id/export.json',
     review: {
       method: 'POST',
-      url: '/classification/:id/review'
+      url: '/classification/:id/:type/review'
     }
   }
 });

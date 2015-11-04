@@ -3,12 +3,14 @@
  * ==============================
  *
  */
+import async from 'async';
 import database from '../connection';
 import {classification as queries} from '../queries';
 import {searchRegex} from '../helpers';
-import {groupBy, find, map} from 'lodash';
 import {stringify} from 'csv';
 import {applyPatch, checkIntegrity} from '../../lib/patch';
+import Batch from '../../lib/batch';
+import {groupBy, find, map} from 'lodash';
 
 /**
  * Helpers.
@@ -37,7 +39,7 @@ function computeCompletion(items, unclassified) {
  */
 const Model = {
 
-  // Retrieving the list of every classifications
+  //-- Retrieving the list of every classifications
   getAll(callback) {
     return database.cypher(queries.getAll, function(err, results) {
       if (err) return callback(err);
@@ -66,7 +68,7 @@ const Model = {
     });
   },
 
-  // Retrieving a sample of the classification's groups
+  //-- Retrieving a sample of the classification's groups
   groups(id, opts, callback) {
     const query = queries[opts.query ? 'searchGroups' : 'groups'];
 
@@ -95,7 +97,7 @@ const Model = {
     );
   },
 
-  // Exporting to csv
+  //-- Exporting to csv
   export(id, callback) {
     return database.cypher({query: queries.export, params: {id}}, function(err, results) {
       if (err) return callback(err);
@@ -122,7 +124,7 @@ const Model = {
     });
   },
 
-  // Review the given patch for the given classification
+  //-- Review the given patch for the given classification
   review(id, patch, callback)  {
     return database.cypher({query: queries.allGroups, params: {id}}, function(err, classification) {
       if (err) return callback(err);
@@ -139,6 +141,38 @@ const Model = {
 
       return callback(null, {integrity, operations});
     });
+  },
+
+  //-- Commit the given patch operations
+  commit(id, operations, callback) {
+    async.waterfall([
+
+      function getRows(next) {
+        return database.cypher({query: queries.allGroups, params: {id}}, next);
+      },
+
+      function computeBatch(classification, next) {
+        const batch = new Batch(database);
+
+        // Iterating through the patch's operations
+        operations.forEach(function(operation) {
+
+          // Add the correct label on top of this
+
+          // 1) Creating a new group
+          if (operation.type === 'addGroup') {
+            batch.save({name: operation.name}, ['ClassifiedItem']);
+          }
+
+          // 2) Renaming a group
+
+          // 3) Moving an item (deleting old relation before!)
+        });
+
+        batch.commit(Function.prototype);
+        return next();
+      }
+    ], callback);
   }
 };
 

@@ -70,7 +70,7 @@ export function review(tree, id) {
     return;
 
   cursor.set('loading', true);
-  tree.client.review({params: {id}, data: {patch}}, function(err, data) {
+  tree.client.review({params: {id, type: 'patch'}, data: {patch}}, function(err, data) {
     cursor.set('loading', false);
 
     if (err || !data.result)

@@ -69,7 +69,7 @@ const controller = [
     }
   },
   {
-    url: '/:id/review',
+    url: '/:id/patch/review',
     methods: ['POST'],
     validate: {
       patch: 'array'
@@ -80,6 +80,20 @@ const controller = [
         if (!result) return res.notFound();
 
         return res.ok(result);
+      });
+    }
+  },
+  {
+    url: '/:id/patch/commit',
+    methods: ['POST'],
+    validate: {
+      operations: 'array'
+    },
+    action(req, res) {
+      return model.commit(+req.params.id, req.body.operations, function(err, result) {
+        if (err) return res.serverError(err);
+
+        return res.ok();
       });
     }
   }

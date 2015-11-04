@@ -11,8 +11,6 @@ describe('Classification patching', function() {
         {group: 'fruits', item: 'apple'},
         {group: 'exotic', item: 'mango'}
       ];
-
-      console.log(checkConsistency(patch));
     });
   });
 

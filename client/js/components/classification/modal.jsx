@@ -248,12 +248,12 @@ class Operations extends Component {
           <br />
           <strong>{(groups.moveItem || []).length}</strong> <em>item moves</em>
           <table className="table table-sm table-bordered overflow" style={{marginTop: '20px'}}>
-            <thead>
+            <thead className="">
               <tr>
                 <th>Operation</th>
                 <th>Target</th>
                 <th>From</th>
-                <th>to</th>
+                <th>To</th>
               </tr>
             </thead>
             <tbody>
@@ -289,7 +289,7 @@ class Operation extends Component {
 
       if (data.from === null) {
         info = <strong>add-item</strong>;
-        status = 'success';
+        status = 'info';
       }
       else if (data.to === null) {
         info = <strong>drop-item</strong>;
@@ -297,7 +297,7 @@ class Operation extends Component {
       }
       else {
         info = <strong>move-item</strong>;
-        status = 'info';
+        status = 'active';
       }
     }
 
