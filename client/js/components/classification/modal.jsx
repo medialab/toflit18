@@ -7,9 +7,10 @@
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../bootstrap/grid.jsx';
+import Button from '../bootstrap/button.jsx';
 import FileInput from '../misc/file.jsx';
 import {Waiter} from '../bootstrap/loaders.jsx';
-import {groupBy} from 'lodash';
+import {groupBy, map} from 'lodash';
 import cls from 'classnames';
 
 import * as patchActions from '../../actions/patch';
@@ -106,7 +107,7 @@ class Upload extends Component {
         <Row>
           <Col md={12} className="explanation">
             <em>
-              Your CSV file should have at least the following columns:
+              Your CSV file should have at least the following columns (in this precise order):
               <ol>
                 <li>The item</li>
                 <li>The group aggregating the item</li>
@@ -146,7 +147,7 @@ class InconsistentItem extends Component {
     const error = this.props.error;
 
     const text = `Line n° ${error.index + 1} - the "${error.item}" item has been ` +
-                 `linked to ${error.groups.length} groups.`;
+                 `linked to ${error.groups.length} groups (${map(error.groups, 'group').join(', ')}).`;
 
     return <li>{text}</li>;
   }
@@ -266,7 +267,7 @@ class Operations extends Component {
 }
 
 /**
- * Operation.
+ * Operation line.
  */
 class Operation extends Component {
   render() {

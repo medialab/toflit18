@@ -273,9 +273,8 @@ h1 {
     .integrity-report {
 
       .extraneous > ul, .missing > ul {
-        height: 300px;
-        border: 1px solid $medium-grey;
-        padding: 15px;
+        max-height: 300px;
+        padding: 0px;
         list-style-type: none;
 
         & > .item {
