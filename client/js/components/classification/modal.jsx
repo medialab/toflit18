@@ -128,7 +128,7 @@ class ConsistencyReport extends Component {
     const report = this.props.report;
 
     return (
-      <div>
+      <div className="panel">
         <h5 className="red">There seems to be some consistency issues with your file:</h5>
         <ul className="consistency-report">
           {report.map(error => <InconsistentItem key={error.item} error={error} />)}
@@ -145,7 +145,7 @@ class InconsistentItem extends Component {
   render() {
     const error = this.props.error;
 
-    const text = `Line n°${error.index} - the "${error.item}" item has been ` +
+    const text = `Line n° ${error.index + 1} - the "${error.item}" item has been ` +
                  `linked to ${error.groups.length} groups.`;
 
     return <li>{text}</li>;
