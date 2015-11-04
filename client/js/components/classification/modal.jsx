@@ -10,10 +10,9 @@ import {Row, Col} from '../bootstrap/grid.jsx';
 import FileInput from '../misc/file.jsx';
 import {Waiter} from '../bootstrap/loaders.jsx';
 import {groupBy} from 'lodash';
+import cls from 'classnames';
 
 import * as patchActions from '../../actions/patch';
-
-// TODO: decide whether to separate panels
 
 /**
  * Main component.
@@ -35,11 +34,13 @@ export default class ClassificationModal extends Component {
       <div className="modal-wrapper">
         <Row className="full-height">
           <Col md={12} className="full-height">
-            <div className="panel full-height">
-              <ModalTitle name={target.name}
-                          model={target.model}
-                          action={modal.type} />
-              <Upload parser={actions.parse} reset={actions.reset} />
+            <div className="full-height">
+              <div className="panel">
+                <ModalTitle name={target.name}
+                            model={target.model}
+                            action={modal.type} />
+                <Upload parser={actions.parse} reset={actions.reset} />
+              </div>
               {hasInconsistencies && <ConsistencyReport report={modal.inconsistencies} />}
               {modal.step === 'review' &&
                 <Review get={actions.review.bind(null, target.id)}
@@ -105,8 +106,12 @@ class Upload extends Component {
         <Row>
           <Col md={12} className="explanation">
             <em>
-              Here, there should be some recapitulative text about the expected format,
-              the desired headers and what should be inside each column...
+              Your CSV file should have at least the following columns:
+              <ol>
+                <li>The item</li>
+                <li>The group aggregating the item</li>
+                <li>An optional note about the aggregation</li>
+              </ol>
             </em>
           </Col>
         </Row>
@@ -162,7 +167,7 @@ class Review extends Component {
     const {loading, review} = this.props;
 
     const body = (loading || !review) ?
-      <Waiter align="left" /> :
+      <div className="panel"><Waiter align="center" /></div> :
       (
         <div>
           <Integrity data={review.integrity} />
@@ -186,10 +191,9 @@ class Integrity extends Component {
     const {extraneous, missing} = this.props.data;
 
     return (
-      <div>
+      <div className="panel">
         <Row className="integrity-report full-height">
           <Col md={6} className="extraneous full-height">
-            <hr />
             Extraneous items (<strong>{extraneous.length}</strong>)
             <br />
             <em className="explanation">
@@ -201,7 +205,6 @@ class Integrity extends Component {
             </ul>
           </Col>
           <Col md={6} className="missing full-height">
-            <hr />
             Missing items (<strong>{missing.length}</strong>)
             <br />
             <em className="explanation">
@@ -227,9 +230,8 @@ class Operations extends Component {
           groups = groupBy(operations, 'type');
 
     return (
-      <div>
+      <div className="panel">
         <Row className="operations-report full-height">
-          <hr />
           Operations to be applied
           <br />
           <em className="explanation">
@@ -244,8 +246,15 @@ class Operations extends Component {
           <strong>{(groups.renameGroup || []).length}</strong> <em>renamed groups</em>
           <br />
           <strong>{(groups.moveItem || []).length}</strong> <em>item moves</em>
-          <hr />
-          <table className="table table-sm overflow">
+          <table className="table table-sm table-bordered overflow" style={{marginTop: '20px'}}>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Target</th>
+                <th>From</th>
+                <th>to</th>
+              </tr>
+            </thead>
             <tbody>
               {operations.map((o, i) => <Operation key={i} {...o} />)}
             </tbody>
@@ -265,41 +274,38 @@ class Operation extends Component {
 
     let body = null,
         info = null,
-        cls = '';
+        status = '';
 
     if (data.type === 'addGroup') {
       info = <strong>add-group</strong>;
-      body = <em>"{data.name}"</em>;
-      cls = 'success';
+      status = 'success';
     }
     else if (data.type === 'renameGroup') {
       info = <strong>rename-group</strong>;
-      body = <span>from <em>"{data.from}"</em> to <em>"{data.to}"</em></span>;
-      cls = 'warning';
+      status = 'warning';
     }
     else if (data.type === 'moveItem') {
 
       if (data.from === null) {
         info = <strong>add-item</strong>;
-        body = <span>adding <em>"{data.item}"</em> to <em>"{data.to}"</em></span>;
-        cls = 'success';
+        status = 'success';
       }
       else if (data.to === null) {
         info = <strong>drop-item</strong>;
-        body = <span>drop <em>"{data.item}"</em> from <em>"{data.from}"</em></span>;
-        cls = 'danger';
+        status = 'danger';
       }
       else {
         info = <strong>move-item</strong>;
-        body = <span>moving <em>"{data.item}"</em> from <em>"{data.from}"</em> to <em>"{data.to}"</em></span>;
-        cls = 'info';
+        status = 'info';
       }
     }
 
     return (
       <tr>
-        <td className={'table-' + cls} style={{width: '140px'}}>{info}</td>
-        <td style={{paddingLeft: '20px'}}>{body}</td>
+        <td className={'table-' + status} style={{width: '140px'}}>{info}</td>
+        <td>{data.name || data.item || data.to}</td>
+        <td className={cls({'table-active': !data.from})}>{data.from}</td>
+        <td className={cls({'table-active': !data.to})}>{data.to}</td>
       </tr>
     );
   }
