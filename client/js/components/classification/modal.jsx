@@ -245,9 +245,11 @@ class Operations extends Component {
           <br />
           <strong>{(groups.moveItem || []).length}</strong> <em>item moves</em>
           <hr />
-          <ul className="overflow">
-            {operations.map((o, i) => <Operation key={i} {...o} />)}
-          </ul>
+          <table className="table table-sm overflow">
+            <tbody>
+              {operations.map((o, i) => <Operation key={i} {...o} />)}
+            </tbody>
+          </table>
         </Row>
       </div>
     );
@@ -261,20 +263,44 @@ class Operation extends Component {
   render() {
     const data = this.props;
 
-    let body = null;
+    let body = null,
+        info = null,
+        cls = '';
 
-    if (data.type === 'addGroup')
-      body = <li className="item"><Glyph />&nbsp;<em>{data.name}</em></li>;
+    if (data.type === 'addGroup') {
+      info = <strong>add-group</strong>;
+      body = <em>"{data.name}"</em>;
+      cls = 'success';
+    }
+    else if (data.type === 'renameGroup') {
+      info = <strong>rename-group</strong>;
+      body = <span>from <em>"{data.from}"</em> to <em>"{data.to}"</em></span>;
+      cls = 'warning';
+    }
+    else if (data.type === 'moveItem') {
 
-    return body;
-  }
-}
+      if (data.from === null) {
+        info = <strong>add-item</strong>;
+        body = <span>adding <em>"{data.item}"</em> to <em>"{data.to}"</em></span>;
+        cls = 'success';
+      }
+      else if (data.to === null) {
+        info = <strong>drop-item</strong>;
+        body = <span>drop <em>"{data.item}"</em> from <em>"{data.from}"</em></span>;
+        cls = 'danger';
+      }
+      else {
+        info = <strong>move-item</strong>;
+        body = <span>moving <em>"{data.item}"</em> from <em>"{data.from}"</em> to <em>"{data.to}"</em></span>;
+        cls = 'info';
+      }
+    }
 
-/**
- * Operation glyph.
- */
-class Glyph extends Component {
-  render() {
-    return (<span className="green-glyph">+</span>);
+    return (
+      <tr>
+        <td className={'table-' + cls} style={{width: '140px'}}>{info}</td>
+        <td style={{paddingLeft: '20px'}}>{body}</td>
+      </tr>
+    );
   }
 }
