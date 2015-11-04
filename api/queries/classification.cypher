@@ -1,3 +1,12 @@
+// name: getWithGroups
+// Retrieving basic information about the classification plus its groups.
+//------------------------------------------------------------------------------
+START c=node({id})
+MATCH (c)-[:HAS]->(group)
+RETURN
+  c AS classification,
+  collect(group) AS groups;
+
 // name: getAll
 // Retrieving every classifications.
 //------------------------------------------------------------------------------

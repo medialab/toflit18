@@ -46,6 +46,10 @@ const client = new Client({
     review: {
       method: 'POST',
       url: '/classification/:id/:type/review'
+    },
+    commit: {
+      method: 'POST',
+      url: '/classification/:id/:type/commit'
     }
   }
 });

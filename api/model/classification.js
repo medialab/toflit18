@@ -147,21 +147,29 @@ const Model = {
   commit(id, operations, callback) {
     async.waterfall([
 
-      function getRows(next) {
-        return database.cypher({query: queries.allGroups, params: {id}}, next);
+      function getData(next) {
+        return database.cypher({query: queries.getWithGroups, params: {id}}, next);
       },
 
-      function computeBatch(classification, next) {
-        const batch = new Batch(database);
+      function computeBatch(result, next) {
+        if (!result[0])
+          return next(null, null);
 
+        const batch = new Batch(database),
+              model = result[0].classification.model,
+              groups = _(result[0].classification.groups)
+                .map(g => ({id: g._id, ...g.properties}))
+                .indexBy('name')
+                .value();
+
+        console.log(groups);
+        return next();
         // Iterating through the patch's operations
         operations.forEach(function(operation) {
 
-          // Add the correct label on top of this
-
           // 1) Creating a new group
           if (operation.type === 'addGroup') {
-            batch.save({name: operation.name}, ['ClassifiedItem']);
+            batch.save({name: operation.name}, 'ClassifiedItem');
           }
 
           // 2) Renaming a group

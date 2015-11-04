@@ -92,8 +92,9 @@ const controller = [
     action(req, res) {
       return model.commit(+req.params.id, req.body.operations, function(err, result) {
         if (err) return res.serverError(err);
+        if (!result) return res.notFound();
 
-        return res.ok();
+        return res.ok(result);
       });
     }
   }
