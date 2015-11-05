@@ -237,8 +237,7 @@ class Operations extends Component {
   }
 
   render() {
-    const operations = this.props.data,
-          groups = groupBy(operations, 'type');
+    const operations = this.props.data;
 
     return (
       <div className="panel operations-report">
@@ -249,6 +248,35 @@ class Operations extends Component {
           you decide to submit your patch.
         </em>
         <hr />
+        {operations.length ?
+          <div>
+            <OperationsStats data={operations} />
+            <OperationsTable data={operations} />
+            <hr />
+            <div style={{textAlign: 'center'}}>
+              <Button kind="primary"
+                      onClick={() => this.fire()}
+                      loading={this.state.loading}>
+                Commit
+              </Button>
+            </div>
+          </div> :
+          <div className="red">Your patch doesn't seem to bring anything new to the table...</div>}
+      </div>
+    );
+  }
+}
+
+/**
+ * Operations stats.
+ */
+class OperationsStats extends Component {
+  render() {
+    const operations = this.props.data,
+          groups = groupBy(operations, 'type');
+
+    return (
+      <div>
         <strong>{operations.length}</strong> <str>total</str>
         <br />
         <strong>{(groups.addGroup || []).length}</strong> <em>new groups</em>
@@ -256,28 +284,32 @@ class Operations extends Component {
         <strong>{(groups.renameGroup || []).length}</strong> <em>renamed groups</em>
         <br />
         <strong>{(groups.moveItem || []).length}</strong> <em>item moves</em>
-        <table className="table table-sm table-bordered overflow" style={{marginTop: '20px'}}>
-          <thead className="">
-            <tr>
-              <th>Operation</th>
-              <th>Target</th>
-              <th>From</th>
-              <th>To</th>
-            </tr>
-          </thead>
-          <tbody>
-            {operations.map((o, i) => <Operation key={i} {...o} />)}
-          </tbody>
-        </table>
-        <hr />
-        <div style={{textAlign: 'center'}}>
-          <Button kind="primary"
-                  onClick={() => this.fire()}
-                  loading={this.state.loading}>
-            Commit
-          </Button>
-        </div>
       </div>
+    );
+  }
+}
+
+/**
+ * Operations table.
+ */
+class OperationsTable extends Component {
+  render() {
+    const operations = this.props.data;
+
+    return (
+      <table className="table table-sm table-bordered overflow" style={{marginTop: '20px'}}>
+        <thead className="">
+          <tr>
+            <th>Operation</th>
+            <th>Target</th>
+            <th>From</th>
+            <th>To</th>
+          </tr>
+        </thead>
+        <tbody>
+          {operations.map((o, i) => <Operation key={i} {...o} />)}
+        </tbody>
+      </table>
     );
   }
 }
