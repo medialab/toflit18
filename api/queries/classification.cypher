@@ -70,7 +70,9 @@ MATCH (c)-[:BASED_ON]->(:Classification)-[:HAS]->(item)
 OPTIONAL MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item)
 RETURN
   group.name AS group,
-  item.name AS item;
+  id(group) AS groupId,
+  item.name AS item,
+  id(item) AS itemId;
 
 // name: export
 // Exporting data about the given classification in order to produce a CSV file.

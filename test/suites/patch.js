@@ -33,21 +33,27 @@ describe('Classification patching', function() {
   describe('Patch', function() {
 
     it('should detect the correct operations.', function() {
-      const older = [
-        {group: 'fruits', item: 'mango'},
-        {group: 'fruits', item: 'papaya'},
-        {group: 'fruits', item: 'apple'},
-        {group: 'colors', item: 'blue'},
-        {group: 'colors', item: 'purple'},
-        {group: null, item: 'yellow'},
-        {group: 'names', item: 'Ney'},
-        {group: 'names', item: 'Davout'},
-        {group: 'days', item: 'Tuesday'},
-        {group: 'days', item: 'Monday'},
-        {group: 'date', item: 'February'},
-        {group: 'date', item: 'October'},
-        {group: null, item: 'loner'}
+      let older = [
+        {groupId: 1, group: 'fruits', item: 'mango'},
+        {groupId: 1, group: 'fruits', item: 'papaya'},
+        {groupId: 1, group: 'fruits', item: 'apple'},
+        {groupId: 2, group: 'colors', item: 'blue'},
+        {groupId: 2, group: 'colors', item: 'purple'},
+        {groupId: null, group: null, item: 'yellow'},
+        {groupId: 3, group: 'names', item: 'Ney'},
+        {groupId: 3, group: 'names', item: 'Davout'},
+        {groupId: 4, group: 'days', item: 'Tuesday'},
+        {groupId: 4, group: 'days', item: 'Monday'},
+        {groupId: null, group: null, item: 'Thursday'},
+        {groupId: 5, group: 'date', item: 'February'},
+        {groupId: 5, group: 'date', item: 'October'},
+        {groupId: null, group: null, item: 'November'},
+        {groupId: null, group: null, item: 'loner'},
+        {groupId: null, group: null, item: 'strawberry'},
+        {groupId: 6, group: 'unknown', item: 'blueberry'}
       ];
+
+      older.forEach((row, i) => row.itemId = i);
 
       const newer = [
         {group: 'exoticFruits', item: 'mango'},
@@ -64,27 +70,31 @@ describe('Classification patching', function() {
         {group: 'month', item: 'November'},
         {group: 'month', item: 'February'},
         {group: 'month', item: 'October'},
-        {group: null, item: 'loner'}
+        {group: null, item: 'loner'},
+        {group: 'fruits', item: 'strawberry'},
+        {group: 'fruits', item: 'blueberry'}
       ];
 
       assert.deepEqual(
         applyPatch(older, newer),
         [
           // Renaming groups
-          {type: 'renameGroup', from: 'names', to: 'generals'},
-          {type: 'renameGroup', from: 'days', to: 'week'},
-          {type: 'renameGroup', from: 'date', to: 'month'},
+          {id: 3, type: 'renameGroup', from: 'names', to: 'generals'},
+          {id: 4, type: 'renameGroup', from: 'days', to: 'week'},
+          {id: 5, type: 'renameGroup', from: 'date', to: 'month'},
 
           // Adding groups
           {type: 'addGroup', name: 'exoticFruits'},
 
           // Moving items
-          {type: 'moveItem', from: 'fruits', to: 'exoticFruits', item: 'mango'},
-          {type: 'moveItem', from: 'fruits', to: 'exoticFruits', item: 'papaya'},
-          {type: 'moveItem', from: 'colors', to: null, item: 'purple'},
-          {type: 'moveItem', from: null, to: 'colors', item: 'yellow'},
-          {type: 'moveItem', from: null, to: 'week', item: 'Thursday'},
-          {type: 'moveItem', from: null, to: 'month', item: 'November'}
+          {type: 'moveItem', itemId: 0, fromId: 1, from: 'fruits', toId: null, to: 'exoticFruits', item: 'mango'},
+          {type: 'moveItem', itemId: 1, fromId: 1, from: 'fruits', toId: null, to: 'exoticFruits', item: 'papaya'},
+          {type: 'moveItem', itemId: 4, fromId: 2, from: 'colors', toId: null, to: null, item: 'purple'},
+          {type: 'moveItem', itemId: 5, fromId: null, from: null, toId: 2, to: 'colors', item: 'yellow'},
+          {type: 'moveItem', itemId: 10, fromId: null, from: null, toId: null, to: 'week', item: 'Thursday'},
+          {type: 'moveItem', itemId: 13, fromId: null, from: null, toId: null, to: 'month', item: 'November'},
+          {type: 'moveItem', itemId: 15, fromId: null, from: null, toId: 1, to: 'fruits', item: 'strawberry'},
+          {type: 'moveItem', itemId: 16, fromId: 6, from: 'unknown', toId: 1, to: 'fruits', item: 'blueberry'}
         ]
       );
     });
