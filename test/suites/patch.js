@@ -73,7 +73,9 @@ describe('Classification patching', function() {
         {group: null, item: 'loner'},
         {group: 'fruits', item: 'strawberry'},
         {group: 'fruits', item: 'blueberry'},
-        // {group: 'fruits', item: 'shawarma'}
+        {group: 'fruits', item: 'shawarma'},
+        {group: 'useless', item: null},
+        {group: 'second_useless', item: 'falafel'}
       ];
 
       assert.deepEqual(
