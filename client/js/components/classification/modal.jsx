@@ -224,6 +224,58 @@ class Integrity extends Component {
 /**
  * Operations.
  */
+const grouper = (data) => {
+  return groupBy(data, row => {
+    if (row.type === 'addGroup' || row.type === 'renameGroup')
+      return row.type;
+
+    if (row.from === null)
+      return 'addItem';
+    else if (row.to === null)
+      return 'dropItem';
+    else
+      return 'moveItem';
+  });
+};
+
+const OPERATION_TYPES = {
+  renameGroup: {
+    title: 'Renamed groups',
+    description: 'Groups that your patch renamed.',
+    color: 'warning',
+    headers: ['From', 'To'],
+    getter: row => [row.from, row.to]
+  },
+  addGroup: {
+    title: 'Added groups',
+    description: 'Groups added by your patch & that were not in the current state of the classification.',
+    color: 'success',
+    headers: ['Name'],
+    getter: row => [row.name]
+  },
+  addItem: {
+    title: 'Added items',
+    description: 'Items precedently without a group but now attached to one.',
+    color: 'info',
+    headers: ['Item', 'Added to', 'New group?'],
+    getter: row => [row.item, row.to, !row.toId ? '✓' : '']
+  },
+  dropItem: {
+    title: 'Dropped items',
+    description: 'Items precedently attached to a group but now without one.',
+    color: 'danger',
+    headers: ['Item', 'Dropped from'],
+    getter: row => [row.item, row.from]
+  },
+  moveItem: {
+    title: 'Moved items',
+    descriptions: 'Items that were moved from one group to another one.',
+    color: 'active',
+    headers: ['Item', 'From', 'To', 'New group?'],
+    getter: row => [row.item, row.from, row.to, !row.toId ? '✓' : '']
+  }
+};
+
 class Operations extends Component {
   constructor(props, context) {
     super(props, context);
@@ -237,31 +289,35 @@ class Operations extends Component {
   }
 
   render() {
-    const operations = this.props.data;
+    const operations = this.props.data,
+          groups = grouper(operations);
 
     return (
-      <div className="panel operations-report">
-        Operations to be applied
-        <br />
-        <em className="explanation">
-          Exhaustive list of operations that will be applied to the database will
-          you decide to submit your patch.
-        </em>
-        <hr />
-        {operations.length ?
-          <div>
-            <OperationsStats data={operations} />
-            <OperationsTable data={operations} />
-            <hr />
-            <div style={{textAlign: 'center'}}>
-              <Button kind="primary"
-                      onClick={() => this.fire()}
-                      loading={this.state.loading}>
-                Commit
-              </Button>
-            </div>
-          </div> :
-          <div className="red">Your patch doesn't seem to bring anything new to the table...</div>}
+      <div>
+        <div className="panel operations-report">
+          Operations to be applied
+          <br />
+          <em className="explanation">
+            Exhaustive list of operations that will be applied to the database will
+            you decide to submit your patch.
+          </em>
+          {!!operations.length ?
+            <OperationsStats groups={groups} total={operations.length} /> :
+            <div className="red"><hr />I am awfully sorry but your patch doesn't seem to bring anything new to the table...</div>}
+        </div>
+        <div>
+          {!!operations.length &&
+            <div>
+              {Object.keys(OPERATION_TYPES).map(type => <OperationsTable key={type} operations={groups[type]} type={type} />)}
+              <div style={{textAlign: 'center', marginBottom: '100px'}}>
+                <Button kind="primary"
+                        onClick={() => this.fire()}
+                        loading={this.state.loading}>
+                  Commit
+                </Button>
+              </div>
+            </div>}
+        </div>
       </div>
     );
   }
@@ -272,19 +328,32 @@ class Operations extends Component {
  */
 class OperationsStats extends Component {
   render() {
-    const operations = this.props.data,
-          groups = groupBy(operations, 'type');
+    const {groups, total} = this.props;
+
+    const labels = {
+      addGroup: 'new groups',
+      renameGroup: 'renamed groups',
+      addItem: 'items added to a group',
+      dropItem: 'items dropped from a group',
+      moveItem: 'items moved from a group to another'
+    };
+
+    const lines = Object.keys(groups)
+      .filter(type => groups[type].length)
+      .map(type => {
+        const group = groups[type];
+
+        return <li><strong>{group.length}</strong> <em>{labels[type]}</em></li>;
+      });
 
     return (
-      <div>
-        <strong>{operations.length}</strong> <str>total</str>
-        <br />
-        <strong>{(groups.addGroup || []).length}</strong> <em>new groups</em>
-        <br />
-        <strong>{(groups.renameGroup || []).length}</strong> <em>renamed groups</em>
-        <br />
-        <strong>{(groups.moveItem || []).length}</strong> <em>item moves</em>
-      </div>
+      <ul>
+        <li>
+          <strong>{total}</strong> <em>total operations</em>
+        </li>
+        <hr />
+        {lines}
+      </ul>
     );
   }
 }
@@ -294,68 +363,50 @@ class OperationsStats extends Component {
  */
 class OperationsTable extends Component {
   render() {
-    const operations = this.props.data;
+    const {operations, type} = this.props;
+
+    const {
+      title,
+      description,
+      color,
+      headers,
+      getter
+    } = OPERATION_TYPES[type];
+
+    if (!operations.length)
+      return null;
+
+    const altStyle = {
+      style: {
+        textAlign: 'center',
+        width: '140px'
+      }
+    };
+
+    const rows = operations.map(o => {
+      return (
+        <tr>
+          {getter(o).map((item, i) => <td {...(headers[i] === 'New group?' ? altStyle : {})}>{item}</td>)}
+        </tr>
+      );
+    });
 
     return (
-      <table className="table table-sm table-bordered overflow" style={{marginTop: '20px'}}>
-        <thead className="">
-          <tr>
-            <th>Operation</th>
-            <th>Target</th>
-            <th>From</th>
-            <th>To</th>
-          </tr>
-        </thead>
-        <tbody>
-          {operations.map((o, i) => <Operation key={i} {...o} />)}
-        </tbody>
-      </table>
-    );
-  }
-}
-
-/**
- * Operation line.
- */
-class Operation extends Component {
-  render() {
-    const data = this.props;
-
-    let body = null,
-        info = null,
-        status = '';
-
-    if (data.type === 'addGroup') {
-      info = <strong>add-group</strong>;
-      status = 'success';
-    }
-    else if (data.type === 'renameGroup') {
-      info = <strong>rename-group</strong>;
-      status = 'warning';
-    }
-    else if (data.type === 'moveItem') {
-
-      if (data.from === null) {
-        info = <strong>add-item</strong>;
-        status = 'info';
-      }
-      else if (data.to === null) {
-        info = <strong>drop-item</strong>;
-        status = 'danger';
-      }
-      else {
-        info = <strong>move-item</strong>;
-        status = 'active';
-      }
-    }
-
-    return (
-      <tr>
-        <td className={'table-' + status} style={{width: '140px'}}>{info}</td>
-        <td>{data.name || data.item || data.to}</td>
-        <td className={cls({'table-active': !data.from})}>{data.from}</td>
-        <td className={cls({'table-active': !data.to})}>{data.to}</td>
-      </tr>
+      <div className="panel">
+        {title} (<strong>{operations.length}</strong>)
+        <br />
+        <em>{description}</em>
+        <table className="table table-sm table-bordered" style={{marginTop: '20px'}}>
+          <thead className="">
+            <tr className={'table-' + color}>
+              {headers.map(h => <th key={h} {...(h === 'New group?' ? altStyle : {})}>{h}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {rows}
+          </tbody>
+        </table>
+      </div>
     );
   }
 }
