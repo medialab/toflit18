@@ -10,7 +10,7 @@ import {searchRegex} from '../helpers';
 import {stringify} from 'csv';
 import {applyPatch, checkIntegrity} from '../../lib/patch';
 import Batch from '../../lib/batch';
-import {groupBy, find, map} from 'lodash';
+import _, {groupBy, find, map} from 'lodash';
 
 /**
  * Helpers.
@@ -148,7 +148,7 @@ const Model = {
     async.waterfall([
 
       function getData(next) {
-        return database.cypher({query: queries.getWithGroups, params: {id}}, next);
+        return database.cypher({query: queries.info, params: {id}}, next);
       },
 
       function computeBatch(result, next) {
@@ -156,29 +156,52 @@ const Model = {
           return next(null, null);
 
         const batch = new Batch(database),
-              model = result[0].classification.model,
-              groups = _(result[0].classification.groups)
-                .map(g => ({id: g._id, ...g.properties}))
-                .indexBy('name')
-                .value();
+              classificationId = result[0].classification._id,
+              newGroupsIndex = {};
 
-        console.log(groups);
-        return next();
         // Iterating through the patch's operations
         operations.forEach(function(operation) {
 
           // 1) Creating a new group
           if (operation.type === 'addGroup') {
-            batch.save({name: operation.name}, 'ClassifiedItem');
+            const groupNode = batch.save({name: operation.name}, 'ClassifiedItem');
+            batch.relate(classificationId, 'HAS', groupNode);
+
+            // Indexing
+            newGroupsIndex[operation.name] = groupNode;
           }
 
           // 2) Renaming a group
+          if (operation.type === 'renameGroup') {
+            batch.update(operation.id, {name: operation.to});
+          }
 
           // 3) Moving an item (deleting old relation before!)
+          if (operation.type === 'moveItem') {
+            const newTo = newGroupsIndex[operation.to],
+                  newFrom = newGroupsIndex[operation.from];
+
+            // NOTE: This could be factorized.
+
+            // Dropping an item from its group
+            if (operation.to === null && !newTo) {
+              batch.unrelate(operation.fromId || newFrom, 'AGGREGATES', operation.itemId);
+            }
+
+            // Adding an item from limbo to a group
+            else if (operation.from === null && !newFrom) {
+              batch.relate(operation.toId || newTo, 'AGGREGATES', operation.itemId);
+            }
+
+            // Moving an item from group to group
+            else {
+              batch.unrelate(operation.fromId || newFrom, 'AGGREGATES', operation.itemId);
+              batch.relate(operation.toId || newTo, 'AGGREGATES', operation.itemId);
+            }
+          }
         });
 
-        batch.commit(Function.prototype);
-        return next();
+        batch.commit(next);
       }
     ], callback);
   }

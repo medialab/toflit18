@@ -79,3 +79,22 @@ export function review(tree, id) {
     cursor.set('review', data.result);
   });
 }
+
+/**
+ * Committing the current patch.
+ */
+export function commit(tree, id) {
+  const cursor = tree.select(MODAL_PATH),
+        {review: {operations}, step} = cursor.get();
+
+  if (step !== 'review')
+    return;
+
+  tree.client.commit({params: {id, type: 'patch'}, data: {operations}}, function(err, data) {
+    if (err)
+      return;
+
+    // Fix UX later...
+    location.reload();
+  });
+}

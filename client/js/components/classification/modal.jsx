@@ -45,6 +45,7 @@ export default class ClassificationModal extends Component {
               {hasInconsistencies && <ConsistencyReport report={modal.inconsistencies} />}
               {modal.step === 'review' &&
                 <Review get={actions.review.bind(null, target.id)}
+                        commit={actions.commit.bind(null, target.id)}
                         loading={modal.loading}
                         review={modal.review} />}
             </div>
@@ -66,8 +67,6 @@ class ModalTitle extends Component {
 
     if (action === 'update')
       title = `Updating "${name} (${model})"`;
-    else if (action === 'fork')
-      title = `Forking "${name} (${model})"`;
     else if (action === 'create')
       title = `Creating from "${name} (${model})"`;
 
@@ -165,14 +164,14 @@ class Review extends Component {
   }
 
   render() {
-    const {loading, review} = this.props;
+    const {commit, loading, review} = this.props;
 
     const body = (loading || !review) ?
       <div className="panel"><Waiter align="center" /></div> :
       (
         <div>
           <Integrity data={review.integrity} />
-          <Operations data={review.operations} />
+          <Operations data={review.operations} commit={commit} />
         </div>
       );
 
@@ -226,6 +225,17 @@ class Integrity extends Component {
  * Operations.
  */
 class Operations extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {loading: false};
+  }
+
+  fire() {
+    this.props.commit();
+    this.setState({loading: true});
+  }
+
   render() {
     const operations = this.props.data,
           groups = groupBy(operations, 'type');
@@ -259,6 +269,14 @@ class Operations extends Component {
             {operations.map((o, i) => <Operation key={i} {...o} />)}
           </tbody>
         </table>
+        <hr />
+        <div style={{textAlign: 'center'}}>
+          <Button kind="primary"
+                  onClick={() => this.fire()}
+                  loading={this.state.loading}>
+            Commit
+          </Button>
+        </div>
       </div>
     );
   }

@@ -72,7 +72,8 @@ describe('Classification patching', function() {
         {group: 'month', item: 'October'},
         {group: null, item: 'loner'},
         {group: 'fruits', item: 'strawberry'},
-        {group: 'fruits', item: 'blueberry'}
+        {group: 'fruits', item: 'blueberry'},
+        // {group: 'fruits', item: 'shawarma'}
       ];
 
       assert.deepEqual(

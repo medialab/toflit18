@@ -94,7 +94,7 @@ const controller = [
         if (err) return res.serverError(err);
         if (!result) return res.notFound();
 
-        return res.ok(result);
+        return res.ok();
       });
     }
   }

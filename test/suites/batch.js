@@ -14,16 +14,19 @@ describe('Neo4j Batches', function() {
     batch.relate(45, 'AGGREGATES', cheese);
 
     batch.update(45, {note: 'Here you go.'});
-    batch.unlink(45, 'AGGREGATES', 46);
+    batch.unrelate(45, 'AGGREGATES', 46);
 
     const {query, params} = batch.compile();
 
     assert.deepEqual(
       query.split('\n'),
       [
-        'START ne45=(45)',
+        'MATCH (ne45)',
+        'WHERE id(ne45) = 45',
+        'MATCH (ne46)',
+        'WHERE id(ne46) = 46',
+        'MATCH (ne45)-[r0:`AGGREGATES`]->(ne46)',
         'SET ne45 += {pe45}',
-        'START ne46=(46)',
         'CREATE (ni0 {pi0})',
         'SET ni0:`ClassifiedItem`',
         'SET ni0:`ClassifiedProduct`',
@@ -31,7 +34,6 @@ describe('Neo4j Batches', function() {
         'SET ni1:`Item`',
         'CREATE (ni2 {pi2})',
         'SET ni2:`Item`',
-        'MATCH (ne45)-[r0:`AGGREGATES`]->(ne46)',
         'DELETE r0',
         'CREATE (ni0)-[:`AGGREGATES`]->(ni1)',
         'CREATE (ni0)-[:`AGGREGATES`]->(ni2)',
