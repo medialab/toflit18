@@ -17,6 +17,6 @@ export class Col extends Component {
   render() {
     const size = `col-md-${this.props.md}`;
 
-    return <div className={cls(size, this.props.className)}>{this.props.children}</div>;
+    return <div {...this.props} className={cls(size, this.props.className)}>{this.props.children}</div>;
   }
 }

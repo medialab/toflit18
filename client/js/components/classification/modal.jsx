@@ -231,36 +231,34 @@ class Operations extends Component {
           groups = groupBy(operations, 'type');
 
     return (
-      <div className="panel">
-        <Row className="operations-report full-height">
-          Operations to be applied
-          <br />
-          <em className="explanation">
-            Exhaustive list of operations that will be applied to the database will
-            you decide to submit your patch.
-          </em>
-          <hr />
-          <strong>{operations.length}</strong> <str>total</str>
-          <br />
-          <strong>{(groups.addGroup || []).length}</strong> <em>new groups</em>
-          <br />
-          <strong>{(groups.renameGroup || []).length}</strong> <em>renamed groups</em>
-          <br />
-          <strong>{(groups.moveItem || []).length}</strong> <em>item moves</em>
-          <table className="table table-sm table-bordered overflow" style={{marginTop: '20px'}}>
-            <thead className="">
-              <tr>
-                <th>Operation</th>
-                <th>Target</th>
-                <th>From</th>
-                <th>To</th>
-              </tr>
-            </thead>
-            <tbody>
-              {operations.map((o, i) => <Operation key={i} {...o} />)}
-            </tbody>
-          </table>
-        </Row>
+      <div className="panel operations-report">
+        Operations to be applied
+        <br />
+        <em className="explanation">
+          Exhaustive list of operations that will be applied to the database will
+          you decide to submit your patch.
+        </em>
+        <hr />
+        <strong>{operations.length}</strong> <str>total</str>
+        <br />
+        <strong>{(groups.addGroup || []).length}</strong> <em>new groups</em>
+        <br />
+        <strong>{(groups.renameGroup || []).length}</strong> <em>renamed groups</em>
+        <br />
+        <strong>{(groups.moveItem || []).length}</strong> <em>item moves</em>
+        <table className="table table-sm table-bordered overflow" style={{marginTop: '20px'}}>
+          <thead className="">
+            <tr>
+              <th>Operation</th>
+              <th>Target</th>
+              <th>From</th>
+              <th>To</th>
+            </tr>
+          </thead>
+          <tbody>
+            {operations.map((o, i) => <Operation key={i} {...o} />)}
+          </tbody>
+        </table>
       </div>
     );
   }
