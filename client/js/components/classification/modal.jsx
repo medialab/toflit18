@@ -12,7 +12,6 @@ import FileInput from '../misc/file.jsx';
 import {Waiter} from '../bootstrap/loaders.jsx';
 import {groupBy, map} from 'lodash';
 import cls from 'classnames';
-
 import * as patchActions from '../../actions/patch';
 
 /**
@@ -190,31 +189,42 @@ class Integrity extends Component {
   render() {
     const {extraneous, missing} = this.props.data;
 
+    if (!extraneous.length && !missing.length)
+      return null;
+
+    const extraneousGroup = (
+      <Col md={6} className="extraneous full-height">
+        Extraneous items (<strong>{extraneous.length}</strong>)
+        <br />
+        <em className="explanation">
+          Items present in your patch but missing from the database.
+        </em>
+        <hr />
+        <ul className="overflow">
+          {extraneous.map(item => <li key={`extraneous-${item}`} className="item">{item}</li>)}
+        </ul>
+      </Col>
+    );
+
+    const missingGroup = (
+      <Col md={6} className="missing full-height">
+        Missing items (<strong>{missing.length}</strong>)
+        <br />
+        <em className="explanation">
+          Items present in the database but missing from your patch.
+        </em>
+        <hr />
+        <ul className="overflow">
+          {missing.map(item => <li key={`missing-${item}`} className="item">{item}</li>)}
+        </ul>
+      </Col>
+    );
+
     return (
       <div className="panel">
         <Row className="integrity-report full-height">
-          <Col md={6} className="extraneous full-height">
-            Extraneous items (<strong>{extraneous.length}</strong>)
-            <br />
-            <em className="explanation">
-              Items present in your patch but missing from the database.
-            </em>
-            <hr />
-            <ul className="overflow">
-              {extraneous.map(item => <li key={`extraneous-${item}`} className="item">{item}</li>)}
-            </ul>
-          </Col>
-          <Col md={6} className="missing full-height">
-            Missing items (<strong>{missing.length}</strong>)
-            <br />
-            <em className="explanation">
-              Items present in the database but missing from your patch.
-            </em>
-            <hr />
-            <ul className="overflow">
-              {missing.map(item => <li key={`missing-${item}`} className="item">{item}</li>)}
-            </ul>
-          </Col>
+          {!!extraneous.length && extraneousGroup}
+          {!!missing.length && missingGroup}
         </Row>
       </div>
     );
