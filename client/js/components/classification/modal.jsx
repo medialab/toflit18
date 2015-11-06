@@ -406,16 +406,20 @@ class OperationsTable extends Component {
         {title} (<strong>{operations.length}</strong>)
         <br />
         <em>{description}</em>
-        <table className="operations-table table table-sm table-bordered">
-          <thead className="">
+        <table className="operations-table table table-sm">
+          <thead>
             <tr className={'table-' + color}>
               {headers.map(h => <th key={h} {...(h === 'New group?' ? altStyle : {})}>{h}</th>)}
             </tr>
           </thead>
-          <tbody>
-            {rows}
-          </tbody>
         </table>
+        <div className="overflow" style={{maxHeight: '300px'}}>
+          <table className="table table-sm">
+            <tbody>
+              {rows}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }
