@@ -279,7 +279,7 @@ const OPERATION_TYPES = {
   },
   moveItem: {
     title: 'Moved items',
-    descriptions: 'Items that were moved from one group to another one.',
+    description: 'Items that were moved from one group to another.',
     color: 'active',
     headers: ['Item', 'From', 'To', 'New group?'],
     getter: row => [row.item, row.from, row.to, !row.toId ? '✓' : '']
