@@ -357,7 +357,7 @@ class OperationsStats extends Component {
       });
 
     return (
-      <ul>
+      <ul style={{marginTop: '20px'}}>
         <li>
           <strong>{total}</strong> <em>total operations</em>
         </li>
