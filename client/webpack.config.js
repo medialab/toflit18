@@ -1,14 +1,5 @@
 var webpack = require('webpack'),
-    path = require('path'),
-    ProgressBar = require('progress'),
-    _ = require('lodash');
-
-var fmt = ' [:bar] :percent';
-
-var bar = new ProgressBar(fmt, {
-  total: 100,
-  width: 30
-});
+    path = require('path');
 
 module.exports = {
   devtool: '#cheap-module-eval-source-map',
@@ -26,8 +17,9 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProgressPlugin(function(percentage, message) {
-      bar.fmt = _.padRight((message || 'Done!'), 25, ' ') + fmt;
-      bar.update(percentage);
+      var txt = ((percentage * 100) | 0) + '% - ' + message;
+
+      console.log(txt);
     })
   ],
   module: {

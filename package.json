@@ -4,7 +4,7 @@
   "description": "TOFLIT18's datascape.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --ext js,cypher --watch ./api --watch ./lib --exec npm start & (sleep 6 && cd client && npm run dev) && fg",
+    "dev": "nodemon --ext js,cypher --watch ./api --watch ./lib --exec npm start & (cd client && npm run dev) && fg",
     "export": "babel-node ./scripts/export.js",
     "import": "babel-node ./scripts/import.js",
     "lint": "eslint --ext .js --ext .jsx ./api ./lib ./test ./client/js",
