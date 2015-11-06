@@ -339,7 +339,7 @@ class OperationsStats extends Component {
     };
 
     const lines = Object.keys(groups)
-      .filter(type => groups[type].length)
+      .filter(type => groups[type] && groups[type].length)
       .map(type => {
         const group = groups[type];
 
@@ -373,7 +373,7 @@ class OperationsTable extends Component {
       getter
     } = OPERATION_TYPES[type];
 
-    if (!operations.length)
+    if (!operations || !operations.length)
       return null;
 
     const altStyle = {
