@@ -304,7 +304,7 @@ class Operations extends Component {
 
     return (
       <div>
-        <div className="panel operations-report">
+        <div className="panel">
           Operations to be applied
           <br />
           <em className="explanation">
@@ -406,7 +406,7 @@ class OperationsTable extends Component {
         {title} (<strong>{operations.length}</strong>)
         <br />
         <em>{description}</em>
-        <table className="table table-sm table-bordered" style={{marginTop: '20px'}}>
+        <table className="operations-table table table-sm table-bordered">
           <thead className="">
             <tr className={'table-' + color}>
               {headers.map(h => <th key={h} {...(h === 'New group?' ? altStyle : {})}>{h}</th>)}

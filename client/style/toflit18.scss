@@ -286,20 +286,8 @@ h1 {
       }
     }
 
-    .operations-report {
-
-      & ul {
-        max-height: 3000px;
-        list-style-type: none;
-        padding: 15px;
-
-        & > .item {
-          font-size: 0.9em;
-          background-color: $light-grey;
-          padding: 10px;
-          margin-bottom: 10px;
-        }
-      }
+    .operations-table {
+      margin-top: 20px;
     }
   }
 }
