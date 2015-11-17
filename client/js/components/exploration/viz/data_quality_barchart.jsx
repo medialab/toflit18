@@ -7,7 +7,7 @@
  */
 import React, {Component} from 'react';
 import measured from '../../../lib/measured';
-import {linear, ordinal} from 'd3-scale';
+import scale from 'd3-scale';
 
 /**
  * Main component
@@ -15,22 +15,23 @@ import {linear, ordinal} from 'd3-scale';
 @measured
 export default class DataQualityBarChart extends Component {
   render() {
-    const {data} = this.props;
+    const {data, width} = this.props;
 
-console.log(this.props)
+    if (!width)
+      return null;
 
-
-
-//     var x = d3.scale.ordinal()
-//     .rangeRoundBands([0, width], .1);
-
-// var y = d3.scale.linear()
-//     .range([height, 0]);
+    // Building scales
+    const x = scale.ordinal().range([0, width]),
+          y = scale.linear().range([200, 0]);
 
     return (
-      <svg width="100%" height={200}>
+      <svg width="100%" height={200} className="quality-bar-chart">
         {data.map((row, i) =>
-          <rect key={i} className="quality-bar" />)}
+          <rect key={i}
+                className="bar"
+                x={x(i)}
+                width={50}
+                height={50} />)}
       </svg>
     );
   }
