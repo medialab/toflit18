@@ -14,6 +14,7 @@ import ClassificationModal from './classification/modal.jsx';
 import ClassificationBrowser from './classification/browser.jsx';
 import ExplorationPanel from './exploration/panel.jsx';
 import ExplorationIndicators from './exploration/indicators.jsx';
+import ExplorationGlobals from './exploration/globals.jsx';
 import history from '../history';
 
 export default class AppRouter extends Component {
@@ -43,8 +44,8 @@ export default class AppRouter extends Component {
             </Route>
             <Route path="exploration" component={ExplorationPanel}>
               <Route path="indicators" component={ExplorationIndicators} />
+              <Route path="globals" component={ExplorationGlobals} />
             </Route>
-
           </Route>
         </Route>
         <Redirect from="*" to="/" />
