@@ -13,6 +13,7 @@ import ClassificationPanel from './classification/panel.jsx';
 import ClassificationModal from './classification/modal.jsx';
 import ClassificationBrowser from './classification/browser.jsx';
 import ExplorationPanel from './exploration/panel.jsx';
+import ExplorationIndicators from './exploration/indicators.jsx';
 import history from '../history';
 
 export default class AppRouter extends Component {
@@ -32,14 +33,18 @@ export default class AppRouter extends Component {
         <Route path="/" component={App}>
           <Route path="/login" component={Login} />
           <Route path="/" onEnter={(_, redirect) => !isLogged() && redirect(null, '/login')}>
+
+            <Redirect from="classification" to="classification/browser" />
+            <Redirect from="exploration" to="exploration/indicators" />
+
             <Route path="classification" component={ClassificationPanel}>
-              <IndexRoute component={ClassificationBrowser} />
               <Route path="browser" component={ClassificationBrowser} />
               <Route path="modal" component={ClassificationModal} />
             </Route>
             <Route path="exploration" component={ExplorationPanel}>
-              <IndexRoute component={ExplorationPanel} />
+              <Route path="indicators" component={ExplorationIndicators} />
             </Route>
+
           </Route>
         </Route>
         <Redirect from="*" to="/" />

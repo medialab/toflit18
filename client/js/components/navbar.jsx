@@ -12,7 +12,7 @@ import {logout} from '../actions/session';
 const LINKS = [
   {
     label: 'Exploration',
-    url: '/exploration'
+    url: '/exploration/indicators'
   },
   {
     label: 'Classification',
