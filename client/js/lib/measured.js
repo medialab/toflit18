@@ -20,22 +20,18 @@ export default function(Component) {
     }
 
     componentDidMount() {
-      const dom = ReactDOM.findDOMNode(this);
-
-      this.listener = () => this.handleResize(dom);
-      dom.addEventListener('resize', this.listener);
+      this.listener = () => this.handleResize();
+      window.addEventListener('resize', this.listener);
       this.listener();
     }
 
     componentWillUnmount() {
-      const dom = ReactDOM.findDOMNode(this);
-
-      dom.removeEventListener('resize', this.listener);
+      window.removeEventListener('resize', this.listener);
       this.listener = null;
     }
 
-    handleResize(dom) {
-      console.log(dom);
+    handleResize() {
+      const dom = ReactDOM.findDOMNode(this);
       this.setState({width: dom.offsetWidth, height: dom.offsetHeight});
     }
 

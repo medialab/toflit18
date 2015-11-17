@@ -38,7 +38,7 @@ export default class DataQualityBarChart extends Component {
       .range([height, 0]);
 
     return (
-      <svg width={200} height={height} className="quality-bar-chart">
+      <svg width="100%" height={height} className="quality-bar-chart">
         {width && data.map((row, i) =>
           <rect key={row.year}
                 className="bar"
