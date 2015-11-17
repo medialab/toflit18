@@ -53,13 +53,26 @@ export default class DataQualityBarChart extends Component {
     // Rendering
     return (
       <svg width="100%" height={height} className="quality-bar-chart">
-        {width && data.map((row, i) =>
-          <rect key={row.year}
-                className="bar"
-                x={x(row.year)}
-                y={y(row.directions.length)}
-                width={10}
-                height={height - y(row.directions.length)} />)}
+        <g>
+          {data.map((row, i) =>
+            <rect key={row.year}
+                  className="bar"
+                  x={x(row.year)}
+                  y={y(row.directions.length)}
+                  width={10}
+                  height={height - y(row.directions.length)} />)}
+        </g>
+        <g>
+          {allYears.map((year, i) =>
+            <text key={year}
+                  x={i * 10}
+                  y={0}
+                  className="year"
+                  textAnchor="start"
+                  transform={`rotate(90 ${i * 10}, 0)`}>
+              {year}
+            </text>)}
+        </g>
       </svg>
     );
   }
