@@ -100,13 +100,13 @@ function indexedNode(index, label, key, data) {
 /**
  * Paths
  */
-const BDD_CENTRALE_PATH = '/base_centrale/bdd_centrale.csv',
-      CLASSIFICATIONS_PATH = '/Traitement des marchandises, pays, unités',
-      BDD_OUTSIDERS = CLASSIFICATIONS_PATH + '/marchandises_sourcees.csv',
-      ORTHOGRAPHIC_CLASSIFICATION = CLASSIFICATIONS_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
-      SIMPLIFICATION = CLASSIFICATIONS_PATH + '/bdd_marchandises_simplifiees.csv',
-      OTHER_CLASSIFICATIONS = CLASSIFICATIONS_PATH + '/bdd_marchandises_classifiees.csv',
-      COUNTRY_CLASSIFICATIONS = CLASSIFICATIONS_PATH + '/bdd_pays.csv';
+const ROOT_PATH = '/Fichiers de la base avant Neo4J',
+      BDD_CENTRALE_PATH = ROOT_PATH + '/base_centrale/bdd_centrale.csv',
+      BDD_OUTSIDERS = ROOT_PATH + '/marchandises_sourcees.csv',
+      ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
+      SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
+      OTHER_CLASSIFICATIONS = ROOT_PATH + '/bdd_marchandises_classifiees.csv',
+      COUNTRY_CLASSIFICATIONS = ROOT_PATH + '/bdd_pays.csv';
 
 /**
  * Constants
