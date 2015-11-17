@@ -8,6 +8,7 @@
 import React, {Component} from 'react';
 import measured from '../../../lib/measured';
 import scale from 'd3-scale';
+import {max} from 'lodash';
 
 /**
  * Main component
@@ -17,32 +18,35 @@ export default class DataQualityBarChart extends Component {
   render() {
     const {data, width} = this.props;
 
-    if (!width)
+    const height = 200;
+
+    if (!data)
       return null;
 
+    // Computing max values
+    const maxYear = data[data.length - 1].year,
+          minYear = data[0].year,
+          maxDirectionsCount = max(data.map(r => r.directions.length));
+
     // Building scales
-    const x = scale.ordinal().range([0, width]),
-          y = scale.linear().range([200, 0]);
+    const x = scale.linear()
+      .domain([minYear, maxYear])
+      .range([0, width - 10]);
+
+    const y = scale.linear()
+      .domain([0, maxDirectionsCount])
+      .range([height, 0]);
 
     return (
-      <svg width="100%" height={200} className="quality-bar-chart">
-        {data.map((row, i) =>
-          <rect key={i}
+      <svg width="100%" height={height} className="quality-bar-chart">
+        {width && data.map((row, i) =>
+          <rect key={row.year}
                 className="bar"
-                x={x(i)}
-                width={50}
-                height={50} />)}
+                x={x(row.year)}
+                y={y(row.directions.length)}
+                width={10}
+                height={height - y(row.directions.length)} />)}
       </svg>
     );
   }
 }
-
-
-  // svg.selectAll(".bar")
-  //     .data(data)
-  //   .enter().append("rect")
-  //     .attr("class", "bar")
-  //     .attr("x", function(d) { return x(d.letter); })
-  //     .attr("width", x.rangeBand())
-  //     .attr("y", function(d) { return y(d.frequency); })
-  //     .attr("height", function(d) { return height - y(d.frequency); });
