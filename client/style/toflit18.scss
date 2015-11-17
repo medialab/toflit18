@@ -298,12 +298,18 @@ h1 {
  */
 #exploration {
   padding: 15px;
+
+  .panel {
+    padding: 20px;
+  }
 }
 
 /**
  * Viz.
  */
 svg.quality-bar-chart {
+  border: 1px solid $medium-grey;
+
   .bar {
     fill: darken($poison-blusher, 20%);
   }
