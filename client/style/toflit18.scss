@@ -299,3 +299,12 @@ h1 {
 #exploration {
   padding: 15px;
 }
+
+/**
+ * Viz.
+ */
+svg.quality-bar-chart {
+  .bar {
+    fill: darken($poison-blusher, 20%);
+  }
+}

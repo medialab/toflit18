@@ -22,6 +22,20 @@ export default function(Component) {
     componentDidMount() {
       const dom = ReactDOM.findDOMNode(this);
 
+      this.listener = () => this.handleResize(dom);
+      dom.addEventListener('resize', this.listener);
+      this.listener();
+    }
+
+    componentWillUnmount() {
+      const dom = ReactDOM.findDOMNode(this);
+
+      dom.removeEventListener('resize', this.listener);
+      this.listener = null;
+    }
+
+    handleResize(dom) {
+      console.log(dom);
       this.setState({width: dom.offsetWidth, height: dom.offsetHeight});
     }
 
