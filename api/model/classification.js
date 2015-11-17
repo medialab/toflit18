@@ -40,7 +40,7 @@ function computeCompletion(items, unclassified) {
 const Model = {
 
   /**
-   * Retrieving the list of every classifications
+   * Retrieving the list of every classifications.
    */
   getAll(callback) {
     return database.cypher(queries.getAll, function(err, results) {
@@ -71,7 +71,7 @@ const Model = {
   },
 
   /**
-   * Retrieving a sample of the classification's groups
+   * Retrieving a sample of the classification's groups.
    */
   groups(id, opts, callback) {
     const query = queries[opts.query ? 'searchGroups' : 'groups'];
@@ -102,7 +102,7 @@ const Model = {
   },
 
   /**
-   * Exporting to csv
+   * Exporting to csv.
    */
   export(id, callback) {
     return database.cypher({query: queries.export, params: {id}}, function(err, results) {
@@ -131,7 +131,7 @@ const Model = {
   },
 
   /**
-   * Review the given patch for the given classification
+   * Review the given patch for the given classification.
    */
   review(id, patch, callback)  {
     return database.cypher({query: queries.allGroups, params: {id}}, function(err, classification) {
@@ -152,7 +152,7 @@ const Model = {
   },
 
   /**
-   * Commit the given patch operations
+   * Commit the given patch operations.
    */
   commit(id, operations, callback) {
     async.waterfall([
