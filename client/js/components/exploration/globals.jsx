@@ -6,12 +6,14 @@
  * whole.
  */
 import React, {Component} from 'react';
+import Sankey from './viz/sankey.jsx';
 
 export default class ExplorationGlobals extends Component {
   render() {
     return (
       <div className="panel">
         Global viz...
+        <Sankey />
       </div>
     );
   }
