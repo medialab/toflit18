@@ -29,7 +29,7 @@ export default class Fetcher extends Component {
     const url = this.props.url;
 
     let processor = this.props.processor;
-    processor = typeof processor === 'function' ? processor || identity;
+    processor = typeof processor === 'function' ? processor : identity;
 
     this.client.request({url}, (err, data) => {
       if (!err)
