@@ -2,7 +2,8 @@
  * TOFLIT18 Fetcher Component
  * ===========================
  *
- * Component used to wrap another one by providing him some necessary.
+ * Component used to wrap another one by providing him some necessary data
+ * for developing purposes.
  */
 import React, {Component} from 'react';
 import Client from 'djax-client';
