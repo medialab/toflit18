@@ -7,7 +7,7 @@ import database from '../connection';
 import {hash} from '../../lib/crypto';
 import {user as queries} from '../queries';
 
-const model = {
+const Model = {
 
   /**
    * Authentication.
@@ -31,4 +31,4 @@ const model = {
   }
 };
 
-export default model;
+export default Model;
