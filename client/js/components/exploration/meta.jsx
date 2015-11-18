@@ -7,12 +7,13 @@
  */
 import React, {Component} from 'react';
 import Fetcher from '../misc/fetcher.jsx';
+import SourcesPerDirections from './viz/sources_per_directions.jsx';
 
 export default class ExplorationMeta extends Component {
   render() {
     return (
       <div className="panel">
-        Meta panel
+        <SourcesPerDirections />
       </div>
     );
   }

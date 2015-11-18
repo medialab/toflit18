@@ -14,9 +14,9 @@ import {sum, groupBy} from 'lodash';
  /**
  * Sankey component
  */
-export default class Sankey extends Component {
+export default class SourcesPerDirections extends Component {
   render() {
-    // const {data: {nodes, links}} = this.props; 
+    // const {data: {nodes, links}} = this.props;
 
     let data = {
     	direction : {
@@ -42,13 +42,13 @@ export default class Sankey extends Component {
 
     return (
 
-    	null
+    	<div>Hello viz</div>
 
      /* <svg width={width} height={height}>
         <g>
           {data.map((data, i) =>
-          <line x1=0 y1= 
-          />	
+          <line x1=0 y1=
+          />
           <rect width={nodeWidth}
                 height={30}
                 x={nodeWidth * i + nodePadding}
@@ -62,7 +62,7 @@ export default class Sankey extends Component {
                 key={i} />)}
         </g>
       </svg>*/
-    );  
+    );
   }
 }
 
@@ -71,8 +71,8 @@ export default class Sankey extends Component {
  */
 class Line extends Component {
   render() {
-    const {x1, y1, X2, Y2} = this.props; 
-    
+    const {x1, y1, X2, Y2} = this.props;
+
     return (
       <line x1={x1} y1={y1} x2={x2} y2={y2} />
     );
@@ -84,8 +84,8 @@ class Line extends Component {
  */
 class Rect extends Component {
   render() {
-    const {height, width, x, y} = this.props; 
-    
+    const {height, width, x, y} = this.props;
+
     return (
       <rect width={width} height={height} x={x} y={y}/>
     );
