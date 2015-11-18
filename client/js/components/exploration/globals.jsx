@@ -15,9 +15,11 @@ export default class ExplorationGlobals extends Component {
       <div className="panel">
         Global viz...
         <Fetcher url="/data/sankey.json">
-          <Sankey />
+          
         </Fetcher>
       </div>
     );
   }
 }
+
+
