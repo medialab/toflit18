@@ -79,8 +79,7 @@ async.series([
               country = data[i].country,
               direction = data[i].direction,
               office = data[i].office,
-              origin = data[i].origin,
-              unit = data[i].unit;
+              origin = data[i].origin;
 
           sourcesStream.write([
             transcription.line,
@@ -92,7 +91,7 @@ async.series([
             product,
             flow.quantity,
             flow.value,
-            unit,
+            flow.unit,
             flow.unit_price,
             (flow.unit_price && flow.value && flow.quantity) ? (flow.value - (flow.unit_price * flow.quantity)) : '',
             flow.import ? 'import' : 'export',
