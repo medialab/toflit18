@@ -1,19 +1,16 @@
 /**
- * TOFLIT18 Client Sankey Component
- * ================================
+ * TOFLIT18 Client Sources Per Directions Component
+ * =================================================
  *
- * Displayed when user authentication is required to continue.
+ * Series of bar charts displaying the amount of data coming from different
+ * sources per directions.
  */
 import React, {Component} from 'react';
 import scale from 'd3-scale';
 import {sort} from 'lodash';
 
 /**
- * Helpers
- */
-
-/**
- * Sankey component
+ * Main component
  */
 export default class SourcesPerDirections extends Component {
   render() {
@@ -43,7 +40,7 @@ export default class SourcesPerDirections extends Component {
         return <rect onMouseOver={() => true} width={barWidth - 2} height={y(nb_flows)} x={x(year)} y={120 * i + 121} fill="red"/>;
       });
     }
- 
+
     return (
       <svg width={width} height={height}>
         <g>
