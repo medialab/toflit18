@@ -31,13 +31,29 @@ export default class SourcesPerDirections extends Component {
 
     function renderLocal(d, i) {
       return d.map(function({year, nb_flows}) {
-        return <rect onMouseOver={() => true} width={barWidth - 2} height={y(nb_flows)} x={x(year)} y={120 * i + 119 - y(nb_flows)} fill="blue" title={nb_flows} />;
+        return (
+          <rect width={barWidth - 2}
+                height={y(nb_flows)}
+                x={x(year)}
+                y={120 * i + 119 - y(nb_flows)}
+                fill="blue">
+            <title>{`${nb_flows} total flows`}</title>
+          </rect>
+        );
       });
     }
 
     function renderNational(d, i) {
       return d.map(function({year, nb_flows}) {
-        return <rect onMouseOver={() => true} width={barWidth - 2} height={y(nb_flows)} x={x(year)} y={120 * i + 121} fill="red"/>;
+        return (
+          <rect width={barWidth - 2}
+                height={y(nb_flows)}
+                x={x(year)}
+                y={120 * i + 121}
+                fill="red">
+            <title>{`${nb_flows} total flows`}</title>
+          </rect>
+        );
       });
     }
 
@@ -59,31 +75,3 @@ export default class SourcesPerDirections extends Component {
     );
   }
 }
-
-/**
- * Line component
- */
-class Line extends Component {
-  render() {
-    const {x1, y1, X2, Y2} = this.props;
-
-    return (
-      <line x1={x1} y1={y1} x2={x2} y2={y2} />
-    );
-  }
-}
-
-/**
- * Rect component
- */
-class Rect extends Component {
-  render() {
-    const {height, width, x, y} = this.props;
-
-    return (
-      <rect width={width} height={height} x={x} y={y}/>
-    );
-  }
-}
-
-
