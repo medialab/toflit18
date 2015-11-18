@@ -12,7 +12,6 @@ OPTIONAL MATCH (flow)-[:FROM|:TO]-(direction:Direction)
 OPTIONAL MATCH (flow)-[:FROM|:TO]-(office:Office)
 OPTIONAL MATCH (flow)-[:TRANSCRIBED_BY]->(operator:Operator)
 OPTIONAL MATCH (flow)-[:ORIGINATES_FROM]->(origin:Origin)
-OPTIONAL MATCH (flow)-[:VALUE_IN]->(unit:Unit)
 
 RETURN
   flow,
@@ -23,8 +22,7 @@ RETURN
   direction.name AS direction,
   office.name AS office,
   country.name AS country,
-  origin.name AS origin,
-  unit.name AS unit
+  origin.name AS origin
 
 LIMIT {limit};
 

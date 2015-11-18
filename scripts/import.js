@@ -103,6 +103,7 @@ function indexedNode(index, label, key, data) {
 const ROOT_PATH = '/Fichiers de la base avant Neo4J',
       BDD_CENTRALE_PATH = ROOT_PATH + '/base_centrale/bdd_centrale.csv',
       BDD_OUTSIDERS = ROOT_PATH + '/marchandises_sourcees.csv',
+      BDD_UNITS = ROOT_PATH + '/Units N1.csv',
       ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
       SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
       OTHER_CLASSIFICATIONS = ROOT_PATH + '/bdd_marchandises_classifiees.csv',
@@ -114,7 +115,7 @@ const ROOT_PATH = '/Fichiers de la base avant Neo4J',
 
 // Possible properties
 const POSSIBLE_NODE_PROPERTIES = [
-  'no:int',
+  'unit',
   'quantity:float',
   'value:float',
   'unit_price:float',
@@ -172,8 +173,7 @@ const INDEXES = {
   operators: {},
   origins: {},
   products: {},
-  sources: {},
-  units: {}
+  sources: {}
 };
 
 const OUTSIDER_INDEXES = {
@@ -442,6 +442,10 @@ function importer(csvLine) {
     import: '' + isImport,
   };
 
+  // Unit
+  if (csvLine.quantity_unit)
+    nodeData.unit = csvLine.quantity_unit;
+
   // Value
   if (csvLine.value) {
     const realValue = cleanNumber(csvLine.value);
@@ -573,15 +577,6 @@ function importer(csvLine) {
 
     if (!alreadyLinked)
       BUILDER.relate(CLASSIFICATION_NODES.country_sources, 'HAS', countryNode);
-  }
-
-  // Units
-  if (csvLine.quantity_unit) {
-    const productNode = indexedNode(INDEXES.units, 'Unit', csvLine.quantity_unit, {
-      name: csvLine.quantity_unit
-    });
-
-    BUILDER.relate(flowNode, 'VALUE_IN', productNode);
   }
 }
 
