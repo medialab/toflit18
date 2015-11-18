@@ -13,7 +13,7 @@ export default class ExplorationMeta extends Component {
   render() {
     return (
       <div className="panel">
-        <Fetcher url="/data/sources_per_directions.jsx">
+        <Fetcher url="/data/sources_per_directions.json">
           <SourcesPerDirections />
         </Fetcher>
       </div>
