@@ -6,65 +6,57 @@
  */
 import React, {Component} from 'react';
 import scale from 'd3-scale';
-import {sum, groupBy} from 'lodash';
+import {sort} from 'lodash';
 
 /**
  * Helpers
  */
 
- /**
+/**
  * Sankey component
  */
 export default class SourcesPerDirections extends Component {
   render() {
-    // const {data: {nodes, links}} = this.props;
-
-    let data = {
-    	direction : {
-    		local : [{year:1750, count: 50}, {year:1760, count: 50},{year:1770, count: 50}],
-    		national : [{year:1750, count: 50}, {year:1760, count: 50},{year:1770, count: 50}]
-    	},
-    	direction1 : {
-    		local : [{year:1750, count: 50}, {year:1760, count: 50},{year:1770, count: 50}],
-    		national : [{year:1750, count: 50}, {year:1760, count: 50},{year:1770, count: 50}]
-    	},
-    	direction2 : {
-    		local : [{year:1750, count: 50}, {year:1760, count: 50},{year:1770, count: 50}],
-    		national : [{year:1750, count: 50}, {year:1760, count: 50},{year:1770, count: 50}]
-    	},
-    	direction3 : {
-    		local : [{year:1750, count: 50}, {year:1760, count: 50},{year:1770, count: 50}],
-    		national : [{year:1750, count: 50}, {year:1760, count: 50},{year:1770, count: 50}]
-    	}
-    }
+    const {data} = this.props;
 
     let width = 1000,
-        height = 600;
+        height = 5000;
 
     const x = scale.linear()
-      .domain([1750, 1770])
-      .range([0, width - 100]);
+      .domain([1718, 1780])
+      .range([0, width]);
 
+    const y = scale.linear()
+      .domain([0, 2428])
+      .range([0, 60]);
+
+    const barWidth = 1000/62;
 
     function renderLocal(d, i) {
-      return d.map(function({year, count}) {
-        return <rect width={100} height={count} x={x(year)} y={120 * i + 120} fill="blue"/>;
+      return d.map(function({year, nb_flows}) {
+        return <rect onMouseOver={() => true} width={barWidth - 2} height={y(nb_flows)} x={x(year)} y={120 * i + 119 - y(nb_flows)} fill="blue" title={nb_flows} />;
       });
     }
 
     function renderNational(d, i) {
-      return d.map(function({year, count}) {
-        return <rect width={100} height={count} x={x(year)} y={120 * i + 70} fill="red"/>;
+      return d.map(function({year, nb_flows}) {
+        return <rect onMouseOver={() => true} width={barWidth - 2} height={y(nb_flows)} x={x(year)} y={120 * i + 121} fill="red"/>;
       });
     }
  
     return (
       <svg width={width} height={height}>
         <g>
+        <text x={0} y={30} fill="black">1718</text>
+        <text x={width/2} y={30} fill="black">1750</text>
+        <text x={width - 40} y={30} fill="black">1780</text>
           {Object.keys(data).map((k, i) =>
             <line x1={0} y1={120 * i + 120} x2={width} y2={120 * i + 120} stroke="black" strokeWidth="2px" />)}
-          {Object.keys(data).map((k, i) => renderLocal(data[k].local, i))}
-          { Object.keys(data).map((k, i) => renderNational(data[k].local, i))}
+          {Object.keys(data).map((k, i) =>
+            <text x={0} y={120 * i + 100} fill="black">{k}</text>
+          )}
+          {Object.keys(data).map((k, i) => renderLocal(data[k]['Local'], i))}
+          {Object.keys(data).map((k, i) => renderNational(data[k]['National par direction'], i))}
         </g>
       </svg>
     );
