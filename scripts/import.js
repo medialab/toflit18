@@ -488,7 +488,9 @@ function importer(csvLine) {
 
   // Source
   if (csvLine.source) {
-    const sourceNode = indexedNode(INDEXES.sources, 'Source', csvLine.source, {
+    const hashedKey = [csvLine.source, csvLine.sourcepath].join('|||');
+
+    const sourceNode = indexedNode(INDEXES.sources, 'Source', hashedKey, {
       name: csvLine.source,
       path: csvLine.sourcepath,
       type: csvLine.sourcetype
