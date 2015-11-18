@@ -547,7 +547,7 @@ function importer(csvLine) {
   }
 
   // Direction
-  if (csvLine.direction && !csvLine.bureaux) {
+  if (csvLine.direction) {
     const directionNode = indexedNode(INDEXES.directions, 'Direction', csvLine.direction, {
       name: csvLine.direction
     });
