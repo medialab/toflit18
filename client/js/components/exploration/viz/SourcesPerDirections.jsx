@@ -8,26 +8,28 @@
 import React, {Component} from 'react';
 import measured from '../../../lib/measured';
 import scale from 'd3-scale';
-import {max, min, uniq} from 'lodash';
+import {max, min, uniq, sortBy} from 'lodash';
 
 /**
- * Main component
+ * Constants.
+ */
+const SIZE = 100;
+
+/**
+ * Main component.
  */
 @measured
 export default class SourcesPerDirections extends Component {
   render() {
-    const {data, width} = this.props;
+    const {data: unsorted, width} = this.props;
 
-    if (!data)
+    if (!unsorted)
       return null;
+
+    const data = sortBy(unsorted, 'name');
 
     if (!width)
       return <svg width="100%" />;
-
-    // Measures
-    const step = 60,
-          barWidth = 7,
-          height = step * 2 * data.length;
 
     // Computing max values
     let allYears = new Set(),
@@ -44,7 +46,7 @@ export default class SourcesPerDirections extends Component {
       });
     });
 
-    allYears = Array.from(allYears);
+    allYears = Array.from(allYears).filter(y => +y !== 1860);
     allFlows = Array.from(allFlows);
 
     const minYear = min(allYears),
@@ -52,60 +54,96 @@ export default class SourcesPerDirections extends Component {
 
     const maxFlows = max(allFlows);
 
-    // Scales
+    // Measures & scales
+    const barWidth = width / (maxYear - minYear) - 1,
+          height = SIZE * data.length;
+
     const x = scale.linear()
       .domain([minYear, maxYear])
       .range([0, width]);
 
     const y = scale.linear()
       .domain([0, maxFlows])
-      .range([0, step]);
+      .range([0, SIZE / 2]);
 
+    const yearTicks = x.ticks(3);
 
     // Rendering logic
-    function renderLocal(d, i) {
-      return d.map(function({year, flows}) {
-        return (
-          <rect width={barWidth - 2}
-                height={y(flows)}
-                x={x(year)}
-                y={120 * i + 119 - y(flows)}
-                fill="blue">
-            <title>{`${flows} total flows`}</title>
-          </rect>
-        );
-      });
-    }
+    return (
+      <svg width="100%" height={height} className="sources-per-directions">
+        <g>
+          {data.map((direction, i) =>
+            <Direction key={direction.name}
+                       order={i}
+                       width={width}
+                       bar={barWidth}
+                       data={direction}
+                       x={x}
+                       y={y} />)}
+        </g>
+      </svg>
+    );
 
-    function renderNational(d, i) {
-      return d.map(function({year, flows}) {
-        return (
-          <rect width={barWidth - 2}
-                height={y(flows)}
-                x={x(year)}
-                y={120 * i + 121}
-                fill="red">
-            <title>{`${flows} total flows`}</title>
-          </rect>
-        );
-      });
+  }
+}
+
+/**
+ * Direction.
+ */
+class Direction extends Component {
+  render() {
+    const {
+      order,
+      bar,
+      width,
+      data,
+      x,
+      y
+    } = this.props;
+
+    const yPos = SIZE / 2;
+
+    function renderRect(local, {year, flows}) {
+      let rectYPos,
+          rectHeight;
+
+      if (local) {
+        rectYPos = SIZE / 2 - y(flows) - 1;
+        rectHeight = y(flows);
+      }
+      else {
+        rectYPos = SIZE / 2 + 1;
+        rectHeight = y(flows);
+      }
+
+      return (
+        <rect key={year}
+              className={`${local ? 'local' : 'national'}-bar`}
+              width={bar}
+              height={rectHeight}
+              x={x(year)}
+              y={rectYPos}>
+          <title>{`${flows} total flows (${data.name})`}</title>
+        </rect>
+      );
     }
 
     return (
-      <svg width="100%" height={height}>
-        <g>
-        <text x={0} y={30} fill="black">1718</text>
-        <text x={width/2} y={30} fill="black">1750</text>
-        <text x={width - 40} y={30} fill="black">1780</text>
-          {data.map((direction, i) =>
-            <line x1={0} y1={120 * i + 120} x2={width} y2={120 * i + 120} stroke="black" strokeWidth="2px" />)}
-          {data.map((direction, i) =>
-            <text x={0} y={120 * i + 100} fill="black">{direction.name}</text>
-          )}
-          {data.map((direction, i) => renderLocal(direction.local, i))}
-          {data.map((direction, i) => renderNational(direction.national, i))}
-        </g>
-      </svg>
+      <g transform={`translate(0, ${SIZE * order})`}>
+        <line x1={0}
+              y1={yPos}
+              x2={width}
+              y2={yPos}
+              stroke="black"
+              strokeWidth="1px" />
+        <text x={0}
+              y={yPos - 25}
+              fill="black">
+          {data.name}
+        </text>
+        {data.local.map(renderRect.bind(null, true))}
+        {data.national.map(renderRect.bind(null, false))}
+      </g>
     );
   }
 }

@@ -318,3 +318,13 @@ svg.quality-bar-chart {
     font-size: 9px;
   }
 }
+
+svg.sources-per-directions {
+  .local-bar {
+    fill: $old-blue;
+  }
+
+  .national-bar {
+    fill: darken($poison-blusher, 20%);
+  }
+}
