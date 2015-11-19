@@ -5,8 +5,8 @@
  * Displaying a collection of indicators through picked visualizations.
  */
 import React, {Component} from 'react';
-import Fetcher from '../misc/fetcher.jsx';
-import DataQualityBarChart from './viz/data_quality_barchart.jsx'
+import Fetcher from '../misc/Fetcher.jsx';
+import DataQualityBarChart from './viz/DataQualityBarChart.jsx'
 
 export default class ExplorationIndicators extends Component {
   render() {

@@ -6,8 +6,8 @@
  */
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
-import {Row, Col} from '../bootstrap/grid.jsx';
-import Button from '../bootstrap/button.jsx';
+import {Row, Col} from '../misc/Grid.jsx';
+import Button from '../misc/Button.jsx';
 import {login} from '../../actions/session';
 
 /**

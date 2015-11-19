@@ -6,10 +6,10 @@
  */
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
-import {Row, Col} from '../bootstrap/grid.jsx';
-import Button from '../bootstrap/button.jsx';
-import FileInput from '../misc/file.jsx';
-import {Waiter} from '../bootstrap/loaders.jsx';
+import {Row, Col} from '../misc/Grid.jsx';
+import Button from '../misc/Button.jsx';
+import FileInput from '../misc/File.jsx';
+import {Waiter} from '../misc/Loaders.jsx';
 import {groupBy, map} from 'lodash';
 import cls from 'classnames';
 import * as patchActions from '../../actions/patch';

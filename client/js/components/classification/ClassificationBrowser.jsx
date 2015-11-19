@@ -7,10 +7,10 @@
  */
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
-import {Row, Col} from '../bootstrap/grid.jsx';
-import Button, {ButtonGroup} from '../bootstrap/button.jsx';
-import {Spinner, Waiter} from '../bootstrap/loaders.jsx';
-import Infinite from '../misc/infinite.jsx';
+import {Row, Col} from '../misc/Grid.jsx';
+import Button, {ButtonGroup} from '../misc/Button.jsx';
+import {Spinner, Waiter} from '../misc/Loaders.jsx';
+import Infinite from '../misc/Infinite.jsx';
 import {prettyPrint} from '../../lib/helpers';
 import cls from 'classnames';
 

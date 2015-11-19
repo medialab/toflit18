@@ -6,7 +6,7 @@
  * data.
  */
 import React, {Component, PropTypes} from 'react';
-import Button from '../bootstrap/button.jsx';
+import Button from './Button.jsx';
 import {uniqueId} from 'lodash';
 
 export default class FileInput extends Component {

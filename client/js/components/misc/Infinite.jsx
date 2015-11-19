@@ -6,7 +6,7 @@
  * behaviors.
  */
 import React, {Component} from 'react';
-import {Spinner} from '../bootstrap/loaders.jsx';
+import {Spinner} from './Loaders.jsx';
 import {debounce} from 'lodash';
 
 export default class Infinite extends Component {
