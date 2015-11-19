@@ -116,6 +116,7 @@ const ROOT_PATH = '/Fichiers de la base avant Neo4J',
 // Possible properties
 const POSSIBLE_NODE_PROPERTIES = [
   'unit',
+  'normalized_unit',
   'quantity:float',
   'value:float',
   'unit_price:float',
@@ -175,6 +176,9 @@ const INDEXES = {
   products: {},
   sources: {}
 };
+
+const UNITS_INDEX = {};
+const CONVERSION_TABLE = {};
 
 const OUTSIDER_INDEXES = {
   sund: {},
@@ -303,6 +307,53 @@ const OUTSIDER_SOURCES_NODES = {
  * Parsing the files
  */
 async.series({
+
+  units(next) {
+    console.log('Processing units...');
+
+    const csvData = fs.readFileSync(DATA_PATH + BDD_UNITS, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+
+      data.forEach(row => {
+        const first = cleanText(row[1]),
+              second = cleanText(row[2]);
+
+        const bestGuess = second || first;
+
+        if (bestGuess) {
+          UNITS_INDEX[cleanText(row[0])] = bestGuess;
+
+          // Updating conversion table
+          const unit = cleanText(row[3]),
+                factor = cleanNumber(cleanText(row[4])),
+                note = cleanText(row[5]);
+
+          if (unit && factor) {
+            const hashedKey = `${bestGuess}[->]${unit}`,
+                  conversion = CONVERSION_TABLE[hashedKey];
+
+            if (!conversion) {
+              CONVERSION_TABLE[hashedKey] = {
+                from: bestGuess,
+                to: unit,
+                factor
+              };
+
+              if (note)
+                CONVERSION_TABLE[hashedKey].note = note;
+            }
+            else {
+              if (conversion.factor !== factor ||
+                  (note && conversion.note !== note))
+                console.log('  !! Weird conversion:', conversion, factor, note);
+            }
+          }
+        }
+      });
+
+      return next();
+    });
+  },
 
   flows(next) {
     console.log('Processing flows...');
@@ -443,8 +494,14 @@ function importer(csvLine) {
   };
 
   // Unit
-  if (csvLine.quantity_unit)
+  if (csvLine.quantity_unit) {
     nodeData.unit = csvLine.quantity_unit;
+
+    const normalized = UNITS_INDEX[nodeData.unit];
+
+    if (normalized)
+      nodeData.normalized_unit = normalized;
+  }
 
   // Value
   if (csvLine.value) {
