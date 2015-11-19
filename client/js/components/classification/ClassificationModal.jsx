@@ -405,10 +405,10 @@ class OperationsTable extends Component {
       <div className="panel">
         {title} (<strong>{operations.length}</strong>)
         <br />
-        <em>{description}</em>
+        <em className={`text-${color}`}>{description}</em>
         <table className="operations-table table table-sm">
           <thead>
-            <tr className={'table-' + color}>
+            <tr className="table-active">
               {headers.map(h => <th key={h} {...(h === 'New group?' ? altStyle : {})}>{h}</th>)}
             </tr>
           </thead>
