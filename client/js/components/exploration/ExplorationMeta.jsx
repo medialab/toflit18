@@ -14,9 +14,6 @@ export default class ExplorationMeta extends Component {
   render() {
     return (
       <div className="panel">
-        <Fetcher url="/data/matrice.json">
-          <Matrix />
-        </Fetcher>
         <Fetcher url="/data/sources_per_directions.json">
           <SourcesPerDirections />
         </Fetcher>
