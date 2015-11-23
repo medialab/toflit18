@@ -489,9 +489,15 @@ function importer(csvLine) {
   // Creating a flow node
   const nodeData = {
     year: csvLine.year,
-    normalized_year: normalizeYear(csvLine.year),
     import: '' + isImport,
   };
+
+  // Year
+  if (csvLine.year) {
+    nodeData.normalized_year = /semestre/.test(csvLine.year) ?
+      +csvLine.year.split('-')[0] :
+      normalizeYear(csvLine.year);
+  }
 
   // Unit
   if (csvLine.quantity_unit) {
