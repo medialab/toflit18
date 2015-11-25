@@ -12,11 +12,14 @@ OPTIONAL MATCH (c)-[:BASED_ON]->(p:Classification)
 OPTIONAL MATCH (c)-[:HAS]->(group)
 
 WITH c, a, p, count(group) AS groupsCount
-OPTIONAL MATCH (p)-[:HAS]->(item)
-WITH c, a, p, groupsCount, count(item) AS itemsCount
-OPTIONAL MATCH (p)-[:HAS]->(item)
-WHERE NOT (item)<-[:AGGREGATES]-()<-[:HAS]-(c)
-WITH c, a, p, groupsCount, itemsCount, count(item) AS unclassifiedItemsCount
+MATCH (p)-[:HAS]->(item)
+OPTIONAL MATCH (item)<-[ra:AGGREGATES]-(group)<-[:HAS]-(c)
+
+WITH c, a, p, groupsCount, collect([item, ra IS NULL]) AS items
+
+WITH c, a, p, groupsCount,
+  size(items) AS itemsCount,
+  size(filter(x IN items WHERE x[1])) AS unclassifiedItemsCount
 
 RETURN
   c AS classification,
