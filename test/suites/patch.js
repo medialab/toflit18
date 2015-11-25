@@ -1,5 +1,5 @@
 import assert from 'assert';
-import {applyPatch, checkConsistency, checkIntegrity} from '../../lib/patch';
+import {solvePatch, checkConsistency, checkIntegrity} from '../../lib/patch';
 
 describe('Classification patching', function() {
 
@@ -30,7 +30,7 @@ describe('Classification patching', function() {
     });
   });
 
-  describe('Patch', function() {
+  describe('Solving', function() {
 
     it('should detect the correct operations.', function() {
       let older = [
@@ -79,7 +79,7 @@ describe('Classification patching', function() {
       ];
 
       assert.deepEqual(
-        applyPatch(older, newer),
+        solvePatch(older, newer),
         [
           // Renaming groups
           {id: 3, type: 'renameGroup', from: 'names', to: 'generals'},

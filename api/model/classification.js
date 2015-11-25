@@ -8,7 +8,7 @@ import database from '../connection';
 import {classification as queries} from '../queries';
 import {searchRegex} from '../helpers';
 import {stringify} from 'csv';
-import {applyPatch, checkIntegrity} from '../../lib/patch';
+import {solvePatch, checkIntegrity} from '../../lib/patch';
 import Batch from '../../lib/batch';
 import _, {groupBy, find, map} from 'lodash';
 
@@ -145,7 +145,7 @@ const Model = {
       );
 
       // Applying the patch
-      const operations = applyPatch(classification, patch);
+      const operations = solvePatch(classification, patch);
 
       return callback(null, {integrity, operations});
     });
