@@ -5,16 +5,16 @@
  * Displaying a collection of indicators through picked visualizations.
  */
 import React, {Component} from 'react';
-import Fetcher from '../misc/Fetcher.jsx';
-import DataQualityBarChart from './viz/DataQualityBarChart.jsx'
 
 export default class ExplorationIndicators extends Component {
   render() {
     return (
       <div className="panel">
-        <Fetcher url="/data/quality.json">
-          <DataQualityBarChart />
-        </Fetcher>
+        <h3>Indicators</h3>
+        <p>
+          <em>Building several custom indicators to understand those times of old.</em>
+        </p>
+        <hr />
       </div>
     );
   }

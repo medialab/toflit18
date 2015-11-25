@@ -22,6 +22,11 @@ export default class ExplorationMeta extends Component {
 
     return (
       <div className="panel">
+        <h3>Metadata</h3>
+        <p>
+          <em>Some information about the data itself.</em>
+        </p>
+        <hr />
         {sourcesPerDirections ?
           <SourcesPerDirections data={sourcesPerDirections} /> :
           <Waiter />}

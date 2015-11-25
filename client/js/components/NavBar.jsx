@@ -11,8 +11,16 @@ import {logout} from '../actions/session';
 
 const LINKS = [
   {
-    label: 'Exploration',
+    label: 'MetaData',
     url: '/exploration/meta'
+  },
+  {
+    label: 'Indicators',
+    url: '/exploration/indicators'
+  },
+  {
+    label: 'Globals',
+    url: '/exploration/globals'
   },
   {
     label: 'Classification',
