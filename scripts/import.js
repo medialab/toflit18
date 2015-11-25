@@ -115,13 +115,13 @@ const ROOT_PATH = '/Fichiers de la base avant Neo4J',
 
 // Possible properties
 const POSSIBLE_NODE_PROPERTIES = [
+  'rawUnit',
   'unit',
-  'normalized_unit',
   'quantity:float',
   'value:float',
-  'unit_price:float',
-  'normalized_year:int',
-  'year',
+  'unitPrice:float',
+  'year:int',
+  'rawYear',
   'import:boolean',
   'sheet',
   'name',
@@ -488,25 +488,25 @@ function importer(csvLine) {
 
   // Creating a flow node
   const nodeData = {
-    year: csvLine.year,
+    rawYear: csvLine.year,
     import: '' + isImport,
   };
 
   // Year
   if (csvLine.year) {
-    nodeData.normalized_year = /semestre/.test(csvLine.year) ?
+    nodeData.year = /semestre/.test(csvLine.year) ?
       +csvLine.year.split('-')[0] :
       normalizeYear(csvLine.year);
   }
 
   // Unit
   if (csvLine.quantity_unit) {
-    nodeData.unit = csvLine.quantity_unit;
+    nodeData.rawUnit = csvLine.quantity_unit;
 
-    const normalized = UNITS_INDEX[nodeData.unit];
+    const normalized = UNITS_INDEX[nodeData.rawUnit];
 
     if (normalized)
-      nodeData.normalized_unit = normalized;
+      nodeData.unit = normalized;
   }
 
   // Value
@@ -534,7 +534,7 @@ function importer(csvLine) {
     const realPrice = cleanNumber(csvLine.prix_unitaire);
 
     if (realPrice)
-      nodeData.unit_price = realPrice;
+      nodeData.unitPrice = realPrice;
     else if (realPrice !== 0)
       console.log('  !! Weird unit price:', csvLine.prix_unitaire);
   }
