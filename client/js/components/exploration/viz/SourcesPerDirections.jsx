@@ -23,13 +23,10 @@ export default class SourcesPerDirections extends Component {
   render() {
     const {data: unsorted, width} = this.props;
 
-    if (!unsorted)
-      return null;
+    if (!unsorted || !width)
+      return <svg width="100%" height={0} />;;
 
     const data = sortBy(unsorted, 'name');
-
-    if (!width)
-      return <svg width="100%" />;
 
     // Computing max values
     let allYears = new Set(),

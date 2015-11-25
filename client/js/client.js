@@ -50,7 +50,10 @@ const client = new Client({
     commit: {
       method: 'POST',
       url: '/classification/:id/:type/commit'
-    }
+    },
+
+    // Viz
+    viz: '/viz/:name'
   }
 });
 

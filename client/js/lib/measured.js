@@ -32,7 +32,9 @@ export default function(Component) {
 
     handleResize() {
       const dom = ReactDOM.findDOMNode(this);
-      this.setState({width: dom.offsetWidth, height: dom.offsetHeight});
+
+      if (dom)
+        this.setState({width: dom.offsetWidth, height: dom.offsetHeight});
     }
 
     render() {

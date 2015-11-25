@@ -21,6 +21,10 @@ const defaultState = {
       raw: null,
       flat: monkey(['.', 'raw'], flatClassifications),
       index: monkey(['.', 'flat'], classificationsIndex)
+    },
+
+    viz: {
+      sourcesPerDirections: null
     }
   },
 

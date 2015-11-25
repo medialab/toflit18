@@ -6,17 +6,25 @@
  * themselves and how they interact with each other.
  */
 import React, {Component} from 'react';
-import Fetcher from '../misc/Fetcher.jsx';
+import {Waiter} from '../misc/Loaders.jsx';
+import {branch} from 'baobab-react/decorators';
 import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 import Matrix from './viz/Matrix.jsx';
 
+@branch({
+  cursors: {
+    sourcesPerDirections: ['data', 'viz', 'sourcesPerDirections']
+  }
+})
 export default class ExplorationMeta extends Component {
   render() {
+    const sourcesPerDirections = this.props.sourcesPerDirections;
+
     return (
       <div className="panel">
-        <Fetcher url="/data/sources_per_directions.json">
-          <SourcesPerDirections />
-        </Fetcher>
+        {sourcesPerDirections ?
+          <SourcesPerDirections data={sourcesPerDirections} /> :
+          <Waiter />}
       </div>
     );
   }

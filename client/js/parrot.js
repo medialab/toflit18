@@ -30,6 +30,17 @@ export default function(state, client) {
               browser.select(state, result.product.id);
           });
         }
+      },
+
+      {
+        path: ['data', 'viz', 'sourcesPerDirections'],
+        get() {
+          return client.viz({params: {name: 'sources_per_directions'}}, function(err, data) {
+            if (err) return;
+
+            state.set(['data', 'viz', 'sourcesPerDirections'], data.result);
+          });
+        }
       }
     ]
   });

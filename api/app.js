@@ -18,6 +18,7 @@ import responses from './responses';
 
 import classificationController from './controllers/classification';
 import loginController from './controllers/login';
+import vizController from './controllers/viz';
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -100,11 +101,13 @@ app.use(compress());
 
 // Creating routers from controllers
 const loginRouter = createRouter(loginController),
-      classificationRouter = createRouter(classificationController);
+      classificationRouter = createRouter(classificationController, middlewares.authenticate),
+      vizRouter = createRouter(vizController, middlewares.authenticate);
 
 // Mounting
 app.use(loginRouter);
 app.use('/classification', classificationRouter);
+app.use('/viz', vizRouter);
 app.use((_, res) => res.notFound());
 
 /**
