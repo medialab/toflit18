@@ -248,12 +248,15 @@ const grouper = (data) => {
   });
 };
 
+const TICKED = <div style={{textAlign: 'center'}}>✓</div>;
+
 const OPERATION_TYPES = {
   renameGroup: {
     title: 'Renamed groups',
     description: 'Groups that your patch renamed.',
     color: 'warning',
     headers: ['From', 'To'],
+    sizes: [50, 50],
     getter: row => [row.from, row.to]
   },
   addGroup: {
@@ -261,6 +264,7 @@ const OPERATION_TYPES = {
     description: 'Groups added by your patch & that were not in the current state of the classification.',
     color: 'success',
     headers: ['Name'],
+    sizes: [100],
     getter: row => [row.name]
   },
   addItem: {
@@ -268,13 +272,15 @@ const OPERATION_TYPES = {
     description: 'Items precedently without a group but now attached to one.',
     color: 'info',
     headers: ['Item', 'Added to', 'New group?'],
-    getter: row => [row.item, row.to, !row.toId ? '✓' : '']
+    sizes: [45, 45, 10],
+    getter: row => [row.item, row.to, !row.toId ? TICKED : '']
   },
   dropItem: {
     title: 'Dropped items',
     description: 'Items precedently attached to a group but now without one.',
     color: 'danger',
     headers: ['Item', 'Dropped from'],
+    sizes: [50, 50],
     getter: row => [row.item, row.from]
   },
   moveItem: {
@@ -282,7 +288,8 @@ const OPERATION_TYPES = {
     description: 'Items that were moved from one group to another.',
     color: 'active',
     headers: ['Item', 'From', 'To', 'New group?'],
-    getter: row => [row.item, row.from, row.to, !row.toId ? '✓' : '']
+    sizes: [30, 30, 30, 10],
+    getter: row => [row.item, row.from, row.to, !row.toId ? TICKED : '']
   }
 };
 
@@ -353,7 +360,7 @@ class OperationsStats extends Component {
       .map(type => {
         const group = groups[type];
 
-        return <li><strong>{group.length}</strong> <em>{labels[type]}</em></li>;
+        return <li key={type}><strong>{group.length}</strong> <em>{labels[type]}</em></li>;
       });
 
     return (
@@ -380,23 +387,17 @@ class OperationsTable extends Component {
       description,
       color,
       headers,
+      sizes,
       getter
     } = OPERATION_TYPES[type];
 
     if (!operations || !operations.length)
       return null;
 
-    const altStyle = {
-      style: {
-        textAlign: 'center',
-        width: '140px'
-      }
-    };
-
     const rows = operations.map(o => {
       return (
         <tr>
-          {getter(o).map((item, i) => <td {...(headers[i] === 'New group?' ? altStyle : {})}>{item}</td>)}
+          {getter(o).map((item, i) => <td style={{width: `${sizes[i]}%`}}>{item}</td>)}
         </tr>
       );
     });
@@ -409,7 +410,7 @@ class OperationsTable extends Component {
         <table className="operations-table table table-sm">
           <thead>
             <tr className="table-active">
-              {headers.map(h => <th key={h} {...(h === 'New group?' ? altStyle : {})}>{h}</th>)}
+              {headers.map((h, i) => <th key={h} style={{width: `${sizes[i]}%`}}>{h}</th>)}
             </tr>
           </thead>
         </table>
