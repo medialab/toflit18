@@ -397,7 +397,16 @@ class OperationsTable extends Component {
     const rows = operations.map(o => {
       return (
         <tr>
-          {getter(o).map((item, i) => <td style={{width: `${sizes[i]}%`}}>{item}</td>)}
+          {getter(o).map((item, i) => {
+            const style = {
+              width: `${sizes[i]}%`,
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden'
+            };
+
+            return <td style={style}>{item}</td>;
+          })}
         </tr>
       );
     });
@@ -415,7 +424,7 @@ class OperationsTable extends Component {
           </thead>
         </table>
         <div className="overflow" style={{maxHeight: '300px'}}>
-          <table className="table table-sm">
+          <table className="table table-sm table" style={{tableLayout: 'fixed'}}>
             <tbody>
               {rows}
             </tbody>
