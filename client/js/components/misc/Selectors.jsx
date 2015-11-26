@@ -7,6 +7,7 @@
 import React, {Component, PropTypes} from 'react';
 import Select from 'react-select';
 import {prettyPrint} from '../../lib/helpers';
+import {debounce} from 'lodash';
 
 const AsyncSelect = Select.Async;
 
@@ -73,7 +74,7 @@ const PLACEHOLDERS = {
   kind: 'Import/Export...'
 }
 
-const MAX_LIST_SIZE = 500;
+const MAX_LIST_SIZE = 100;
 
 export class ItemSelector extends Component {
   static propTypes = {
@@ -83,9 +84,22 @@ export class ItemSelector extends Component {
   renderOption(o) {
     return (
       <div className="option">
-        <strong>{o.label}</strong>
+        <strong>{o.name}</strong>
       </div>
     );
+  }
+
+  search(input, callback) {
+    if (!input.trim())
+      return callback(null, {options: []});
+
+    const options = this.props.data
+      .filter(function(group) {
+        return !!~group.name.indexOf(input);
+      })
+      .slice(0, MAX_LIST_SIZE);
+
+    return callback(null, {options});
   }
 
   render() {
@@ -98,18 +112,21 @@ export class ItemSelector extends Component {
 
     const isTooLong = data.length > MAX_LIST_SIZE;
 
-    let options = [];
+    const commonProps = {
+      className: 'selector',
+      value: selected,
+      onChange,
+      placeholder: PLACEHOLDERS[type],
+      optionRenderer: this.renderOption,
+      valueRenderer: this.renderOption
+    };
 
     if (!isTooLong)
-      options = data.map(g => ({label: g.name, option: g.id}));
+      return <Select {...commonProps} options={data} />;
 
-    return <Select className="selector"
-                   value={selected}
-                   onChange={onChange}
-                   placeholder={PLACEHOLDERS[type]}
-                   optionRenderer={this.renderOption}
-                   valueRenderer={this.renderOption}
-                   options={options}
-                   noResultsText="Too many elements. Try searching..." />;
+    return <Select.Async {...commonProps}
+                         loadOptions={debounce(this.search.bind(this), 500)}
+                         cache={false}
+                         noResultsText="Too many elements. Try searching..." />;
   }
 }
