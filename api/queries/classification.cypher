@@ -12,7 +12,7 @@ OPTIONAL MATCH (c)-[:BASED_ON]->(p:Classification)
 OPTIONAL MATCH (c)-[:HAS]->(group)
 
 WITH c, a, p, count(group) AS groupsCount
-MATCH (p)-[:HAS]->(item)
+OPTIONAL MATCH (p)-[:HAS]->(item)
 OPTIONAL MATCH (item)<-[ra:AGGREGATES]-(group)<-[:HAS]-(c)
 
 WITH c, a, p, groupsCount, collect([item, ra IS NULL]) AS items
@@ -28,6 +28,14 @@ RETURN
   groupsCount,
   itemsCount,
   unclassifiedItemsCount;
+
+// name: rawGroups
+// Retrieving every groups for the given classification.
+//------------------------------------------------------------------------------
+START c=node({id})
+MATCH (c)-[:HAS]->(group)
+RETURN id(group) AS id, group.name AS name
+ORDER BY lower(group.name);
 
 // name: groups
 // Retrieving a sample of groups for the given classification.

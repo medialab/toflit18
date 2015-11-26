@@ -71,9 +71,21 @@ const Model = {
   },
 
   /**
+   * Retrieving every one of the classification's groups.
+   */
+  groups(id, callback) {
+    return database.cypher({query: queries.rawGroups, params: {id}}, function(err, result) {
+      if (err) return callback(err);
+      if (!result.length) return callback(null, null);
+
+      return callback(null, result);
+    });
+  },
+
+  /**
    * Retrieving a sample of the classification's groups.
    */
-  groups(id, opts, callback) {
+  search(id, opts, callback) {
     const query = queries[opts.query ? 'searchGroups' : 'groups'];
 
     return database.cypher(

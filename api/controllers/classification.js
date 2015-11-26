@@ -21,6 +21,17 @@ const controller = [
   },
   {
     url: '/:id/groups',
+    action(req, res) {
+      return model.groups(+req.params.id, function(err, groups) {
+        if (err) return res.serverError(err);
+        if (!groups) return res.notFound();
+
+        return res.ok(groups);
+      });
+    }
+  },
+  {
+    url: '/:id/search',
     validate: {
       limit: '?string',
       offset: '?string',
@@ -33,7 +44,7 @@ const controller = [
         query: req.query.query || null
       };
 
-      return model.groups(+req.params.id, opts, function(err, groups) {
+      return model.search(+req.params.id, opts, function(err, groups) {
         if (err) return res.serverError(err);
 
         return res.ok(groups);
