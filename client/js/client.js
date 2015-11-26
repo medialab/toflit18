@@ -38,9 +38,10 @@ const client = new Client({
 
     // Data related
     classifications: '/classification',
-    groups: {
+    groups: '/classification/:id/groups',
+    search: {
       contentType: 'application/x-www-form-urlencoded',
-      url: '/classification/:id/groups'
+      url: '/classification/:id/search'
     },
     export: '/classification/:id/export.json',
     review: {

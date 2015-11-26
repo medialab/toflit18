@@ -31,7 +31,7 @@ export default class AppRouter extends Component {
 
     return (
       <Router history={history}>
-        <Redirect from="/" to="/exploration/meta" />
+        <Redirect from="/" to="/exploration/indicators" />
         <Route path="/" component={App}>
           <Route path="/login" component={Login} />
           <Route path="/" onEnter={(_, redirect) => !isLogged() && redirect(null, '/login')}>

@@ -15,6 +15,7 @@ import state from './state';
 
 // Stylesheet
 require('!style!css!ladda/dist/ladda-themeless.min.css');
+require('!style!css!sass!react-select/scss/default.scss');
 require('!style!css!sass!../style/toflit18.scss');
 
 const RootedApp = root(AppRouter, state);

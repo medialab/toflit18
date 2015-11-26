@@ -104,11 +104,46 @@ h1 {
 }
 
 /**
- * Loaders.
+ * Components.
  */
+
+// Waiter
 .waiter {
   font-size: 2em;
 }
+
+// Basic panels
+.panel {
+  background-color: white;
+  border: 1px solid $medium-grey;
+}
+
+// Generic selectors
+.selector {
+
+  &.selector-classification {
+    height: 70px;
+  }
+
+  &.selector-classification .Select-value {
+    padding-top: 10px;
+    height: 70px;
+    line-height: 1em;
+  }
+
+  &.selector-classification .Select-control {
+    height: 70px;
+  }
+
+  .option {
+    font-size: 0.8em;
+
+    .addendum {
+      font-size: 0.8em;
+    }
+  }
+}
+
 
 /**
  * Navbar.
@@ -164,14 +199,6 @@ h1 {
     padding-left: 15px;
     cursor: pointer;
   }
-}
-
-/**
- * Components.
- */
-.panel {
-  background-color: white;
-  border: 1px solid $medium-grey;
 }
 
 /**

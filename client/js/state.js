@@ -66,6 +66,29 @@ const defaultState = {
         inconsistencies: null,
         review: null
       }
+    },
+
+    // Exploration section
+    exploration: {
+
+      // Indicators view
+      indicators: {
+        selectors: {
+          productClassification: null,
+          countryClassification: null,
+          product: null,
+          country: null,
+          direction: null,
+          kind: null
+        },
+
+        groups: {
+          country: [],
+          product: []
+        },
+        lines: [],
+        data: []
+      }
     }
   },
 

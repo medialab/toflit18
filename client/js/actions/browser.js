@@ -24,7 +24,7 @@ export function select(tree, id) {
   state.set('loading', true);
 
   // Fetching the necessary rows
-  tree.client.groups({params: {id}}, function(err, data) {
+  tree.client.search({params: {id}}, function(err, data) {
     state.set('loading', false);
 
     if (err) return;
@@ -67,7 +67,7 @@ export function search(tree, id, query) {
   const loading = tree.select(PATH.concat('loading'));
 
   loading.set(true);
-  return tree.client.groups(
+  return tree.client.search(
     {params: {id: id}, data: {query}},
     function(err, data) {
       loading.set(false);
