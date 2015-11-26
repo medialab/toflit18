@@ -135,6 +135,10 @@ h1 {
     height: 70px;
   }
 
+  .Select-option.is-focused {
+    background-color: $medium-grey;
+  }
+
   .option {
     font-size: 0.8em;
 
