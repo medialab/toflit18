@@ -127,6 +127,7 @@ export class ItemSelector extends Component {
     return <Select.Async {...commonProps}
                          loadOptions={debounce(this.search.bind(this), 500)}
                          cache={false}
+                         labelKey="name"
                          noResultsText="Too many elements. Try searching..." />;
   }
 }
