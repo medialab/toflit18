@@ -8,6 +8,7 @@ import React, {Component} from 'react';
 import measured from '../../../lib/measured';
 import {six as palette} from '../../../lib/palettes';
 import scale from 'd3-scale';
+import shape from 'd3-shape';
 import {flatten, min, max} from 'lodash';
 
 /**
@@ -52,11 +53,13 @@ export default class LineChart extends Component {
       .domain([0, maxValue])
       .range([height, 0]);
 
-    function renderPoint(d, i) {
-      return <circle cx={x(d.year)}
-                     cy={y(d.value)}
-                     r={5}
-                     fill={palette[i]} />;
+    // Shapes
+    const line = shape.line()
+      .x(d => x(d.year))
+      .y(d => y(d.value));
+
+    function renderPath(points, i) {
+      return <path stroke={palette[i]} d={line(points)} />;
     }
 
     return (
@@ -70,7 +73,7 @@ export default class LineChart extends Component {
                margin={margin}
                scale={y} />
         <g className="points" transform={`translate(${margin.left}, ${margin.top})`}>
-          {data.map((points, i) => points.map(point => renderPoint(point, i)))}
+          {data.map(renderPath)}
         </g>
       </svg>
     );

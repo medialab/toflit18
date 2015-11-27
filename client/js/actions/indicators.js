@@ -55,14 +55,14 @@ export function addLine(tree) {
   // Adding the line
   cursor.push('lines', {params: selectors});
 
-  // Cleaning the selectors
-  for (const k in selectors)
-    cursor.set(['selectors', k], null);
-
   // Getting the index of the line
   // TODO: this is temporary. You can do better...
   const index = cursor.get('lines').length - 1,
         direction = cursor.get('selectors', 'direction', 'id') || 1572;
+
+  // Cleaning the selectors
+  for (const k in selectors)
+    cursor.set(['selectors', k], null);
 
   tree.client.viz({params: {name: 'line'}, data: {direction}}, function(err, data) {
     cursor.set('creating', false);

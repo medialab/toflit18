@@ -379,14 +379,17 @@ svg.sources-per-directions {
 }
 
 svg.line-chart {
-  border: 1px solid $medium-grey;
-
   line {
     shape-rendering: crispEdges;
   }
 
   text {
     font-size: 12px;
+  }
+
+  .points path {
+    stroke-width: 1.5px;
+    fill: none;
   }
 
   .axis line {
