@@ -28,6 +28,15 @@ RETURN
   f.year AS year
 ORDER BY f.year;
 
+// name: flowsLineAllDirections
+// Retrieving number of flows per year for the given criteria.
+//------------------------------------------------------------------------------
+MATCH (d:Direction)<-[:FROM|:TO]-(f:Flow)
+RETURN
+  count(f) AS value,
+  f.year AS year
+ORDER BY f.year;
+
 // name: valueLine
 // Retrieving value of flows per year for the given criteria.
 //------------------------------------------------------------------------------
@@ -38,6 +47,11 @@ RETURN
   f.year AS year
 ORDER BY f.year;
 
-// name: quantityLine
-// Retrieving quantity of flows per year for the given criteria.
+// name: valueLineAllDirections
+// Retrieving value of flows per year for the given criteria.
 //------------------------------------------------------------------------------
+MATCH (d:Direction)<-[:FROM|:TO]-(f:Flow)
+RETURN
+  sum(f.value) AS value,
+  f.year AS year
+ORDER BY f.year;

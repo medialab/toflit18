@@ -60,9 +60,14 @@ const Model = {
    * Line creation.
    */
   createLine(params, callback) {
+    let querySuffix = '';
+
+    if (!params.direction || params.direction === '$all$')
+      querySuffix = 'AllDirections';
+
     async.parallel({
-      flows: (next) => database.cypher({query: queries.flowsLine, params: {direction: params.direction}}, next),
-      value: (next) => database.cypher({query: queries.valueLine, params: {direction: params.direction}}, next)
+      flows: (next) => database.cypher({query: queries['flowsLine' + querySuffix], params: {direction: params.direction}}, next),
+      value: (next) => database.cypher({query: queries['valueLine' + querySuffix], params: {direction: params.direction}}, next)
     }, callback);
   }
 };

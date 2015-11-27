@@ -64,7 +64,7 @@ export default class LineChart extends Component {
         const lastPart = acc[acc.length - 1] || [],
               lastItem = lastPart[lastPart.length - 1];
 
-        if (lastItem && (point.year - lastItem.year) <= 1) {
+        if (lastItem && (point.year - lastItem.year) <= 5) {
           lastPart.push(point);
         }
         else {
