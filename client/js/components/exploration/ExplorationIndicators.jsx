@@ -72,7 +72,8 @@ class LineForm extends Component {
           </Col>
           <Col md={6}>
             <ItemSelector type="product"
-                          disabled={!selectors.productClassification}
+                          disabled={!selectors.productClassification || !groups.product.length}
+                          loading={selectors.productClassification && !groups.product.length}
                           data={groups.product}
                           onChange={actions.update.bind(null, 'product')}
                           selected={selectors.product} />
@@ -91,7 +92,8 @@ class LineForm extends Component {
           </Col>
           <Col md={6}>
             <ItemSelector type="country"
-                          disabled={!selectors.countryClassification}
+                          disabled={!selectors.countryClassification || !groups.country.length}
+                          loading={selectors.countryClassification && !groups.country.length}
                           data={groups.country}
                           onChange={actions.update.bind(null, 'country')}
                           selected={selectors.country} />
