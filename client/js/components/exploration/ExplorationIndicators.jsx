@@ -59,6 +59,21 @@ export default class ExplorationIndicators extends Component {
                           selected={selectors.country} />
           </Col>
         </Row>
+        <hr />
+        <Row>
+          <Col md={4}>
+            <ItemSelector type="direction"
+                          data={[]}
+                          onChange={actions.update.bind(null, 'direction')}
+                          selected={selectors.direction} />
+          </Col>
+          <Col md={4}>
+            <ItemSelector type="kind"
+                          data={[]}
+                          onChange={actions.update.bind(null, 'kind')}
+                          selected={selectors.kind} />
+          </Col>
+        </Row>
       </div>
     );
   }

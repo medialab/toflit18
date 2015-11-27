@@ -8,6 +8,7 @@ import React, {Component, PropTypes} from 'react';
 import Select from 'react-select';
 import {prettyPrint} from '../../lib/helpers';
 import {debounce} from 'lodash';
+import cls from 'classnames';
 
 const AsyncSelect = Select.Async;
 
@@ -65,6 +66,7 @@ const TEMPLATES = {
   product: ['All', 'None (National)'],
   country: ['All'],
   direction: ['All', 'None (National)'],
+  kind: ['Total', 'Import', 'Export']
 };
 
 const PLACEHOLDERS = {
@@ -72,7 +74,7 @@ const PLACEHOLDERS = {
   country: 'Country...',
   direction: 'Direction...',
   kind: 'Import/Export...'
-}
+};
 
 const MAX_LIST_SIZE = 100;
 
@@ -83,7 +85,7 @@ export class ItemSelector extends Component {
 
   renderOption(o) {
     return (
-      <div className="option">
+      <div className={cls('option', {special: o.special})}>
         <strong>{o.name}</strong>
       </div>
     );
@@ -122,8 +124,15 @@ export class ItemSelector extends Component {
       valueRenderer: this.renderOption
     };
 
+    const compulsoryOptions = TEMPLATES[type].map(item => {
+      return {
+        name: item,
+        special: true
+      };
+    });
+
     if (!isTooLong)
-      return <Select {...commonProps} options={data} />;
+      return <Select {...commonProps} options={compulsoryOptions.concat(data)} />;
 
     return <Select.Async {...commonProps}
                          loadOptions={debounce(this.search.bind(this), 500)}

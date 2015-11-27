@@ -145,6 +145,10 @@ h1 {
     .addendum {
       font-size: 0.8em;
     }
+
+    &.special {
+      color: $old-blue;
+    }
   }
 }
 
