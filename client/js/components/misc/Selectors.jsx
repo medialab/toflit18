@@ -50,7 +50,7 @@ export class ClassificationSelector extends Component {
       'Country classification...';
 
     return <Select className="selector selector-classification"
-                   searchable={false}
+                   labelKey="name"
                    isLoading={this.props.loading}
                    disabled={this.props.loading}
                    placeholder={placeholder}
