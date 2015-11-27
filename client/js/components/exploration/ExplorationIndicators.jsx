@@ -10,13 +10,20 @@ import {Row, Col} from '../misc/Grid.jsx';
 import Button from '../misc/Button.jsx';
 import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
-import {updateSelector as update} from '../../actions/indicators';
+import LineChart from './viz/LineChart.jsx';
+import {
+  updateSelector as update,
+  addLine
+} from '../../actions/indicators';
+
+// TODO: move branching to sub component for optimized rendering logic
 
 /**
  * Main component.
  */
 @branch({
   actions: {
+    addLine,
     update
   },
   cursors: {
@@ -31,7 +38,7 @@ export default class ExplorationIndicators extends Component {
     return (
       <div>
         <LineForm {...this.props} />
-        <GraphPanel />
+        {!!this.props.state.lines.length && <GraphPanel {...this.props} />}
       </div>
     );
   }
@@ -46,6 +53,7 @@ class LineForm extends Component {
       actions,
       classifications,
       directions,
+      creating,
       state: {
         groups,
         selectors
@@ -124,7 +132,11 @@ class LineForm extends Component {
         <hr />
         <Row>
           <Col md={2}>
-            <Button kind="primary">Add the line</Button>
+            <Button kind="primary"
+                    loading={creating}
+                    onClick={actions.addLine}>
+              Add the line
+            </Button>
           </Col>
         </Row>
       </div>
@@ -155,13 +167,20 @@ class SectionTitle extends Component {
  */
 class GraphPanel extends Component {
   render() {
+    const {
+      state: {
+        lines
+      }
+    } = this.props;
+
     return (
       <div className="panel">
         <h5>2. Exploring the results</h5>
         <em className="explanation">
-          On the graph below, you can see up to six lines you created above.
+          On the graph below, you can see up to six lines you created above. 1775
         </em>
         <hr />
+        <LineChart data={lines[0].data} />
       </div>
     );
   }

@@ -120,7 +120,7 @@ class Direction extends Component {
               height={rectHeight}
               x={x(year)}
               y={rectYPos}>
-          <title>{`${flows} total flows (${data.name})`}</title>
+          <title>{`${flows} total flows (${year})`}</title>
         </rect>
       );
     }

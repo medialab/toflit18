@@ -53,6 +53,13 @@ const Model = {
 
       return callback(null, data);
     });
+  },
+
+  /**
+   * Line creation.
+   */
+  createLine(params, callback) {
+    database.cypher(queries.line, callback);
   }
 };
 

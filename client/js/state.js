@@ -86,8 +86,7 @@ const defaultState = {
           country: [],
           product: []
         },
-        lines: [],
-        data: []
+        lines: []
       }
     }
   },

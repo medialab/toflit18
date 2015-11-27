@@ -17,3 +17,12 @@ ORDER BY f.year;
 MATCH (d:Direction)<-[:FROM|:TO]-(f:Flow)
 WITH collect(DISTINCT d) AS directions, f.year AS year
 RETURN year, directions ORDER BY year;
+
+// name: line
+// Retrieving a basic line.
+//------------------------------------------------------------------------------
+MATCH (d:Direction {name: "La Rochelle"})<-[:FROM|:TO]-(f:Flow)
+RETURN
+  count(f) AS value,
+  f.year AS year
+ORDER BY f.year;
