@@ -50,6 +50,8 @@ export class ClassificationSelector extends Component {
       'Country classification...';
 
     return <Select className="selector selector-classification"
+                   isLoading={this.props.loading}
+                   disabled={this.props.loading}
                    placeholder={placeholder}
                    options={options}
                    optionRenderer={this.renderOption}
@@ -121,6 +123,7 @@ export class ItemSelector extends Component {
     const {
       data = [],
       disabled,
+      loading,
       onChange,
       selected,
       type
@@ -130,7 +133,8 @@ export class ItemSelector extends Component {
 
     const commonProps = {
       className: 'selector',
-      disabled,
+      isLoading: loading,
+      disabled: disabled || loading,
       labelKey: 'name',
       value: selected,
       onChange,

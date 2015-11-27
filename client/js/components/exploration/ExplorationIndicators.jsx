@@ -31,6 +31,7 @@ export default class ExplorationIndicators extends Component {
     return (
       <div>
         <LineForm {...this.props} />
+        <GraphPanel />
       </div>
     );
   }
@@ -63,12 +64,11 @@ class LineForm extends Component {
           <SectionTitle title="Product"
                         addendum="The type of product being shipped." />
           <Col md={4}>
-            {classifications.product.length ?
-              <ClassificationSelector type="product"
-                                      data={classifications.product}
-                                      onChange={actions.update.bind(null, 'productClassification')}
-                                      selected={selectors.productClassification} /> :
-              <Waiter />}
+            <ClassificationSelector type="product"
+                                    loading={!classifications.product.length}
+                                    data={classifications.product}
+                                    onChange={actions.update.bind(null, 'productClassification')}
+                                    selected={selectors.productClassification} />
           </Col>
           <Col md={6}>
             <ItemSelector type="product"
@@ -83,12 +83,11 @@ class LineForm extends Component {
           <SectionTitle title="Country"
                         addendum="The country whence we got the products or wither we are sending them." />
           <Col md={4}>
-            {classifications.country.length ?
-              <ClassificationSelector type="country"
-                                      data={classifications.country}
-                                      onChange={actions.update.bind(null, 'countryClassification')}
-                                      selected={selectors.countryClassification} /> :
-              <Waiter />}
+            <ClassificationSelector type="country"
+                                    loading={!classifications.country.length}
+                                    data={classifications.country}
+                                    onChange={actions.update.bind(null, 'countryClassification')}
+                                    selected={selectors.countryClassification} />
           </Col>
           <Col md={6}>
             <ItemSelector type="country"
@@ -103,12 +102,11 @@ class LineForm extends Component {
           <SectionTitle title="Direction"
                         addendum="The French harbor where the transactions were recorded." />
           <Col md={4}>
-            {directions ?
-              <ItemSelector type="direction"
-                            data={directions || []}
-                            onChange={actions.update.bind(null, 'direction')}
-                            selected={selectors.direction} /> :
-              <Waiter />}
+            <ItemSelector type="direction"
+                          loading={!directions}
+                          data={directions || []}
+                          onChange={actions.update.bind(null, 'direction')}
+                          selected={selectors.direction} />
           </Col>
         </Row>
         <hr />
@@ -146,6 +144,23 @@ class SectionTitle extends Component {
           <em>{addendum}</em>
         </div>
       </Col>
+    );
+  }
+}
+
+/**
+ * Graph panel.
+ */
+class GraphPanel extends Component {
+  render() {
+    return (
+      <div className="panel">
+        <h5>2. Exploring the results</h5>
+        <em className="explanation">
+          On the graph below, you can see up to six lines you created above.
+        </em>
+        <hr />
+      </div>
     );
   }
 }

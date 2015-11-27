@@ -22,9 +22,7 @@ const defaultState = {
       flat: monkey(['.', 'raw'], flatClassifications),
       index: monkey(['.', 'flat'], classificationsIndex)
     },
-
     directions: null,
-
     viz: {
       sourcesPerDirections: null
     }
@@ -75,6 +73,7 @@ const defaultState = {
 
       // Indicators view
       indicators: {
+        creating: false,
         selectors: {
           productClassification: null,
           countryClassification: null,
@@ -83,7 +82,6 @@ const defaultState = {
           direction: null,
           kind: null
         },
-
         groups: {
           country: [],
           product: []
