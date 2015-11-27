@@ -10,6 +10,8 @@ import * as browser from './actions/browser';
 export default function(state, client) {
   return new Parrot(state, {
     rules: [
+
+      // Accessing the classifications' list
       {
         path: ['data', 'classifications', 'flat'],
         expect: data => {
@@ -32,6 +34,19 @@ export default function(state, client) {
         }
       },
 
+      // Accessing the directions' list
+      {
+        path: ['data', 'directions'],
+        get() {
+          return client.directions(function(err, data) {
+            if (err) return;
+
+            state.set(['data', 'directions'], data.result);
+          });
+        }
+      },
+
+      // Sources per directions viz
       {
         path: ['data', 'viz', 'sourcesPerDirections'],
         get() {

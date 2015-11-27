@@ -16,12 +16,21 @@ import {updateSelector as update} from '../../actions/indicators';
   },
   cursors: {
     classifications: ['data', 'classifications', 'flat'],
+    directions: ['data', 'directions'],
     state: ['states', 'exploration', 'indicators']
   }
 })
 export default class ExplorationIndicators extends Component {
   render() {
-    const {actions, classifications, state: {groups, selectors}} = this.props;
+    const {
+      actions,
+      classifications,
+      directions,
+      state: {
+        groups,
+        selectors
+      }
+    } = this.props;
 
     return (
       <div className="panel">
@@ -63,13 +72,12 @@ export default class ExplorationIndicators extends Component {
         <Row>
           <Col md={4}>
             <ItemSelector type="direction"
-                          data={[]}
+                          data={directions || []}
                           onChange={actions.update.bind(null, 'direction')}
                           selected={selectors.direction} />
           </Col>
           <Col md={4}>
             <ItemSelector type="kind"
-                          data={[]}
                           onChange={actions.update.bind(null, 'kind')}
                           selected={selectors.kind} />
           </Col>

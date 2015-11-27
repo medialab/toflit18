@@ -83,6 +83,19 @@ export class ItemSelector extends Component {
     type: PropTypes.string.isRequired
   };
 
+  constructor(props, context) {
+    super(props, context);
+
+    const type = props.type;
+
+    this.compulsoryOptions = TEMPLATES[type].map(item => {
+      return {
+        name: item,
+        special: true
+      };
+    });
+  }
+
   renderOption(o) {
     return (
       <div className={cls('option', {special: o.special})}>
@@ -93,7 +106,7 @@ export class ItemSelector extends Component {
 
   search(input, callback) {
     if (!input.trim())
-      return callback(null, {options: []});
+      return callback(null, {options: this.compulsoryOptions});
 
     const options = this.props.data
       .filter(function(group) {
@@ -106,7 +119,7 @@ export class ItemSelector extends Component {
 
   render() {
     const {
-      data,
+      data = [],
       onChange,
       selected,
       type
@@ -124,18 +137,11 @@ export class ItemSelector extends Component {
       valueRenderer: this.renderOption
     };
 
-    const compulsoryOptions = TEMPLATES[type].map(item => {
-      return {
-        name: item,
-        special: true
-      };
-    });
-
     if (!isTooLong)
-      return <Select {...commonProps} options={compulsoryOptions.concat(data)} />;
+      return <Select {...commonProps} options={this.compulsoryOptions.concat(data)} />;
 
     return <Select.Async {...commonProps}
-                         loadOptions={debounce(this.search.bind(this), 500)}
+                         loadOptions={debounce(this.search.bind(this), 300)}
                          cache={false}
                          noResultsText="Too many elements. Try searching..." />;
   }

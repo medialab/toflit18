@@ -39,6 +39,7 @@ const client = new Client({
     // Data related
     classifications: '/classification',
     groups: '/classification/:id/groups',
+    directions: '/directions',
     search: {
       contentType: 'application/x-www-form-urlencoded',
       url: '/classification/:id/search'

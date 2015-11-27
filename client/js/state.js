@@ -23,6 +23,8 @@ const defaultState = {
       index: monkey(['.', 'flat'], classificationsIndex)
     },
 
+    directions: null,
+
     viz: {
       sourcesPerDirections: null
     }

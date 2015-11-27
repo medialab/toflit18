@@ -17,6 +17,7 @@ import middlewares from './middlewares';
 import responses from './responses';
 
 import classificationController from './controllers/classification';
+import dataController from './controllers/data';
 import loginController from './controllers/login';
 import vizController from './controllers/viz';
 
@@ -101,11 +102,13 @@ app.use(compress());
 
 // Creating routers from controllers
 const loginRouter = createRouter(loginController),
+      dataRouter = createRouter(dataController, middlewares.authenticate),
       classificationRouter = createRouter(classificationController, middlewares.authenticate),
       vizRouter = createRouter(vizController, middlewares.authenticate);
 
 // Mounting
 app.use(loginRouter);
+app.use(dataRouter);
 app.use('/classification', classificationRouter);
 app.use('/viz', vizRouter);
 app.use((_, res) => res.notFound());
