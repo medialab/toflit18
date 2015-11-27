@@ -191,7 +191,7 @@ class GraphPanel extends Component {
         <LinesSummary lines={lines.map(line => line.params)}
                       drop={actions.dropLine} />
         <hr />
-        <LineChart data={linesToRender} />
+        <Charts lines={linesToRender} />
       </div>
     );
   }
@@ -216,6 +216,27 @@ class LinesSummary extends Component {
           );
         })}
       </ul>
+    );
+  }
+}
+
+/**
+ * Charts.
+ */
+class Charts extends Component {
+  render() {
+    const lines = this.props.lines;
+
+    return (
+      <div>
+        <div>Number of flows per year</div>
+        <hr />
+        <LineChart data={lines.map(line => line.flows)} />
+        <hr />
+        <div>Total value of flows per year</div>
+        <hr />
+        <LineChart data={lines.map(line => line.value)} />
+      </div>
     );
   }
 }

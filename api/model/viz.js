@@ -3,6 +3,7 @@
  * ===================
  *
  */
+import async from 'async';
 import database from '../connection';
 import {viz as queries} from '../queries';
 import _, {groupBy} from 'lodash';
@@ -59,7 +60,10 @@ const Model = {
    * Line creation.
    */
   createLine(params, callback) {
-    database.cypher({query: queries.line, params: {direction: params.direction}}, callback);
+    async.parallel({
+      flows: (next) => database.cypher({query: queries.flowsLine, params: {direction: params.direction}}, next),
+      value: (next) => database.cypher({query: queries.valueLine, params: {direction: params.direction}}, next)
+    }, callback);
   }
 };
 

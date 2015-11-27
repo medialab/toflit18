@@ -18,8 +18,8 @@ MATCH (d:Direction)<-[:FROM|:TO]-(f:Flow)
 WITH collect(DISTINCT d) AS directions, f.year AS year
 RETURN year, directions ORDER BY year;
 
-// name: line
-// Retrieving a basic line.
+// name: flowsLine
+// Retrieving number of flows per year for the given criteria.
 //------------------------------------------------------------------------------
 MATCH (d:Direction)<-[:FROM|:TO]-(f:Flow)
 WHERE id(d) = {direction}
@@ -27,3 +27,17 @@ RETURN
   count(f) AS value,
   f.year AS year
 ORDER BY f.year;
+
+// name: valueLine
+// Retrieving value of flows per year for the given criteria.
+//------------------------------------------------------------------------------
+MATCH (d:Direction)<-[:FROM|:TO]-(f:Flow)
+WHERE id(d) = {direction}
+RETURN
+  sum(f.value) AS value,
+  f.year AS year
+ORDER BY f.year;
+
+// name: quantityLine
+// Retrieving quantity of flows per year for the given criteria.
+//------------------------------------------------------------------------------

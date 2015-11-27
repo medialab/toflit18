@@ -10,6 +10,7 @@ import {six as palette} from '../../../lib/palettes';
 import scale from 'd3-scale';
 import shape from 'd3-shape';
 import {flatten, min, max} from 'lodash';
+import {prettyPrint} from '../../../lib/helpers';
 
 /**
  * Main component.
@@ -28,7 +29,7 @@ export default class LineChart extends Component {
     const margin = {
       top: 10,
       right: 10,
-      left: 50,
+      left: 100,
       bottom: 30
     };
 
@@ -159,7 +160,7 @@ class YAxis extends Component {
         <g key={i} className="tick" transform={`translate(${margin.left}, ${top})`}>
           <line x1={-5} x2={0} textAnchor="right" />
           <text x={-7} y="0.32em" textAnchor="end">
-            {t}
+            {prettyPrint(t)}
           </text>
           <line className="dotted" x2={width - margin.right - margin.left} />
         </g>
