@@ -65,10 +65,10 @@ export class ClassificationSelector extends Component {
  * Item selector.
  */
 const TEMPLATES = {
-  product: ['All', 'None (National)'],
-  country: ['All'],
-  direction: ['All', 'None (National)'],
-  kind: ['Total', 'Import', 'Export']
+  product: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
+  country: [{name: 'All', id: '$all$'},],
+  direction: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
+  kind: [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}]
 };
 
 const PLACEHOLDERS = {
@@ -90,12 +90,7 @@ export class ItemSelector extends Component {
 
     const type = props.type;
 
-    this.compulsoryOptions = TEMPLATES[type].map(item => {
-      return {
-        name: item,
-        special: true
-      };
-    });
+    this.compulsoryOptions = TEMPLATES[type].map(o => ({...o, special: true}));
   }
 
   renderOption(o) {
