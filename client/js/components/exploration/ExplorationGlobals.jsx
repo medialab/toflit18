@@ -6,17 +6,12 @@
  * whole.
  */
 import React, {Component} from 'react';
-import Fetcher from '../misc/Fetcher.jsx';
-import Sankey from './viz/Sankey.jsx';
 
 export default class ExplorationGlobals extends Component {
   render() {
     return (
       <div className="panel">
         Global viz...
-        <Fetcher url="/data/sankey.json">
-
-        </Fetcher>
       </div>
     );
   }
