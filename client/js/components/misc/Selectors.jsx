@@ -120,6 +120,7 @@ export class ItemSelector extends Component {
   render() {
     const {
       data = [],
+      disabled,
       onChange,
       selected,
       type
@@ -129,6 +130,7 @@ export class ItemSelector extends Component {
 
     const commonProps = {
       className: 'selector',
+      disabled,
       labelKey: 'name',
       value: selected,
       onChange,

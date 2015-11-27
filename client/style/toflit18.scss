@@ -297,7 +297,7 @@ h1 {
 
     .panel {
       padding: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     .explanation {
@@ -336,6 +336,16 @@ h1 {
 
   .panel {
     padding: 20px;
+    margin-bottom: 10px;
+  }
+
+  .explanation {
+    font-size: 0.9em;
+  }
+
+  .section-explanation {
+    line-height: 0.9em;
+    font-size: 0.7em;
   }
 }
 
