@@ -126,12 +126,14 @@ export class ItemSelector extends Component {
 
     const isTooLong = data.length > MAX_LIST_SIZE;
 
+    const trulyDisabled = disabled || loading;
+
     const commonProps = {
       className: 'selector',
       isLoading: loading,
-      disabled: disabled || loading,
+      disabled: trulyDisabled,
       labelKey: 'name',
-      value: selected,
+      value: selected || !trulyDisabled && this.compulsoryOptions[0],
       onChange,
       placeholder: PLACEHOLDERS[type],
       optionRenderer: this.renderOption,
