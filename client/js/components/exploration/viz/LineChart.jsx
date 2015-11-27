@@ -58,8 +58,35 @@ export default class LineChart extends Component {
       .x(d => x(d.year))
       .y(d => y(d.value));
 
-    function renderPath(points, i) {
-      return <path stroke={palette[i]} d={line(points)} />;
+    function renderLine(points, i) {
+      const parts = points.reduce(function(acc, point) {
+        const lastPart = acc[acc.length - 1] || [],
+              lastItem = lastPart[lastPart.length - 1];
+
+        if (lastItem && (point.year - lastItem.year) <= 1) {
+          lastPart.push(point);
+        }
+        else {
+          acc.push([point]);
+        }
+
+        return acc;
+      }, []);
+
+      return parts.map(function(part) {
+
+        // Rendering a whole series
+        if (part.length > 1)
+          return <path stroke={palette[i]} d={line(part)} />;
+
+        // Rendering a single point in time
+        const point = part[0];
+
+        return <circle cx={x(point.year)}
+                       cy={y(point.value)}
+                       r={1.5}
+                       fill={palette[i]} />;
+      });
     }
 
     return (
@@ -73,7 +100,7 @@ export default class LineChart extends Component {
                margin={margin}
                scale={y} />
         <g className="points" transform={`translate(${margin.left}, ${margin.top})`}>
-          {data.map(renderPath)}
+          {data.map(renderLine)}
         </g>
       </svg>
     );
@@ -89,7 +116,7 @@ class XAxis extends Component {
 
     const bottom = height - margin.bottom;
 
-    const ticks = scale.ticks(20);
+    const ticks = scale.ticks();
 
     function renderTick(t, i) {
       const left = margin.left + scale(t);
@@ -123,7 +150,7 @@ class YAxis extends Component {
   render() {
     const {margin, width, height, scale} = this.props;
 
-    const ticks = scale.ticks(5);
+    const ticks = scale.ticks();
 
     function renderTick(t, i) {
       const top = (margin.top + scale(t));
