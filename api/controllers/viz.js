@@ -4,6 +4,7 @@
  *
  */
 import model from '../model/viz';
+import {mapValues} from 'lodash';
 
 const controller = [
   {
@@ -27,7 +28,9 @@ const controller = [
       kind: '?string'
     },
     action(req, res) {
-      return model.createLine(req.body, function(err, data) {
+      const payload = mapValues(req.query, (v, k) => k !== 'kind' ? +v : v);
+
+      return model.createLine(payload, function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);

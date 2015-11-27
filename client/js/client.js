@@ -55,7 +55,10 @@ const client = new Client({
     },
 
     // Viz
-    viz: '/viz/:name'
+    viz: {
+      contentType: 'application/x-www-form-urlencoded',
+      url: '/viz/:name'
+    }
   }
 });
 

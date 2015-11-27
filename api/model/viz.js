@@ -59,7 +59,7 @@ const Model = {
    * Line creation.
    */
   createLine(params, callback) {
-    database.cypher(queries.line, callback);
+    database.cypher({query: queries.line, params: {direction: params.direction}}, callback);
   }
 };
 

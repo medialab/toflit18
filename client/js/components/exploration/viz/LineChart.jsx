@@ -6,8 +6,9 @@
  */
 import React, {Component} from 'react';
 import measured from '../../../lib/measured';
+import {six as palette} from '../../../lib/palettes';
 import scale from 'd3-scale';
-import {min, max} from 'lodash';
+import {flatten, min, max} from 'lodash';
 
 /**
  * Main component.
@@ -16,6 +17,9 @@ import {min, max} from 'lodash';
 export default class LineChart extends Component {
   render() {
     let {data, width: fullWidth} = this.props;
+
+    if (!data.length)
+      return <svg width="100%" />;
 
     if (!fullWidth)
       return <svg width="100%" />;
@@ -33,9 +37,11 @@ export default class LineChart extends Component {
           fullHeight = height + margin.top + margin.bottom;
 
     // Computing max values
-    const minYear = min(data, d => d.year).year,
-          maxYear = max(data, d => d.year).year,
-          maxValue = max(data, d => d.value).value;
+    const fullData = flatten(data);
+
+    const minYear = min(fullData, d => d.year).year,
+          maxYear = max(fullData, d => d.year).year,
+          maxValue = max(fullData, d => d.value).value;
 
     // Building scales
     const x = scale.linear()
@@ -46,11 +52,11 @@ export default class LineChart extends Component {
       .domain([0, maxValue])
       .range([height, 0]);
 
-
     function renderPoint(d, i) {
       return <circle cx={x(d.year)}
                      cy={y(d.value)}
-                     r={1} />;
+                     r={5}
+                     fill={palette[i]} />;
     }
 
     return (
@@ -64,7 +70,7 @@ export default class LineChart extends Component {
                margin={margin}
                scale={y} />
         <g className="points" transform={`translate(${margin.left}, ${margin.top})`}>
-          {data.map(renderPoint)}
+          {data.map((points, i) => points.map(point => renderPoint(point, i)))}
         </g>
       </svg>
     );

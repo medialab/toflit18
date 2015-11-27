@@ -50,17 +50,32 @@ export function addLine(tree) {
   // Loading
   cursor.set('creating', true);
 
+  const selectors = cursor.get('selectors');
+
   // Adding the line
-  cursor.push('lines', {params: 'todo'});
+  cursor.push('lines', {params: selectors});
+
+  // Cleaning the selectors
+  for (const k in selectors)
+    cursor.set(['selectors', k], null);
 
   // Getting the index of the line
-  const index = cursor.get('lines').length - 1;
+  // TODO: this is temporary. You can do better...
+  const index = cursor.get('lines').length - 1,
+        direction = cursor.get('selectors', 'direction', 'id') || 1572;
 
-  tree.client.viz({params: {name: 'line'}}, function(err, data) {
+  tree.client.viz({params: {name: 'line'}, data: {direction}}, function(err, data) {
     cursor.set('creating', false);
 
     if (err) return;
 
     cursor.set(['lines', index, 'data'], data.result);
   });
+}
+
+/**
+ * Drop the given line.
+ */
+export function dropLine(tree, index) {
+  tree.unset([...ROOT, 'lines', index]);
 }

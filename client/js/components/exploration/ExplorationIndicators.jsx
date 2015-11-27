@@ -11,9 +11,11 @@ import Button from '../misc/Button.jsx';
 import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
+import {six as palette} from '../../lib/palettes';
 import {
   updateSelector as update,
-  addLine
+  addLine,
+  dropLine
 } from '../../actions/indicators';
 
 // TODO: move branching to sub component for optimized rendering logic
@@ -24,6 +26,7 @@ import {
 @branch({
   actions: {
     addLine,
+    dropLine,
     update
   },
   cursors: {
@@ -168,10 +171,15 @@ class SectionTitle extends Component {
 class GraphPanel extends Component {
   render() {
     const {
+      actions,
       state: {
         lines
       }
     } = this.props;
+
+    const linesToRender = lines
+      .filter(line => !!line.data)
+      .map(line => line.data);
 
     return (
       <div className="panel">
@@ -180,8 +188,34 @@ class GraphPanel extends Component {
           On the graph below, you can see up to six lines you created above. 1775
         </em>
         <hr />
-        <LineChart data={lines[0].data} />
+        <LinesSummary lines={lines.map(line => line.params)}
+                      drop={actions.dropLine} />
+        <hr />
+        <LineChart data={linesToRender} />
       </div>
+    );
+  }
+}
+
+/**
+ * Lines summary.
+ */
+class LinesSummary extends Component {
+  render() {
+    const {drop, lines} = this.props;
+
+    return (
+      <ul>
+        {lines.map(function(params, i) {
+          return (
+            <li key={i}>
+              <span className="drop" onClick={drop.bind(null, i)}>x</span>
+              &nbsp;
+              <strong style={{color: palette[i]}}>{params.direction.name}</strong>
+            </li>
+          );
+        })}
+      </ul>
     );
   }
 }
