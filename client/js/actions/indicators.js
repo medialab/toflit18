@@ -57,8 +57,9 @@ export function addLine(tree) {
 
   // Getting the index of the line
   // TODO: this is temporary. You can do better...
+  // TODO: don't send a null query
   const index = cursor.get('lines').length - 1,
-        direction = cursor.get('selectors', 'direction', 'id') || 1572;
+        direction = cursor.get('selectors', 'direction', 'id') || null;
 
   // Cleaning the selectors
   for (const k in selectors)

@@ -211,7 +211,7 @@ class LinesSummary extends Component {
             <li key={i}>
               <span className="drop" onClick={drop.bind(null, i)}>x</span>
               &nbsp;
-              <strong style={{color: palette[i]}}>{params.direction.name}</strong>
+              <strong style={{color: palette[i]}}>{params.direction ? params.direction.name : 'All'}</strong>
             </li>
           );
         })}
@@ -231,11 +231,11 @@ class Charts extends Component {
       <div>
         <div>Number of flows per year</div>
         <hr />
-        <LineChart data={lines.map(line => line.flows)} />
+        <LineChart data={lines} />
         <hr />
         <div>Total value of flows per year</div>
         <hr />
-        <LineChart data={lines.map(line => line.value)} />
+        <LineChart data={lines} />
       </div>
     );
   }

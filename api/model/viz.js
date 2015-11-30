@@ -4,6 +4,7 @@
  *
  */
 import async from 'async';
+import cypher from 'cypher-query';
 import database from '../connection';
 import {viz as queries} from '../queries';
 import _, {groupBy} from 'lodash';
@@ -60,15 +61,24 @@ const Model = {
    * Line creation.
    */
   createLine(params, callback) {
-    let querySuffix = '';
 
-    if (!params.direction || params.direction === '$all$')
-      querySuffix = 'AllDirections';
+    // Building the query
+    const query = cypher()
+      .match('(d:Direction)<-[:FROM|:TO]-(f:Flow)');
 
-    async.parallel({
-      flows: (next) => database.cypher({query: queries['flowsLine' + querySuffix], params: {direction: params.direction}}, next),
-      value: (next) => database.cypher({query: queries['valueLine' + querySuffix], params: {direction: params.direction}}, next)
-    }, callback);
+    //-- 1) Should we match a precise direction?
+    if (params.direction && params.direction !== '$all$')
+      query.where('id(d) = {direction}', {direction: params.direction});
+
+    //-- 2) Returning data
+    query.return('count(f) AS count, sum(f.value) AS value, f.year AS year');
+    query['order by']('f.year');
+
+    database.cypher({query: query.compile(), params: query.params()}, function(err, data) {
+      if (err) return callback(err);
+
+      return callback(null, data);
+    });
   }
 };
 
