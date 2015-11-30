@@ -231,7 +231,7 @@ class Charts extends Component {
       <div>
         <div>Number of flows per year</div>
         <hr />
-        <LineChart data={lines} />
+        <LineChart data={lines.map(line => line.map(row => ({year: row.year, value: row.count})))} />
         <hr />
         <div>Total value of flows per year</div>
         <hr />
