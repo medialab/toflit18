@@ -12,6 +12,7 @@ import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
 import {six as palette} from '../../lib/palettes';
+import {capitalize, isEqual, mapValues} from 'lodash';
 import {
   updateSelector as update,
   addLine,
@@ -59,6 +60,7 @@ class LineForm extends Component {
       creating,
       state: {
         groups,
+        lines,
         selectors
       }
     } = this.props;
@@ -136,6 +138,7 @@ class LineForm extends Component {
         <Row>
           <Col md={2}>
             <Button kind="primary"
+                    disabled={lines.some(line => isEqual(line.params, selectors))}
                     loading={creating}
                     onClick={actions.addLine}>
               Add the line
@@ -200,18 +203,36 @@ class GraphPanel extends Component {
 /**
  * Lines summary.
  */
+function buildDescription(params) {
+  const selectors = mapValues(params, 'name');
+
+  let description = capitalize(selectors.kind || 'total') + ' flows';
+
+  if (selectors.product) {
+    description += ` of "${selectors.product}" (${selectors.productClassification})`;
+  }
+
+  if (selectors.direction && selectors.direction !== '$all')
+    description += ` from "${selectors.direction}"`;
+
+  if (selectors.country)
+    description += ` to "${selectors.country}" (${selectors.countryClassification})`;
+
+  return description + '.';
+}
+
 class LinesSummary extends Component {
   render() {
     const {drop, lines} = this.props;
 
     return (
-      <ul>
+      <ul className="summary">
         {lines.map(function(params, i) {
           return (
             <li key={i}>
               <span className="drop" onClick={drop.bind(null, i)}>x</span>
               &nbsp;
-              <strong style={{color: palette[i]}}>{params.direction ? params.direction.name : 'All'}</strong>
+              <strong style={{color: palette[i]}}>{buildDescription(params)}</strong>
             </li>
           );
         })}

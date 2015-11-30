@@ -33,11 +33,14 @@ export default class Button extends Component {
   }
 
   render() {
-    let {kind, disabled, onClick} = this.props,
+    let {kind, disabled, onClick, size} = this.props,
         cls = `btn btn-${kind} ladda-button`;
 
     if (disabled)
       cls += ' disabled';
+
+    if (size)
+      cls += (size === 'small' ? ' btn-sm' : 'btn-lg');
 
     let optional = {};
 
