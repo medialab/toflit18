@@ -56,16 +56,20 @@ export function addLine(tree) {
   cursor.push('lines', {params: selectors});
 
   // Getting the index of the line
-  // TODO: this is temporary. You can do better...
-  // TODO: don't send a null query
-  const index = cursor.get('lines').length - 1,
-        direction = cursor.get('selectors', 'direction', 'id') || null;
+  const index = cursor.get('lines').length - 1;
 
   // Cleaning the selectors
-  for (const k in selectors)
-    cursor.set(['selectors', k], null);
+  // for (const k in selectors)
+  //   cursor.set(['selectors', k], null);
 
-  tree.client.viz({params: {name: 'line'}, data: {direction}}, function(err, data) {
+  // Building payload
+  const payload = {};
+
+  for (const k in selectors)
+    if (!!selectors[k])
+      payload[k] = selectors[k].id;
+
+  tree.client.viz({params: {name: 'line'}, data: payload}, function(err, data) {
     cursor.set('creating', false);
 
     if (err) return;

@@ -92,7 +92,7 @@ export default class LineChart extends Component {
                 r={2}
                 fill="white"
                 stroke={palette[i]}>
-          <title>{point.value} ({point.year})</title>
+          <title>{prettyPrint(point.value)} ({point.year})</title>
         </circle>
       );
     }
