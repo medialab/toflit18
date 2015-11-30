@@ -59,7 +59,7 @@ export default class LineChart extends Component {
       .x(d => x(d.year))
       .y(d => y(d.value));
 
-    function renderLine(points, i) {
+    function renderLines(points, i) {
       const parts = points.reduce(function(acc, point) {
         const lastPart = acc[acc.length - 1] || [],
               lastItem = lastPart[lastPart.length - 1];
@@ -74,20 +74,27 @@ export default class LineChart extends Component {
         return acc;
       }, []);
 
-      return parts.map(function(part) {
+      return parts
+        .filter(part => part.length > 1)
+        .map(function(part) {
 
-        // Rendering a whole series
-        if (part.length > 1)
+          // Rendering a whole series
           return <path stroke={palette[i]} d={line(part)} />;
+        });
+    }
 
-        // Rendering a single point in time
-        const point = part[0];
+    function renderPoint(point, i) {
 
-        return <circle cx={x(point.year)}
-                       cy={y(point.value)}
-                       r={1.5}
-                       fill={palette[i]} />;
-      });
+      // Rendering a single point in time
+      return (
+        <circle cx={x(point.year)}
+                cy={y(point.value)}
+                r={2}
+                fill="white"
+                stroke={palette[i]}>
+          <title>{point.value} ({point.year})</title>
+        </circle>
+      );
     }
 
     return (
@@ -101,7 +108,8 @@ export default class LineChart extends Component {
                margin={margin}
                scale={y} />
         <g className="points" transform={`translate(${margin.left}, ${margin.top})`}>
-          {data.map(renderLine)}
+          {data.map(renderLines)}
+          {data.map((line, i) => line.map(row => renderPoint(row, i)))}
         </g>
       </svg>
     );
