@@ -5,6 +5,7 @@
  * Basic line chart component describing flows along the years.
  */
 import React, {Component} from 'react';
+import Tooltip from 'rc-tooltip';
 import measured from '../../../lib/measured';
 import {six as palette} from '../../../lib/palettes';
 import scale from 'd3-scale';
@@ -85,15 +86,21 @@ export default class LineChart extends Component {
 
     function renderPoint(point, i) {
 
+      const overlay = (
+        <span>
+          {prettyPrint(point.value)} ({point.year})
+        </span>
+      );
+
       // Rendering a single point in time
       return (
-        <circle cx={x(point.year)}
-                cy={y(point.value)}
-                r={2}
-                fill="white"
-                stroke={palette[i]}>
-          <title>{prettyPrint(point.value)} ({point.year})</title>
-        </circle>
+        <Tooltip placement="top" overlay={overlay}>
+          <circle cx={x(point.year)}
+                  cy={y(point.value)}
+                  r={2}
+                  fill="white"
+                  stroke={palette[i]} />
+        </Tooltip>
       );
     }
 
