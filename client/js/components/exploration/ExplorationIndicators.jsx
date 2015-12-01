@@ -188,7 +188,7 @@ class GraphPanel extends Component {
       <div className="panel">
         <h5>2. Exploring the results</h5>
         <em className="explanation">
-          On the graph below, you can see up to six lines you created above. 1775
+          On the graph below, you can see up to six lines you created above.
         </em>
         <hr />
         <LinesSummary lines={lines.map(line => line.params)}

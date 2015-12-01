@@ -50,7 +50,7 @@ export function expand(tree, classification) {
   if (query)
     data.query = query;
 
-  return tree.client.groups(
+  return tree.client.search(
     {params: {id: classification.id}, data},
     function(err, data) {
       if (err) return;
