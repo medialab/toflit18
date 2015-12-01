@@ -405,9 +405,17 @@ svg.line-chart {
     font-size: 12px;
   }
 
-  .points path {
-    stroke-width: 1.5px;
-    fill: none;
+  .points {
+
+    circle:hover {
+      r: 3;
+      cursor: pointer;
+    }
+
+    path {
+      stroke-width: 1.5px;
+      fill: none;
+    }
   }
 
   .axis line {
