@@ -43,6 +43,9 @@ export default class NavBar extends Component {
     const history = this.context.history,
           logged = this.props.logged;
 
+    if (!logged)
+      return null;
+
     const logoutButton = (
       <li className="nav-item pull-right">
         <a className="nav-link logout"
