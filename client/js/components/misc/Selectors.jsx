@@ -103,8 +103,14 @@ export class ItemSelector extends Component {
   }
 
   search(input, callback) {
+    const warning = {
+      id: '$warning$',
+      disabled: true,
+      name: 'This list contains too many elements. Try searching...'
+    };
+
     if (!input.trim())
-      return callback(null, {options: this.compulsoryOptions});
+      return callback(null, {options: this.compulsoryOptions.concat([warning])});
 
     const options = this.props.data
       .filter(function(group) {
@@ -146,7 +152,6 @@ export class ItemSelector extends Component {
 
     return <Select.Async {...commonProps}
                          loadOptions={debounce(this.search.bind(this), 300)}
-                         cache={false}
-                         noResultsText="Too many elements. Try searching..." />;
+                         cache={false} />;
   }
 }
