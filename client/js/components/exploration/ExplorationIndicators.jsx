@@ -40,7 +40,7 @@ export default class ExplorationIndicators extends Component {
   render() {
 
     return (
-      <div>
+      <div className="indicators-wrapper">
         <LineForm {...this.props} />
         {!!this.props.state.lines.length && <GraphPanel {...this.props} />}
       </div>
@@ -218,7 +218,7 @@ function buildDescription(params) {
   if (selectors.country)
     description += ` to "${selectors.country}" (${selectors.countryClassification})`;
 
-  return description + '.';
+  return description;
 }
 
 class LinesSummary extends Component {
@@ -228,11 +228,22 @@ class LinesSummary extends Component {
     return (
       <ul className="summary">
         {lines.map(function(params, i) {
+          const color = palette[i],
+                style = {
+                  color: 'white',
+                  backgroundColor: color
+                };
+
           return (
             <li key={i}>
-              <span className="drop" onClick={drop.bind(null, i)}>x</span>
-              &nbsp;
-              <strong style={{color: palette[i]}}>{buildDescription(params)}</strong>
+              <span className="insert" style={style}>
+                {buildDescription(params)}
+              </span>
+              <span className="insert drop"
+                    onClick={drop.bind(null, i)}
+                    style={style}>
+                ✕
+              </span>
             </li>
           );
         })}

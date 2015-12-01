@@ -339,22 +339,35 @@ h1 {
     margin-bottom: 10px;
   }
 
-  .explanation {
-    font-size: 0.9em;
-  }
+  .indicators-wrapper {
+    .explanation {
+      font-size: 0.9em;
+    }
 
-  .section-explanation {
-    line-height: 0.9em;
-    font-size: 0.7em;
-  }
+    .section-explanation {
+      line-height: 0.9em;
+      font-size: 0.7em;
+    }
 
-  .drop {
-    cursor: pointer;
-  }
+    .summary {
+      list-style-type: none;
+      padding-left: 0px;
 
-  .summary {
-    list-style-type: none;
-    padding-left: 0px;
+      li {
+        margin-bottom: 7px;
+      }
+
+      .insert {
+        padding: 4px;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+
+        &.drop {
+          margin-left: 1px;
+          cursor: pointer;
+        }
+      }
+    }
   }
 }
 
