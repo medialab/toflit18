@@ -19,6 +19,7 @@ import {
 } from '../../actions/indicators';
 
 // TODO: move branching to sub component for optimized rendering logic
+// TODO: better use pure rendering logic
 
 /**
  * Main component.
@@ -56,20 +57,22 @@ class LineForm extends Component {
       actions,
       classifications,
       directions,
-      creating,
       state: {
+        creating,
         groups,
         lines,
         selectors
       }
     } = this.props;
 
+    const lineAlreadyExisting = lines.some(line => isEqual(line.params, selectors));
+
     return (
       <div className="panel">
         <h5>1. Creating a new line</h5>
         <em className="explanation">
-          By selecting the following criteria, you'll be able to create a
-          new line on the graph.
+          By selecting the following criteria, you'll be able to add the
+          line you need on the graph that will be created for you below.
         </em>
         <hr />
         <Row>
@@ -137,10 +140,10 @@ class LineForm extends Component {
         <Row>
           <Col md={2}>
             <Button kind="primary"
-                    disabled={lines.some(line => isEqual(line.params, selectors))}
+                    disabled={lineAlreadyExisting}
                     loading={creating}
                     onClick={actions.addLine}>
-              Add the line
+              {lineAlreadyExisting && !creating ? 'Already drawn' : 'Add the line'}
             </Button>
           </Col>
         </Row>
@@ -186,7 +189,7 @@ class GraphPanel extends Component {
       <div className="panel">
         <h5>2. Exploring the results</h5>
         <em className="explanation">
-          On the graph below, you can see up to six lines you created above.
+          You can now see the created lines on the graph below.
         </em>
         <hr />
         <LinesSummary lines={lines}
