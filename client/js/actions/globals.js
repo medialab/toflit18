@@ -13,10 +13,11 @@ export function selectClassification(tree, classification) {
 
   cursor.set('classification', classification);
   cursor.set('graph', null);
-  cursor.set('loading', true);
 
   if (!classification)
     return;
+
+  cursor.set('loading', true);
 
   // Fetching data
   tree.client.network({params: {id: classification.id}}, function(err, data) {

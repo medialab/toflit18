@@ -34,14 +34,15 @@ export default class Network extends Component {
   }
 
   componentWillUpdate(nextProps) {
-    if (!nextProps.graph)
-      return;
-
     this.sigma.killForceAtlas2();
 
     const g = this.sigma.graph;
 
     g.clear();
+
+    if (!nextProps.graph)
+      return this.sigma.refresh();
+
     g.read(nextProps.graph);
 
     // Styling
