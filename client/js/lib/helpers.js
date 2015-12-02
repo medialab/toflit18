@@ -22,11 +22,15 @@ export function flattenTree(branch, list=[], level=0) {
 }
 
 /**
- * Pretty print the given number: 10000 => "10 000"
+ * Pretty print the given number: 10000.50 => "10 000.50"
  */
 export function prettyPrint(nb) {
-  return chunk(('' + nb).split('').reverse(), 3)
+  const [beforeDecimal, afterDecimal] = ('' + nb).split('.');
+
+  const pretty = chunk(('' + beforeDecimal).split('').reverse(), 3)
     .reverse()
     .map(s => s.reverse().join(''))
     .join(' ');
+
+  return pretty + (afterDecimal ? '.' + afterDecimal : '');
 }

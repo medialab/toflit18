@@ -8,10 +8,13 @@ import React, {Component} from 'react';
 import Tooltip from 'rc-tooltip';
 import measured from '../../../lib/measured';
 import {six as palette} from '../../../lib/palettes';
+import {format} from 'd3-format';
 import scale from 'd3-scale';
 import shape from 'd3-shape';
 import {flatten, min, max} from 'lodash';
 import {prettyPrint} from '../../../lib/helpers';
+
+const axisFormat = format(',');
 
 /**
  * Main component.
@@ -166,7 +169,7 @@ class YAxis extends Component {
   render() {
     const {margin, width, height, scale} = this.props;
 
-    const ticks = scale.ticks();
+    const ticks = scale.ticks().filter(Number.isInteger);
 
     function renderTick(t, i) {
       const top = (margin.top + scale(t));
@@ -175,7 +178,7 @@ class YAxis extends Component {
         <g key={i} className="tick" transform={`translate(${margin.left}, ${top})`}>
           <line x1={-5} x2={0} textAnchor="right" />
           <text x={-7} y="0.32em" textAnchor="end">
-            {prettyPrint(t)}
+            {axisFormat(t)}
           </text>
           <line className="dotted" x2={width - margin.right - margin.left} />
         </g>
