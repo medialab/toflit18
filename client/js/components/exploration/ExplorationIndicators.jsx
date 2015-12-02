@@ -231,6 +231,9 @@ class LinesSummary extends Component {
             backgroundColor: line.color
           };
 
+          if (!line.data)
+            return <li key={i}><Waiter align="left" /></li>;
+
           return (
             <li key={i}>
               <span className="insert" style={style}>
