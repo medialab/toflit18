@@ -113,11 +113,16 @@ export class ItemSelector extends Component {
       return callback(null, {options: this.compulsoryOptions.concat([warning])});
 
     // TODO: This could be optimized by using lodash's lazy chaining
-    const options = this.props.data
+    let options = this.props.data
       .filter(function(group) {
         return !!~group.name.indexOf(input);
-      })
-      .slice(0, MAX_LIST_SIZE);
+      });
+
+    if (options.length > MAX_LIST_SIZE) {
+      options = options
+        .slice(0, MAX_LIST_SIZE)
+        .concat([{id: '$warning$', disabled: true, name: 'Too many results to display. Try refining your query...'}]);
+    }
 
     return callback(null, {options});
   }
