@@ -32,6 +32,11 @@ $old-blue:         #4F7178;
 // Grids
 $grid-gutter-width:          10px;
 
+// Plume
+// $border-radius:          0px;
+// $border-radius-lg:       0px;
+// $border-radius-sm:       0px;
+
 // Fonts
 $font-family-sans-serif:     Merriweather, "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-family-serif:          Merriweather, Georgia, "Times New Roman", Times, serif;
@@ -387,6 +392,10 @@ svg.quality-bar-chart {
 }
 
 svg.sources-per-directions {
+  line {
+    shape-rendering: crispEdges;
+  }
+
   .local-bar {
     fill: $old-blue;
   }

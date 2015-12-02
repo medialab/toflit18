@@ -17,3 +17,13 @@ ORDER BY f.year;
 MATCH (d:Direction)<-[:FROM|:TO]-(f:Flow)
 WITH collect(DISTINCT d) AS directions, f.year AS year
 RETURN year, directions ORDER BY year;
+
+// name: network
+// Building a network between directions and classified countries.
+//------------------------------------------------------------------------------
+START n=node({classification})
+MATCH (n)-[:HAS]->(c)-[:AGGREGATES*0..]->(:Country)<-[:FROM|:TO]-(f:Flow)-[:FROM|:TO]->(d:Direction)
+RETURN
+  c.name AS country,
+  d.name AS direction,
+  count(f) AS count;

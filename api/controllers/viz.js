@@ -36,6 +36,16 @@ const controller = [
         return res.ok(data);
       });
     }
+  },
+  {
+    url: '/network/:id',
+    action(req, res) {
+      return model.network(+req.params.id, function(err, data) {
+        if (err) return res.serverError(err);
+
+        return res.ok(data);
+      });
+    }
   }
 ];
 

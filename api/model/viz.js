@@ -113,6 +113,13 @@ const Model = {
 
       return callback(null, data);
     });
+  },
+
+  /**
+   * Building the (directions)--(country) network.
+   */
+  network(classification, callback) {
+    database.cypher({query: queries.network, params: {classification}}, callback);
   }
 };
 
