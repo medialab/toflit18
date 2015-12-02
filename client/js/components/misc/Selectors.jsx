@@ -7,7 +7,7 @@
 import React, {Component, PropTypes} from 'react';
 import Select from 'react-select';
 import {prettyPrint} from '../../lib/helpers';
-import {debounce} from 'lodash';
+import {debounce, identity} from 'lodash';
 import cls from 'classnames';
 
 const AsyncSelect = Select.Async;
@@ -112,6 +112,7 @@ export class ItemSelector extends Component {
     if (!input.trim())
       return callback(null, {options: this.compulsoryOptions.concat([warning])});
 
+    // TODO: This could be optimized by using lodash's lazy chaining
     const options = this.props.data
       .filter(function(group) {
         return !!~group.name.indexOf(input);
@@ -152,6 +153,8 @@ export class ItemSelector extends Component {
 
     return <Select.Async {...commonProps}
                          loadOptions={debounce(this.search.bind(this), 300)}
+                         filterOptions={identity}
+                         ignoreAccents={false}
                          cache={false} />;
   }
 }
