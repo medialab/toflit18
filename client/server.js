@@ -16,6 +16,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
+app.use('/js', express.static(path.join(__dirname, 'js')));
 app.use('/data', express.static(path.join(__dirname, 'data')));
 
 app.get('*', function(req, res) {

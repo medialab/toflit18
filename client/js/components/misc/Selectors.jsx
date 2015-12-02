@@ -42,9 +42,6 @@ export class ClassificationSelector extends Component {
   render() {
     const classifications = this.props.data;
 
-    const options = classifications
-      .filter(c => !c.source);
-
     const placeholder = this.props.type === 'product' ?
       'Product classification...' :
       'Country classification...';
@@ -54,7 +51,7 @@ export class ClassificationSelector extends Component {
                    isLoading={this.props.loading}
                    disabled={this.props.loading}
                    placeholder={placeholder}
-                   options={options}
+                   options={classifications}
                    optionRenderer={this.renderOption}
                    onChange={this.props.onChange}
                    value={this.props.selected}

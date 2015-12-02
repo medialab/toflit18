@@ -58,6 +58,11 @@ const client = new Client({
     viz: {
       contentType: 'application/x-www-form-urlencoded',
       url: '/viz/:name'
+    },
+
+    network: {
+      contentType: 'application/x-www-form-urlencoded',
+      url: '/viz/network/:id'
     }
   }
 });

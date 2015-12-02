@@ -81,7 +81,7 @@ class LineForm extends Component {
           <Col md={4}>
             <ClassificationSelector type="product"
                                     loading={!classifications.product.length}
-                                    data={classifications.product}
+                                    data={classifications.product.filter(c => !c.source)}
                                     onChange={actions.update.bind(null, 'productClassification')}
                                     selected={selectors.productClassification} />
           </Col>
@@ -101,7 +101,7 @@ class LineForm extends Component {
           <Col md={4}>
             <ClassificationSelector type="country"
                                     loading={!classifications.country.length}
-                                    data={classifications.country}
+                                    data={classifications.country.filter(c => !c.source)}
                                     onChange={actions.update.bind(null, 'countryClassification')}
                                     selected={selectors.countryClassification} />
           </Col>

@@ -87,6 +87,15 @@ const defaultState = {
           product: []
         },
         lines: []
+      },
+
+      // Globals view
+      globals: {
+        network: {
+          graph: null,
+          classification: null,
+          loading: false
+        }
       }
     }
   },
