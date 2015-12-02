@@ -11,7 +11,6 @@ import Button from '../misc/Button.jsx';
 import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
-import {six as palette} from '../../lib/palettes';
 import {capitalize, isEqual, mapValues} from 'lodash';
 import {
   updateSelector as update,
@@ -181,8 +180,7 @@ class GraphPanel extends Component {
     } = this.props;
 
     const linesToRender = lines
-      .filter(line => !!line.data)
-      .map(line => line.data);
+      .filter(line => !!line.data);
 
     return (
       <div className="panel">
@@ -191,7 +189,7 @@ class GraphPanel extends Component {
           On the graph below, you can see up to six lines you created above.
         </em>
         <hr />
-        <LinesSummary lines={lines.map(line => line.params)}
+        <LinesSummary lines={lines}
                       drop={actions.dropLine} />
         <hr />
         <Charts lines={linesToRender} />
@@ -227,17 +225,16 @@ class LinesSummary extends Component {
 
     return (
       <ul className="summary">
-        {lines.map(function(params, i) {
-          const color = palette[i],
-                style = {
-                  color: 'white',
-                  backgroundColor: color
-                };
+        {lines.map(function(line, i) {
+          const style = {
+            color: 'white',
+            backgroundColor: line.color
+          };
 
           return (
             <li key={i}>
               <span className="insert" style={style}>
-                {buildDescription(params)}
+                {buildDescription(line.params)}
               </span>
               <span className="insert drop"
                     onClick={drop.bind(null, i)}
@@ -263,7 +260,7 @@ class Charts extends Component {
       <div>
         <div>Number of flows per year</div>
         <hr />
-        <LineChart data={lines.map(line => line.map(row => ({year: row.year, value: row.count})))} />
+        <LineChart valueKey="count" data={lines} />
         <hr />
         <div>Total value of flows per year</div>
         <hr />

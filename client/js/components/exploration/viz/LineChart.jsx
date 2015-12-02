@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import Tooltip from 'rc-tooltip';
 import measured from '../../../lib/measured';
-import {six as palette} from '../../../lib/palettes';
 import {format} from 'd3-format';
 import scale from 'd3-scale';
 import shape from 'd3-shape';
@@ -22,13 +21,28 @@ const axisFormat = format(',');
 @measured
 export default class LineChart extends Component {
   render() {
-    let {data, width: fullWidth} = this.props;
+    let {
+      data,
+      valueKey = 'value',
+      width: fullWidth
+    } = this.props;
 
     if (!data.length)
       return <svg width="100%" />;
 
     if (!fullWidth)
       return <svg width="100%" />;
+
+    const lines = data.map(line => {
+      return line.data.map(row => {
+        return {
+          year: row.year,
+          value: row[valueKey]
+        };
+      });
+    });
+
+    const palette = data.map(line => line.color);
 
     const margin = {
       top: 10,
@@ -43,7 +57,7 @@ export default class LineChart extends Component {
           fullHeight = height + margin.top + margin.bottom;
 
     // Computing max values
-    const fullData = flatten(data);
+    const fullData = flatten(lines);
 
     const minYear = min(fullData, d => d.year).year,
           maxYear = max(fullData, d => d.year).year,
@@ -118,8 +132,8 @@ export default class LineChart extends Component {
                margin={margin}
                scale={y} />
         <g className="points" transform={`translate(${margin.left}, ${margin.top})`}>
-          {data.map(renderLines)}
-          {data.map((line, i) => line.map(row => renderPoint(row, i)))}
+          {lines.map(renderLines)}
+          {lines.map((line, i) => line.map(row => renderPoint(row, i)))}
         </g>
       </svg>
     );

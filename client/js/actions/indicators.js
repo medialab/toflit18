@@ -4,6 +4,9 @@
  *
  * Actions related to the indicators' view.
  */
+import {six as palette} from '../lib/palettes';
+import {find} from 'lodash';
+
 const ROOT = ['states', 'exploration', 'indicators'],
       MAXIMUM_LINES = 6;
 
@@ -40,11 +43,20 @@ function fetchGroups(tree, cursor, id) {
 /**
  * Add a line to the graph.
  */
+function findAvailableColor(existingLines) {
+  const alreadyUsedColors = existingLines.map(line => line.color);
+
+  return find(palette, color => {
+    return !~alreadyUsedColors.indexOf(color);
+  });
+}
+
 export function addLine(tree) {
-  const cursor = tree.select(ROOT);
+  const cursor = tree.select(ROOT),
+        lines = cursor.get('lines');
 
   // Cannot have more than the maximum lines
-  if (cursor.get('lines').length >= MAXIMUM_LINES)
+  if (lines.length >= MAXIMUM_LINES)
     return;
 
   // Loading
@@ -53,7 +65,8 @@ export function addLine(tree) {
   const selectors = cursor.get('selectors');
 
   // Adding the line
-  cursor.push('lines', {params: selectors});
+  const color = findAvailableColor(lines);
+  cursor.push('lines', {color, params: selectors});
 
   // Getting the index of the line
   const index = cursor.get('lines').length - 1;
