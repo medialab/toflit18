@@ -111,7 +111,7 @@ export default class LineChart extends Component {
 
       // Rendering a single point in time
       return (
-        <Tooltip placement="top" overlay={overlay}>
+        <Tooltip placement="top" align={{offset: [3, 0]}}overlay={overlay}>
           <circle cx={x(point.year)}
                   cy={y(point.value)}
                   r={2}
