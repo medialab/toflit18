@@ -26,15 +26,23 @@ export default class ExplorationMeta extends Component {
     } = this.props;
 
     return (
-      <div className="panel">
-        <h3>Metadata</h3>
-        <p>
-          <em>Some information about the data itself.</em>
-        </p>
-        <hr />
-        {directionsPerYear ?
-          <DataQualityBarChart data={directionsPerYear} /> :
-          <Waiter />}
+      <div>
+        <div className="panel">
+          <h3>Metadata</h3>
+          <p>
+            <em>Some information about the data itself.</em>
+          </p>
+        </div>
+        <div className="panel">
+          {directionsPerYear ?
+            <DataQualityBarChart data={directionsPerYear} /> :
+            <Waiter />}
+        </div>
+        <div className="panel">
+          {sourcesPerDirections ?
+           <SourcesPerDirections data={sourcesPerDirections} /> :
+           <Waiter />}
+        </div>
       </div>
     );
   }
