@@ -8,7 +8,19 @@ import {mapValues} from 'lodash';
 
 const controller = [
   {
+    url: '/directions_per_year',
+    cache: 'directionsPerYear',
+    action(req, res) {
+      return model.availableDirectionsPerYear(function(err, data) {
+        if (err) return res.serverError(err);
+
+        return res.ok(data);
+      });
+    }
+  },
+  {
     url: '/sources_per_directions',
+    cache: 'sourcesPerDirections',
     action(req, res) {
       return model.sourcesPerDirections(function(err, data) {
         if (err) return res.serverError(err);

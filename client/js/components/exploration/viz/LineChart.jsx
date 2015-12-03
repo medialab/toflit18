@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 import Tooltip from 'rc-tooltip';
 import measured from '../../../lib/measured';
 import {format} from 'd3-format';
-import scale from 'd3-scale';
+import scales from 'd3-scale';
 import shape from 'd3-shape';
 import {flatten, min, max} from 'lodash';
 import {prettyPrint} from '../../../lib/helpers';
@@ -64,11 +64,11 @@ export default class LineChart extends Component {
           maxValue = max(fullData, d => d.value).value;
 
     // Building scales
-    const x = scale.linear()
+    const x = scales.linear()
       .domain([minYear, maxYear])
       .range([0, width]);
 
-    const y = scale.linear()
+    const y = scales.linear()
       .domain([0, maxValue])
       .range([height, 0]);
 
@@ -111,7 +111,7 @@ export default class LineChart extends Component {
 
       // Rendering a single point in time
       return (
-        <Tooltip placement="top" align={{offset: [3, 0]}}overlay={overlay}>
+        <Tooltip placement="top" align={{offset: [3, 0]}} overlay={overlay}>
           <circle cx={x(point.year)}
                   cy={y(point.value)}
                   r={2}
@@ -190,7 +190,7 @@ class YAxis extends Component {
 
       return (
         <g key={i} className="tick" transform={`translate(${margin.left}, ${top})`}>
-          <line x1={-5} x2={0} textAnchor="right" />
+          <line x1={-5} x2={0} />
           <text x={-7} y="0.32em" textAnchor="end">
             {axisFormat(t)}
           </text>

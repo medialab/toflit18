@@ -380,7 +380,14 @@ h1 {
  * Viz.
  */
 svg.quality-bar-chart {
-  border: 1px solid $medium-grey;
+  line {
+    stroke: black;
+    shape-rendering: crispEdges;
+  }
+
+  text {
+    font-size: 10px;
+  }
 
   .bar {
     fill: darken($poison-blusher, 20%);

@@ -8,17 +8,22 @@
 import React, {Component} from 'react';
 import {Waiter} from '../misc/Loaders.jsx';
 import {branch} from 'baobab-react/decorators';
+import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 import Matrix from './viz/Matrix.jsx';
 
 @branch({
   cursors: {
+    directionsPerYear: ['data', 'viz', 'directionsPerYear'],
     sourcesPerDirections: ['data', 'viz', 'sourcesPerDirections']
   }
 })
 export default class ExplorationMeta extends Component {
   render() {
-    const sourcesPerDirections = this.props.sourcesPerDirections;
+    const {
+      directionsPerYear,
+      sourcesPerDirections
+    } = this.props;
 
     return (
       <div className="panel">
@@ -27,8 +32,8 @@ export default class ExplorationMeta extends Component {
           <em>Some information about the data itself.</em>
         </p>
         <hr />
-        {sourcesPerDirections ?
-          <SourcesPerDirections data={sourcesPerDirections} /> :
+        {directionsPerYear ?
+          <DataQualityBarChart data={directionsPerYear} /> :
           <Waiter />}
       </div>
     );

@@ -24,6 +24,7 @@ const defaultState = {
     },
     directions: null,
     viz: {
+      directionsPerYear: null,
       sourcesPerDirections: null
     }
   },
