@@ -10,7 +10,6 @@ import {Waiter} from '../misc/Loaders.jsx';
 import {branch} from 'baobab-react/decorators';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
-import Matrix from './viz/Matrix.jsx';
 
 @branch({
   cursors: {
