@@ -110,6 +110,10 @@ class Glyph extends Component {
  * Controls.
  */
 class Controls extends Component {
+  componentDidMount() {
+    this.forceUpdate();
+  }
+
   rescale() {
     const camera = this.props.instance.cameras.main;
 
