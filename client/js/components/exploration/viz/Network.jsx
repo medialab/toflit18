@@ -116,7 +116,18 @@ class Controls extends Component {
   }
 
   render() {
-    const instance = this.props.instance;
+    const instance = this.props.instance,
+          running = instance.isForceAtlas2Running(),
+          icon = running ? 'pause' : 'play';
+
+    const toggleLayout = () => {
+      if (running)
+        instance.stopForceAtlas2();
+      else
+        instance.startForceAtlas2();
+
+      this.forceUpdate();
+    };
 
     return (
       <div className="controls">
@@ -129,8 +140,8 @@ class Controls extends Component {
         <div className="control" onClick={() => this.rescale()}>
           <button><Glyph name="dot-circle-o" /></button>
         </div>
-        <div className="control" onClick={() => instance.stopForceAtlas2()}>
-          <button><Glyph name="pause" /></button>
+        <div className="control" onClick={() => toggleLayout()}>
+          <button><Glyph name={icon} /></button>
         </div>
       </div>
     );
