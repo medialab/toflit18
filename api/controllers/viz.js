@@ -39,6 +39,12 @@ const controller = [
   },
   {
     url: '/network/:id',
+    cache: {
+      key: 'network',
+      hasher(req) {
+        return req.params.id;
+      }
+    },
     action(req, res) {
       return model.network(+req.params.id, function(err, data) {
         if (err) return res.serverError(err);

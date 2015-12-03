@@ -30,19 +30,27 @@ const middlewares = {
   },
 
   // Basic response caching
-  cache: function(key) {
+  cache: function(params) {
+    if (typeof params === 'string')
+      params = {key: params};
+
+    const {key, hasher = () => '$nohash$'} = params;
+
+    CACHE[key] = {};
+
     return function(req, res, next) {
+      const hash = hasher(req);
 
       // Do we have the data already?
-      if (CACHE[key])
-        return res.ok(CACHE[key]);
+      if (CACHE[key][hash])
+        return res.ok(CACHE[key][hash]);
 
       // Flagging
       res.shouldBeCached = true;
 
       // Catching response
       res.on('finish', function() {
-        CACHE[key] = res.sentData;
+        CACHE[key][hash] = res.sentData;
         delete res.sentData;
       });
 
