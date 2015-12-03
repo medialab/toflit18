@@ -15,6 +15,9 @@ export default function(express) {
       result
     };
 
+    if (this.shouldBeCached)
+      this.sentData = result;
+
     return this.json(data);
   };
 

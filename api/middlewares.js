@@ -16,6 +16,8 @@ function param(req, key) {
     return req.params[key];
 };
 
+const CACHE = {};
+
 // Middlewares
 const middlewares = {
 
@@ -25,6 +27,27 @@ const middlewares = {
       return res.unauthorized();
     else
       return next();
+  },
+
+  // Basic response caching
+  cache: function(key) {
+    return function(req, res, next) {
+
+      // Do we have the data already?
+      if (CACHE[key])
+        return res.ok(CACHE[key]);
+
+      // Flagging
+      res.shouldBeCached = true;
+
+      // Catching response
+      res.on('finish', function() {
+        CACHE[key] = res.sentData;
+        delete res.sentData;
+      });
+
+      return next();
+    };
   },
 
   // Validate the parameters of the query

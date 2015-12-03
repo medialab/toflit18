@@ -40,6 +40,9 @@ function createRouter(routes, auth, additionalMiddlewares) {
     if (route.validate)
       args.push(middlewares.validate(route.validate));
 
+    if (route.cache)
+      args.push(middlewares.cache(route.cache));
+
     if (additionalMiddlewares)
       additionalMiddlewares.forEach(m => args.push(m));
 

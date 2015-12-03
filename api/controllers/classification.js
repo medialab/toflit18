@@ -11,6 +11,7 @@ const limits = apiConfig.limits;
 const controller = [
   {
     url: '/',
+    cache: 'classifications',
     action(req, res) {
       return model.getAll(function(err, classifications) {
         if (err) return res.serverError(err);
