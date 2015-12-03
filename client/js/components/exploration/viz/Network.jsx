@@ -71,9 +71,14 @@ export default class Network extends Component {
     g.read(nextProps.graph);
 
     // Styling
-    g.nodes().forEach(function(node) {
+    const nodes = g.nodes(),
+          N = nodes.length;
+
+    nodes.forEach(function(node, i) {
       node.size = g.degree(node.id);
       node.color = palette[+(node.kind === 'direction')];
+      node.x = 100 * Math.cos(2 * i * Math.PI / N);
+      node.y = 100 * Math.sin(2 * i * Math.PI / N);
     });
 
     this.sigma.refresh();
@@ -141,7 +146,7 @@ class Controls extends Component {
           icon = running ? 'pause' : 'play';
 
     const toggleLayout = () => {
-      if (running)
+      if (instance.isForceAtlas2Running())
         instance.stopForceAtlas2();
       else
         instance.startForceAtlas2(LAYOUT_SETTINGS);
