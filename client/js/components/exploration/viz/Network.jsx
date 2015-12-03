@@ -10,13 +10,37 @@ import Button from '../../misc/Button.jsx';
 import {six as palette} from '../../../lib/palettes';
 
 /**
+ * Settings.
+ */
+const SIGMA_SETTINGS = {
+  labelThreshold: 7,
+  minNodeSize: 2,
+  maxEdgeSize: 6,
+  edgeColor: 'default',
+  defaultEdgeType: 'arrow',
+  defaultEdgeColor: '#D1D1D1',
+  maxArrowSize: 5,
+  minArrowSize: 3,
+  sideMargin: 10
+};
+
+const LAYOUT_SETTINGS = {
+  strongGravityMode: true,
+  gravity: 0.05,
+  scalingRatio: 10,
+  slowDown: 2
+};
+
+/**
  * Sigma wrapper component.
  */
 export default class Network extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.sigma = new sigma();
+    this.sigma = new sigma({
+      settings: SIGMA_SETTINGS
+    });
     this.sigma.addCamera('main');
   }
 
@@ -52,12 +76,8 @@ export default class Network extends Component {
       node.color = palette[+(node.kind === 'direction')];
     });
 
-    g.edges().forEach(function(edge) {
-      edge.color = '#E7E7E7';
-    });
-
     this.sigma.refresh();
-    this.sigma.startForceAtlas2();
+    this.sigma.startForceAtlas2(LAYOUT_SETTINGS);
   }
 
   render() {
@@ -124,7 +144,7 @@ class Controls extends Component {
       if (running)
         instance.stopForceAtlas2();
       else
-        instance.startForceAtlas2();
+        instance.startForceAtlas2(LAYOUT_SETTINGS);
 
       this.forceUpdate();
     };
