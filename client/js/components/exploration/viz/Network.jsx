@@ -6,6 +6,7 @@
  * countries and directions.
  */
 import React, {Component} from 'react';
+import Button from '../../misc/Button.jsx';
 import {six as palette} from '../../../lib/palettes';
 
 /**
@@ -69,6 +70,18 @@ export default class Network extends Component {
 }
 
 /**
+ * Glyph.
+ */
+class Glyph extends Component {
+  render() {
+    const name = this.props.name,
+          className = `fa fa-${name}`;
+
+    return <i className={className} />;
+  }
+}
+
+/**
  * Controls.
  */
 class Controls extends Component {
@@ -82,16 +95,42 @@ class Controls extends Component {
     );
   }
 
+  zoom() {
+    const camera = this.props.instance.cameras.main;
+
+    sigma.misc.animation.camera(
+      camera,
+      {ratio: camera.ratio / 1.5},
+      {duration: 150}
+    );
+  }
+
+  unzoom() {
+    const camera = this.props.instance.cameras.main;
+
+    sigma.misc.animation.camera(
+      camera,
+      {ratio: camera.ratio * 1.5},
+      {duration: 150}
+    );
+  }
+
   render() {
     const instance = this.props.instance;
 
     return (
       <div className="controls">
+        <div className="control" onClick={() => this.zoom()}>
+          <button><Glyph name="plus" /></button>
+        </div>
+        <div className="control" onClick={() => this.unzoom()}>
+          <button><Glyph name="minus" /></button>
+        </div>
         <div className="control" onClick={() => this.rescale()}>
-          <button>Rescale</button>
+          <button><Glyph name="dot-circle-o" /></button>
         </div>
         <div className="control" onClick={() => instance.stopForceAtlas2()}>
-          <button>Stop</button>
+          <button><Glyph name="pause" /></button>
         </div>
       </div>
     );

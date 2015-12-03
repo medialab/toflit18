@@ -447,17 +447,22 @@ svg.line-chart {
   .controls {
     position: absolute;
     bottom: 20px;
-    right: 20px;
-
-    width: 36px;
-    min-height: 36px;
+    right: 25px;
     z-index: 1;
 
     .control {
+      margin-bottom: 5px;
       cursor: pointer;
-      height: 36px;
-      text-align: center;
-      width: 36px;
+
+      button {
+        background-color: white;
+        border: 1px solid $medium-grey;
+        color: $text-black;
+
+        &:hover {
+          background-color: $light-grey;
+        }
+      }
     }
   }
 }
