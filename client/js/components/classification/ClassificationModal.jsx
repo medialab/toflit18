@@ -129,14 +129,7 @@ class ConsistencyReport extends Component {
     return (
       <div className="panel">
         <h5 className="red">There seems to be some consistency issues ({report.length}) with your file!</h5>
-        <hr />
         <table className="table table-sm consistency-report">
-          <thead>
-            <tr className="table-active">
-              <th style={{width: '70px'}}>Line</th>
-              <th>Description</th>
-            </tr>
-          </thead>
           <tbody>
             {report.map(error => <InconsistentItem key={error.item} error={error} />)}
           </tbody>
@@ -158,10 +151,13 @@ class InconsistentItem extends Component {
 
     return (
       <tr>
-        <td><strong>{error.index + 1}</strong></td>
         <td>
-          <em className="red">{error.item}</em> has been linked to {error.groups.length} groups
-          (<em>{map(error.groups, 'group').join(' // ')}</em>).
+          <em className="red">{error.item}</em> has been linked to <strong>{error.groups.length}</strong> groups:
+          <ul>
+            {error.groups.map(row => {
+              return <li key={row.line}>Line n° <strong>{row.line}</strong> - <em>{row.group}</em></li>;
+            })}
+          </ul>
         </td>
       </tr>
     );

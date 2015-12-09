@@ -62,6 +62,25 @@ describe('Classification patching', function() {
         {group: 'fruits', item: 'apple'},
         {group: 'exotic', item: 'mango'}
       ];
+
+      assert.deepEqual(
+        checkConsistency(patch),
+        [
+          {
+            item: 'mango',
+            groups: [
+              {
+                group: 'fruits',
+                line: 1
+              },
+              {
+                group: 'exotic',
+                line: 4
+              }
+            ]
+          }
+        ]
+      );
     });
   });
 
