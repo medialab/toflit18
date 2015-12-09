@@ -1,7 +1,58 @@
 import assert from 'assert';
-import {solvePatch, checkConsistency, checkIntegrity} from '../../lib/patch';
+import {
+ checkConsistency,
+ checkIntegrity,
+ solvePatch,
+ applyOperations
+} from '../../lib/patch';
 
 describe('Classification patching', function() {
+
+  // Sample data
+  const older = [
+    {groupId: 1, group: 'fruits', item: 'mango'},
+    {groupId: 1, group: 'fruits', item: 'papaya'},
+    {groupId: 1, group: 'fruits', item: 'apple'},
+    {groupId: 2, group: 'colors', item: 'blue'},
+    {groupId: 2, group: 'colors', item: 'purple'},
+    {groupId: null, group: null, item: 'yellow'},
+    {groupId: 3, group: 'names', item: 'Ney'},
+    {groupId: 3, group: 'names', item: 'Davout'},
+    {groupId: 4, group: 'days', item: 'Tuesday'},
+    {groupId: 4, group: 'days', item: 'Monday'},
+    {groupId: null, group: null, item: 'Thursday'},
+    {groupId: 5, group: 'date', item: 'February'},
+    {groupId: 5, group: 'date', item: 'October'},
+    {groupId: null, group: null, item: 'November'},
+    {groupId: null, group: null, item: 'loner'},
+    {groupId: null, group: null, item: 'strawberry'},
+    {groupId: 6, group: 'unknown', item: 'blueberry'}
+  ];
+
+  older.forEach((row, i) => row.itemId = i);
+
+  const newer = [
+    {group: 'exoticFruits', item: 'mango'},
+    {group: 'exoticFruits', item: 'papaya'},
+    {group: 'fruits', item: 'apple'},
+    {group: 'colors', item: 'blue'},
+    {group: null, item: 'purple'},
+    {group: 'colors', item: 'yellow'},
+    {group: 'generals', item: 'Ney'},
+    {group: 'generals', item: 'Davout'},
+    {group: 'week', item: 'Tuesday'},
+    {group: 'week', item: 'Monday'},
+    {group: 'week', item: 'Thursday'},
+    {group: 'month', item: 'November'},
+    {group: 'month', item: 'February'},
+    {group: 'month', item: 'October'},
+    {group: null, item: 'loner'},
+    {group: 'fruits', item: 'strawberry'},
+    {group: 'fruits', item: 'blueberry'},
+    {group: 'fruits', item: 'shawarma'},
+    {group: 'useless', item: null},
+    {group: 'second_useless', item: 'falafel'}
+  ];
 
   describe('Inconsistencies', function() {
     it('should be possible to search the given patch for inconsistencies.', function() {
@@ -33,50 +84,6 @@ describe('Classification patching', function() {
   describe('Solving', function() {
 
     it('should detect the correct operations.', function() {
-      let older = [
-        {groupId: 1, group: 'fruits', item: 'mango'},
-        {groupId: 1, group: 'fruits', item: 'papaya'},
-        {groupId: 1, group: 'fruits', item: 'apple'},
-        {groupId: 2, group: 'colors', item: 'blue'},
-        {groupId: 2, group: 'colors', item: 'purple'},
-        {groupId: null, group: null, item: 'yellow'},
-        {groupId: 3, group: 'names', item: 'Ney'},
-        {groupId: 3, group: 'names', item: 'Davout'},
-        {groupId: 4, group: 'days', item: 'Tuesday'},
-        {groupId: 4, group: 'days', item: 'Monday'},
-        {groupId: null, group: null, item: 'Thursday'},
-        {groupId: 5, group: 'date', item: 'February'},
-        {groupId: 5, group: 'date', item: 'October'},
-        {groupId: null, group: null, item: 'November'},
-        {groupId: null, group: null, item: 'loner'},
-        {groupId: null, group: null, item: 'strawberry'},
-        {groupId: 6, group: 'unknown', item: 'blueberry'}
-      ];
-
-      older.forEach((row, i) => row.itemId = i);
-
-      const newer = [
-        {group: 'exoticFruits', item: 'mango'},
-        {group: 'exoticFruits', item: 'papaya'},
-        {group: 'fruits', item: 'apple'},
-        {group: 'colors', item: 'blue'},
-        {group: null, item: 'purple'},
-        {group: 'colors', item: 'yellow'},
-        {group: 'generals', item: 'Ney'},
-        {group: 'generals', item: 'Davout'},
-        {group: 'week', item: 'Tuesday'},
-        {group: 'week', item: 'Monday'},
-        {group: 'week', item: 'Thursday'},
-        {group: 'month', item: 'November'},
-        {group: 'month', item: 'February'},
-        {group: 'month', item: 'October'},
-        {group: null, item: 'loner'},
-        {group: 'fruits', item: 'strawberry'},
-        {group: 'fruits', item: 'blueberry'},
-        {group: 'fruits', item: 'shawarma'},
-        {group: 'useless', item: null},
-        {group: 'second_useless', item: 'falafel'}
-      ];
 
       assert.deepEqual(
         solvePatch(older, newer),
@@ -100,6 +107,35 @@ describe('Classification patching', function() {
           {type: 'moveItem', itemId: 16, fromId: 6, from: 'unknown', toId: 1, to: 'fruits', item: 'blueberry'}
         ]
       );
+    });
+  });
+
+  describe('Applying', function() {
+
+    it('should be possible to apply a patch\'s operations to an existing classification.', function() {
+
+      const operations = solvePatch(older, newer),
+            updatedClassification = applyOperations(older, operations);
+
+      assert.deepEqual(updatedClassification, [
+        {group: 'exoticFruits', item: 'mango'},
+        {group: 'exoticFruits', item: 'papaya'},
+        {group: 'fruits', item: 'apple'},
+        {group: 'colors', item: 'blue'},
+        {group: null, item: 'purple'},
+        {group: 'colors', item: 'yellow'},
+        {group: 'generals', item: 'Ney'},
+        {group: 'generals', item: 'Davout'},
+        {group: 'week', item: 'Tuesday'},
+        {group: 'week', item: 'Monday'},
+        {group: 'week', item: 'Thursday'},
+        {group: 'month', item: 'February'},
+        {group: 'month', item: 'October'},
+        {group: 'month', item: 'November'},
+        {group: null, item: 'loner'},
+        {group: 'fruits', item: 'strawberry'},
+        {group: 'fruits', item: 'blueberry'}
+      ]);
     });
   });
 });
