@@ -128,10 +128,18 @@ class ConsistencyReport extends Component {
 
     return (
       <div className="panel">
-        <h5 className="red">There seems to be some consistency issues with your file:</h5>
-        <ul className="consistency-report">
-          {report.map(error => <InconsistentItem key={error.item} error={error} />)}
-        </ul>
+        <h5 className="red">There seems to be some consistency issues ({report.length}) with your file!</h5>
+        <table className="table table-sm consistency-report">
+          <thead>
+            <tr className="table-active">
+              <th style={{width: '70px'}}>Line</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {report.map(error => <InconsistentItem key={error.item} error={error} />)}
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -144,10 +152,18 @@ class InconsistentItem extends Component {
   render() {
     const error = this.props.error;
 
-    const text = `Line n° ${error.index + 1} - the "${error.item}" item has been ` +
+    const text = `The "${error.item}" item has been ` +
                  `linked to ${error.groups.length} groups (${map(error.groups, 'group').join(', ')}).`;
 
-    return <li>{text}</li>;
+    return (
+      <tr>
+        <td><strong>{error.index + 1}</strong></td>
+        <td>
+          <em className="red">{error.item}</em> has been linked to {error.groups.length} groups
+          (<em>{map(error.groups, 'group').join(' // ')}</em>).
+        </td>
+      </tr>
+    );
   }
 }
 
