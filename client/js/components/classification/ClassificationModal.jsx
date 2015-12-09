@@ -129,6 +129,7 @@ class ConsistencyReport extends Component {
     return (
       <div className="panel">
         <h5 className="red">There seems to be some consistency issues ({report.length}) with your file!</h5>
+        <hr />
         <table className="table table-sm consistency-report">
           <thead>
             <tr className="table-active">
