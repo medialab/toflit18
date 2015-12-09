@@ -8,7 +8,7 @@ Classifications, as such, are reducers (max `n->n`) over a precise dataset (in T
 
 So, at level 0, a classification will aggregate items from the sources itself, while a classification at level 1 will simply aggregates groups from a lower classification.
 
-The idea here is to enable a user to apply a patch (which can be a whole new version of a classification or merely a version of only a subset of the same classification) an existing classification while touching as little as possible the graph structure underlying the system and so upper classification may suffer the least amount of subsequent modifications.
+The idea here is to enable a user to apply a patch an existing classification. Such a patch can therefore apply over a whole classification, or just over a subset of said classification. The goal here is then to only perform the least amount of modification to the graph's structure underlying the classification's system so upper dependent classifications remain as consistent as possible.
 
 ## Process
 
@@ -17,7 +17,7 @@ The idea here is to enable a user to apply a patch (which can be a whole new ver
 2. Checking integrity of the patch
   * Are there extraneous items?
   * How many items are missing from the patch?
-  * Are there some groups aggregating nothing? (TODO)
+  * Are there some groups aggregating nothing?
 3. Solving the patch by finding every atomic actions performed by the patch
   * What groups were created?
   * What groups were renamed?
@@ -31,10 +31,10 @@ The idea here is to enable a user to apply a patch (which can be a whole new ver
 
 Let's consider a group `g` from a given classification and another group `pg` coming from the applied patch.
 
-We'll say `g` was renamed into `pg`if and only if:
+We'll say `g` was renamed into `pg` if and only if:
 
 ```
-l(g ∩ pg) = l(pg)
+length(g ∩ pg) = length(pg)
 ```
 
-That is to say if the set of `pg`'s items is identical or a superset of `g`'s items.
+That is to say if the set of `pg`'s items is identical to the set of `g`'s items or if the set of `pg`'s items is a superset of `g`'s items.
