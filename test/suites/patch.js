@@ -3,7 +3,9 @@ import {
  checkConsistency,
  checkIntegrity,
  solvePatch,
- applyOperations
+ applyOperations,
+ getAffectedGroups,
+ rewire
 } from '../../lib/patch';
 
 describe('Classification patching', function() {
@@ -159,13 +161,14 @@ describe('Classification patching', function() {
   });
 
   describe('Rewiring', function() {
-    const C = [
+    const C1 = [
       {groupId: 1, group: 'fruits', item: 'mango'},
       {groupId: 1, group: 'fruits', item: 'papaya'},
-      {groupId: 1, group: 'fruits', item: 'apple'}
+      {groupId: 1, group: 'fruits', item: 'apple'},
+      {groupId: 2, group: 'vegetables', item: 'cucumber'}
     ];
 
-    C.forEach((row, i) => row.itemId = i);
+    C1.forEach((row, i) => row.itemId = i);
 
     const p = [
       {group: 'exoticFruits', item: 'mango'},
@@ -173,8 +176,21 @@ describe('Classification patching', function() {
       {group: 'fruits', item: 'apple'}
     ];
 
-    const operations = solvePatch(C, p);
+    const operations = solvePatch(C1, p),
+          affectedGroups = getAffectedGroups(operations);
 
-    // console.log(operations);
+    assert.deepEqual(
+      Array.from(affectedGroups),
+      ['fruits', 'exoticFruits']
+    );
+
+    const C2 = applyOperations(C1, operations);
+
+    // NOTE: Step 1 result from Neo4j
+    const D = [
+      {group: 'food', items: ['fruits', 'vegetables']}
+    ];
+
+    const rewireOperations = rewire(D, C1, C2, operations);
   });
 });
