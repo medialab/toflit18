@@ -38,3 +38,16 @@ length(g ∩ pg) = length(pg)
 ```
 
 That is to say if the set of `pg`'s items is identical to the set of `g`'s items or if the set of `pg`'s items is a superset of `g`'s items.
+
+### Rewiring upper classifications
+
+Let's consider a classification `C`, a patched classification `C'`, a classification `B` on which `C` is based and finally one of the n upper classifications `D`.
+
+1. For each modified group `g` in `C`:
+  1. Get groups `dg` from `D` aggregating said groups.
+  2. Get every groups `ag` from `D` aggregated by those upper groups `dg` (such as `g` ∈ `ag`).
+2. Create the Set `S` gathering items from `B` aggregated by `ag` through `C` and `C'`.
+3. Create the Set `S'` gathering items from `B` aggregated by `ag` through `C'` only.
+4. If `S` is strictly equal to `S'`
+  * then the relevant links `D` to `C'` must exist;
+  * else the relevant links `D` to `C'` must not exist.
