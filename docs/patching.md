@@ -45,7 +45,7 @@ Let's consider a classification `C`, a patched classification `C'`, a classifica
 
 1. For each modified group `g` in `C`:
   1. Get groups `dg` from `D` aggregating said groups.
-  2. Get every groups `ag` from `D` aggregated by those upper groups `dg` (such as `g` ∈ `ag`).
+  2. Get every groups `ag` from `D` aggregated by those upper groups `dg` (such as `g ∈ ag`).
 2. Create the Set `S` gathering items from `B` aggregated by `ag` through `C` and `C'`.
 3. Create the Set `S'` gathering items from `B` aggregated by `ag` through `C'` only.
 4. If `S` is strictly equal to `S'`
