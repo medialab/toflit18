@@ -71,11 +71,11 @@ describe('Classification patching', function() {
             groups: [
               {
                 group: 'fruits',
-                line: 1
+                line: 2
               },
               {
                 group: 'exotic',
-                line: 4
+                line: 5
               }
             ]
           }
@@ -156,5 +156,25 @@ describe('Classification patching', function() {
         {group: 'fruits', item: 'blueberry'}
       ]);
     });
+  });
+
+  describe('Rewiring', function() {
+    const C = [
+      {groupId: 1, group: 'fruits', item: 'mango'},
+      {groupId: 1, group: 'fruits', item: 'papaya'},
+      {groupId: 1, group: 'fruits', item: 'apple'}
+    ];
+
+    C.forEach((row, i) => row.itemId = i);
+
+    const p = [
+      {group: 'exoticFruits', item: 'mango'},
+      {group: 'exoticFruits', item: 'papaya'},
+      {group: 'fruits', item: 'apple'}
+    ];
+
+    const operations = solvePatch(C, p);
+
+    // console.log(operations);
   });
 });
