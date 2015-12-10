@@ -11,6 +11,7 @@ import Button from '../misc/Button.jsx';
 import FileInput from '../misc/File.jsx';
 import {Waiter} from '../misc/Loaders.jsx';
 import {groupBy, map} from 'lodash';
+import {prettyPrint} from '../../lib/helpers';
 import cls from 'classnames';
 import * as patchActions from '../../actions/patch';
 
@@ -207,7 +208,7 @@ class Integrity extends Component {
 
     const extraneousGroup = (
       <Col md={6} className="extraneous full-height">
-        Extraneous items (<strong>{extraneous.length}</strong>)
+        Extraneous items (<strong>{prettyPrint(extraneous.length)}</strong>)
         <br />
         <em className="explanation">
           Items present in your patch but missing from the database.
@@ -221,7 +222,7 @@ class Integrity extends Component {
 
     const missingGroup = (
       <Col md={6} className="missing full-height">
-        Missing items (<strong>{missing.length}</strong>)
+        Missing items (<strong>{prettyPrint(missing.length)}</strong>)
         <br />
         <em className="explanation">
           Items present in the database but missing from your patch.
@@ -373,13 +374,13 @@ class OperationsStats extends Component {
       .map(type => {
         const group = groups[type];
 
-        return <li key={type}><strong>{group.length}</strong> <em>{labels[type]}</em></li>;
+        return <li key={type}><strong>{prettyPrint(group.length)}</strong> <em>{labels[type]}</em></li>;
       });
 
     return (
       <ul style={{marginTop: '20px', listStyleType: 'none', paddingLeft: '0px'}}>
         <li>
-          <strong>{total}</strong> <em>total operations</em>
+          <strong>{prettyPrint(total)}</strong> <em>total operations</em>
         </li>
         <hr />
         {lines}
@@ -426,7 +427,7 @@ class OperationsTable extends Component {
 
     return (
       <div className="panel">
-        {title} (<strong>{operations.length}</strong>)
+        {title} (<strong>{prettyPrint(operations.length)}</strong>)
         <br />
         <em className={`text-${color}`}>{description}</em>
         <table className="operations-table table table-sm">
