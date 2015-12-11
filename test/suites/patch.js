@@ -165,7 +165,12 @@ describe('Classification patching', function() {
       {groupId: 1, group: 'fruits', item: 'mango'},
       {groupId: 1, group: 'fruits', item: 'papaya'},
       {groupId: 1, group: 'fruits', item: 'apple'},
-      {groupId: 2, group: 'vegetables', item: 'cucumber'}
+      {groupId: 2, group: 'vegetables', item: 'cucumber'},
+
+      {groupId: 3, group: 'flower', item: 'rose'},
+      {groupId: 3, group: 'flower', item: 'magnolia'},
+      {groupId: 3, group: 'flower', item: 'oak'},
+      {groupId: 4, group: 'tree', item: 'poplar'}
     ];
 
     C1.forEach((row, i) => row.itemId = i);
@@ -173,7 +178,12 @@ describe('Classification patching', function() {
     const p = [
       {group: 'exoticFruits', item: 'mango'},
       {group: 'exoticFruits', item: 'papaya'},
-      {group: 'fruits', item: 'apple'}
+      {group: 'fruits', item: 'apple'},
+
+      {group: 'flower', item: 'rose'},
+      {group: 'flower', item: 'magnolia'},
+      {group: 'tree', item: 'oak'},
+      {group: 'tree', item: 'poplar'}
     ];
 
     const operations = solvePatch(C1, p),
@@ -181,16 +191,25 @@ describe('Classification patching', function() {
 
     assert.deepEqual(
       Array.from(affectedGroups),
-      ['fruits', 'exoticFruits']
+      [
+        'fruits',
+        'exoticFruits',
+        'flower',
+        'tree'
+      ]
     );
 
     const C2 = applyOperations(C1, operations);
 
     // NOTE: Step 1 result from Neo4j
     const D = [
-      {group: 'food', items: ['fruits', 'vegetables']}
+      {group: 'food', items: ['fruits', 'vegetables']},
+      {group: 'nature-small', items: ['flower']},
+      {group: 'nature-big', items: ['tree']}
     ];
 
-    const rewireOperations = rewire(D, C1, C2, operations);
+    const links = rewire(D, C1, C2, operations);
+
+    console.log(links);
   });
 });
