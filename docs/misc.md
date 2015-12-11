@@ -1,5 +1,13 @@
 # Miscellaneous Notes
 
+## 2015-12-11 / Meeting notes
+
+* Add line: new param source (local, national par direction, les deux, best guess => à définir, sourcetype).
+* Prevent the user from committing patch if items were dropped.
+* Groupes devenus caduques.
+* Rename strict (considère quand même les items en mode `add`) (- elements sans D).
+* Get a server.
+
 ## 2015-12-09 / Concerning updated classifications
 
 * Country orthographic in after Neo4j files.

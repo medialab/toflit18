@@ -34,7 +34,7 @@ Let's consider a group `g` from a given classification and another group `pg` co
 We'll say `g` was renamed into `pg` if and only if:
 
 ```
-length(g ∩ pg) = length(pg)
+length(g ∩ pg) = length(g)
 ```
 
 That is to say if the set of `pg`'s items is identical to the set of `g`'s items or if the set of `pg`'s items is a superset of `g`'s items.
@@ -51,3 +51,5 @@ Let's consider a classification `C`, a patched classification `C'`, a classifica
 4. If `S` is strictly equal to `S'`
   * then the relevant links `D` to `C'` must exist;
   * else the relevant links `D` to `C'` must not exist.
+
+NOTE: flag (flagid) / - elements hors de D / groupes obsolètes sont à dropper (récursion?)
