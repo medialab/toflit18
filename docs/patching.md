@@ -34,7 +34,7 @@ Let's consider a group `g` from a given classification and another group `pg` co
 We'll say `g` was renamed into `pg` if and only if:
 
 ```
-length(g ∩ pg) = length(g)
+length(g ⋂ pg) = length(g)
 ```
 
 That is to say if the set of `pg`'s items is identical to the set of `g`'s items or if the set of `pg`'s items is a superset of `g`'s items.
@@ -42,7 +42,7 @@ That is to say if the set of `pg`'s items is identical to the set of `g`'s items
 On the othe hand, with `rg` being `pg` minus the items that were added to a group (i.e. an item that was not aggregated in the classification before the patch)  we'll say a rename operation is "pure" if:
 
 ```
-length(g ∪ rg) = length(g)
+length(g ⋃ rg) = length(g)
 ```
 
 ### Rewiring upper classifications
@@ -52,7 +52,7 @@ Let's consider a classification `C`, a patched classification `C'`, a classifica
 For each affected group `g` in `C` (a group is affected if it is the source or the target of any operation and isn't new):
 
 1. Get the group `dg` aggregating `g` in `D`. If it does not exist, skip this `g`.
-2. Get every `ags` groups from `D` aggregated by `dg` (such as `g ∈ ags`).
+2. Get every `ags` groups from `D` aggregated by `dg` (such as `g ∊ ags`).
 3. Create a set `S` gathering items from `B` aggregated by `ags` in `C`.
 4. Create a set `S'` gathering items (minus those who had previously no existence in `C`) from `B` aggregated by `ags` in `C` + `C'`.
 5. If `S` is strictly equal to `S'`
