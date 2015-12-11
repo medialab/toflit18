@@ -41,7 +41,7 @@ export default function(express) {
   /**
    * Not Found.
    */
-  express.response.notFound = function(reason=null) {
+  express.response.notFound = function(reason = null) {
     const response = {
       status: 'error',
       error: {

@@ -9,7 +9,7 @@ import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../misc/Grid.jsx';
 import Button, {ButtonGroup} from '../misc/Button.jsx';
-import {Spinner, Waiter} from '../misc/Loaders.jsx';
+import {Waiter} from '../misc/Loaders.jsx';
 import Infinite from '../misc/Infinite.jsx';
 import {prettyPrint} from '../../lib/helpers';
 import cls from 'classnames';
@@ -42,15 +42,6 @@ import {linker} from '../../actions/factory';
 })
 export default class ClassificationBrowser extends Component {
   render() {
-    let {
-      actions,
-      classifications,
-      current,
-      downloading
-    } = this.props;
-
-    current = current || {};
-
     return (
       <div className="browser-wrapper">
         <Row className="full-height">
@@ -67,14 +58,13 @@ export default class ClassificationBrowser extends Component {
  */
 class LeftPanel extends Component {
   render() {
-    let {
+    const {
       actions,
-      current,
       classifications: {product, country},
       downloading
     } = this.props;
 
-    current = current || {};
+    const current = this.props.current || {};
 
     const list = (
       <div className="full-height">
@@ -113,7 +103,7 @@ class LeftPanel extends Component {
                   Create From
                 </Button>
                 <Button kind="secondary"
-                        disabled={current.source || false}
+                        disabled={current.source || false}
                         onClick={() => actions.modal('update')}>
                   Update
                 </Button>
@@ -131,11 +121,11 @@ class LeftPanel extends Component {
  */
 class RightPanel extends Component {
   render() {
-    let {actions, current, loading} = this.props;
+    const {actions, loading} = this.props;
 
-    current = current || {};
+    const current = this.props.current || {};
 
-    let list = loading ?
+    const list = loading ?
       <Waiter /> :
       (
         <Infinite className="partial-height twice overflow"
@@ -165,7 +155,7 @@ class RightPanel extends Component {
 function ClassificationsList({items, selected}) {
   return (
     <ul className="classifications-list">
-      {items.map((data, i) =>
+      {items.map(data =>
         <Classification key={data.id}
                         data={data}
                         active={selected === data.id} />)}
@@ -201,7 +191,7 @@ class Classification extends Component {
 
     const offset = (level * 25) + 'px';
 
-    const itemsNotice = (itemsCount || null) && [
+    const itemsNotice = (itemsCount || null) && [
       ' for ',
       <em key="groups">{prettyPrint(itemsCount)}</em>,
       ' items'
@@ -226,7 +216,7 @@ class Classification extends Component {
     return (
       <li className={cls('item', {active})}
           style={{marginLeft: offset}}
-          onClick={e => !active && actions.select(id)}>
+          onClick={() => !active && actions.select(id)}>
         <div>
           <strong>{name}</strong> (<em>{author}</em>)
         </div>
@@ -264,7 +254,6 @@ class GroupQuery extends Component {
   render() {
     const {
       actions,
-      id,
       loading,
       query
     } = this.props;
@@ -275,7 +264,7 @@ class GroupQuery extends Component {
                className="form-control"
                placeholder="Query..."
                value={query}
-               onKeyPress={(e) => e.which === 13 && this.submit()}
+               onKeyPress={e => e.which === 13 && this.submit()}
                onChange={e => actions.update(e.target.value)} />
         <span className="input-group-btn">
           <Button kind="secondary"

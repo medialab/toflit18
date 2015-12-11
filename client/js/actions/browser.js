@@ -4,7 +4,6 @@
  *
  * Actions related to the classification browser.
  */
-import {enpoint} from '../../config.json';
 import {saveAs} from 'browser-filesaver';
 import history from '../history';
 
@@ -52,10 +51,10 @@ export function expand(tree, classification) {
 
   return tree.client.search(
     {params: {id: classification.id}, data},
-    function(err, data) {
+    function(err, response) {
       if (err) return;
 
-      state.concat('rows', data.result);
+      state.concat('rows', response.result);
     }
   );
 }
@@ -102,9 +101,9 @@ export function download(tree, id) {
  * Triggering a modal.
  */
 export function modal(tree, type) {
-  const modal = tree.select('states', 'classification', 'modal');
+  const cursor = tree.select('states', 'classification', 'modal');
 
-  modal.set('type', type);
+  cursor.set('type', type);
   resetModal(tree);
 
   history.replaceState(null, '/classification/modal');

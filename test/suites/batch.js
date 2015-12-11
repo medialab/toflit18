@@ -5,8 +5,8 @@ describe('Neo4j Batches', function() {
   it('should be possible to compile complex batches.', function() {
     const batch = new Batch();
 
-    const dairy  = batch.save({name: 'Dairy products'}, ['ClassifiedItem', 'ClassifiedProduct']),
-          milk   = batch.save({name: 'Milk'}, 'Item'),
+    const dairy = batch.save({name: 'Dairy products'}, ['ClassifiedItem', 'ClassifiedProduct']),
+          milk = batch.save({name: 'Milk'}, 'Item'),
           cheese = batch.save({name: 'Cheese'}, 'Item');
 
     batch.relate(dairy, 'AGGREGATES', milk);

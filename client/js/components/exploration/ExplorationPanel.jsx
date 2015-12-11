@@ -9,4 +9,3 @@ import React from 'react';
 export default function ExplorationPanel({children}) {
   return <div id="exploration">{children}</div>;
 }
-

@@ -89,11 +89,11 @@ describe('Classification patching', function() {
   describe('Integrity', function() {
 
     it('should correctly return both extraneous & missing items.', function() {
-      const older = [1, 2, 3],
-            newer = [1, 2, 5, 6];
+      const one = [1, 2, 3],
+            two = [1, 2, 5, 6];
 
       assert.deepEqual(
-        checkIntegrity(older, newer),
+        checkIntegrity(one, two),
         {
           extraneous: [5, 6],
           missing: [3]

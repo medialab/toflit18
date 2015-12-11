@@ -6,7 +6,6 @@
  * countries and directions.
  */
 import React, {Component} from 'react';
-import Button from '../../misc/Button.jsx';
 import {six as palette} from '../../../lib/palettes';
 
 /**

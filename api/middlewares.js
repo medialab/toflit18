@@ -14,7 +14,7 @@ function param(req, key) {
     return req.query[key];
   if (key in req.params)
     return req.params[key];
-};
+}
 
 const CACHE = {};
 
@@ -71,7 +71,7 @@ const middlewares = {
 
       // Retrieving params
       const data = {};
-      for (let k in def)
+      for (const k in def)
         data[k] = param(req, k);
 
       // Validating params

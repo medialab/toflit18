@@ -5,7 +5,7 @@
  * Routing the application.
  */
 import React, {Component} from 'react';
-import {Router, Route, IndexRoute, Redirect} from 'react-router';
+import {Router, Route, Redirect} from 'react-router';
 import PropTypes from 'baobab-react/prop-types';
 import App from './App.jsx';
 import Login from './login/Login.jsx';
@@ -19,7 +19,7 @@ import ExplorationGlobals from './exploration/ExplorationGlobals.jsx';
 import history from '../history';
 
 export default class AppRouter extends Component {
-  static contextTypes = {
+  static contextTypes = {
     tree: PropTypes.baobab
   };
 

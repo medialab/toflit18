@@ -13,6 +13,14 @@ const ROOT = ['states', 'exploration', 'indicators'],
 /**
  * Updating a selector.
  */
+function fetchGroups(tree, cursor, id) {
+  tree.client.groups({params: {id}}, function(err, data) {
+    if (err) return;
+
+    cursor.set(data.result);
+  });
+}
+
 export function updateSelector(tree, name, item) {
   const selectors = tree.select([...ROOT, 'selectors']),
         groups = tree.select([...ROOT, 'groups']);
@@ -30,14 +38,6 @@ export function updateSelector(tree, name, item) {
     if (item)
       fetchGroups(tree, groups.select(model), item.id);
   }
-}
-
-function fetchGroups(tree, cursor, id) {
-  tree.client.groups({params: {id}}, function(err, data) {
-    if (err) return;
-
-    cursor.set(data.result);
-  });
 }
 
 /**

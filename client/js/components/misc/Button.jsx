@@ -19,7 +19,7 @@ export default class Button extends Component {
   }
 
   // Tearing the ladda button
-  componentWillUnmount() {
+  componentWillUnmount() {
     this.ladda.remove();
     this.ladda = null;
   }
@@ -33,8 +33,9 @@ export default class Button extends Component {
   }
 
   render() {
-    let {kind, disabled, onClick, size} = this.props,
-        cls = `btn btn-${kind} ladda-button`;
+    const {kind, disabled, onClick, size} = this.props;
+
+    let cls = `btn btn-${kind} ladda-button`;
 
     if (disabled)
       cls += ' disabled';
@@ -42,7 +43,7 @@ export default class Button extends Component {
     if (size)
       cls += (size === 'small' ? ' btn-sm' : 'btn-lg');
 
-    let optional = {};
+    const optional = {};
 
     if (kind === 'secondary')
       optional['data-spinner-color'] = '#373a3c';

@@ -8,7 +8,7 @@
 import React, {Component} from 'react';
 import measured from '../../../lib/measured';
 import scale from 'd3-scale';
-import {max, min, uniq, sortBy} from 'lodash';
+import {max, min, sortBy} from 'lodash';
 
 /**
  * Constants.
@@ -24,7 +24,7 @@ export default class SourcesPerDirections extends Component {
     const {data: unsorted, width} = this.props;
 
     if (!unsorted || !width)
-      return <svg width="100%" height={0} />;;
+      return <svg width="100%" height={0} />;
 
     const data = sortBy(unsorted, 'name');
 
@@ -63,7 +63,7 @@ export default class SourcesPerDirections extends Component {
       .domain([0, maxFlows])
       .range([0, SIZE / 2]);
 
-    const yearTicks = x.ticks(3);
+    // const yearTicks = x.ticks(3);
 
     // Rendering logic
     return (

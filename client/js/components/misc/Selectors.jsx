@@ -10,8 +10,6 @@ import {prettyPrint} from '../../lib/helpers';
 import {debounce, identity} from 'lodash';
 import cls from 'classnames';
 
-const AsyncSelect = Select.Async;
-
 /**
  * Classification selector.
  */
@@ -64,7 +62,7 @@ export class ClassificationSelector extends Component {
  */
 const TEMPLATES = {
   product: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
-  country: [{name: 'All', id: '$all$'},],
+  country: [{name: 'All', id: '$all$'}],
   direction: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
   kind: [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}]
 };

@@ -21,7 +21,7 @@ const axisFormat = format(',');
 @measured
 export default class LineChart extends Component {
   render() {
-    let {
+    const {
       data,
       valueKey = 'value',
       width: fullWidth
@@ -73,13 +73,13 @@ export default class LineChart extends Component {
       .range([height, 0]);
 
     // Shapes
-    const line = shape.line()
+    const lineShape = shape.line()
       .x(d => x(d.year))
       .y(d => y(d.value));
 
     function renderLines(points, i) {
       const parts = points.reduce(function(acc, point) {
-        const lastPart = acc[acc.length - 1] || [],
+        const lastPart = acc[acc.length - 1] || [],
               lastItem = lastPart[lastPart.length - 1];
 
         if (lastItem && (point.year - lastItem.year) <= 5) {
@@ -97,7 +97,7 @@ export default class LineChart extends Component {
         .map(function(part) {
 
           // Rendering a whole series
-          return <path stroke={palette[i]} d={line(part)} />;
+          return <path stroke={palette[i]} d={lineShape(part)} />;
         });
     }
 

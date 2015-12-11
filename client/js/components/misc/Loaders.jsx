@@ -21,7 +21,7 @@ export class Spinner extends Component {
   }
 
   // Tearing the ladda button
-  componentWillUnmount() {
+  componentWillUnmount() {
     this.ladda.remove();
     this.ladda = null;
   }
@@ -70,6 +70,6 @@ export class Waiter extends Component {
     const dots = this.state.dots.replace(/\./g, '\u00b7'),
           align = this.props.align;
 
-    return <div className="waiter" style={{textAlign: align}}>{dots}&nbsp;</div>
+    return <div className="waiter" style={{textAlign: align}}>{dots}&nbsp;</div>;
   }
 }

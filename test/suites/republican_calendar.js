@@ -19,7 +19,7 @@ const YEAR_INDEX = {
   '14': 1806
 };
 
-describe('Republican calendar', function() {
+describe('Republican calendar', function() {
 
   it('should return the correct years.', function() {
     _(YEAR_INDEX)
@@ -37,7 +37,7 @@ describe('Republican calendar', function() {
     }, /invalid year/);
   });
 
-  it('should return the original variable if the regex does not match.', function() {
+  it('should return the original variable if the regex does not match.', function() {
     assert.strictEqual(normalizeYear('1780'), 1780);
   });
 });

@@ -61,7 +61,7 @@ export default class Parrot {
     this.listener = ({data: {data, solvedPath}}) => {
 
       // Filtering the relevant rules
-      const relevantRules = this.rules.filter(([i, rule]) => {
+      const relevantRules = this.rules.filter(([, rule]) => {
 
         // If there is no path, we skip
         if (!rule.path)

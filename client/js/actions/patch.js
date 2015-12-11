@@ -26,7 +26,7 @@ export function reset(tree) {
 /**
  * Parsing the received csv file.
  */
-export function parse(tree, file, options) {
+export function parse(tree, file) {
   const cursor = tree.select(MODAL_PATH);
 
   csvParser.parse(file.content, {
@@ -40,7 +40,7 @@ export function parse(tree, file, options) {
         .map(row => {
           return {
             item: cleanText(row[0]) || null,
-            group: cleanText(row[1]) || null,
+            group: cleanText(row[1]) || null,
             note: cleanText(row[2]) || null
           };
         })
@@ -90,7 +90,7 @@ export function commit(tree, id) {
   if (step !== 'review')
     return;
 
-  tree.client.commit({params: {id, type: 'patch'}, data: {operations}}, function(err, data) {
+  tree.client.commit({params: {id, type: 'patch'}, data: {operations}}, function(err) {
     if (err)
       return;
 

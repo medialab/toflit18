@@ -10,9 +10,8 @@ import {Row, Col} from '../misc/Grid.jsx';
 import Button from '../misc/Button.jsx';
 import FileInput from '../misc/File.jsx';
 import {Waiter} from '../misc/Loaders.jsx';
-import {groupBy, map} from 'lodash';
+import {groupBy} from 'lodash';
 import {prettyPrint} from '../../lib/helpers';
-import cls from 'classnames';
 import * as patchActions from '../../actions/patch';
 
 /**
@@ -29,7 +28,7 @@ export default class ClassificationModal extends Component {
   render() {
     const {actions, modal, target} = this.props;
 
-    const hasInconsistencies = !!(modal.inconsistencies || []).length;
+    const hasInconsistencies = !!(modal.inconsistencies || []).length;
 
     return (
       <div className="modal-wrapper">
@@ -146,9 +145,6 @@ class ConsistencyReport extends Component {
 class InconsistentItem extends Component {
   render() {
     const error = this.props.error;
-
-    const text = `The "${error.item}" item has been ` +
-                 `linked to ${error.groups.length} groups (${map(error.groups, 'group').join(', ')}).`;
 
     return (
       <tr>

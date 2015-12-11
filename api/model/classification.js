@@ -10,7 +10,7 @@ import {searchRegex} from '../helpers';
 import {stringify} from 'csv';
 import {solvePatch, checkIntegrity} from '../../lib/patch';
 import Batch from '../../lib/batch';
-import _, {groupBy, find, map} from 'lodash';
+import {groupBy, find, map} from 'lodash';
 
 /**
  * Helpers.
@@ -134,8 +134,8 @@ const Model = {
         ];
       });
 
-      return stringify([headers].concat(rows), {}, function(err, csv) {
-        if (err) return callback(err);
+      return stringify([headers].concat(rows), {}, function(e, csv) {
+        if (e) return callback(e);
 
         return callback(null, {csv, name, model});
       });
@@ -145,7 +145,7 @@ const Model = {
   /**
    * Review the given patch for the given classification.
    */
-  review(id, patch, callback)  {
+  review(id, patch, callback) {
     return database.cypher({query: queries.allGroups, params: {id}}, function(err, classification) {
       if (err) return callback(err);
       if (!classification.length) return callback(null, null);

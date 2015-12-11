@@ -42,7 +42,7 @@ const controller = [
       const opts = {
         limit: +(req.query.limit || limits.groups),
         offset: +(req.query.offset || 0),
-        query: req.query.query || null
+        query: req.query.query || null
       };
 
       return model.search(+req.params.id, opts, function(err, groups) {
@@ -64,8 +64,8 @@ const controller = [
         if (err) return res.serverError(err);
         if (!result) return res.notFound();
 
-        const {csv, name, model} = result,
-              filename = `classification_${model}_${name}.csv`;
+        const {csv, name, model: classificationModel} = result,
+              filename = `classification_${classificationModel}_${name}.csv`;
 
         if (req.params.ext === 'csv') {
           res.status(200);
@@ -75,7 +75,7 @@ const controller = [
           return res.send(csv);
         }
         else {
-          return res.ok({csv, name, model, filename});
+          return res.ok({csv, name, filename, model: classificationModel});
         }
       });
     }

@@ -5,8 +5,6 @@
  * Creating the Baobab state tree used by the whole application to function.
  */
 import Baobab, {monkey} from 'baobab';
-import {storageKey} from '../config.json';
-import {merge} from 'lodash';
 import {
   classificationsIndex,
   flatClassifications,

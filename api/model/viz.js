@@ -3,11 +3,10 @@
  * ===================
  *
  */
-import async from 'async';
 import cypher from 'cypher-query';
 import database from '../connection';
 import {viz as queries} from '../queries';
-import _, {groupBy} from 'lodash';
+import _ from 'lodash';
 
 const Model = {
 

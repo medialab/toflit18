@@ -48,9 +48,7 @@ export default class DataQualityBarChart extends Component {
       <svg width="100%" height={height + bottomMargin + topMargin} className="quality-bar-chart">
         <Axis width={width} height={height + topMargin} scale={x} years={allYears} />
         <g>
-          {data.map((row, i) => {
-            const overlay = `${row.directions.length} directions`;
-
+          {data.map(row => {
             return (
               <g>
                 <text x={x(row.year) + 5}

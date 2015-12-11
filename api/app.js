@@ -21,8 +21,6 @@ import dataController from './controllers/data';
 import loginController from './controllers/login';
 import vizController from './controllers/viz';
 
-const env = process.env.NODE_ENV || 'development';
-
 const FileStore = createFileStore(session);
 
 /**
@@ -87,7 +85,7 @@ const sessionOptions = {
 };
 
 // If dev, we would like to store sessions for convenience
-if (env === 'development')
+if (ENV === 'development')
   sessionOptions.store = new FileStore({
     path: __dirname + '/../.output/sessions'
   });

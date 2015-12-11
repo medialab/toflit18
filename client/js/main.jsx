@@ -33,7 +33,7 @@ state.client = client;
 checkSession(state);
 
 // Hot-reloading logic
-if (module.hot)  {
+if (module.hot) {
   module.hot.accept('./client', function() {
     parrot.release();
 

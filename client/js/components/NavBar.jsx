@@ -35,7 +35,7 @@ const LINKS = [
   }
 })
 export default class NavBar extends Component {
-  static contextTypes = {
+  static contextTypes = {
     history: React.PropTypes.object
   };
 
