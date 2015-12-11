@@ -39,17 +39,26 @@ length(g ∩ pg) = length(g)
 
 That is to say if the set of `pg`'s items is identical to the set of `g`'s items or if the set of `pg`'s items is a superset of `g`'s items.
 
+On the othe hand, with `rg` being `pg` minus the items that were added to a group (i.e. an item that was not aggregated in the classification before the patch)  we'll say a rename operation is "pure" if:
+
+```
+length(g ∪ rg) = length(g)
+```
+
 ### Rewiring upper classifications
 
 Let's consider a classification `C`, a patched classification `C'`, a classification `B` on which `C` is based and finally one of the n upper classifications `D`.
 
-1. For each modified group `g` in `C`:
-  1. Get groups `dg` from `D` aggregating said groups.
-  2. Get every groups `ag` from `D` aggregated by those upper groups `dg` (such as `g ∈ ag`).
-2. Create the Set `S` gathering items from `B` aggregated by `ag` through `C` and `C'`.
-3. Create the Set `S'` gathering items from `B` aggregated by `ag` through `C'` only.
-4. If `S` is strictly equal to `S'`
-  * then the relevant links `D` to `C'` must exist;
-  * else the relevant links `D` to `C'` must not exist.
+For each affected group `g` in `C` (a group is affected if it is the source or the target of any operation and isn't new):
 
-NOTE: flag (flagid) / - elements hors de D / groupes obsolètes sont à dropper (récursion?)
+1. Get the group `dg` aggregating `g` in `D`. If it does not exist, skip this `g`.
+2. Get every `ags` groups from `D` aggregated by `dg` (such as `g ∈ ags`).
+3. Create a set `S` gathering items from `B` aggregated by `ags` in `C`.
+4. Create a set `S'` gathering items (minus those who had previously no existence in `C`) from `B` aggregated by `ags` in `C` + `C'`.
+5. If `S` is strictly equal to `S'`
+  * then the relevant links from `ags` to `C'` should exist.
+  * else the relevant links from `ags` to `C'` should not exist.
+
+Linking operations should be flagged so that users can decide what to do afterwards.
+
+It should also be a good thing to check obsolete groups in `C'` (i.e. groups now aggregating no items).
