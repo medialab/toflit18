@@ -210,6 +210,40 @@ describe('Classification patching', function() {
 
     const links = rewire(D, C1, C2, operations);
 
-    console.log(links);
+    assert.deepEqual(
+      links,
+      [
+        {
+          cluster: 'c0',
+          shouldExist: true,
+          upper: 'food',
+          group: 'fruits'
+        },
+        {
+          cluster: 'c0',
+          shouldExist: true,
+          upper: 'food',
+          group: 'vegetables'
+        },
+        {
+          cluster: 'c0',
+          shouldExist: true,
+          upper: undefined,
+          group: 'exoticFruits'
+        },
+        {
+          cluster: 'c1',
+          shouldExist: false,
+          upper: 'nature-small',
+          group: 'flower'
+        },
+        {
+          cluster: 'c1',
+          shouldExist: false,
+          upper: 'nature-big',
+          group: 'tree'
+        }
+      ]
+    );
   });
 });
