@@ -392,6 +392,8 @@ class OperationsTable extends Component {
   render() {
     const {operations, type} = this.props;
 
+    return null;
+
     const {
       title,
       description,

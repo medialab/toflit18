@@ -82,6 +82,13 @@ RETURN
   item.name AS item,
   id(item) AS itemId;
 
+// name: upper
+// Retrieving every classifications based on the given one.
+//------------------------------------------------------------------------------
+START c=node({id})
+MATCH (c)<-[:BASED_ON]-(upper)
+RETURN upper;
+
 // name: export
 // Exporting data about the given classification in order to produce a CSV file.
 //------------------------------------------------------------------------------

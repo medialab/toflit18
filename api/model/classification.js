@@ -8,9 +8,14 @@ import database from '../connection';
 import {classification as queries} from '../queries';
 import {searchRegex} from '../helpers';
 import {stringify} from 'csv';
-import {solvePatch, checkIntegrity} from '../../lib/patch';
 import Batch from '../../lib/batch';
 import {groupBy, find, map} from 'lodash';
+import {
+  checkIntegrity,
+  solvePatch,
+  applyOperations,
+  rewire
+} from '../../lib/patch';
 
 /**
  * Helpers.
@@ -159,7 +164,16 @@ const Model = {
       // Applying the patch
       const operations = solvePatch(classification, patch);
 
-      return callback(null, {integrity, operations});
+      // Computing a virtual updated version of our classification
+      const updatedClassification = applyOperations(classification, operations);
+
+      // Retrieving upper classifications
+      return database.cypher({query: queries.upper, params: {id}}, function(err, upper) {
+        const ids = map(upper, c => c.upper._id);
+
+        console.log(ids);
+        return callback(null, {integrity, operations});
+      });
     });
   },
 
