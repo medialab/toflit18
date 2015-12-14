@@ -85,7 +85,7 @@ const sessionOptions = {
 };
 
 // If dev, we would like to store sessions for convenience
-if (ENV === 'development')
+if (ENV === 'dev')
   sessionOptions.store = new FileStore({
     path: __dirname + '/../.output/sessions'
   });
