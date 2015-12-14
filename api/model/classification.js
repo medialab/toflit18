@@ -171,8 +171,23 @@ const Model = {
       return database.cypher({query: queries.upper, params: {id}}, function(err, upper) {
         const ids = map(upper, c => c.upper._id);
 
-        console.log(ids);
-        return callback(null, {integrity, operations});
+        // Rewiring each upper classification
+        return async.map(ids, function(upperId, next) {
+          return database.cypher({query: queries.upperGroups, params: {id: upperId}}, function(err, upperGroups) {
+            if (err) return next(err);
+
+            const links = rewire(
+              upperGroups,
+              classification,
+              updatedClassification,
+              operations
+            );
+
+            return next(null, {id: upperId, links});
+          });
+        }, function(err, rewires) {
+          return callback(null, {integrity, operations, rewires});
+        });
       });
     });
   },

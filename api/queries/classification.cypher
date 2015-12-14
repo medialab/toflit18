@@ -89,6 +89,13 @@ START c=node({id})
 MATCH (c)<-[:BASED_ON]-(upper)
 RETURN upper;
 
+// name: upperGroups
+// Retrieving upper groups of a classification with the associated items.
+//------------------------------------------------------------------------------
+START c=node({id})
+MATCH (c)-[:HAS]->(group)-[:AGGREGATES]->(item)
+RETURN group.name AS group, collect(item.name) AS items;
+
 // name: export
 // Exporting data about the given classification in order to produce a CSV file.
 //------------------------------------------------------------------------------
