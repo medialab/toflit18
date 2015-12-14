@@ -50,14 +50,13 @@ export default class DataQualityBarChart extends Component {
         <g>
           {data.map(row => {
             return (
-              <g>
+              <g key={row.year}>
                 <text x={x(row.year) + 5}
                       y={y(row.directions.length) - 5 + topMargin}
                       textAnchor="middle">
                   {row.directions.length}
                 </text>
-                <rect key={row.year}
-                      className="bar"
+                <rect className="bar"
                       x={x(row.year)}
                       y={y(row.directions.length) + topMargin}
                       width={10}
