@@ -151,8 +151,8 @@ const Model = {
    * Review the given patch for the given classification.
    */
   review(id, patch, callback) {
-    return database.cypher({query: queries.allGroups, params: {id}}, function(err, classification) {
-      if (err) return callback(err);
+    return database.cypher({query: queries.allGroups, params: {id}}, function(err1, classification) {
+      if (err1) return callback(err1);
       if (!classification.length) return callback(null, null);
 
       // Checking integrity
@@ -168,13 +168,15 @@ const Model = {
       const updatedClassification = applyOperations(classification, operations);
 
       // Retrieving upper classifications
-      return database.cypher({query: queries.upper, params: {id}}, function(err, upper) {
+      return database.cypher({query: queries.upper, params: {id}}, function(err2, upper) {
+        if (err2) return callback(err2);
+
         const ids = map(upper, c => c.upper._id);
 
         // Rewiring each upper classification
         return async.map(ids, function(upperId, next) {
-          return database.cypher({query: queries.upperGroups, params: {id: upperId}}, function(err, upperGroups) {
-            if (err) return next(err);
+          return database.cypher({query: queries.upperGroups, params: {id: upperId}}, function(err3, upperGroups) {
+            if (err3) return next(err3);
 
             const links = rewire(
               upperGroups,
@@ -185,7 +187,10 @@ const Model = {
 
             return next(null, {id: upperId, links});
           });
-        }, function(err, rewires) {
+        }, function(err4, rewires) {
+          if (err4)
+            return callback(err4);
+
           return callback(null, {integrity, operations, rewires});
         });
       });
