@@ -66,7 +66,7 @@
     "eslint-config-airbnb": "^1.0.0",
     "eslint-plugin-react": "^3.11.3",
     "json-loader": "^0.5.4",
-    "kotatsu": "0.0.5",
+    "kotatsu": "0.0.7",
     "mocha": "^2.2.5"
   }
 }
