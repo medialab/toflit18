@@ -5,6 +5,7 @@
  * Simple express application serving the data of the TOFLIT18 project.
  */
 import express from 'express';
+import path from 'path';
 import {api as config} from '../config.json';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -85,10 +86,10 @@ const sessionOptions = {
 };
 
 // If dev, we would like to store sessions for convenience
-// if (ENV === 'dev')
-//   sessionOptions.store = new FileStore({
-//     path: __dirname + '/../.output/sessions'
-//   });
+if (ENV === 'dev')
+  sessionOptions.store = new FileStore({
+    path: path.join(__dirname, '/../.output/sessions')
+  });
 
 // Utilities
 app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
