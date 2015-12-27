@@ -4,7 +4,7 @@
   "description": "TOFLIT18's datascape.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --ext js,cypher --watch ./api --watch ./lib --exec npm start & (cd client && npm run dev) && fg",
+    "dev": "kotatsu -s -c webpack.config.js ./scripts/start.js & (cd client && npm run dev) && fg",
     "export": "babel-node ./scripts/export.js",
     "import": "babel-node ./scripts/import.js",
     "lint": "eslint --ext .js --ext .jsx ./api ./lib ./test ./client/js --ignore-pattern ./client/js/external",
@@ -52,7 +52,6 @@
     "lodash": "^3.10.0",
     "morgan": "^1.6.1",
     "neo4j": "^2.0.0-RC2",
-    "nodemon": "^1.4.1",
     "session-file-store": "0.0.22",
     "typology": "^1.0.0",
     "yargs": "^3.14.0"
