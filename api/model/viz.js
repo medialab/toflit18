@@ -3,10 +3,12 @@
  * ===================
  *
  */
-import cypher from 'cypher-query';
+import decypher from 'decypher';
 import database from '../connection';
 import {viz as queries} from '../queries';
 import _ from 'lodash';
+
+const {Query} = decypher;
 
 const Model = {
 
@@ -62,7 +64,7 @@ const Model = {
   createLine(params, callback) {
 
     // Building the query
-    const query = cypher();
+    const query = new Query();
 
     // TODO: refactor
 
@@ -105,9 +107,9 @@ const Model = {
 
     //-- Returning data
     query.return('count(f) AS count, sum(f.value) AS value, f.year AS year');
-    query['order by']('f.year');
+    query.orderBy('f.year');
 
-    database.cypher({query: query.compile(), params: query.params()}, function(err, data) {
+    database.cypher(query.build(), function(err, data) {
       if (err) return callback(err);
 
       return callback(null, data);
