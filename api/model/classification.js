@@ -101,7 +101,7 @@ const Model = {
         params: {
           ...opts,
           id,
-          query: searchPattern(opts.query)
+          query: searchPattern(opts.query || '')
         }
       },
       function(err, results) {
