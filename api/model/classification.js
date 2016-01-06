@@ -4,9 +4,9 @@
  *
  */
 import async from 'async';
+import decypher from 'decypher';
 import database from '../connection';
 import {classification as queries} from '../queries';
-import {searchRegex} from '../helpers';
 import {stringify} from 'csv';
 import Batch from '../../lib/batch';
 import {groupBy, find, map} from 'lodash';
@@ -16,6 +16,8 @@ import {
   applyOperations,
   rewire
 } from '../../lib/patch';
+
+const {helpers: {searchPattern}} = decypher;
 
 /**
  * Helpers.
@@ -99,7 +101,7 @@ const Model = {
         params: {
           ...opts,
           id,
-          query: searchRegex(opts.query)
+          query: searchPattern(opts.query)
         }
       },
       function(err, results) {
