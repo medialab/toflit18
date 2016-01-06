@@ -9,6 +9,7 @@ import {mapValues} from 'lodash';
 const controller = [
   {
     url: '/directions_per_year',
+    method: 'GET',
     cache: 'directionsPerYear',
     action(req, res) {
       return model.availableDirectionsPerYear(function(err, data) {
@@ -20,6 +21,7 @@ const controller = [
   },
   {
     url: '/sources_per_directions',
+    method: 'GET',
     cache: 'sourcesPerDirections',
     action(req, res) {
       return model.sourcesPerDirections(function(err, data) {
@@ -31,6 +33,7 @@ const controller = [
   },
   {
     url: '/line',
+    method: 'GET',
     validate: {
       query: {
         productClassification: '?string',
@@ -53,6 +56,7 @@ const controller = [
   },
   {
     url: '/network/:id',
+    method: 'GET',
     cache: {
       key: 'network',
       hasher(req) {

@@ -8,6 +8,7 @@ import model from '../model/user';
 const controller = [
   {
     url: '/session',
+    method: 'GET',
     action(req, res) {
       if (req.session.authenticated)
         return res.ok({name: req.session.user.name});

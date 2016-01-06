@@ -11,6 +11,7 @@ const limits = apiConfig.limits;
 const controller = [
   {
     url: '/',
+    method: 'GET',
     cache: 'classifications',
     action(req, res) {
       return model.getAll(function(err, classifications) {
@@ -22,6 +23,7 @@ const controller = [
   },
   {
     url: '/:id/groups',
+    method: 'GET',
     action(req, res) {
       return model.groups(+req.params.id, function(err, groups) {
         if (err) return res.serverError(err);
@@ -33,6 +35,7 @@ const controller = [
   },
   {
     url: '/:id/search',
+    method: 'GET',
     validate: {
       query: {
         limit: '?string',
@@ -56,6 +59,7 @@ const controller = [
   },
   {
     url: '/:id/export.:ext',
+    method: 'GET',
     validate: {
       params: ({ext}) => ext === 'json' || ext === 'csv'
     }
