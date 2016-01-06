@@ -16,7 +16,6 @@ import morgan from 'morgan';
 import session from 'express-session';
 import createFileStore from 'session-file-store';
 import {authenticate} from './middlewares';
-import responses from './responses';
 
 import classificationController from './controllers/classification';
 import dataController from './controllers/data';
@@ -30,7 +29,6 @@ const FileStore = createFileStore(session),
  * Initialization.
  */
 const ENV = process.env.NODE_ENV || 'dev';
-responses(express);
 
 /**
  * Configuring the application.

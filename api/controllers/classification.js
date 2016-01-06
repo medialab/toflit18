@@ -62,7 +62,7 @@ const controller = [
     method: 'GET',
     validate: {
       params: ({ext}) => ext === 'json' || ext === 'csv'
-    }
+    },
     action(req, res) {
       return model.export(+req.params.id, function(err, result) {
         if (err) return res.serverError(err);
