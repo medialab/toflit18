@@ -17,10 +17,12 @@ const controller = [
   },
   {
     url: '/login',
-    methods: ['POST'],
+    method: 'POST',
     validate: {
-      name: 'string',
-      password: 'string'
+      body: {
+        name: 'string',
+        password: 'string'
+      }
     },
     action(req, res) {
       model.authenticate(req.body.name, req.body.password, function(err, user) {
@@ -38,7 +40,7 @@ const controller = [
   },
   {
     url: '/logout',
-    methods: ['POST'],
+    method: 'POST',
     action(req, res) {
       req.session.destroy(err => {
         if (err) return res.serverError(err);

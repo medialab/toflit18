@@ -32,12 +32,14 @@ const controller = [
   {
     url: '/line',
     validate: {
-      productClassification: '?string',
-      product: '?string',
-      countryClassification: '?string',
-      country: '?string',
-      direction: '?string',
-      kind: '?string'
+      query: {
+        productClassification: '?string',
+        product: '?string',
+        countryClassification: '?string',
+        country: '?string',
+        direction: '?string',
+        kind: '?string'
+      }
     },
     action(req, res) {
       const payload = mapValues(req.query, (v, k) => k !== 'kind' ? +v : v);

@@ -34,9 +34,11 @@ const controller = [
   {
     url: '/:id/search',
     validate: {
-      limit: '?string',
-      offset: '?string',
-      query: '?string'
+      query: {
+        limit: '?string',
+        offset: '?string',
+        query: '?string'
+      }
     },
     action(req, res) {
       const opts = {
@@ -54,11 +56,9 @@ const controller = [
   },
   {
     url: '/:id/export.:ext',
-    validate(req) {
-      const ext = req.params.ext;
-
-      return ext === 'json' || ext === 'csv';
-    },
+    validate: {
+      params: ({ext}) => ext === 'json' || ext === 'csv'
+    }
     action(req, res) {
       return model.export(+req.params.id, function(err, result) {
         if (err) return res.serverError(err);
@@ -82,9 +82,11 @@ const controller = [
   },
   {
     url: '/:id/patch/review',
-    methods: ['POST'],
+    method: 'POST',
     validate: {
-      patch: 'array'
+      body: {
+        patch: 'array'
+      }
     },
     action(req, res) {
       return model.review(+req.params.id, req.body.patch, function(err, result) {
@@ -97,9 +99,11 @@ const controller = [
   },
   {
     url: '/:id/patch/commit',
-    methods: ['POST'],
+    method: 'POST',
     validate: {
-      operations: 'array'
+      body: {
+        operations: 'array'
+      }
     },
     action(req, res) {
       return model.commit(+req.params.id, req.body.operations, function(err, result) {
