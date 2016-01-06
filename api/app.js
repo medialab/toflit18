@@ -5,6 +5,7 @@
  * Simple express application serving the data of the TOFLIT18 project.
  */
 import express from 'express';
+import wrap from 'dolman';
 import path from 'path';
 import {api as config} from '../config.json';
 import bodyParser from 'body-parser';
@@ -14,7 +15,7 @@ import compress from 'compression';
 import morgan from 'morgan';
 import session from 'express-session';
 import createFileStore from 'session-file-store';
-import middlewares from './middlewares';
+import {authenticate} from './middlewares';
 import responses from './responses';
 
 import classificationController from './controllers/classification';
@@ -22,37 +23,8 @@ import dataController from './controllers/data';
 import loginController from './controllers/login';
 import vizController from './controllers/viz';
 
-const FileStore = createFileStore(session);
-
-/**
- * Helpers.
- */
-function createRouter(routes, auth, additionalMiddlewares) {
-  const router = express.Router();
-
-  routes.forEach(function(route) {
-    const args = [route.url];
-
-    if (auth)
-      args.push(auth);
-
-    if (route.validate)
-      args.push(middlewares.validate(route.validate));
-
-    if (route.cache)
-      args.push(middlewares.cache(route.cache));
-
-    if (additionalMiddlewares)
-      additionalMiddlewares.forEach(m => args.push(m));
-
-    args.push(route.action);
-
-    (route.methods || ['GET'])
-      .forEach(m => router[m.toLowerCase()].apply(router, args));
-  });
-
-  return router;
-}
+const FileStore = createFileStore(session),
+      dolman = wrap(express);
 
 /**
  * Initialization.
@@ -103,16 +75,16 @@ app.use(compress());
  */
 
 // Creating routers from controllers
-const loginRouter = createRouter(loginController),
-      dataRouter = createRouter(dataController, middlewares.authenticate),
-      classificationRouter = createRouter(classificationController, middlewares.authenticate),
-      vizRouter = createRouter(vizController, middlewares.authenticate);
+const loginRouter = dolman.router(loginController),
+      dataRouter = dolman.router(dataController),
+      classificationRouter = dolman.router(classificationController),
+      vizRouter = dolman.router(vizController);
 
 // Mounting
 app.use(loginRouter);
-app.use(dataRouter);
-app.use('/classification', classificationRouter);
-app.use('/viz', vizRouter);
+app.use(authenticate, dataRouter);
+app.use('/classification', authenticate, classificationRouter);
+app.use('/viz', authenticate, vizRouter);
 app.use((_, res) => res.notFound());
 
 /**

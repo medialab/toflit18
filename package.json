@@ -44,6 +44,7 @@
     "csv": "^0.4.5",
     "cypher-query": "0.0.11",
     "decypher": "^0.1.2",
+    "dolman": "0.0.2",
     "escape-regexp": "0.0.1",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
@@ -53,7 +54,6 @@
     "morgan": "^1.6.1",
     "neo4j": "^2.0.0-RC2",
     "session-file-store": "0.0.24",
-    "typology": "^1.0.0",
     "yargs": "^3.14.0"
   },
   "devDependencies": {
