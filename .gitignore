@@ -5,5 +5,4 @@ config.json
 *.log
 TODO.md
 .output
-.kotatsu
 *TODO.md
