@@ -52,7 +52,7 @@
     "lodash": "^3.10.0",
     "morgan": "^1.6.1",
     "neo4j": "^2.0.0-RC2",
-    "session-file-store": "0.0.22",
+    "session-file-store": "0.0.24",
     "typology": "^1.0.0",
     "yargs": "^3.14.0"
   },
@@ -65,7 +65,7 @@
     "eslint-config-airbnb": "^1.0.0",
     "eslint-plugin-react": "^3.11.3",
     "json-loader": "^0.5.4",
-    "kotatsu": "0.0.7",
+    "kotatsu": "0.0.8",
     "mocha": "^2.2.5"
   }
 }
