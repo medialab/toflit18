@@ -4,7 +4,7 @@
   "description": "TOFLIT18's datascape.",
   "main": "index.js",
   "scripts": {
-    "dev": "kotatsu -s -c webpack.config.js ./scripts/start.js & (cd client && npm run dev) && fg",
+    "dev": "overviewer",
     "export": "babel-node ./scripts/export.js",
     "import": "babel-node ./scripts/import.js",
     "lint": "eslint --ext .js --ext .jsx ./api ./lib ./test ./client/js --ignore-pattern ./client/js/external",
@@ -63,6 +63,7 @@
     "eslint-config-airbnb": "^1.0.0",
     "eslint-plugin-react": "^3.11.3",
     "kotatsu": "^0.1.2",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "overviewer": "^0.1.5"
   }
 }

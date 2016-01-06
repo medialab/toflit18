@@ -1,0 +1,12 @@
+{
+  "reporters": [
+    {
+      "title": "API",
+      "command": "kotatsu -s -c webpack.config.js ./scripts/start.js"
+    },
+    {
+      "title": "Client",
+      "command": "cd client && npm run dev"
+    }
+  ]
+}
