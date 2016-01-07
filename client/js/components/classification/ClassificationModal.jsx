@@ -389,10 +389,16 @@ class OperationsStats extends Component {
  * Operations table.
  */
 class OperationsTable extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      opened: props.operations.length <= 200
+    };
+  }
+
   render() {
     const {operations, type} = this.props;
-
-    return null;
 
     const {
       title,
@@ -408,7 +414,7 @@ class OperationsTable extends Component {
 
     const rows = operations.map(o => {
       return (
-        <tr>
+        <tr key={getter(o).join('|')}>
           {getter(o).map((item, i) => {
             const style = {
               width: `${sizes[i]}%`,
@@ -428,20 +434,31 @@ class OperationsTable extends Component {
         {title} (<strong>{prettyPrint(operations.length)}</strong>)
         <br />
         <em className={`text-${color}`}>{description}</em>
-        <table className="operations-table table table-sm">
-          <thead>
-            <tr className="table-active">
-              {headers.map((h, i) => <th key={h} style={{width: `${sizes[i]}%`}}>{h}</th>)}
-            </tr>
-          </thead>
-        </table>
-        <div className="overflow" style={{maxHeight: '300px'}}>
-          <table className="table table-sm table" style={{tableLayout: 'fixed'}}>
-            <tbody>
-              {rows}
-            </tbody>
-          </table>
-        </div>
+        {this.state.opened ?
+          <div>
+            <table className="operations-table table table-sm">
+              <thead>
+                <tr className="table-active">
+                  {headers.map((h, i) => <th key={h} style={{width: `${sizes[i]}%`}}>{h}</th>)}
+                </tr>
+              </thead>
+            </table>
+            <div className="overflow" style={{maxHeight: '300px'}}>
+              <table className="table table-sm table" style={{tableLayout: 'fixed'}}>
+                <tbody>
+                  {rows}
+                </tbody>
+              </table>
+            </div>
+          </div> :
+          <div style={{textAlign: 'center'}}>
+            <hr />
+            <Button kind="secondary"
+                    onClick={e => this.setState({opened: true})}>
+              Show
+            </Button>
+          </div>
+        }
       </div>
     );
   }
