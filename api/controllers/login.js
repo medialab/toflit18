@@ -8,6 +8,7 @@ import model from '../model/user';
 const controller = [
   {
     url: '/session',
+    name: 'session',
     method: 'GET',
     action(req, res) {
       if (req.session.authenticated)
@@ -18,6 +19,7 @@ const controller = [
   },
   {
     url: '/login',
+    name: 'login',
     method: 'POST',
     validate: {
       body: {
@@ -41,6 +43,7 @@ const controller = [
   },
   {
     url: '/logout',
+    name: 'logout',
     method: 'POST',
     action(req, res) {
       req.session.destroy(err => {

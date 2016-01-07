@@ -79,6 +79,7 @@ const loginRouter = dolman.router(loginController),
       vizRouter = dolman.router(vizController);
 
 // Mounting
+app.get('/api.json', (req, res) => res.json(dolman.specs(app)));
 app.use(loginRouter);
 app.use(authenticate, dataRouter);
 app.use('/classification', authenticate, classificationRouter);
