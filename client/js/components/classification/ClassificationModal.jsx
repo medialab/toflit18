@@ -454,7 +454,7 @@ class OperationsTable extends Component {
           <div style={{textAlign: 'center'}}>
             <hr />
             <Button kind="secondary"
-                    onClick={e => this.setState({opened: true})}>
+                    onClick={() => this.setState({opened: true})}>
               Show
             </Button>
           </div>
