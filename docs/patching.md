@@ -39,7 +39,7 @@ length(g ⋂ pg) = length(g)
 
 That is to say if the set of `pg`'s items is identical to the set of `g`'s items or if the set of `pg`'s items is a superset of `g`'s items.
 
-On the othe hand, with `rg` being `pg` minus the items that were added to a group (i.e. an item that was not aggregated in the classification before the patch)  we'll say a rename operation is "pure" if:
+On the other hand, with `rg` being `pg` minus the items that were added to a group (i.e. an item that was not aggregated in the classification before the patch)  we'll say a rename operation is "pure" if:
 
 ```
 length(g ⋃ rg) = length(g)

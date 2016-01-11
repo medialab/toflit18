@@ -161,89 +161,92 @@ describe('Classification patching', function() {
   });
 
   describe('Rewiring', function() {
-    const C1 = [
-      {groupId: 1, group: 'fruits', item: 'mango'},
-      {groupId: 1, group: 'fruits', item: 'papaya'},
-      {groupId: 1, group: 'fruits', item: 'apple'},
-      {groupId: 2, group: 'vegetables', item: 'cucumber'},
 
-      {groupId: 3, group: 'flower', item: 'rose'},
-      {groupId: 3, group: 'flower', item: 'magnolia'},
-      {groupId: 3, group: 'flower', item: 'oak'},
-      {groupId: 4, group: 'tree', item: 'poplar'}
-    ];
+    it('should work propertly.', function() {
+      const C1 = [
+        {groupId: 1, group: 'fruits', item: 'mango'},
+        {groupId: 1, group: 'fruits', item: 'papaya'},
+        {groupId: 1, group: 'fruits', item: 'apple'},
+        {groupId: 2, group: 'vegetables', item: 'cucumber'},
 
-    C1.forEach((row, i) => row.itemId = i);
+        {groupId: 3, group: 'flower', item: 'rose'},
+        {groupId: 3, group: 'flower', item: 'magnolia'},
+        {groupId: 3, group: 'flower', item: 'oak'},
+        {groupId: 4, group: 'tree', item: 'poplar'}
+      ];
 
-    const p = [
-      {group: 'exoticFruits', item: 'mango'},
-      {group: 'exoticFruits', item: 'papaya'},
-      {group: 'fruits', item: 'apple'},
+      C1.forEach((row, i) => row.itemId = i);
 
-      {group: 'flower', item: 'rose'},
-      {group: 'flower', item: 'magnolia'},
-      {group: 'tree', item: 'oak'},
-      {group: 'tree', item: 'poplar'}
-    ];
+      const p = [
+        {group: 'exoticFruits', item: 'mango'},
+        {group: 'exoticFruits', item: 'papaya'},
+        {group: 'fruits', item: 'apple'},
 
-    const operations = solvePatch(C1, p),
-          affectedGroups = getAffectedGroups(operations);
+        {group: 'flower', item: 'rose'},
+        {group: 'flower', item: 'magnolia'},
+        {group: 'tree', item: 'oak'},
+        {group: 'tree', item: 'poplar'}
+      ];
 
-    assert.deepEqual(
-      Array.from(affectedGroups),
-      [
-        'fruits',
-        'exoticFruits',
-        'flower',
-        'tree'
-      ]
-    );
+      const operations = solvePatch(C1, p),
+            affectedGroups = getAffectedGroups(operations);
 
-    const C2 = applyOperations(C1, operations);
+      assert.deepEqual(
+        Array.from(affectedGroups),
+        [
+          'fruits',
+          'exoticFruits',
+          'flower',
+          'tree'
+        ]
+      );
 
-    // NOTE: Step 1 result from Neo4j
-    const D = [
-      {group: 'food', items: ['fruits', 'vegetables']},
-      {group: 'nature-small', items: ['flower']},
-      {group: 'nature-big', items: ['tree']}
-    ];
+      const C2 = applyOperations(C1, operations);
 
-    const links = rewire(D, C1, C2, operations);
+      // NOTE: Step 1 result from Neo4j
+      const D = [
+        {group: 'food', items: ['fruits', 'vegetables']},
+        {group: 'nature-small', items: ['flower']},
+        {group: 'nature-big', items: ['tree']}
+      ];
 
-    assert.deepEqual(
-      links,
-      [
-        {
-          cluster: 'c0',
-          shouldExist: true,
-          upper: 'food',
-          group: 'fruits'
-        },
-        {
-          cluster: 'c0',
-          shouldExist: true,
-          upper: 'food',
-          group: 'vegetables'
-        },
-        {
-          cluster: 'c0',
-          shouldExist: true,
-          upper: undefined,
-          group: 'exoticFruits'
-        },
-        {
-          cluster: 'c1',
-          shouldExist: false,
-          upper: 'nature-small',
-          group: 'flower'
-        },
-        {
-          cluster: 'c1',
-          shouldExist: false,
-          upper: 'nature-big',
-          group: 'tree'
-        }
-      ]
-    );
+      const links = rewire(D, C1, C2, operations);
+
+      assert.deepEqual(
+        links,
+        [
+          {
+            cluster: 'c0',
+            shouldExist: true,
+            upper: 'food',
+            group: 'fruits'
+          },
+          {
+            cluster: 'c0',
+            shouldExist: true,
+            upper: 'food',
+            group: 'vegetables'
+          },
+          {
+            cluster: 'c0',
+            shouldExist: true,
+            upper: '',
+            group: 'exoticFruits'
+          },
+          {
+            cluster: 'c1',
+            shouldExist: false,
+            upper: 'nature-small',
+            group: 'flower'
+          },
+          {
+            cluster: 'c1',
+            shouldExist: false,
+            upper: 'nature-big',
+            group: 'tree'
+          }
+        ]
+      );
+    });
   });
 });
