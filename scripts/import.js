@@ -100,7 +100,7 @@ function indexedNode(index, label, key, data) {
 /**
  * Paths
  */
-const ROOT_PATH = '/Fichiers de la base avant Neo4J',
+const ROOT_PATH = '/base',
       BDD_CENTRALE_PATH = ROOT_PATH + '/base_centrale/bdd_centrale.csv',
       BDD_OUTSIDERS = ROOT_PATH + '/marchandises_sourcees.csv',
       BDD_UNITS = ROOT_PATH + '/Units N1.csv',
@@ -570,7 +570,7 @@ function importer(csvLine) {
   }
 
   // Product
-  if (csvLine.marchandises || csvLine.marchandises === '') {
+  if (csvLine.marchandises) {
     const alreadyLinked = INDEXES.products[csvLine.marchandises];
 
     const productNode = indexedNode(INDEXES.products, ['Product', 'Item'], csvLine.marchandises, {
@@ -672,15 +672,6 @@ function outsiderProduct(line) {
 
 /**
  * Consuming the classifications.
- *
- * Note: This should be wildly refactored!
- *
- * Algorithm
- * ---------
- * 1. Checking both indexes to find the item. If no match, we drop it.
- * 2. Upsert the group w/ index.
- * 3. Relate classification-[:HAS]->group.
- * 4. Relate group-[:AGGREGATES]->item.
  */
 function makeClassificationConsumer(groupIndex, classificationNode, parentNode, itemIndex, groupKey, itemKey, opts={}) {
 
@@ -689,6 +680,10 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
   return function(line) {
     const group = line[groupKey],
           item = line[itemKey];
+
+    // Dropping empty values
+    if (!group || !item)
+      return;
 
     if (!line[groupKey])
       return;
