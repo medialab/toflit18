@@ -48,4 +48,4 @@ if (module.hot) {
   });
 }
 
-export default state;
+module.exports = state;

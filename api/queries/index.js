@@ -6,6 +6,20 @@
  */
 import decypher from 'decypher';
 
-const queries = decypher(__dirname);
+const {
+  classification,
+  data,
+  exporter,
+  misc,
+  user,
+  viz
+} = decypher(__dirname);
 
-export default queries;
+export {
+  classification,
+  data,
+  exporter,
+  misc,
+  user,
+  viz
+};
