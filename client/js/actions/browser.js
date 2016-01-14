@@ -41,6 +41,10 @@ export function expand(tree, classification) {
         current = state.get('rows'),
         query = state.get('query');
 
+  // NOTE: this is hardcoded but can be found in the API's configuration
+  if (query && !(classification.nb_groups % 200))
+    return;
+
   if (classification.nb_groups <= current.length)
     return;
 
