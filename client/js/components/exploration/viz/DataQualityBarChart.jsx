@@ -7,7 +7,7 @@
  */
 import React, {Component} from 'react';
 import measured from '../../../lib/measured';
-import scales from 'd3-scale';
+import {scaleLinear as linear} from 'd3-scale';
 import {max, range} from 'lodash';
 
 /**
@@ -35,11 +35,11 @@ export default class DataQualityBarChart extends Component {
           allYears = range(0, maxYear - minYear + 1).map((_, i) => minYear + i);
 
     // Building scales
-    const x = scales.linear()
+    const x = linear()
       .domain([minYear, maxYear])
       .range([0, width - 10]);
 
-    const y = scales.linear()
+    const y = linear()
       .domain([0, maxDirectionsCount])
       .range([height, 0]);
 

@@ -7,7 +7,7 @@
  */
 import React, {Component} from 'react';
 import measured from '../../../lib/measured';
-import scale from 'd3-scale';
+import {scaleLinear as linear} from 'd3-scale';
 import {max, min, sortBy} from 'lodash';
 
 /**
@@ -55,11 +55,11 @@ export default class SourcesPerDirections extends Component {
     const barWidth = width / (maxYear - minYear) - 1,
           height = SIZE * data.length;
 
-    const x = scale.linear()
+    const x = linear()
       .domain([minYear, maxYear])
       .range([0, width]);
 
-    const y = scale.linear()
+    const y = linear()
       .domain([0, maxFlows])
       .range([0, SIZE / 2]);
 
