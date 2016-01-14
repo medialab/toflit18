@@ -71,7 +71,7 @@ export function search(tree, id, query) {
 
   loading.set(true);
   return tree.client.search(
-    {params: {id: id}, data: {query}},
+    {params: {id}, data: {query}},
     function(err, data) {
       loading.set(false);
       if (err) return;

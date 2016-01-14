@@ -38,7 +38,7 @@ const app = express();
 // Cross-origin support
 app.use(cors({
   credentials: true,
-  origin: function(origin, next) {
+  origin(origin, next) {
     return next(null, !!~config.allowedOrigins.indexOf(origin));
   }
 }));

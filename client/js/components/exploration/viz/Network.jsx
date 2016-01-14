@@ -52,11 +52,6 @@ export default class Network extends Component {
     this.componentWillUpdate(this.props);
   }
 
-  componentWillUnmount() {
-    this.sigma.kill();
-    this.sigma = null;
-  }
-
   componentWillUpdate(nextProps) {
     this.sigma.killForceAtlas2();
 
@@ -82,6 +77,11 @@ export default class Network extends Component {
 
     this.sigma.refresh();
     this.sigma.startForceAtlas2(LAYOUT_SETTINGS);
+  }
+
+  componentWillUnmount() {
+    this.sigma.kill();
+    this.sigma = null;
   }
 
   render() {

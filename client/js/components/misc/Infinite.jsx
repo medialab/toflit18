@@ -17,6 +17,11 @@ export default class Infinite extends Component {
     this.currentCall = null;
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if ((nextState.tracker !== this.state.tracker) && this.currentCall)
+      this.currentCall.abort();
+  }
+
   handleScroll({target}) {
     const {
       scrollHeight,
@@ -42,11 +47,6 @@ export default class Infinite extends Component {
 
       promise.then(reset, reset);
     }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if ((nextState.tracker !== this.state.tracker) && this.currentCall)
-      this.currentCall.abort();
   }
 
   render() {

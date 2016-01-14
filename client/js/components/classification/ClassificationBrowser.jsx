@@ -98,7 +98,7 @@ class LeftPanel extends Component {
             <Col md={9} style={{textAlign: 'right'}}>
               <ButtonGroup>
                 <Button kind="secondary"
-                        disabled={true}
+                        disabled
                         onClick={() => actions.modal('create')}>
                   Create From
                 </Button>

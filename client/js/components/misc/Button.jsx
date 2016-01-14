@@ -18,18 +18,18 @@ export default class Button extends Component {
       this.ladda.start();
   }
 
-  // Tearing the ladda button
-  componentWillUnmount() {
-    this.ladda.remove();
-    this.ladda = null;
-  }
-
   // Updating loading status
   componentDidUpdate() {
     if (this.props.loading)
       this.ladda.start();
     else
       this.ladda.stop();
+  }
+
+  // Tearing the ladda button
+  componentWillUnmount() {
+    this.ladda.remove();
+    this.ladda = null;
   }
 
   render() {

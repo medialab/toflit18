@@ -31,7 +31,7 @@ export function parse(tree, file) {
 
   csvParser.parse(file.content, {
     skipEmptyLines: true,
-    complete: function(result) {
+    complete(result) {
       const rows = result.data;
 
       // Treating the resultant data

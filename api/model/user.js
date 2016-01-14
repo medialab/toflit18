@@ -17,7 +17,7 @@ const Model = {
       {
         query: queries.login,
         params: {
-          name: name,
+          name,
           hash: hash(password)
         }
       },
