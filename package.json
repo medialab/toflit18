@@ -4,12 +4,12 @@
   "description": "TOFLIT18's datascape.",
   "main": "index.js",
   "scripts": {
-    "dev": "kotatsu start --progress --source-maps --presets es2015,stage-2 ./scripts/start.js",
-    "export": "babel-node ./scripts/export.js",
-    "import": "babel-node ./scripts/import.js",
+    "dev": "kotatsu start --progress --source-maps --babel ./scripts/start.js",
+    "export": "kotatsu run --babel ./scripts/export.js",
+    "import": "kotatsu run --babel ./scripts/import.js",
     "lint": "eslint -c eslint.config.js --ext .js --ext .jsx ./api ./lib ./test ./client/js --ignore-pattern ./client/js/external",
     "postinstall": "mkdir -p .output && cd client && npm install",
-    "start": "babel-node --ignore node_modules ./scripts/start.js",
+    "start": "kotatsu run --babel ./scripts/start.js",
     "test": "mocha -R spec --compilers js:babel/register ./test/endpoint.js"
   },
   "repository": {
@@ -43,7 +43,7 @@
     "cors": "^2.7.1",
     "csv": "^0.4.5",
     "decypher": "^0.5.0",
-    "dolman": "^0.2.0",
+    "dolman": "^0.3.0",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
     "highland": "^2.5.1",
@@ -56,13 +56,11 @@
   },
   "devDependencies": {
     "@yomguithereal/eslint-config": "^1.1.0",
-    "babel-cli": "^6.4.0",
-    "babel-eslint": "^4.1.6",
-    "babel-preset-es2015": "^6.3.13",
+    "babel-eslint": "5.0.0-beta6",
     "babel-preset-stage-2": "^6.3.13",
     "eslint": "^1.1.0",
     "eslint-plugin-react": "^3.15.0",
-    "kotatsu": "^0.3.3",
+    "kotatsu": "^0.7.0",
     "mocha": "^2.2.5"
   }
 }
