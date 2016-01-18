@@ -393,7 +393,7 @@ class OperationsTable extends Component {
     super(props, context);
 
     this.state = {
-      opened: props.operations.length <= 200
+      opened: props.operations && props.operations.length <= 200
     };
   }
 
@@ -412,9 +412,9 @@ class OperationsTable extends Component {
     if (!operations || !operations.length)
       return null;
 
-    const rows = operations.map(o => {
+    const rows = operations.map((o, i) => {
       return (
-        <tr key={getter(o).join('|')}>
+        <tr key={i}>
           {getter(o).map((item, i) => {
             const style = {
               width: `${sizes[i]}%`,
@@ -423,7 +423,7 @@ class OperationsTable extends Component {
               overflow: 'hidden'
             };
 
-            return <td style={style}>{item}</td>;
+            return <td key={i} style={style}>{item}</td>;
           })}
         </tr>
       );
