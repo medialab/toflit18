@@ -4,6 +4,7 @@
   "description": "Web interface for the TOFLIT18's datascape.",
   "main": "./js/main.jsx",
   "scripts": {
+    "cards": "kotatsu serve --presets es2015,react,stage-2,react-hmre --progress ./js/cards/index.js",
     "dev": "kotatsu serve -c webpack.config.js --progress --public ./ --index index.html"
   },
   "repository": {
@@ -32,6 +33,7 @@
     "babel-preset-react-hmre": "^1.0.1",
     "babel-preset-stage-0": "^6.3.13",
     "css-loader": "^0.23.0",
+    "devcards": "git+https://github.com/glenjamin/devcards-js.git",
     "file-loader": "^0.8.4",
     "json-loader": "^0.5.2",
     "kotatsu": "^0.8.2",
