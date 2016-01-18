@@ -319,9 +319,12 @@ async.series([
       if (err) return callback(err);
 
       const indexes = {
-        products: indexBy(classifications.products.slice(1), e => e[0]),
+        products: indexBy(classifications.products.slice(1), e => e[1]),
         countries: indexBy(classifications.countries.slice(1), e => e[0]),
       };
+
+      const productPadding = fill(Array(classifications.products[0].length - 1), ''),
+            countryPadding = fill(Array(classifications.countries[0].length), '');
 
       const writeStream = h();
 
@@ -338,17 +341,18 @@ async.series([
       h(readStream)
         .each(line => {
 
+          // NOTE: bad hard-coded indexes are bad.
           if (head) {
             writeStream.write(line
-              .concat(classifications.products[0].slice(1).map(h => 'product_' + h))
+              .concat(classifications.products[0].slice(2).map(h => 'product_' + h))
               .concat(classifications.countries[0].slice(1).map(h => 'country_' + h))
             );
             head = false;
           }
           else {
             writeStream.write(line
-              .concat((indexes.products[line[6]] || []).slice(1))
-              .concat((indexes.countries[line[16]] || []).slice(1))
+              .concat((indexes.products[line[6]] || productPadding).slice(2))
+              .concat((indexes.countries[line[18]] || countryPadding).slice(1))
             );
           }
         })
