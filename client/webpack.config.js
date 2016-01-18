@@ -14,25 +14,18 @@ PRESETS.forEach(function(p, i) {
 
 module.exports = {
   devtool: '#cheap-module-eval-source-map',
-  entry: [
-    'webpack-hot-middleware/client',
-    './js/main.jsx'
-  ],
-  output: {
-    path: path.join(__dirname, 'build'),
-    filename: 'bundle.js',
-    publicPath: '/build/',
-    library: 'app'
-  },
-  plugins: [
-    new webpack.NoErrorsPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.ProgressPlugin(function(percentage, message) {
-      var txt = ((percentage * 100) | 0) + '% - ' + message;
 
-      console.log(txt);
-    })
-  ],
+  // NOTE: solve kotatsu merging.
+  // entry: [
+  //   'webpack-hot-middleware/client',
+  //   './js/main.jsx'
+  // ],
+  // output: {
+  //   path: path.join(__dirname, 'build'),
+  //   filename: 'bundle.js',
+  //   publicPath: '/build/',
+  //   library: 'app'
+  // },
   module: {
     loaders: [
 
@@ -45,13 +38,6 @@ module.exports = {
           presets: PRESETS,
           plugins: [require.resolve('babel-plugin-transform-decorators-legacy')]
         }
-      },
-
-      // JSON configuration file
-      {
-        test: /\.json$/,
-        include: path.join(__dirname, 'config.json'),
-        loader: 'json'
       },
 
       // Fonts

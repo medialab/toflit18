@@ -91,6 +91,7 @@ class LoginForm extends Component {
         {flags.failed && <div className="alert alert-danger">Unrecognized name/password combination.</div>}
         <Button loading={flags.loading}
                 kind="primary"
+                disabled={!this.state.name || !this.state.password}
                 onClick={() => this.submit()}>Connect</Button>
       </div>
     );
