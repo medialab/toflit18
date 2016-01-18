@@ -4,7 +4,7 @@
   "description": "Web interface for the TOFLIT18's datascape.",
   "main": "./js/main.jsx",
   "scripts": {
-    "dev": "kotatsu serve --progress --public ./ -c webpack.config.js --index index.html ./js/main.jsx"
+    "dev": "kotatsu serve -c ./webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,7 @@
     "css-loader": "^0.23.0",
     "file-loader": "^0.8.4",
     "json-loader": "^0.5.2",
-    "kotatsu": "^0.7.0",
+    "kotatsu": "^0.8.1",
     "node-sass": "^3.3.2",
     "sass-loader": "^3.0.0",
     "style-loader": "^0.13.0"

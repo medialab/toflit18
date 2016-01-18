@@ -14,18 +14,13 @@ PRESETS.forEach(function(p, i) {
 
 module.exports = {
   devtool: '#cheap-module-eval-source-map',
-
-  // NOTE: solve kotatsu merging.
-  // entry: [
-  //   'webpack-hot-middleware/client',
-  //   './js/main.jsx'
-  // ],
-  // output: {
-  //   path: path.join(__dirname, 'build'),
-  //   filename: 'bundle.js',
-  //   publicPath: '/build/',
-  //   library: 'app'
-  // },
+  entry: './js/main.jsx'
+  output: {
+    path: path.join(__dirname, 'build'),
+    filename: 'bundle.js',
+    publicPath: '/build/',
+    library: 'app'
+  },
   module: {
     loaders: [
 
