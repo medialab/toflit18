@@ -33,7 +33,13 @@ export default class Button extends Component {
   }
 
   render() {
-    const {kind, disabled, onClick, size} = this.props;
+    const {
+      kind,
+      disabled,
+      onClick,
+      size,
+      style = {}
+    } = this.props;
 
     let cls = `btn btn-${kind} ladda-button`;
 
@@ -53,6 +59,7 @@ export default class Button extends Component {
               type="button"
               data-style="slide-left"
               className={cls}
+              style={style}
               onClick={e => !disabled && typeof onClick === 'function' && onClick(e)}
               {...optional}>
         <span className="ladda-label">

@@ -60,7 +60,7 @@
     "babel-preset-stage-2": "^6.3.13",
     "eslint": "^1.1.0",
     "eslint-plugin-react": "^3.15.0",
-    "kotatsu": "^0.8.2",
+    "kotatsu": "^0.8.3",
     "mocha": "^2.2.5"
   }
 }
