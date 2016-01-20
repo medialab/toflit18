@@ -6,7 +6,7 @@
  * sources per directions.
  */
 import React, {Component} from 'react';
-import measured from '../../../lib/measured';
+import measured from '@yomguithereal/react-utilities/measured';
 import {scaleLinear as linear} from 'd3-scale';
 import {max, min, sortBy} from 'lodash';
 
@@ -18,13 +18,13 @@ const SIZE = 100;
 /**
  * Main component.
  */
-@measured
+@measured({width: '100%'})
 export default class SourcesPerDirections extends Component {
   render() {
     const {data: unsorted, width} = this.props;
 
-    if (!unsorted || !width)
-      return <svg width="100%" height={0} />;
+    if (!unsorted)
+      return null;
 
     const data = sortBy(unsorted, 'name');
 

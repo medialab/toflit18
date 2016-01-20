@@ -6,7 +6,7 @@
  */
 import React, {Component} from 'react';
 import Tooltip from 'rc-tooltip';
-import measured from '../../../lib/measured';
+import measured from '@yomguithereal/react-utilities/measured';
 import {format} from 'd3-format';
 import {scaleLinear as linear} from 'd3-scale';
 import shape from 'd3-shape';
@@ -18,7 +18,7 @@ const axisFormat = format(',');
 /**
  * Main component.
  */
-@measured
+@measured({width: '100%'})
 export default class LineChart extends Component {
   render() {
     const {
@@ -28,10 +28,7 @@ export default class LineChart extends Component {
     } = this.props;
 
     if (!data.length)
-      return <svg width="100%" />;
-
-    if (!fullWidth)
-      return <svg width="100%" />;
+      return null;
 
     const lines = data.map(line => {
       return line.data.map(row => {

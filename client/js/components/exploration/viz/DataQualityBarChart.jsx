@@ -6,14 +6,14 @@
  * data is actually existing.
  */
 import React, {Component} from 'react';
-import measured from '../../../lib/measured';
+import measured from '@yomguithereal/react-utilities/measured';
 import {scaleLinear as linear} from 'd3-scale';
 import {max, range} from 'lodash';
 
 /**
  * Main component.
  */
-@measured
+@measured({width: '100%'})
 export default class DataQualityBarChart extends Component {
   render() {
 
@@ -25,8 +25,8 @@ export default class DataQualityBarChart extends Component {
           height = 60;
 
     // If no data was supplied, we don't render
-    if (!data || !width)
-      return <svg width="100%" />;
+    if (!data)
+      return null;
 
     // Computing max values
     const maxYear = data[data.length - 1].year,

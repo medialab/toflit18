@@ -4,7 +4,7 @@
   "description": "Web interface for the TOFLIT18's datascape.",
   "main": "./js/main.jsx",
   "scripts": {
-    "cards": "kotatsu serve -c webpack.config.js --progress ./js/cards",
+    "cards": "kotatsu serve -c webpack.config.js --progress --public ./ ./js/cards",
     "dev": "kotatsu serve -c webpack.config.js --progress --public ./ --index index.html"
   },
   "repository": {
@@ -42,6 +42,7 @@
     "style-loader": "^0.13.0"
   },
   "dependencies": {
+    "@yomguithereal/react-utilities": "^1.0.4",
     "baobab": "^2.3.0",
     "baobab-react": "^1.0.1",
     "browser-filesaver": "^1.1.0",
