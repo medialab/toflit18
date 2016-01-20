@@ -10,7 +10,7 @@
     "lint": "eslint -c eslint.config.js --ext .js --ext .jsx ./api ./lib ./test ./client/js --ignore-pattern ./client/js/external",
     "postinstall": "mkdir -p .output && cd client && npm install",
     "start": "kotatsu run --babel ./scripts/start.js",
-    "test": "mocha -R spec --compilers js:babel/register ./test/endpoint.js"
+    "test": "mocha -R spec --compilers js:babel-core/register ./test/endpoint.js"
   },
   "repository": {
     "type": "git",

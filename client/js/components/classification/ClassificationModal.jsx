@@ -415,15 +415,15 @@ class OperationsTable extends Component {
     const rows = operations.map((o, i) => {
       return (
         <tr key={i}>
-          {getter(o).map((item, i) => {
+          {getter(o).map((item, j) => {
             const style = {
-              width: `${sizes[i]}%`,
+              width: `${sizes[j]}%`,
               whiteSpace: 'nowrap',
               textOverflow: 'ellipsis',
               overflow: 'hidden'
             };
 
-            return <td key={i} style={style}>{item}</td>;
+            return <td key={j} style={style}>{item}</td>;
           })}
         </tr>
       );

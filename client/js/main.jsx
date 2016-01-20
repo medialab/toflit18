@@ -48,4 +48,4 @@ if (module.hot) {
   });
 }
 
-module.exports = app;
+module.exports = state;

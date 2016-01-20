@@ -2,7 +2,7 @@ import devcards from 'devcards';
 import React from 'react';
 import Button from '../components/misc/Button.jsx';
 
-var devcard = devcards.ns('Button');
+const devcard = devcards.ns('Button');
 
 const KINDS = [
   'primary',
@@ -43,7 +43,7 @@ devcard(
         <Button key={kind}
                 kind={kind}
                 style={{marginRight: '10px'}}
-                loading={true}>
+                loading>
           {kind}
         </Button>
       );
@@ -62,7 +62,7 @@ devcard(
         <Button key={kind}
                 kind={kind}
                 style={{marginRight: '10px'}}
-                disabled={true}>
+                disabled>
           {kind}
         </Button>
       );
