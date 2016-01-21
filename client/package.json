@@ -42,7 +42,7 @@
     "style-loader": "^0.13.0"
   },
   "dependencies": {
-    "@yomguithereal/react-utilities": "^1.0.4",
+    "@yomguithereal/react-utilities": "^1.1.1",
     "baobab": "^2.3.0",
     "baobab-react": "^1.0.1",
     "browser-filesaver": "^1.1.0",
