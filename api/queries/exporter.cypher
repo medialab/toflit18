@@ -38,7 +38,7 @@ RETURN c AS classification, p.slug AS parent;
 //------------------------------------------------------------------------------
 MATCH (p:Product)
 OPTIONAL MATCH (p)-[:TRANSCRIBED_FROM]->(source)
-RETURN p.name AS product, coalesce(source.name, "toflit18") AS source;
+RETURN p.name AS product, ["toflit18"] + collect(source.name) AS sources;
 
 // name: countries
 // Retrieving every source country.

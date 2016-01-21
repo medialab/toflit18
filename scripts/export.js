@@ -137,12 +137,10 @@ async.series([
           if (err) return next(err);
 
           rows = _(data)
-            .groupBy('product')
-            .values()
             .map(row => {
               return [
-                _(row).map('source').uniq().sortBy().join(','),
-                row[0].product
+                row.sources.join(','),
+                row.product
               ];
             })
             .value();
