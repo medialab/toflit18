@@ -193,7 +193,12 @@ const Model = {
           if (err4)
             return callback(err4);
 
-          return callback(null, {integrity, operations, rewires});
+          return callback(null, {
+            integrity,
+            operations,
+            rewires,
+            virtual: updatedClassification
+          });
         });
       });
     });

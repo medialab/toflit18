@@ -290,9 +290,9 @@ BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATI
 BUILDER.relate(CLASSIFICATION_NODES.country_grouped, 'BASED_ON', CLASSIFICATION_NODES.country_simplified);
 
 const OUTSIDER_SOURCES_NODES = {
-  sund: BUILDER.save({name: 'sund', type: 'Étrangère'}, 'ExternalSource'),
-  belg: BUILDER.save({name: 'belgium', type: 'Étrangère'}, 'ExternalSource'),
-  unknown: BUILDER.save({name: 'unknown', type: 'Étrangère'}, 'ExternalSource')
+  sund: BUILDER.save({name: 'sund'}, 'ExternalSource'),
+  belg: BUILDER.save({name: 'belgium'}, 'ExternalSource'),
+  unknown: BUILDER.save({name: 'unknown'}, 'ExternalSource')
 };
 
 /**
