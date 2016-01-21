@@ -290,9 +290,9 @@ BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATI
 BUILDER.relate(CLASSIFICATION_NODES.country_grouped, 'BASED_ON', CLASSIFICATION_NODES.country_simplified);
 
 const OUTSIDER_SOURCES_NODES = {
-  sund: BUILDER.save({name: 'sund', type: 'Étrangère'}, ['Source', 'ExternalSource']),
-  belg: BUILDER.save({name: 'belgium', type: 'Étrangère'}, ['Source', 'ExternalSource']),
-  unknown: BUILDER.save({name: 'unknown', type: 'Étrangère'}, ['Source', 'ExternalSource'])
+  sund: BUILDER.save({name: 'sund', type: 'Étrangère'}, 'ExternalSource'),
+  belg: BUILDER.save({name: 'belgium', type: 'Étrangère'}, 'ExternalSource'),
+  unknown: BUILDER.save({name: 'unknown', type: 'Étrangère'}, 'ExternalSource')
 };
 
 /**
@@ -658,14 +658,23 @@ function outsiderProduct(line) {
       if (source === 'unknown' && INDEXES.products[name])
         return;
 
+      const preexisting = !!INDEXES.products[name];
+
       const node = indexedNode(
-        OUTSIDER_INDEXES[source],
+        INDEXES.products,
         ['Item', 'Product', 'OutsiderItem', 'OutsiderProduct'],
         name,
         nodeData
       );
 
+      // Linking to the source only if not preexisting
+      if (!preexisting)
+        BUILDER.relate(CLASSIFICATION_NODES.product_sources, 'HAS', node);
+
+      // Linking to the external source
       BUILDER.relate(node, 'TRANSCRIBED_FROM', OUTSIDER_SOURCES_NODES[source]);
+
+      OUTSIDER_INDEXES[source][name] = true;
     }
   });
 }
@@ -727,26 +736,6 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
       BUILDER.relate(groupNode, 'AGGREGATES', itemNode);
       linkedItemIndex.add(item);
     }
-
-    if (!opts.outsiders)
-      return;
-
-    // Checking external sources
-    ['sund', 'belg', 'unknown'].forEach(function(source) {
-      const outsiderNode = OUTSIDER_INDEXES[source][item];
-
-      if (!outsiderNode)
-        return;
-
-      // Linking the group to the classification on first run
-      if (!alreadyLinked) {
-        BUILDER.relate(classificationNode, 'HAS', groupNode);
-        alreadyLinked = true;
-      }
-
-      // The group aggregates the item
-      BUILDER.relate(groupNode, 'AGGREGATES', outsiderNode);
-    });
   };
 }
 
@@ -757,7 +746,7 @@ const orthographicProduct = makeClassificationConsumer(
   INDEXES.products,
   'modified',
   'original',
-  {shouldTakeNote: true, outsiders: true}
+  {shouldTakeNote: true}
 );
 
 const simplifiedProduct = makeClassificationConsumer(
