@@ -10,10 +10,11 @@ import path from 'path';
 import fs from 'fs';
 import model from '../api/model/classification';
 import {cleanText} from '../lib/clean';
+import {rewireReport} from '../lib/patch';
 import _ from 'lodash';
 
 const INPUT = path.join(__dirname, '..', '..', 'toflit18_data', 'base', 'pierre', 'bdd_marchandises_normalisees_orthographique.csv'),
-      OUTPUT = path.join(__dirname, '..', '.output', 'review.csv'),
+      OUTPUT = path.join(__dirname, '..', '.output', 'report.csv'),
       CLASSIFICATION_ID = 2;
 
 console.log('Parsing...');
@@ -44,33 +45,53 @@ async.waterfall([
   (review, next) => {
     console.log('Reviewing...');
 
-    const headers = [
-      'cluster',
-      'before_items',
-      'after_items',
-      'orthographic_normalization',
-      'simplification',
+    const links = review.rewires[0].links;
+
+    // const reviewHeaders = [
+    //   'cluster',
+    //   'before_items',
+    //   'after_items',
+    //   'orthographic_normalization',
+    //   'simplification',
+    //   'imprimatur'
+    // ];
+
+    // const links = review
+    //   .rewires[0]
+    //   .links
+    //   .filter(link => !link.shouldExist)
+    //   .map(link => {
+
+    //     return [
+    //       link.cluster,
+    //       link.beforeItems.map(i => `[${i}]`).join(' '),
+    //       link.afterItems.map(i => `[${i}]`).join(' '),
+    //       link.group,
+    //       link.upper,
+    //       ''
+    //     ];
+    //   });
+
+    const reportHeaders = [
+      'group',
+      'uppers',
+      'items',
+      'choice',
       'imprimatur'
     ];
 
-    const links = review
-      .rewires[0]
-      .links
-      .filter(link => !link.shouldExist)
-      .map(link => {
-
-        return [
-          link.cluster,
-          link.beforeItems.map(i => `[${i}]`).join(' '),
-          link.afterItems.map(i => `[${i}]`).join(' '),
-          link.group,
-          link.upper,
-          ''
-        ];
-      });
+    const report = rewireReport(links).map(row => {
+      return [
+        row.group,
+        row.uppers.map(i => `[${i}]`).join(' '),
+        row.items.map(i => `[${i}]`).join(' '),
+        '',
+        ''
+      ];
+    });
 
     console.log('Writing...');
-    stringify([headers, ...links], {delimiter: ','}, next);
+    stringify([reportHeaders, ...report], {delimiter: ','}, next);
   },
 
   // Writing
