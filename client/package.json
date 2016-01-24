@@ -4,7 +4,7 @@
   "description": "Web interface for the TOFLIT18's datascape.",
   "main": "./js/main.jsx",
   "scripts": {
-    "cards": "kotatsu serve -c webpack.config.js --progress --public ./ ./js/cards",
+    "cards": "kotatsu serve -c webpack.config.js --progress --public ./data ./js/cards",
     "dev": "kotatsu serve -c webpack.config.js --progress --public ./ --index index.html"
   },
   "repository": {
