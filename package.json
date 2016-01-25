@@ -4,6 +4,7 @@
   "description": "TOFLIT18's datascape.",
   "main": "index.js",
   "scripts": {
+    "build": "kotatsu build server --babel ./scripts/start.js -o ./build/toflit18.js",
     "dev": "kotatsu start --progress -s --babel ./scripts/start.js",
     "export": "kotatsu run --babel -s ./scripts/export.js",
     "import": "kotatsu run --babel -s ./scripts/import.js",
