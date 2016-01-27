@@ -43,7 +43,7 @@ export default class SourcesPerDirections extends Component {
       });
     });
 
-    allYears = Array.from(allYears).filter(y => +y !== 1860);
+    allYears = Array.from(allYears);
     allFlows = Array.from(allFlows);
 
     const minYear = min(allYears),
@@ -106,10 +106,13 @@ class Direction extends Component {
     const yPos = SIZE;
 
     function renderRect(local, {year, flows}) {
-      let rectYPos = SIZE - y(flows),
-          rectHeight = y(flows),
+      let rectYPos,
+          rectHeight,
           xOffset
           ;
+
+      rectHeight = Math.max(1,y(flows));
+      rectYPos = SIZE - rectHeight;
 
       if (local) {
         xOffset = bar/4 + 2;
