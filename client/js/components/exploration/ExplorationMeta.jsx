@@ -14,8 +14,7 @@ import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 import {Row, Col} from '../misc/Grid.jsx';
 import Button from '../misc/Button.jsx';
 import {ItemSelector} from '../misc/Selectors.jsx';
-import {updateSelector as update} from '../../actions/indicators';
-import { select } from '../../actions/metadata';
+import {select} from '../../actions/metadata';
 
 @branch({
   actions: { select },
