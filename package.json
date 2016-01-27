@@ -1,6 +1,7 @@
 {
   "name": "toflit18",
   "version": "1.0.0",
+  "private": true,
   "description": "TOFLIT18's datascape.",
   "main": "index.js",
   "scripts": {

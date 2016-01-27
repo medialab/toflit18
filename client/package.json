@@ -1,6 +1,7 @@
 {
   "name": "toflit18-client",
   "version": "1.0.0",
+  "private": true,
   "description": "Web interface for the TOFLIT18's datascape.",
   "main": "./js/main.jsx",
   "scripts": {
