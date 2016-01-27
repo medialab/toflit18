@@ -13,7 +13,7 @@ import {max, min, sortBy} from 'lodash';
 /**
  * Constants.
  */
-const SIZE = 100;
+const SIZE = 120;
 
 /**
  * Main component.
@@ -106,19 +106,15 @@ class Direction extends Component {
     const yPos = SIZE;
 
     function renderRect(local, {year, flows}) {
-      let rectYPos,
-          rectHeight,
+      let rectYPos = SIZE - y(flows),
+          rectHeight = y(flows),
           xOffset
           ;
 
       if (local) {
-        rectYPos = SIZE - y(flows) - 1;
-        rectHeight = y(flows);
         xOffset = bar/4 + 2;
       }
       else {
-        rectYPos = SIZE - y(flows) - 1;
-        rectHeight = y(flows);
         xOffset = -bar/4 + 2;
       }
 
@@ -132,19 +128,30 @@ class Direction extends Component {
           <title>{`${flows} total flows (${year}) for${local?' non':''} local`}</title>
         </rect>
       );
-    }
+    };
+
+    function renderUnderline(year, i){
+      return  <rect width={bar}
+              height={1}
+              x={x(year)-1}
+              y={2}>
+        </rect>
+    };
 
     return (
       <g transform={`translate(0, ${SIZE * order})`}>
         <Axis width={width} height={SIZE} scale={x} years={allYears} />
 
         <text x={0}
-              y={yPos-SIZE/2}
+              y={yPos-SIZE/3}
               fill="black">
           {data.name}
         </text>
+
         {data.local.map(renderRect.bind(null, true))}
         {data.national.map(renderRect.bind(null, false))}
+        {allYears.map(renderUnderline)}
+
       </g>
     );
   }
@@ -189,7 +196,6 @@ class Axis extends Component {
 
     return (
       <g className="axis" transform={`translate(0, ${height + 2})`}>
-        <line x2={width} />
         {ticks.slice(0, -1).map(renderTick)}
       </g>
     );

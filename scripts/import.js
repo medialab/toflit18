@@ -133,7 +133,11 @@ const POSSIBLE_NODE_PROPERTIES = [
   'password',
   'description',
   'padding',
-  'source:boolean'
+  'source:boolean',
+  'direction',
+  'country',
+  'sourceType',
+  'product'
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -541,6 +545,16 @@ function importer(csvLine) {
 
   if (csvLine.remarks)
     nodeData.note = csvLine.remarks;
+
+  // Additional static indexed properties for convenience
+  if (csvLine.pays)
+    nodeData.country = csvLine.pays;
+  if (csvLine.direction)
+    nodeData.direction = csvLine.direction;
+  if (csvLine.marchandises)
+    nodeData.product = csvLine.marchandises;
+  if (csvLine.sourcetype)
+    nodeData.sourceType = csvLine.sourcetype;
 
   const flowNode = BUILDER.save(nodeData, 'Flow');
 
