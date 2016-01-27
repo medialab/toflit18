@@ -68,8 +68,8 @@ export default class SourcesPerDirections extends Component {
     // Rendering logic
     return (
       <svg width="100%" height={height} className="sources-per-directions">
-        <Axis width={width} height={SIZE} scale={x} years={allYears} />
-
+        <Legend x={10} y={10} label="Local" className="local-bar" />
+        <Legend x={100} y={10} label="National" className="national-bar"/>
         <g>
           {data.map((direction, i) =>
             <Direction key={direction.name}
@@ -147,6 +147,22 @@ class Direction extends Component {
         {data.national.map(renderRect.bind(null, false))}
       </g>
     );
+  }
+}
+
+/*
+ * Legend
+ */
+class Legend extends Component {
+  render() {
+    const {x, y, label, className} = this.props;
+
+    return (
+      <g>
+        <rect x={x} y={y} width="10" height="10" className={className} /> 
+        <text x={x + 50} y={y + 10} textAnchor="middle" className="legend-label">{label}</text>
+      </g>
+      )
   }
 }
 
