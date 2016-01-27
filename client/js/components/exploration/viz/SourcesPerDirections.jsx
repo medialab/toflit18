@@ -133,6 +133,7 @@ class Direction extends Component {
 
     function renderUnderline(year) {
       return (<rect width={bar}
+              key={year}
               height={1}
               x={x(year)}
               y={SIZE + 2}>
