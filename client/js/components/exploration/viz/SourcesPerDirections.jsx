@@ -128,13 +128,13 @@ class Direction extends Component {
           <title>{`${flows} total flows (${year}) for${local?' non':''} local`}</title>
         </rect>
       );
-    };
+    }
 
     function renderUnderline(year, i){
       return  <rect width={bar}
               height={1}
-              x={x(year)-1}
-              y={2}>
+              x={x(year)}
+              y={SIZE+2}>
         </rect>
     };
 
