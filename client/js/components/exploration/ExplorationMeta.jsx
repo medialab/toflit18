@@ -11,15 +11,26 @@ import {branch} from 'baobab-react/decorators';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 
+import {Row, Col} from '../misc/Grid.jsx';
+import Button from '../misc/Button.jsx';
+import {ItemSelector} from '../misc/Selectors.jsx';
+import {updateSelector as update} from '../../actions/indicators';
+import { select } from '../../actions/metadata';
+
 @branch({
+  actions: { select },
   cursors: {
     directionsPerYear: ['data', 'viz', 'directionsPerYear'],
-    sourcesPerDirections: ['data', 'viz', 'sourcesPerDirections']
+    sourcesPerDirections: ['data', 'viz', 'sourcesPerDirections'],
+    metadata: ['states','exploration','metadata']
   }
 })
+
 export default class ExplorationMeta extends Component {
   render() {
     const {
+      actions,
+      metadata,
       directionsPerYear,
       sourcesPerDirections
     } = this.props;
@@ -31,6 +42,18 @@ export default class ExplorationMeta extends Component {
           <p>
             <em>Some information about the data itself.</em>
           </p>
+          <hr />
+           <Row>
+           <SectionTitle title="Data type"
+                         addendum="Select the type of data to control." />
+            <Col md={4}>
+              <ItemSelector
+                onChange={actions.select}
+                selected={metadata.dataType}
+                type="dataType"
+              />
+            </Col>
+          </Row>
         </div>
         <div className="panel">
           {directionsPerYear ?
@@ -43,6 +66,24 @@ export default class ExplorationMeta extends Component {
            <Waiter />}
         </div>
       </div>
+    );
+  }
+}
+
+/**
+ * Section title.
+ */
+class SectionTitle extends Component {
+  render() {
+    const {title, addendum} = this.props;
+
+    return (
+      <Col md={2}>
+        <div>{title}</div>
+        <div className="section-explanation">
+          <em>{addendum}</em>
+        </div>
+      </Col>
     );
   }
 }

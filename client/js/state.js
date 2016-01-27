@@ -70,6 +70,10 @@ const defaultState = {
     // Exploration section
     exploration: {
 
+      metadata: {
+        dataType: null
+      },
+
       // Indicators view
       indicators: {
         creating: false,
