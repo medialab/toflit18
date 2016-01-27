@@ -167,10 +167,10 @@ class Legend extends Component {
 
     return (
       <g>
-        <rect x={x} y={y} width="10" height="10" className={className} /> 
+        <rect x={x} y={y} width="10" height="10" className={className}/>
         <text x={x + 50} y={y + 10} textAnchor="middle" className="legend-label">{label}</text>
       </g>
-      )
+      );
   }
 }
 
