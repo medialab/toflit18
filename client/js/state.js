@@ -70,6 +70,10 @@ const defaultState = {
     // Exploration section
     exploration: {
 
+      metadata: {
+        dataType: null
+      },
+
       // Indicators view
       indicators: {
         creating: false,
@@ -79,7 +83,8 @@ const defaultState = {
           product: null,
           country: null,
           direction: null,
-          kind: null
+          kind: null,
+          sourceType: null
         },
         groups: {
           country: [],

@@ -6,7 +6,7 @@
   "main": "./js/main.jsx",
   "scripts": {
     "build": "kotatsu build client -c webpack.config.prod.js --progress --minify",
-    "cards": "kotatsu serve -c webpack.config.js --progress --public ./data ./js/cards",
+    "cards": "kotatsu serve -c webpack.config.js --progress --public ./data -p 3001 ./js/cards",
     "dev": "kotatsu serve -c webpack.config.js --progress --public ./ --index index.html"
   },
   "repository": {

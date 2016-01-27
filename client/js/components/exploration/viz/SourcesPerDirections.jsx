@@ -13,7 +13,7 @@ import {max, min, sortBy} from 'lodash';
 /**
  * Constants.
  */
-const SIZE = 100;
+const SIZE = 120;
 
 /**
  * Main component.
@@ -43,7 +43,7 @@ export default class SourcesPerDirections extends Component {
       });
     });
 
-    allYears = Array.from(allYears).filter(y => +y !== 1860);
+    allYears = Array.from(allYears);
     allFlows = Array.from(allFlows);
 
     const minYear = min(allYears),
@@ -52,8 +52,8 @@ export default class SourcesPerDirections extends Component {
     const maxFlows = max(allFlows);
 
     // Measures & scales
-    const barWidth = width / (maxYear - minYear) - 1,
-          height = SIZE * data.length;
+    const barWidth = width / (maxYear - minYear) - 3,
+          height = SIZE * (data.length+1);
 
     const x = linear()
       .domain([minYear, maxYear])
@@ -61,13 +61,15 @@ export default class SourcesPerDirections extends Component {
 
     const y = linear()
       .domain([0, maxFlows])
-      .range([0, SIZE / 2]);
+      .range([0, SIZE]);
 
     // const yearTicks = x.ticks(3);
 
     // Rendering logic
     return (
       <svg width="100%" height={height} className="sources-per-directions">
+        <Axis width={width} height={SIZE} scale={x} years={allYears} />
+
         <g>
           {data.map((direction, i) =>
             <Direction key={direction.name}
@@ -76,7 +78,9 @@ export default class SourcesPerDirections extends Component {
                        bar={barWidth}
                        data={direction}
                        x={x}
-                       y={y} />)}
+                       y={y}
+                       allYears={allYears}
+                       />)}
         </g>
       </svg>
     );
@@ -95,51 +99,91 @@ class Direction extends Component {
       width,
       data,
       x,
-      y
+      y,
+      allYears
     } = this.props;
 
-    const yPos = SIZE / 2;
+    const yPos = SIZE;
 
     function renderRect(local, {year, flows}) {
       let rectYPos,
-          rectHeight;
+          rectHeight,
+          xOffset
+          ;
+
+      rectHeight = Math.max(1,y(flows));
+      rectYPos = SIZE - rectHeight;
 
       if (local) {
-        rectYPos = SIZE / 2 - y(flows) - 1;
-        rectHeight = y(flows);
+        xOffset = bar/4 + 2;
       }
       else {
-        rectYPos = SIZE / 2 + 1;
-        rectHeight = y(flows);
+        xOffset = -bar/4 + 2;
       }
 
       return (
         <rect key={year}
               className={`${local ? 'local' : 'national'}-bar`}
-              width={bar}
+              width={bar/2}
               height={rectHeight}
-              x={x(year)}
+              x={x(year) + xOffset}
               y={rectYPos}>
-          <title>{`${flows} total flows (${year})`}</title>
+          <title>{`${flows} total flows (${year}) for${local?' non':''} local`}</title>
         </rect>
       );
     }
 
+    function renderUnderline(year, i){
+      return  <rect width={bar}
+              height={1}
+              x={x(year)}
+              y={SIZE+2}>
+        </rect>
+    };
+
     return (
       <g transform={`translate(0, ${SIZE * order})`}>
-        <line x1={0}
-              y1={yPos}
-              x2={width}
-              y2={yPos}
-              stroke="black"
-              strokeWidth="1px" />
+        <Axis width={width} height={SIZE} scale={x} years={allYears} />
+
         <text x={0}
-              y={yPos - 25}
+              y={yPos-SIZE/3}
               fill="black">
           {data.name}
         </text>
+
         {data.local.map(renderRect.bind(null, true))}
         {data.national.map(renderRect.bind(null, false))}
+        {allYears.map(renderUnderline)}
+
+      </g>
+    );
+  }
+}
+
+
+/**
+ * Axis.
+ */
+class Axis extends Component {
+  render() {
+    const {width, height, scale} = this.props;
+
+    const ticks = scale.ticks(15);
+
+    function renderTick(t, i) {
+      const left = scale(t);
+
+      return (
+        <g key={i} className="tick" transform={`translate(${left}, 0)`}>
+          <line y2={5} x1={5} x2={5} />
+          <text y={15} x={5} textAnchor="middle">{t}</text>
+        </g>
+      );
+    }
+
+    return (
+      <g className="axis" transform={`translate(0, ${height + 2})`}>
+        {ticks.slice(0, -1).map(renderTick)}
       </g>
     );
   }
