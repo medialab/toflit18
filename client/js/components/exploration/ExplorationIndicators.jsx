@@ -138,6 +138,16 @@ class LineForm extends Component {
         </Row>
         <hr />
         <Row>
+          <SectionTitle title="Source Type"
+                        addendum="Choose your type of source to display their data" />
+          <Col md={4}>
+            <ItemSelector type="sourceType"
+                          onChange={actions.update.bind(null, 'sourceType')}
+                          selected={selectors.sourceType} />
+          </Col>
+        </Row>
+        <hr />
+        <Row>
           <Col md={2}>
             <Button kind="primary"
                     disabled={lineAlreadyExisting}
