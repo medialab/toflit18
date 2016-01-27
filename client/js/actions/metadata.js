@@ -5,11 +5,9 @@
  * Actions related to the indicators' view.
  */
 
-const ROOT = ['states','exploration','metadata'];
+const ROOT = ['states', 'exploration', 'metadata'];
 
-export function select(tree, value){
+export function select(tree, value) {
   const cursor = tree.select(ROOT);
-  cursor.set('dataType',value);
-
-  console.log(value);
+  cursor.set('dataType', value);
 }

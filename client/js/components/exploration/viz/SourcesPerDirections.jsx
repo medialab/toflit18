@@ -53,7 +53,7 @@ export default class SourcesPerDirections extends Component {
 
     // Measures & scales
     const barWidth = width / (maxYear - minYear) - 3,
-          height = SIZE * (data.length+1);
+          height = SIZE * (data.length + 1);
 
     const x = linear()
       .domain([minYear, maxYear])
@@ -68,8 +68,8 @@ export default class SourcesPerDirections extends Component {
     // Rendering logic
     return (
       <svg width="100%" height={height} className="sources-per-directions">
-        <Axis width={width} height={SIZE} scale={x} years={allYears} />
-
+        <Legend x={10} y={10} label="Local" className="local-bar" />
+        <Legend x={100} y={10} label="National" className="national-bar"/>
         <g>
           {data.map((direction, i) =>
             <Direction key={direction.name}
@@ -79,12 +79,10 @@ export default class SourcesPerDirections extends Component {
                        data={direction}
                        x={x}
                        y={y}
-                       allYears={allYears}
-                       />)}
+                       allYears={allYears} />)}
         </g>
       </svg>
     );
-
   }
 }
 
@@ -111,42 +109,42 @@ class Direction extends Component {
           xOffset
           ;
 
-      rectHeight = Math.max(1,y(flows));
+      rectHeight = Math.max(1, y(flows));
       rectYPos = SIZE - rectHeight;
 
       if (local) {
-        xOffset = bar/4 + 2;
+        xOffset = bar / 4 + 2;
       }
       else {
-        xOffset = -bar/4 + 2;
+        xOffset = - bar / 4 + 2;
       }
 
       return (
         <rect key={year}
               className={`${local ? 'local' : 'national'}-bar`}
-              width={bar/2}
+              width={bar / 2}
               height={rectHeight}
               x={x(year) + xOffset}
               y={rectYPos}>
-          <title>{`${flows} total flows (${year}) for${local?' non':''} local`}</title>
+          <title>{`${flows} total flows (${year}) for${ local ? ' non' : ''} local`}</title>
         </rect>
       );
     }
 
-    function renderUnderline(year, i){
-      return  <rect width={bar}
+    function renderUnderline(year) {
+      return (<rect width={bar}
               height={1}
               x={x(year)}
-              y={SIZE+2}>
-        </rect>
-    };
+              y={SIZE + 2}>
+        </rect>);
+    }
 
     return (
       <g transform={`translate(0, ${SIZE * order})`}>
         <Axis width={width} height={SIZE} scale={x} years={allYears} />
 
         <text x={0}
-              y={yPos-SIZE/3}
+              y={yPos - SIZE / 3}
               fill="black">
           {data.name}
         </text>
@@ -160,13 +158,29 @@ class Direction extends Component {
   }
 }
 
+/*
+ * Legend
+ */
+class Legend extends Component {
+  render() {
+    const {x, y, label, className} = this.props;
+
+    return (
+      <g>
+        <rect x={x} y={y} width="10" height="10" className={className}/>
+        <text x={x + 50} y={y + 10} textAnchor="middle" className="legend-label">{label}</text>
+      </g>
+      );
+  }
+}
+
 
 /**
  * Axis.
  */
 class Axis extends Component {
   render() {
-    const {width, height, scale} = this.props;
+    const {height, scale} = this.props;
 
     const ticks = scale.ticks(15);
 

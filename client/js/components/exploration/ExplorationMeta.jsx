@@ -12,16 +12,15 @@ import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 
 import {Row, Col} from '../misc/Grid.jsx';
-import Button from '../misc/Button.jsx';
 import {ItemSelector} from '../misc/Selectors.jsx';
 import {select} from '../../actions/metadata';
 
 @branch({
-  actions: { select },
+  actions: {select},
   cursors: {
     directionsPerYear: ['data', 'viz', 'directionsPerYear'],
     sourcesPerDirections: ['data', 'viz', 'sourcesPerDirections'],
-    metadata: ['states','exploration','metadata']
+    metadata: ['states', 'exploration', 'metadata']
   }
 })
 
@@ -49,8 +48,7 @@ export default class ExplorationMeta extends Component {
               <ItemSelector
                 onChange={actions.select}
                 selected={metadata.dataType}
-                type="dataType"
-              />
+                type="dataType"/>
             </Col>
           </Row>
         </div>
