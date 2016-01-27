@@ -61,7 +61,7 @@ export default class SourcesPerDirections extends Component {
 
     const y = linear()
       .domain([0, maxFlows])
-      .range([0, SIZE]);
+      .range([0, SIZE-15]);
 
     // const yearTicks = x.ticks(3);
 
@@ -133,6 +133,7 @@ class Direction extends Component {
 
     function renderUnderline(year) {
       return (<rect width={bar}
+              key={year}
               height={1}
               x={x(year)}
               y={SIZE + 2}>
