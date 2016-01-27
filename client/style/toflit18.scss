@@ -402,13 +402,22 @@ svg.sources-per-directions {
   line {
     shape-rendering: crispEdges;
   }
+  .axis line{
+    shape-rendering: crispEdges;
+    stroke: black;
+
+  }
+  .axis text {
+      font-size: 10px;
+    }
 
   .local-bar {
     fill: $old-blue;
   }
 
   .national-bar {
-    fill: darken($poison-blusher, 20%);
+
+    fill: $dust-sun;
   }
 }
 
