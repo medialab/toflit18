@@ -79,7 +79,8 @@ const defaultState = {
           product: null,
           country: null,
           direction: null,
-          kind: null
+          kind: null,
+          sourceType: null
         },
         groups: {
           country: [],
