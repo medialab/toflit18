@@ -66,14 +66,16 @@ const TEMPLATES = {
   product: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
   country: [{name: 'All', id: '$all$'}],
   direction: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
-  kind: [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}]
+  kind: [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}],
+  sourceType:  [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}]
 };
 
 const PLACEHOLDERS = {
   product: 'Product...',
   country: 'Country...',
   direction: 'Direction...',
-  kind: 'Import/Export...'
+  kind: 'Import/Export...',
+  sourceType: 'sourceType...'
 };
 
 const MAX_LIST_SIZE = 100;
