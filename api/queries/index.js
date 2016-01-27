@@ -4,16 +4,12 @@
  *
  * Gathering the cypher queries used by the API.
  */
-import decypher from 'decypher';
-
-const {
-  classification,
-  data,
-  exporter,
-  misc,
-  user,
-  viz
-} = decypher(__dirname);
+import classification from 'cypher!./classification.cypher';
+import data from 'cypher!./data.cypher';
+import exporter from 'cypher!./exporter.cypher';
+import misc from 'cypher!./misc.cypher';
+import user from 'cypher!./user.cypher';
+import viz from 'cypher!./viz.cypher';
 
 export {
   classification,
