@@ -61,7 +61,7 @@ export default class SourcesPerDirections extends Component {
 
     const y = linear()
       .domain([0, maxFlows])
-      .range([0, SIZE]);
+      .range([0, SIZE-15]);
 
     // const yearTicks = x.ticks(3);
 
