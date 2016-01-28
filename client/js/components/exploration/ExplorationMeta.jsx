@@ -41,15 +41,13 @@ export default class ExplorationMeta extends Component {
       sourcesPerDirections
     } = this.props;
 
-    const classificationsFiltered = classifications.product.map(e => ({
+    const classificationsFiltered = classifications.product
+      .concat(classifications.country)
+      .filter(c => c.groupsCount <= config.metadataGroupMax && !c.source)
+      .map(e => ({
         ...e,
-        name: `product : ${e.name}`
-      }))
-      .concat(classifications.country.map(e => ({
-        ...e,
-        name: `country : ${e.name}`
-      })))
-      .filter( d => d.groupsCount <= config.metadataGroupMax)
+        name: `${e.name} (${e.model === 'product' ? 'Products' : 'Countries'} - ${e.groupsCount} groups)`
+      }));
 
     return (
       <div>
