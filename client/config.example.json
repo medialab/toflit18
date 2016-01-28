@@ -3,14 +3,6 @@
   "storageKey": "toflit18",
   "metadataGroupMax": 100,
   "metadataSelectors": [
-  	{
-	 	"name": "Product",
-	 	"value": "product"
- 	},
- 	{
- 		"name": "Country", 
- 		"value": "country"
- 	},
  	{
  		"name": "Direction", 
  		"value": "direction"
