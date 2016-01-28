@@ -6,6 +6,7 @@
  * data is actually existing.
  */
 import React, {Component} from 'react';
+import Tooltip from 'rc-tooltip';
 import measured from '@yomguithereal/react-utilities/measured';
 import {scaleLinear as linear} from 'd3-scale';
 import {max, range} from 'lodash';
@@ -51,17 +52,13 @@ export default class DataQualityBarChart extends Component {
           {data.map(row => {
             return (
               <g key={row.year}>
-                <text x={x(row.year) + 5}
-                      y={y(row.data) - 5 + topMargin}
-                      style={{fontSize: '8px'}}
-                      textAnchor="middle">
-                  {row.data}
-                </text>
-                <rect className="bar"
-                      x={x(row.year)}
-                      y={y(row.data) + topMargin}
-                      width={6}
-                      height={height - y(row.data)} />
+                <Tooltip placement="top" align={{offset: [3, 0]}} overlay={row.data + ` (${row.year})`}>
+                  <rect className="bar"
+                        x={x(row.year)}
+                        y={y(row.data) + topMargin}
+                        width={6}
+                        height={height - y(row.data)} />
+                </Tooltip>
               </g>
             );
           })}
@@ -78,7 +75,7 @@ class Axis extends Component {
   render() {
     const {width, height, scale} = this.props;
 
-    const ticks = scale.ticks(15);
+    const ticks = scale.ticks();
 
     function renderTick(t, i) {
       const left = scale(t);

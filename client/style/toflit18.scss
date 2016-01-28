@@ -389,6 +389,10 @@ svg.quality-bar-chart {
     font-size: 10px;
   }
 
+  rect {
+    cursor: pointer;
+  }
+
   .bar {
     fill: darken($poison-blusher, 20%);
   }
