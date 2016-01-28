@@ -85,6 +85,18 @@ class LineForm extends Component {
         </em>
         <hr />
         <Row>
+          <SectionTitle title="Source Type"
+                        addendum="From which sources does the flows come from?" />
+          <Col md={4}>
+            <ItemSelector type="sourceType"
+                          data={sourceTypesOptions}
+                          loading={!sourceTypesOptions.length}
+                          onChange={actions.update.bind(null, 'sourceType')}
+                          selected={selectors.sourceType} />
+          </Col>
+        </Row>
+        <hr />
+        <Row>
           <SectionTitle title="Product"
                         addendum="The type of product being shipped." />
           <Col md={4}>
@@ -143,18 +155,6 @@ class LineForm extends Component {
             <ItemSelector type="kind"
                           onChange={actions.update.bind(null, 'kind')}
                           selected={selectors.kind} />
-          </Col>
-        </Row>
-        <hr />
-        <Row>
-          <SectionTitle title="Source Type"
-                        addendum="From which sources does the flows come from?" />
-          <Col md={4}>
-            <ItemSelector type="sourceType"
-                          data={sourceTypesOptions}
-                          loading={!sourceTypesOptions.length}
-                          onChange={actions.update.bind(null, 'sourceType')}
-                          selected={selectors.sourceType} />
           </Col>
         </Row>
         <hr />
