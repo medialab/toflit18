@@ -406,14 +406,19 @@ svg.sources-per-directions {
   line {
     shape-rendering: crispEdges;
   }
+
+  rect {
+    cursor: pointer;
+  }
+
   .axis line{
     shape-rendering: crispEdges;
     stroke: black;
-
   }
+
   .axis text {
-      font-size: 10px;
-    }
+    font-size: 10px;
+  }
 
   text.legend-label {
     font-size: 10px;
