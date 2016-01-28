@@ -69,7 +69,8 @@ const defaultState = {
       // Metadata view
       metadata: {
         dataType: null,
-        perYear: null
+        perYear: null,
+        flowsPerYear: null
       },
 
       // Indicators view

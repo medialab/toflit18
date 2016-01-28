@@ -8,7 +8,7 @@
 import React, {Component} from 'react';
 import measured from '@yomguithereal/react-utilities/measured';
 import {scaleLinear as linear} from 'd3-scale';
-import {max, min, sortBy} from 'lodash';
+import _, {max, min} from 'lodash';
 
 /**
  * Constants.

@@ -25,4 +25,11 @@ export function select(tree, selected) {
 
     cursor.set('perYear', data.result);
   });
+
+  tree.client.flowsPerYear({params: {type}}, function(err, data) {
+    if (err)
+      return;
+
+    cursor.set('flowsPerYear', data.result);
+  });
 }

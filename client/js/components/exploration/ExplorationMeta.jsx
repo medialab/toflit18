@@ -81,9 +81,9 @@ console.log(metadata)
             <DataQualityBarChart data={metadata.perYear} /> :
             <Waiter />}
         </div>}
-        {false && <div className="panel">
-          {sourcesPerDirections ?
-           <SourcesPerDirections data={sourcesPerDirections} /> :
+        {metadata.dataType && <div className="panel">
+          {metadata.flowsPerYear ?
+           <SourcesPerDirections data={metadata.flowsPerYear} /> :
            <Waiter />}
         </div>}
       </div>

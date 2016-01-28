@@ -37,17 +37,23 @@ const client = new Client({
 
     // Data related
     classifications: '/classification',
+
     groups: '/classification/:id/groups',
+
     directions: '/directions',
+
     search: {
       contentType: 'application/x-www-form-urlencoded',
       url: '/classification/:id/search'
     },
+
     export: '/classification/:id/export.json',
+
     review: {
       method: 'POST',
       url: '/classification/:id/:type/review'
     },
+
     commit: {
       method: 'POST',
       url: '/classification/:id/:type/commit'
@@ -59,9 +65,9 @@ const client = new Client({
       url: '/viz/:name'
     },
 
-    perYear: {
-      url: '/viz/per_year/:type'
-    },
+    perYear: '/viz/per_year/:type',
+
+    flowsPerYear: '/viz/flows_per_year/:type',
 
     network: {
       contentType: 'application/x-www-form-urlencoded',
