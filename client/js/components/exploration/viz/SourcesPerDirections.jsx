@@ -42,8 +42,6 @@ export default class SourcesPerDirections extends Component {
     allYears = Array.from(allYears);
     allFlows = Array.from(allFlows);
 
-    console.log(allFlows, allYears)
-
     const minYear = min(allYears),
           maxYear = max(allYears);
 
@@ -51,7 +49,7 @@ export default class SourcesPerDirections extends Component {
 
     // Measures & scales
     const barWidth = width / (maxYear - minYear) - 3,
-          height = SIZE * (data.length + 1);
+          height = SIZE * data.length + 30;
 
     const x = linear()
       .domain([minYear, maxYear])
@@ -59,14 +57,14 @@ export default class SourcesPerDirections extends Component {
 
     const y = linear()
       .domain([0, maxFlows])
-      .range([0, SIZE - 15]);
+      .range([0, SIZE - 25]);
 
     // const yearTicks = x.ticks(3);
 
     // Rendering logic
     return (
       <svg width="100%" height={height} className="sources-per-directions">
-        <Legend x={10} y={10} label="Local" className="local-bar" />
+        <Legend x={10} y={10} label="Number of flows" className="local-bar" />
         <g>
           {data.map((direction, i) =>
             <Direction key={direction.name}
@@ -165,7 +163,7 @@ class Legend extends Component {
     return (
       <g>
         <rect x={x} y={y} width="10" height="10" className={className}/>
-        <text x={x + 50} y={y + 10} textAnchor="middle" className="legend-label">{label}</text>
+        <text x={x + 20} y={y + 10} textAnchor="left" className="legend-label">{label}</text>
       </g>
       );
   }
