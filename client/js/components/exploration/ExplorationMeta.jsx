@@ -51,10 +51,6 @@ export default class ExplorationMeta extends Component {
       })))
       .filter( d => d.groupsCount <= config.metadataGroupMax)
 
-
-console.log(metadata)
-
-
     return (
       <div>
         <div className="panel">

@@ -31,7 +31,7 @@ export default class DataQualityBarChart extends Component {
     // Computing max values
     const maxYear = data[data.length - 1].year,
           minYear = data[0].year,
-          maxDirectionsCount = max(data.map(r => r.dataTypes.length)),
+          maxDirectionsCount = max(data.map(r => r.data)),
           allYears = range(0, maxYear - minYear + 1).map((_, i) => minYear + i);
 
     // Building scales
@@ -52,15 +52,15 @@ export default class DataQualityBarChart extends Component {
             return (
               <g key={row.year}>
                 <text x={x(row.year) + 5}
-                      y={y(row.dataTypes.length) - 5 + topMargin}
+                      y={y(row.data) - 5 + topMargin}
                       textAnchor="middle">
-                  {row.dataTypes.length}
+                  {row.data}
                 </text>
                 <rect className="bar"
                       x={x(row.year)}
-                      y={y(row.dataTypes.length) + topMargin}
+                      y={y(row.data) + topMargin}
                       width={10}
-                      height={height - y(row.dataTypes.length)} />
+                      height={height - y(row.data)} />
               </g>
             );
           })}

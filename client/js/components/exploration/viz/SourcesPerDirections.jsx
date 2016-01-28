@@ -8,7 +8,7 @@
 import React, {Component} from 'react';
 import measured from '@yomguithereal/react-utilities/measured';
 import {scaleLinear as linear} from 'd3-scale';
-import _, {max, min} from 'lodash';
+import {max, min, sortBy} from 'lodash';
 
 /**
  * Constants.
@@ -32,12 +32,8 @@ export default class SourcesPerDirections extends Component {
     let allYears = new Set(),
         allFlows = new Set();
 
-    data.forEach(({local, national}) => {
-      local.forEach(({year, flows}) => {
-        allYears.add(year);
-        allFlows.add(flows);
-      });
-      national.forEach(({year, flows}) => {
+    data.forEach(item => {
+      item.data.forEach(({year, flows}) => {
         allYears.add(year);
         allFlows.add(flows);
       });
@@ -45,6 +41,8 @@ export default class SourcesPerDirections extends Component {
 
     allYears = Array.from(allYears);
     allFlows = Array.from(allFlows);
+
+    console.log(allFlows, allYears)
 
     const minYear = min(allYears),
           maxYear = max(allYears);
@@ -69,14 +67,13 @@ export default class SourcesPerDirections extends Component {
     return (
       <svg width="100%" height={height} className="sources-per-directions">
         <Legend x={10} y={10} label="Local" className="local-bar" />
-        <Legend x={100} y={10} label="National" className="national-bar"/>
         <g>
           {data.map((direction, i) =>
             <Direction key={direction.name}
                        order={i}
                        width={width}
                        bar={barWidth}
-                       data={direction}
+                       item={direction}
                        x={x}
                        y={y}
                        allYears={allYears} />)}
@@ -95,7 +92,7 @@ class Direction extends Component {
       order,
       bar,
       width,
-      data,
+      item,
       x,
       y,
       allYears
@@ -106,8 +103,7 @@ class Direction extends Component {
     function renderRect(local, {year, flows}) {
       let rectYPos,
           rectHeight,
-          xOffset
-          ;
+          xOffset;
 
       rectHeight = Math.max(1, y(flows));
       rectYPos = SIZE - rectHeight;
@@ -116,13 +112,13 @@ class Direction extends Component {
         xOffset = bar / 4 + 2;
       }
       else {
-        xOffset = - bar / 4 + 2;
+        xOffset = -bar / 4 + 2;
       }
 
       return (
         <rect key={year}
               className={`${local ? 'local' : 'national'}-bar`}
-              width={bar / 2}
+              width={bar}
               height={rectHeight}
               x={x(year) + xOffset}
               y={rectYPos}>
@@ -132,12 +128,14 @@ class Direction extends Component {
     }
 
     function renderUnderline(year) {
-      return (<rect width={bar}
+      return (
+        <rect width={bar}
               key={year}
               height={1}
               x={x(year)}
               y={SIZE + 2}>
-        </rect>);
+        </rect>
+      );
     }
 
     return (
@@ -147,13 +145,11 @@ class Direction extends Component {
         <text x={0}
               y={yPos - SIZE / 3}
               fill="black">
-          {data.name}
+          {item.name}
         </text>
 
-        {data.local.map(renderRect.bind(null, true))}
-        {data.national.map(renderRect.bind(null, false))}
+        {item.data.map(renderRect.bind(null, true))}
         {allYears.map(renderUnderline)}
-
       </g>
     );
   }
