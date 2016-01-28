@@ -8,26 +8,30 @@ RETURN c AS classification;
 // Retrieving every classifications.
 //------------------------------------------------------------------------------
 MATCH (c:Classification)-[:CREATED_BY]->(a:User)
-OPTIONAL MATCH (c)-[:BASED_ON]->(p:Classification)
-OPTIONAL MATCH (c)-[:HAS]->(group)
-
-WITH c, a, p, count(group) AS groupsCount
+MATCH (c)-[:BASED_ON*0..1]->(p:Classification)
+WHERE id(c) <> id(p) OR NOT (c)-[:BASED_ON]->()
 OPTIONAL MATCH (p)-[:HAS]->(item)
-OPTIONAL MATCH (item)<-[ra:AGGREGATES]-(group)<-[:HAS]-(c)
+OPTIONAL MATCH (c)-[:HAS]->(group)-[:AGGREGATES]->(item)
 
-WITH c, a, p, groupsCount, collect([item, ra IS NULL]) AS items
+WITH c, a, p, collect({group: group, item: item}) AS links
 
-WITH c, a, p, groupsCount,
-  size(items) AS itemsCount,
-  size(filter(x IN items WHERE x[1])) AS unclassifiedItemsCount
+WITH
+  c,
+  a.name AS author,
+  id(p) AS parent,
+  size(filter(x IN links WHERE x.group IS NULL)) AS unclassifiedItemsCount,
+  size(links) AS itemsCount,
+  links
+
+UNWIND links AS link
 
 RETURN
   c AS classification,
-  a.name AS author,
-  id(p) AS parent,
-  groupsCount,
+  author,
+  parent,
+  unclassifiedItemsCount,
   itemsCount,
-  unclassifiedItemsCount;
+  count(DISTINCT link.group) AS groupsCount;
 
 // name: rawGroups
 // Retrieving every groups for the given classification.
