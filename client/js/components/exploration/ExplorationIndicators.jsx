@@ -240,6 +240,9 @@ function buildDescription(params) {
   if (selectors.country)
     description += ` to "${selectors.country}" (${selectors.countryClassification})`;
 
+  if (selectors.sourceType)
+    description += ` (source type: ${selectors.sourceType})`;
+
   return description;
 }
 

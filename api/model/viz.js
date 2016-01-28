@@ -192,10 +192,6 @@ const Model = {
     query.return('count(f) AS count, sum(f.value) AS value, f.year AS year');
     query.orderBy('f.year');
 
-
-    // TODO: drop
-    console.log(query.compile());
-
     database.cypher(query.build(), function(err, data) {
       if (err) return callback(err);
 
