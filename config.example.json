@@ -2,7 +2,8 @@
   "api": {
     "allowedOrigins": ["http://localhost:3000"],
     "limits": {
-      "groups": 200
+      "groups": 200,
+      "min_year":1716
     },
     "port": 4000,
     "secret": "merrain"
