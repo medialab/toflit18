@@ -59,6 +59,10 @@ const client = new Client({
       url: '/viz/:name'
     },
 
+    perYear: {
+      url: '/viz/per_year/:type'
+    },
+
     network: {
       contentType: 'application/x-www-form-urlencoded',
       url: '/viz/network/:id'

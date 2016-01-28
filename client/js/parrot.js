@@ -44,30 +44,6 @@ export default function(state, client) {
             state.set(['data', 'directions'], data.result);
           });
         }
-      },
-
-      // Sources per directions viz
-      {
-        path: ['data', 'viz', 'sourcesPerDirections'],
-        get() {
-          return client.viz({params: {name: 'sources_per_directions'}}, function(err, data) {
-            if (err) return;
-
-            state.set(['data', 'viz', 'sourcesPerDirections'], data.result);
-          });
-        }
-      },
-
-      // Directions per year viz
-      {
-        path: ['data', 'viz', 'directionsPerYear'],
-        get() {
-          return client.viz({params: {name: 'directions_per_year'}}, function(err, data) {
-            if (err) return;
-
-            state.set(['data', 'viz', 'directionsPerYear'], data.result);
-          });
-        }
       }
     ]
   });
