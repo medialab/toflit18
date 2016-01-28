@@ -50,10 +50,10 @@ const Model = {
 
       const data = _(result)
         .groupBy('dataType')
-        .mapValues(dataType_values => {
-          return dataType_values.map(e => _.pick(e,["year","flows"]))
+        .mapValues((dataType_values,key) => {
+          return {name:key,data:dataType_values.map(e => _.pick(e,["year","flows"]))}
           })
-        .value();
+        .values();
 
       return callback(null, data);
     });
@@ -65,10 +65,34 @@ const Model = {
   availableDataTypePerYear(dataType,callback) {
 
     const query = new Query();
-    query.match('(f:Flow)');
-    query.with(`collect(DISTINCT f.${dataType}) AS dataTypes, f.year AS year`);
-    query.return("year, dataTypes")
-    query.orderBy("year")
+    if(dataType==="direction"||dataType==="sourceType")
+    {
+      //direction or sourceType requested
+      query.match('(f:Flow)');
+      query.where(`has(f.${dataType})`);
+      query.with(`size(collect(DISTINCT f.${dataType})) AS data, f.year AS year`);
+      query.return("year, data")
+      query.orderBy("year")
+    }
+    else
+    {
+      // a classification
+      const [dump,classificationType,classificationId]=dataType.match(/(\w+)_(\d+)/) || [];
+      if(classificationType)
+      {
+        query.start(`n=node(${classificationId})`);
+        query.match(`(n)-[:HAS]->(gc)-[:AGGREGATES*0..]->(c:${_.capitalize(classificationType)})`);
+        query.with("gc.name AS name, c.name AS sc");
+        query.match("(f:Flow)");
+        query.where(`f.${classificationType}=sc`);
+        query.with(`size(collect(DISTINCT f.${classificationType})) AS data, f.year AS year`);
+        query.return("year, data")
+        query.orderBy("year")
+
+      }
+      else
+        through(new Error("wrong parameter"));
+    }
 
     database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
