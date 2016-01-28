@@ -46,6 +46,7 @@ const controller = [
     method: 'GET',
     validate: {
       query: {
+        sourceType: '?string',
         productClassification: '?string',
         product: '?string',
         countryClassification: '?string',
@@ -55,8 +56,7 @@ const controller = [
       }
     },
     action(req, res) {
-      const payload = mapValues(req.query, (v, k) => k !== 'kind' ? +v : v);
-
+      const payload = mapValues(req.query, (v, k) => k !== 'kind' && k !== 'sourceType'  ? +v : v);
       return model.createLine(payload, function(err, data) {
         if (err) return res.serverError(err);
 

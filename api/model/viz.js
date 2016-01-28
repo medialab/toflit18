@@ -106,6 +106,7 @@ const Model = {
    */
   createLine(params, callback) {
     const {
+      sourceType,
       direction,
       kind,
       productClassification,
@@ -176,10 +177,13 @@ const Model = {
     else if (kind === 'export')
       where.and('not(f.import)');
 
+    if (sourceType)
+      where.and(`f.sourceType = "${sourceType}"`)
     if (productClassification)
       where.and('f.product = pi.name');
     if (countryClassification)
       where.and('f.country = ci.name');
+
 
     if (where.string)
       query.where(where.string);
@@ -187,6 +191,7 @@ const Model = {
     //-- Returning data
     query.return('count(f) AS count, sum(f.value) AS value, f.year AS year');
     query.orderBy('f.year');
+
 
     // TODO: drop
     console.log(query.compile());
