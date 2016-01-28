@@ -17,7 +17,7 @@ const Model = {
    */
   flowsPerYearPerDataType(dataType,callback) {
 
-    const query = new Query();   
+    const query = new Query();
     if(dataType==="direction"||dataType==="sourceType")
     {
       //direction or sourceType requested
@@ -156,13 +156,16 @@ const Model = {
     if (countryClassification)
       where.and('f.country = ci.name');
 
-    query.where(where.string);
+    if (where.string)
+      query.where(where.string);
 
     //-- Returning data
     query.return('count(f) AS count, sum(f.value) AS value, f.year AS year');
     query.orderBy('f.year');
 
-console.log(query.compile());
+    // TODO: drop
+    console.log(query.compile());
+
     database.cypher(query.build(), function(err, data) {
       if (err) return callback(err);
 
