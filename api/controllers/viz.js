@@ -20,11 +20,11 @@ const controller = [
     }
   },
   {
-    url: '/sources_per_directions',
+    url: '/flows_per_year/:dataType',
     method: 'GET',
-    cache: 'sourcesPerDirections',
+    //cache: 'sourcesPerDirections',
     action(req, res) {
-      return model.sourcesPerDirections(function(err, data) {
+      return model.flowsPerYearPerDataType(req.params.dataType,function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);
