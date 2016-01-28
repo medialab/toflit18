@@ -6,6 +6,7 @@
  * sources per directions.
  */
 import React, {Component} from 'react';
+import Tooltip from 'rc-tooltip';
 import measured from '@yomguithereal/react-utilities/measured';
 import {scaleLinear as linear} from 'd3-scale';
 import {max, min, sortBy} from 'lodash';
@@ -113,15 +114,17 @@ class Direction extends Component {
         xOffset = -bar / 4 + 2;
       }
 
+      const tooltip = `${flows} total flows (${year})`;
+
       return (
-        <rect key={year}
-              className={`${local ? 'local' : 'national'}-bar`}
-              width={bar}
-              height={rectHeight}
-              x={x(year) + xOffset}
-              y={rectYPos}>
-          <title>{`${flows} total flows (${year}) for${ local ? ' non' : ''} local`}</title>
-        </rect>
+        <Tooltip placement="top" align={{offset: [3, 0]}} overlay={tooltip}>
+          <rect key={year}
+                className={`${local ? 'local' : 'national'}-bar`}
+                width={bar}
+                height={rectHeight}
+                x={x(year) + xOffset}
+                y={rectYPos} />
+        </Tooltip>
       );
     }
 

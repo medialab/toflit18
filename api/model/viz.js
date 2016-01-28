@@ -14,9 +14,9 @@ const {Query} = decypher;
 const Model = {
 
   /**
-   * Sources per directions.
+   * Flows per year per data type.
    */
-  flowsPerYearPerDataType(dataType,callback) {
+  flowsPerYearPerDataType(dataType, callback) {
 
     const query = new Query();
     if(dataType==="direction"||dataType==="sourceType")
@@ -61,9 +61,9 @@ const Model = {
   },
 
   /**
-   * Available directions by year.
+   * Available data per year.
    */
-  availableDataTypePerYear(dataType,callback) {
+  availableDataTypePerYear(dataType, callback) {
 
     const query = new Query();
     if(dataType==="direction"||dataType==="sourceType")
