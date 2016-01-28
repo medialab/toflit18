@@ -53,13 +53,14 @@ export default class DataQualityBarChart extends Component {
               <g key={row.year}>
                 <text x={x(row.year) + 5}
                       y={y(row.data) - 5 + topMargin}
+                      style={{fontSize: '8px'}}
                       textAnchor="middle">
                   {row.data}
                 </text>
                 <rect className="bar"
                       x={x(row.year)}
                       y={y(row.data) + topMargin}
-                      width={10}
+                      width={6}
                       height={height - y(row.data)} />
               </g>
             );
