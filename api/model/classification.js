@@ -54,11 +54,13 @@ const Model = {
       if (err) return callback(err);
 
       const classifications = results.map(row => {
+        const source = row.classification.properties.source;
+
         return {
           ...row.classification.properties,
           id: row.classification._id,
           author: row.author,
-          parent: row.parent,
+          parent: !source ? row.parent : null,
           groupsCount: row.groupsCount,
           itemsCount: row.itemsCount,
           unclassifiedItemsCount: row.unclassifiedItemsCount,
