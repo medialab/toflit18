@@ -41,11 +41,15 @@ export function expand(tree, classification) {
         current = state.get('rows'),
         query = state.get('query');
 
+  const comparedValue = classification.source ?
+    classification.itemsCount :
+    classification.groupsCount;
+
   // NOTE: this is hardcoded but can be found in the API's configuration
-  if (query && !(classification.nb_groups % 200))
+  if (query && !(comparedValue % 200))
     return;
 
-  if (classification.nb_groups <= current.length)
+  if (comparedValue <= current.length)
     return;
 
   const data = {offset: current.length};
