@@ -8,11 +8,11 @@ import {mapValues} from 'lodash';
 
 const controller = [
   {
-    url: '/directions_per_year',
+    url: '/per_year/:dataType',
     method: 'GET',
-    cache: 'directionsPerYear',
+    //cache: `perYear`,
     action(req, res) {
-      return model.availableDirectionsPerYear(function(err, data) {
+      return model.availableDataTypePerYear(req.params.dataType,function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);

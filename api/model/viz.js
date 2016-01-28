@@ -43,18 +43,17 @@ const Model = {
   /**
    * Available directions by year.
    */
-  availableDirectionsPerYear(callback) {
-    database.cypher(queries.availableDirectionsPerYear, function(err, result) {
+  availableDataTypePerYear(dataType,callback) {
+
+    const query = new Query();   
+    query.match('(f:Flow)');
+    query.with(`collect(DISTINCT f.${dataType}) AS dataTypes, f.year AS year`);
+    query.return("year, dataTypes")
+    query.orderBy("year")
+
+    database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
-
-      const data = result.map(function(row) {
-        return {
-          year: row.year,
-          directions: row.directions.map(d => ({id: d._id, name: d.properties.name}))
-        };
-      });
-
-      return callback(null, data);
+      return callback(null, result);
     });
   },
 

@@ -11,12 +11,6 @@ RETURN
   count(f) AS flows
 ORDER BY f.year;
 
-// name: availableDirectionsPerYear
-// Retrieving the list of available directions per year of the database's flows.
-//------------------------------------------------------------------------------
-MATCH (d:Direction)<-[:FROM|:TO]-(f:Flow)
-WITH collect(DISTINCT d) AS directions, f.year AS year
-RETURN year, directions ORDER BY year;
 
 // name: network
 // Building a network between directions and classified countries.
