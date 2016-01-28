@@ -15,25 +15,44 @@ const Model = {
   /**
    * Sources per directions.
    */
-  sourcesPerDirections(callback) {
-    database.cypher(queries.sourcesPerDirections, function(err, result) {
+  flowsPerYearPerDataType(dataType,callback) {
+
+    const query = new Query();
+    if(dataType==="direction"||dataType==="sourceType")
+    {
+      //direction or sourceType requested
+      query.match("(f:Flow)")
+      query.where(`has(f.${dataType})`)
+      query.return(`f.${dataType} AS dataType, f.year AS year,count(f) AS flows`)
+      query.orderBy(`f.year,dataType`)
+    }
+    else
+    {
+      // a classification
+      const [dump,classificationType,classificationId]=dataType.match(/(\w+)_(\d+)/) || [];
+      if(classificationType)
+      {
+        query.start(`n=node(${classificationId})`);
+        query.match(`(n)-[:HAS]->(gc)-[:AGGREGATES*0..]->(c:${_.capitalize(classificationType)})`);
+        query.with("gc.name AS name, c.name AS sc");
+        query.match("(f:Flow)");
+        query.where(`f.${classificationType} = sc`);
+        query.return("name AS dataType,count(f) AS flows,f.year AS year");
+        query.orderBy(`f.year,dataType`);
+
+      }
+      else
+        through(new Error("wrong parameter"));
+    }
+
+    database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
 
       const data = _(result)
-        .groupBy('direction')
-        .mapValues((v, name) => {
-          const values = _(v)
-            .groupBy('type')
-            .mapValues(type => type.map(r => _.pick(r, ['year', 'flows'])))
-            .value();
-
-          return {
-            name,
-            ...({local: [], national: []}),
-            ...values
-          };
-        })
-        .values()
+        .groupBy('dataType')
+        .mapValues(dataType_values => {
+          return dataType_values.map(e => _.pick(e,["year","flows"]))
+          })
         .value();
 
       return callback(null, data);
@@ -45,7 +64,7 @@ const Model = {
    */
   availableDataTypePerYear(dataType,callback) {
 
-    const query = new Query();   
+    const query = new Query();
     query.match('(f:Flow)');
     query.with(`collect(DISTINCT f.${dataType}) AS dataTypes, f.year AS year`);
     query.return("year, dataTypes")
@@ -61,52 +80,91 @@ const Model = {
    * Line creation.
    */
   createLine(params, callback) {
+    const {
+      direction,
+      kind,
+      productClassification,
+      product,
+      countryClassification,
+      country
+    } = params;
 
     // Building the query
-    const query = new Query();
+    const query = new Query(),
+          init = query.segment(),
+          withs = [],
+          starts = [];
 
-    // TODO: refactor
+    // TODO: refactor and move to decypher?
+    const Where = function() {
+      this.string = '';
 
-    //-- Do we need to match both a country and a product?
-    if (params.country && params.product) {
-      query.start('c=node({country}), p=node({product})', {
-        country: params.country,
-        product: params.product
-      });
+      this.and = function(clause) {
+        if (this.string)
+          this.string += ' AND ';
+        this.string += clause;
+      };
+    };
 
-      query.match('(d:Direction)<-[:FROM|:TO]-(f:Flow)');
-      query.where('(f)-[:FROM|:TO]->(:Country)<-[:AGGREGATES*0..]-(c) AND (f)-[:OF]->(:Product)<-[:AGGREGATES*0..]-(p)');
+    const where = new Where();
+
+    //-- Do we need to match a product?
+    if (productClassification) {
+      starts.push('pc=node({productClassification})');
+      query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*1..]->(pi)');
+
+      if (product)
+        query.where('id(pg) = {product}', {product});
+
+      withs.push('pi');
+      query.with('pi');
     }
 
-    //-- Do we need to match only a country
-    else if (params.country) {
-      query.start('c=node({country})', {country: params.country});
-      query.match('(d:Direction)<-[:FROM|:TO]-(f:Flow)-[:FROM|:TO]->(:Country)<-[:AGGREGATES*0..]-(c)');
+    //-- Do we need to match a country?
+    if (countryClassification) {
+      starts.push('cc=node({countryClassification})');
+      query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*1..]->(ci)');
+
+      if (country)
+        query.where('id(cg) = {country}', {country});
+
+      query.with(withs.concat('ci').join(', '));
     }
 
-    //-- Do we need to match only a product
-    else if (params.product) {
-      query.start('p=node({product})', {product: params.product});
-      query.match('(d:Direction)<-[:FROM|:TO]-(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*0..]-(p)');
-    }
+    if (starts.length)
+      init.start(starts, {productClassification, countryClassification});
 
-    else {
-      query.match('(d:Direction)<-[:FROM|:TO]-(f:Flow)');
-    }
+    //-- Basic match
+    query.match('(f:Flow)');
 
     //-- Should we match a precise direction?
-    if (params.direction && params.direction !== '$all$')
-      query.where('id(d) = {direction}', {direction: params.direction});
+    if (direction && direction !== '$all$') {
+      query.match('(d:Direction)');
+      where.and('id(d) = {direction}');
+      where.and('f.direction = d.name');
+      query.params({direction});
+    }
 
     //-- Import/Export
-    if (params.kind === 'import')
-      query.where('f.import');
-    else if (params.kind === 'export')
-      query.where('not(f.import)');
+    if (kind === 'import')
+      where.and('f.import');
+    else if (kind === 'export')
+      where.and('not(f.import)');
+
+    if (productClassification)
+      where.and('f.product = pi.name');
+    if (countryClassification)
+      where.and('f.country = ci.name');
+
+    if (where.string)
+      query.where(where.string);
 
     //-- Returning data
     query.return('count(f) AS count, sum(f.value) AS value, f.year AS year');
     query.orderBy('f.year');
+
+    // TODO: drop
+    console.log(query.compile());
 
     database.cypher(query.build(), function(err, data) {
       if (err) return callback(err);
