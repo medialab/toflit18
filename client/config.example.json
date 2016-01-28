@@ -1,0 +1,15 @@
+{
+  "endpoint": "http://localhost:4000",
+  "storageKey": "toflit18",
+  "metadataGroupMax": 100,
+  "metadataSelectors": [
+    {
+      "name": "Direction",
+      "value": "direction"
+    },
+    {
+      "name": "Source Type",
+      "value": "sourceType"
+    }
+  ]
+}

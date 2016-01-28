@@ -17,7 +17,7 @@ import {select} from '../../actions/metadata';
 
 import config from '../../../config.json';
 
-const metadataSelectors = config.metadataSelectors.map(option => {
+const metadataSelectors = (config.metadataSelectors || []).map(option => {
   return {
     ...option,
     special: true
@@ -27,13 +27,10 @@ const metadataSelectors = config.metadataSelectors.map(option => {
 @branch({
   actions: {select},
   cursors: {
-    directionsPerYear: ['data', 'viz', 'directionsPerYear'],
-    sourcesPerDirections: ['data', 'viz', 'sourcesPerDirections'],
     metadata: ['states', 'exploration', 'metadata'],
     classifications: ['data', 'classifications', 'flat']
   }
 })
-
 export default class ExplorationMeta extends Component {
   render() {
     const {
@@ -54,12 +51,14 @@ export default class ExplorationMeta extends Component {
       })))
       .filter( d => d.groupsCount <= config.metadataGroupMax)
 
-    console.log("classificationsFiltered", classificationsFiltered)
+
+console.log(metadata)
+
 
     return (
       <div>
         <div className="panel">
-          <h3>Metadata</h3>
+          <h4>Metadata</h4>
           <p>
             <em>Some information about the data itself.</em>
           </p>
@@ -77,16 +76,16 @@ export default class ExplorationMeta extends Component {
             </Col>
           </Row>
         </div>
-        <div className="panel">
-          {directionsPerYear ?
-            <DataQualityBarChart data={directionsPerYear} /> :
+        {metadata.dataType && <div className="panel">
+          {metadata.perYear ?
+            <DataQualityBarChart data={metadata.perYear} /> :
             <Waiter />}
-        </div>
-        <div className="panel">
+        </div>}
+        {false && <div className="panel">
           {sourcesPerDirections ?
            <SourcesPerDirections data={sourcesPerDirections} /> :
            <Waiter />}
-        </div>
+        </div>}
       </div>
     );
   }

@@ -7,7 +7,22 @@
 
 const ROOT = ['states', 'exploration', 'metadata'];
 
-export function select(tree, value) {
+/**
+ * Selecting a data type.
+ */
+export function select(tree, selected) {
   const cursor = tree.select(ROOT);
-  cursor.set('dataType', value);
+  cursor.set('dataType', selected);
+
+  // Loading data from server
+  const type = selected.id ?
+    `${selected.model}_${selected.id}` :
+    selected.value;
+
+  tree.client.perYear({params: {type}}, function(err, data) {
+    if (err)
+      return;
+
+    cursor.set('perYear', data.result);
+  });
 }
