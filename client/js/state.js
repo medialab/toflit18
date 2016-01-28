@@ -20,11 +20,7 @@ const defaultState = {
       flat: monkey(['.', 'raw'], flatClassifications),
       index: monkey(['.', 'flat'], classificationsIndex)
     },
-    directions: null,
-    viz: {
-      directionsPerYear: null,
-      sourcesPerDirections: null
-    }
+    directions: null
   },
 
   // Some generic UI flags
@@ -70,8 +66,10 @@ const defaultState = {
     // Exploration section
     exploration: {
 
+      // Metadata view
       metadata: {
-        dataType: null
+        dataType: null,
+        perYear: null
       },
 
       // Indicators view

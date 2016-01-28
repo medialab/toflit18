@@ -101,7 +101,7 @@ function indexedNode(index, label, key, data) {
  * Paths
  */
 const ROOT_PATH = '/base',
-      BDD_CENTRALE_PATH = ROOT_PATH + '/base_centrale/bdd_centrale.csv',
+      BDD_CENTRALE_PATH = ROOT_PATH + '/bdd_centrale.csv',
       BDD_OUTSIDERS = ROOT_PATH + '/marchandises_sourcees.csv',
       BDD_UNITS = ROOT_PATH + '/Units N1.csv',
       ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
