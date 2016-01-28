@@ -15,25 +15,44 @@ const Model = {
   /**
    * Sources per directions.
    */
-  sourcesPerDirections(callback) {
-    database.cypher(queries.sourcesPerDirections, function(err, result) {
+  flowsPerYearPerDataType(dataType,callback) {
+
+    const query = new Query();   
+    if(dataType==="direction"||dataType==="sourceType")
+    {
+      //direction or sourceType requested
+      query.match("(f:Flow)")
+      query.where(`has(f.${dataType})`)
+      query.return(`f.${dataType} AS dataType, f.year AS year,count(f) AS flows`)
+      query.orderBy(`f.year,dataType`)
+    }
+    else
+    {
+      // a classification
+      const [dump,classificationType,classificationId]=dataType.match(/(\w+)_(\d+)/) || [];
+      if(classificationType)
+      {
+        query.start(`n=node(${classificationId})`);
+        query.match(`(n)-[:HAS]->(gc)-[:AGGREGATES*0..]->(c:${_.capitalize(classificationType)})`);
+        query.with("gc.name AS name, c.name AS sc");
+        query.match("(f:Flow)");
+        query.where(`f.${classificationType} = sc`);
+        query.return("name AS dataType,count(f) AS flows,f.year AS year");
+        query.orderBy(`f.year,dataType`);
+
+      }
+      else
+        through(new Error("wrong parameter"));
+    }
+
+    database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
 
       const data = _(result)
-        .groupBy('direction')
-        .mapValues((v, name) => {
-          const values = _(v)
-            .groupBy('type')
-            .mapValues(type => type.map(r => _.pick(r, ['year', 'flows'])))
-            .value();
-
-          return {
-            name,
-            ...({local: [], national: []}),
-            ...values
-          };
-        })
-        .values()
+        .groupBy('dataType')
+        .mapValues(dataType_values => {
+          return dataType_values.map(e => _.pick(e,["year","flows"]))
+          })
         .value();
 
       return callback(null, data);
