@@ -14,6 +14,10 @@ export function select(tree, selected) {
   const cursor = tree.select(ROOT);
   cursor.set('dataType', selected);
 
+  // Deleting previous data
+  cursor.set('perYear', null);
+  cursor.set('flowsPerYear', null);
+
   // Loading data from server
   const type = selected.id ?
     `${selected.model}_${selected.id}` :

@@ -8,11 +8,16 @@ import {mapValues} from 'lodash';
 
 const controller = [
   {
-    url: '/per_year/:dataType',
+    url: '/per_year/:type',
     method: 'GET',
-    //cache: `perYear`,
+    cache: {
+      key: 'perYear',
+      hasher(req) {
+        return req.params.type;
+      }
+    },
     action(req, res) {
-      return model.availableDataTypePerYear(req.params.dataType,function(err, data) {
+      return model.availableDataTypePerYear(req.params.type,function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);
@@ -20,11 +25,16 @@ const controller = [
     }
   },
   {
-    url: '/flows_per_year/:dataType',
+    url: '/flows_per_year/:type',
     method: 'GET',
-    //cache: 'sourcesPerDirections',
+    cache: {
+      key: 'flowsPerYear',
+      hasher(req) {
+        return req.params.type;
+      }
+    },
     action(req, res) {
-      return model.flowsPerYearPerDataType(req.params.dataType,function(err, data) {
+      return model.flowsPerYearPerDataType(req.params.type,function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);
