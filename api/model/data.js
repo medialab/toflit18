@@ -14,6 +14,17 @@ const Model = {
    */
   directions(callback) {
     return database.cypher(queries.directions, callback);
+  },
+
+  /**
+   * Source types.
+   */
+  sourceTypes(callback) {
+    return database.cypher(queries.sourceTypes, function(err, result) {
+      if (err) return callback(err);
+
+      return callback(null, result.map(row => row.type));
+    });
   }
 };
 

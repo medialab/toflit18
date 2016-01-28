@@ -44,6 +44,18 @@ export default function(state, client) {
             state.set(['data', 'directions'], data.result);
           });
         }
+      },
+
+      // Accessing the source types' list
+      {
+        path: ['data', 'sourceTypes'],
+        get() {
+          return client.sourceTypes(function(err, data) {
+            if (err) return;
+
+            state.set(['data', 'sourceTypes'], data.result);
+          });
+        }
       }
     ]
   });

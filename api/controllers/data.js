@@ -16,6 +16,18 @@ const controller = [
         return res.ok(directions);
       });
     }
+  },
+  {
+    url: '/source_types',
+    method: 'GET',
+    cache: 'sourceTypes',
+    action(req, res) {
+      model.sourceTypes(function(err, sourceTypes) {
+        if (err) return res.serverError(err);
+
+        return res.ok(sourceTypes);
+      });
+    }
   }
 ];
 

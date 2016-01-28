@@ -20,7 +20,8 @@ const defaultState = {
       flat: monkey(['.', 'raw'], flatClassifications),
       index: monkey(['.', 'flat'], classificationsIndex)
     },
-    directions: null
+    directions: null,
+    sourceTypes: null
   },
 
   // Some generic UI flags

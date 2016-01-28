@@ -42,6 +42,8 @@ const client = new Client({
 
     directions: '/directions',
 
+    sourceTypes: '/source_types',
+
     search: {
       contentType: 'application/x-www-form-urlencoded',
       url: '/classification/:id/search'

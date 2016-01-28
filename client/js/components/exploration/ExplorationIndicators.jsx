@@ -33,6 +33,7 @@ import {
   cursors: {
     classifications: ['data', 'classifications', 'flat'],
     directions: ['data', 'directions'],
+    sourceTypes: ['data', 'sourceTypes'],
     state: ['states', 'exploration', 'indicators']
   }
 })
@@ -57,6 +58,7 @@ class LineForm extends Component {
       actions,
       classifications,
       directions,
+      sourceTypes,
       state: {
         creating,
         groups,
@@ -66,6 +68,13 @@ class LineForm extends Component {
     } = this.props;
 
     const lineAlreadyExisting = lines.some(line => isEqual(line.params, selectors));
+
+    const sourceTypesOptions = (sourceTypes || []).map(type => {
+      return {
+        name: type,
+        value: type
+      };
+    });
 
     return (
       <div className="panel">
@@ -139,9 +148,11 @@ class LineForm extends Component {
         <hr />
         <Row>
           <SectionTitle title="Source Type"
-                        addendum="Choose your type of source to display their data" />
+                        addendum="From which sources does the flows come from?" />
           <Col md={4}>
             <ItemSelector type="sourceType"
+                          data={sourceTypesOptions}
+                          loading={!sourceTypesOptions.length}
                           onChange={actions.update.bind(null, 'sourceType')}
                           selected={selectors.sourceType} />
           </Col>
