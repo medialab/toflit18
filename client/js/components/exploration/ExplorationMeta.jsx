@@ -15,12 +15,15 @@ import {Row, Col} from '../misc/Grid.jsx';
 import {ItemSelector} from '../misc/Selectors.jsx';
 import {select} from '../../actions/metadata';
 
+import config from '../../../config.json';
+
 @branch({
   actions: {select},
   cursors: {
     directionsPerYear: ['data', 'viz', 'directionsPerYear'],
     sourcesPerDirections: ['data', 'viz', 'sourcesPerDirections'],
-    metadata: ['states', 'exploration', 'metadata']
+    metadata: ['states', 'exploration', 'metadata'],
+    classifications: ['data', 'classifications', 'flat']
   }
 })
 
@@ -28,10 +31,15 @@ export default class ExplorationMeta extends Component {
   render() {
     const {
       actions,
+      classifications,
       metadata,
       directionsPerYear,
       sourcesPerDirections
     } = this.props;
+
+    const classificationsFiltered = classifications.product
+      .concat(classifications.country)
+      .filter( d => d.groupsCount <= config.metadataGroupMax)
 
     return (
       <div>
@@ -46,8 +54,10 @@ export default class ExplorationMeta extends Component {
                          addendum="Select the type of data to control." />
             <Col md={4}>
               <ItemSelector
+                data={[...config.metadataSelectors, ...classificationsFiltered]}
                 onChange={actions.select}
                 selected={metadata.dataType}
+                loading={!classifications.product.length}
                 type="dataType"/>
             </Col>
           </Row>

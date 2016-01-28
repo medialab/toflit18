@@ -67,8 +67,7 @@ const TEMPLATES = {
   country: [{name: 'All', id: '$all$'}],
   direction: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
   kind: [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}],
-  sourceType: [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}],
-  dataType: [{name: 'Product', id: 'Product'}, {name: 'Country', id: 'Country'}, {name: 'Direction', id: 'Direction'}, {name: 'Kind', id: 'Kind'}, {name: 'Source Type', id: 'SourceType'}]
+  sourceType: [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}]
 };
 
 const PLACEHOLDERS = {
@@ -76,8 +75,7 @@ const PLACEHOLDERS = {
   country: 'Country...',
   direction: 'Direction...',
   kind: 'Import/Export...',
-  sourceType: 'sourceType...',
-  dataType: 'dataType...'
+  sourceType: 'sourceType...'
 };
 
 const MAX_LIST_SIZE = 100;
@@ -92,7 +90,7 @@ export class ItemSelector extends Component {
 
     const type = props.type;
 
-    this.compulsoryOptions = TEMPLATES[type].map(o => ({...o, special: true}));
+    this.compulsoryOptions = (TEMPLATES[type] || []).map(o => ({...o, special: true}));
   }
 
   search(input, callback) {
