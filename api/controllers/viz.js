@@ -17,7 +17,7 @@ const controller = [
       }
     },
     action(req, res) {
-      return model.availableDataTypePerYear(req.params.type,function(err, data) {
+      return model.availableDataTypePerYear(req.params.type, function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);
@@ -34,7 +34,7 @@ const controller = [
       }
     },
     action(req, res) {
-      return model.flowsPerYearPerDataType(req.params.type,function(err, data) {
+      return model.flowsPerYearPerDataType(req.params.type, function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);
@@ -56,7 +56,10 @@ const controller = [
       }
     },
     action(req, res) {
-      const payload = mapValues(req.query, (v, k) => k !== 'kind' && k !== 'sourceType'  ? +v : v);
+      const payload = mapValues(req.query, (v, k) => {
+        return k !== 'kind' && k !== 'sourceType' ? +v : v;
+      });
+
       return model.createLine(payload, function(err, data) {
         if (err) return res.serverError(err);
 
