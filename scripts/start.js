@@ -1,3 +1,4 @@
+/* eslint no-console: 0 */
 /**
  * TOFLIT18 Start Script
  * ======================
@@ -7,8 +8,9 @@
 import http from 'http';
 import {api as config} from '../config.json';
 
-let app = require('../api/app.js').default,
-    server = http.createServer(app);
+let app = require('../api/app.js').default;
+
+const server = http.createServer(app);
 
 server.listen(config.port);
 

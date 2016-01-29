@@ -1,3 +1,4 @@
+/* eslint no-console: 0 */
 /**
  * TOFLIT18 Export Script
  * =======================
@@ -5,7 +6,6 @@
  * Script aiming at exporting raw CSV data from the datascape's Neo4j database.
  */
 import database from '../api/connection';
-import {indices as queries} from '../api/queries';
 import async from 'async';
 
 console.log('Creating indices in the Neo4j database...');
@@ -19,19 +19,19 @@ const indices = [
   'import'
 ];
 
-async.eachSeries(indices, function(prop,next) {
+async.eachSeries(indices, function(prop, next) {
   database.cypher(
     {
-      query:`CREATE INDEX ON :Flow(${prop});`,
+      query: `CREATE INDEX ON :Flow(${prop});`,
     },
-    function(err, results) {
+    function(err) {
       if (err) return next(err);
 
       console.log(`  -- Index on :flow(${prop}) created!`);
 
       return next();
-    });
-  }, function(err){
-    if(err) console.log(err);
-  }
-);
+    }
+  );
+}, function(err) {
+  if (err) console.error(err);
+});
