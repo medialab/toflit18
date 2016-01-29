@@ -10,14 +10,13 @@ import {exporter as queries} from '../api/queries';
 import {parse, stringify} from 'csv';
 import async from 'async';
 import {default as h} from 'highland';
-import _, {fill, indexBy, omit, uniq} from 'lodash';
+import _, {fill, indexBy, uniq} from 'lodash';
 import fs from 'fs';
 
 /**
  * Useful constants
  */
 const LIMIT = 10000;
-const ASYNC_NOOP = next => next();
 
 const SOURCES_HEADERS = [
   'line',
@@ -74,15 +73,15 @@ async.series([
         console.log(`  -- Sources batch done (${batches})!`);
 
         for (let i = 0, l = data.length; i < l; i++) {
-          let flow = data[i].flow.properties,
-              product = data[i].product,
-              source = data[i].source.properties,
-              operator = data[i].operator,
-              transcription = data[i].transcription.properties,
-              country = data[i].country,
-              direction = data[i].direction,
-              office = data[i].office,
-              origin = data[i].origin;
+          const flow = data[i].flow.properties,
+                product = data[i].product,
+                source = data[i].source.properties,
+                operator = data[i].operator,
+                transcription = data[i].transcription.properties,
+                country = data[i].country,
+                direction = data[i].direction,
+                office = data[i].office,
+                origin = data[i].origin;
 
           sourcesStream.write([
             transcription.line,
@@ -167,7 +166,7 @@ async.series([
             for (let i = 0, l = rows.length; i < l; i++) {
               const row = rows[i],
                     sourceProduct = row[1],
-                    matching = index[sourceProduct] || {};
+                    matching = index[sourceProduct] || {};
 
               row.push(matching.group);
             }
@@ -266,17 +265,19 @@ async.series([
   function oneByOneClassification(callback) {
     console.log('Creating one file per classification');
 
-    database.cypher({query: queries.classifications, params: {models: ['country', 'product']}}, function(err, data) {
-      if (err) return callback(err);
+    database.cypher({query: queries.classifications, params: {models: ['country', 'product']}}, function(err1, data) {
+      if (err1) return callback(err1);
 
       const classifications = data.map(e => (e.classification.properties.parent = e.parent) && e.classification);
 
       async.eachSeries(classifications, function(classification, next) {
-        database.cypher({query: queries.classifiedItems, params: {id: classification._id}}, function(err, rows) {
-          if (err) return callback(err);
+        database.cypher({query: queries.classifiedItems, params: {id: classification._id}}, function(err2, rows) {
+          if (err2) return callback(err2);
 
-          let stream = h(),
-              {model, slug, parent} = classification.properties;
+          const stream = h(),
+                {model, slug} = classification.properties;
+
+          let parent = classification.properties.parent;
 
           if (parent === 'sources')
             parent = model;
@@ -285,7 +286,7 @@ async.series([
 
           stream
             .pipe(stringify({delimiter: ','}))
-            .pipe(fs.createWriteStream(filename,'utf-8'));
+            .pipe(fs.createWriteStream(filename, 'utf-8'));
 
           stream.write([parent, slug, 'note']);
 
@@ -343,15 +344,15 @@ async.series([
           // NOTE: bad hard-coded indexes are bad.
           if (head) {
             writeStream.write(line
-              .concat(classifications.products[0].slice(2).map(h => 'product_' + h))
-              .concat(classifications.countries[0].slice(1).map(h => 'country_' + h))
+              .concat(classifications.products[0].slice(2).map(n => 'product_' + n))
+              .concat(classifications.countries[0].slice(1).map(n => 'country_' + n))
             );
             head = false;
           }
           else {
             writeStream.write(line
               .concat((indexes.products[line[6]] || productPadding).slice(2))
-              .concat((indexes.countries[line[18]] || countryPadding).slice(1))
+              .concat((indexes.countries[line[18]] || countryPadding).slice(1))
             );
           }
         })
