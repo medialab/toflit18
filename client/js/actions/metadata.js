@@ -23,7 +23,7 @@ export function select(tree, selected) {
     `${selected.model}_${selected.id}` :
     selected.value;
 
-  tree.client.perYear({params: {type}}, function(err, data) {
+  tree.client.perYear({params: {type}}, function(err, data) {
     if (err)
       return;
 

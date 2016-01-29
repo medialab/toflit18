@@ -17,7 +17,7 @@ import {select} from '../../actions/metadata';
 
 import config from '../../../config.json';
 
-const metadataSelectors = (config.metadataSelectors || []).map(option => {
+const metadataSelectors = (config.metadataSelectors || []).map(option => {
   return {
     ...option,
     special: true
@@ -36,9 +36,7 @@ export default class ExplorationMeta extends Component {
     const {
       actions,
       classifications,
-      metadata,
-      directionsPerYear,
-      sourcesPerDirections
+      metadata
     } = this.props;
 
     const classificationsFiltered = classifications.product
