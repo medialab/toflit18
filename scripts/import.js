@@ -10,86 +10,12 @@ import {argv} from 'yargs';
 import async from 'async';
 import {parse as parseCsv, stringify as stringifyCsv} from 'csv';
 import {default as h} from 'highland';
-import {db as dbConfig, api as apiConfig} from '../config.json';
+import {api as apiConfig} from '../config.json';
 import {hash} from '../lib/crypto';
 import {normalizeYear} from '../lib/republican_calendar';
 import {cleanText, cleanNumber} from '../lib/clean';
 import fs from 'fs';
 import _ from 'lodash';
-
-/**
- * Helpers
- * ========
- *
- * Miscellaneous utilities used by the script.
- */
-
-/**
- * Builder class
- */
-class Builder {
-  constructor() {
-
-    const nodesWriteStream = fs.createWriteStream('./.output/nodes.csv', 'utf-8'),
-          edgesWriteStream = fs.createWriteStream('./.output/edges.csv', 'utf-8');
-
-    // Properties
-    this.nodesCount = 0;
-    this.nodesStream = h();
-    this.edgesStream = h();
-
-    // Piping
-    this.nodesStream
-      .pipe(stringifyCsv({delimiter: ','}))
-      .pipe(nodesWriteStream);
-
-    this.edgesStream
-      .pipe(stringifyCsv({delimiter: ','}))
-      .pipe(edgesWriteStream);
-
-    // Writing headers
-    this.nodesStream.write(NODE_PROPERTIES_TYPES.concat(':LABEL', ':ID'));
-    this.edgesStream.write([':START_ID', ':END_ID', ':TYPE', 'line:int', 'sheet:int']);
-  }
-
-  save(data, label) {
-    const row = _({})
-      .merge(_.mapValues(NODE_PROPERTIES_MAPPING, x => ''))
-      .merge(data)
-      .pairs()
-      .sortBy(e => NODE_PROPERTIES_MAPPING[e[0]])
-      .map(e => e[1])
-      .concat([[].concat(label || []).join(';'), this.nodesCount])
-      .value();
-
-    this.nodesStream.write(row);
-
-    return this.nodesCount++;
-  }
-
-  relate(source, predicate, target, data) {
-    const row = [source, target, predicate];
-
-    if (data)
-      row.push(data.line || '', data.sheet || '');
-
-    this.edgesStream.write(row);
-  }
-}
-
-/**
- * Index creation function
- */
-function indexedNode(index, label, key, data) {
-  let node = index[key];
-  if (!node) {
-    node = BUILDER.save(data, label);
-    index[key] = node;
-  }
-
-  return node;
-}
-
 
 /**
  * Initialization
@@ -159,11 +85,87 @@ if (!DATA_PATH)
 console.log('Reading csv files from "' + DATA_PATH + '"');
 
 /**
- * Basic instantiation
+ * Helpers
+ * ========
+ *
+ * Miscellaneous utilities used by the script.
  */
+
+/**
+ * Builder class
+ */
+class Builder {
+  constructor() {
+
+    const nodesWriteStream = fs.createWriteStream('./.output/nodes.csv', 'utf-8'),
+          edgesWriteStream = fs.createWriteStream('./.output/edges.csv', 'utf-8');
+
+    // Properties
+    this.nodesCount = 0;
+    this.nodesStream = h();
+    this.edgesStream = h();
+
+    // Piping
+    this.nodesStream
+      .pipe(stringifyCsv({delimiter: ','}))
+      .pipe(nodesWriteStream);
+
+    this.edgesStream
+      .pipe(stringifyCsv({delimiter: ','}))
+      .pipe(edgesWriteStream);
+
+    // Writing headers
+    this.nodesStream.write(NODE_PROPERTIES_TYPES.concat(':LABEL', ':ID'));
+    this.edgesStream.write([':START_ID', ':END_ID', ':TYPE', 'line:int', 'sheet:int']);
+  }
+
+  save(data, label) {
+    const row = _({})
+      .merge(_.mapValues(NODE_PROPERTIES_MAPPING, () => ''))
+      .merge(data)
+      .pairs()
+      .sortBy(e => NODE_PROPERTIES_MAPPING[e[0]])
+      .map(e => e[1])
+      .concat([[].concat(label || []).join(';'), this.nodesCount])
+      .value();
+
+    this.nodesStream.write(row);
+
+    return this.nodesCount++;
+  }
+
+  relate(source, predicate, target, data) {
+    const row = [source, target, predicate];
+
+    if (data)
+      row.push(data.line || '', data.sheet || '');
+
+    this.edgesStream.write(row);
+  }
+}
 
 // Creating the builder
 const BUILDER = new Builder();
+
+/**
+ * Index creation function
+ */
+function indexedNode(index, label, key, data) {
+  let node = index[key];
+  if (!node) {
+    node = BUILDER.save(data, label);
+    index[key] = node;
+  }
+
+  return node;
+}
+
+/**
+ * Data Hydratation
+ * =================
+ *
+ * Scaffolding the necessary nodes and indexes so we can start the import.
+ */
 
 // Creating the TOFLIT18 user
 const TOFLIT18_USER = BUILDER.save({
@@ -301,187 +303,12 @@ const OUTSIDER_SOURCES_NODES = {
 };
 
 /**
- * Process
- * ========
+ * Consumers
+ * ==========
  *
- * Reading the multiple CSV file and parsing them accordingly in order to create
- * the graph.
+ * Definining the functions that will consume the multiple CSV streams in
+ * order to produce the graph to import.
  */
-
-/**
- * Parsing the files
- */
-async.series({
-
-  units(next) {
-    console.log('Processing units...');
-
-    const csvData = fs.readFileSync(DATA_PATH + BDD_UNITS, 'utf-8');
-    parseCsv(csvData, {delimiter: ','}, function(err, data) {
-
-      data.forEach(row => {
-        const first = cleanText(row[1]),
-              second = cleanText(row[2]);
-
-        const bestGuess = second || first;
-
-        if (bestGuess) {
-          UNITS_INDEX[cleanText(row[0])] = bestGuess;
-
-          // Updating conversion table
-          const unit = cleanText(row[3]),
-                factor = cleanNumber(cleanText(row[4])),
-                note = cleanText(row[5]);
-
-          if (unit && factor) {
-            const hashedKey = `${bestGuess}[->]${unit}`,
-                  conversion = CONVERSION_TABLE[hashedKey];
-
-            if (!conversion) {
-              CONVERSION_TABLE[hashedKey] = {
-                from: bestGuess,
-                to: unit,
-                factor
-              };
-
-              if (note)
-                CONVERSION_TABLE[hashedKey].note = note;
-            }
-            else {
-              if (conversion.factor !== factor ||
-                  (note && conversion.note !== note))
-                console.log('  !! Weird conversion:', conversion, factor, note);
-            }
-          }
-        }
-      });
-
-      return next();
-    });
-  },
-
-  flows(next) {
-    console.log('Processing flows...');
-
-    let readStream = fs.createReadStream(DATA_PATH + BDD_CENTRALE_PATH)
-      .pipe(parseCsv({delimiter: ',', columns: true}));
-
-    readStream = h(readStream)
-      .map(l => _.mapValues(l, cleanText))
-      .each(importer)
-      .on('end', () => next());
-  },
-
-  externalProduct(next) {
-    console.log('Processing outsider products...');
-
-    const csvData = fs.readFileSync(DATA_PATH + BDD_OUTSIDERS, 'utf-8');
-    parseCsv(csvData, {delimiter: ','}, function(err, data) {
-      data
-        .slice(1)
-        .map(line => ({
-          name: cleanText(line[0]),
-          sources: line[1].trim() === '1',
-          sund: line[2].trim() === '1',
-          belg: line[3].trim() === '1',
-          unknown: line[4].trim() === '0'
-        }))
-        .filter(row => !row.sources)
-        .forEach(outsiderProduct);
-
-      return next();
-    });
-  },
-
-  productOrthographic(next) {
-    console.log('Processing classifications...');
-
-    console.log('  -- Products orthographic normalization');
-
-    // Parsing orthographic corrections for products
-    const csvData = fs.readFileSync(DATA_PATH + ORTHOGRAPHIC_CLASSIFICATION, 'utf-8');
-    parseCsv(csvData, {delimiter: ','}, function(err, data) {
-      data
-        .slice(1)
-        .map(line => ({
-          original: cleanText(line[0]),
-          modified: cleanText(line[1]),
-          note: cleanText(line[2])
-        }))
-        .forEach(orthographicProduct);
-
-      return next();
-    });
-  },
-
-  productSimplification(next) {
-    console.log('  -- Products simplification');
-
-    // Parsing raw simplification
-    const csvData = fs.readFileSync(DATA_PATH + SIMPLIFICATION, 'utf-8');
-    parseCsv(csvData, {delimiter: ','}, function(err, data) {
-      data
-        .slice(1)
-        .map(line => ({
-          orthographic: cleanText(line[0]),
-          simplified: cleanText(line[1])
-        }))
-        .forEach(simplifiedProduct);
-
-      return next();
-    });
-  },
-
-  productVarious(next) {
-    console.log('  -- Products various classifications');
-
-    // Parsing various classifications
-    const csvData = fs.readFileSync(DATA_PATH + OTHER_CLASSIFICATIONS, 'utf-8');
-    parseCsv(csvData, {delimiter: ','}, function(err, data) {
-      _(data.slice(1))
-        .map(line => ({
-          simplified: cleanText(line[0]),
-          categorized: cleanText(line[1]),
-          sitcrev1: cleanText(line[2]),
-          sitcrev2: cleanText(line[3]),
-          medicinal: +cleanText(line[4]) > 0 ? cleanText(line[0]) : null
-        }))
-        .forEach(categorizedProduct)
-        .forEach(medicinalProduct)
-        .forEach(sitcrev2Product)
-        .uniq('sitcrev2')
-        .forEach(sitcrev1Product)
-        .value();
-
-      return next();
-    });
-  },
-
-  countryVarious(next) {
-    console.log('  -- Countries various classifications');
-
-    // Parsing various classifications for countries
-    const csvData = fs.readFileSync(DATA_PATH + COUNTRY_CLASSIFICATIONS, 'utf-8');
-    parseCsv(csvData, {delimiter: ','}, function(err, data) {
-      _(data.slice(1))
-        .map(line => ({
-          original: cleanText(line[0]),
-          orthographic: cleanText(line[1]),
-          simplified: cleanText(line[2]),
-          grouped: cleanText(line[3]),
-          note: cleanText(line[4])
-        }))
-        .forEach(orthographicCountry)
-        .uniq('orthographic')
-        .forEach(simplifiedCountry)
-        .uniq('simplified')
-        .forEach(groupedCountry)
-        .value();
-
-      return next();
-    });
-  }
-}, err => err && console.error(err));
 
 /**
  * Consuming the flows.
@@ -697,7 +524,7 @@ function outsiderProduct(line) {
 /**
  * Consuming the classifications.
  */
-function makeClassificationConsumer(groupIndex, classificationNode, parentNode, itemIndex, groupKey, itemKey, opts={}) {
+function makeClassificationConsumer(groupIndex, classificationNode, parentNode, itemIndex, groupKey, itemKey, opts = {}) {
 
   const linkedItemIndex = new Set();
 
@@ -712,7 +539,7 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
     if (!line[groupKey])
       return;
 
-    let itemNode = itemIndex[item];
+    const itemNode = itemIndex[item];
 
     // Building the group node
     let alreadyLinked = !!groupIndex[group];
@@ -744,6 +571,8 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
       // Linking the group to the classification on first run
       if (!alreadyLinked) {
         BUILDER.relate(classificationNode, 'HAS', groupNode);
+
+        // NOTE: this is not strictly needed anymore
         alreadyLinked = true;
       }
 
@@ -843,3 +672,182 @@ const groupedCountry = makeClassificationConsumer(
   'simplified',
   {}
 );
+
+/**
+ * Process
+ * ========
+ *
+ * Reading the multiple CSV file and parsing them accordingly in order to create
+ * the graph.
+ */
+async.series({
+
+  units(next) {
+    console.log('Processing units...');
+
+    const csvData = fs.readFileSync(DATA_PATH + BDD_UNITS, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+
+      data.forEach(row => {
+        const first = cleanText(row[1]),
+              second = cleanText(row[2]);
+
+        const bestGuess = second || first;
+
+        if (bestGuess) {
+          UNITS_INDEX[cleanText(row[0])] = bestGuess;
+
+          // Updating conversion table
+          const unit = cleanText(row[3]),
+                factor = cleanNumber(cleanText(row[4])),
+                note = cleanText(row[5]);
+
+          if (unit && factor) {
+            const hashedKey = `${bestGuess}[->]${unit}`,
+                  conversion = CONVERSION_TABLE[hashedKey];
+
+            if (!conversion) {
+              CONVERSION_TABLE[hashedKey] = {
+                from: bestGuess,
+                to: unit,
+                factor
+              };
+
+              if (note)
+                CONVERSION_TABLE[hashedKey].note = note;
+            }
+            else {
+              if (conversion.factor !== factor ||
+                  (note && conversion.note !== note))
+                console.log('  !! Weird conversion:', conversion, factor, note);
+            }
+          }
+        }
+      });
+
+      return next();
+    });
+  },
+
+  flows(next) {
+    console.log('Processing flows...');
+
+    let readStream = fs.createReadStream(DATA_PATH + BDD_CENTRALE_PATH)
+      .pipe(parseCsv({delimiter: ',', columns: true}));
+
+    readStream = h(readStream)
+      .map(l => _.mapValues(l, cleanText))
+      .each(importer)
+      .on('end', () => next());
+  },
+
+  externalProduct(next) {
+    console.log('Processing outsider products...');
+
+    const csvData = fs.readFileSync(DATA_PATH + BDD_OUTSIDERS, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          name: cleanText(line[0]),
+          sources: line[1].trim() === '1',
+          sund: line[2].trim() === '1',
+          belg: line[3].trim() === '1',
+          unknown: line[4].trim() === '0'
+        }))
+        .filter(row => !row.sources)
+        .forEach(outsiderProduct);
+
+      return next();
+    });
+  },
+
+  productOrthographic(next) {
+    console.log('Processing classifications...');
+
+    console.log('  -- Products orthographic normalization');
+
+    // Parsing orthographic corrections for products
+    const csvData = fs.readFileSync(DATA_PATH + ORTHOGRAPHIC_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          original: cleanText(line[0]),
+          modified: cleanText(line[1]),
+          note: cleanText(line[2])
+        }))
+        .forEach(orthographicProduct);
+
+      return next();
+    });
+  },
+
+  productSimplification(next) {
+    console.log('  -- Products simplification');
+
+    // Parsing raw simplification
+    const csvData = fs.readFileSync(DATA_PATH + SIMPLIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          orthographic: cleanText(line[0]),
+          simplified: cleanText(line[1])
+        }))
+        .forEach(simplifiedProduct);
+
+      return next();
+    });
+  },
+
+  productVarious(next) {
+    console.log('  -- Products various classifications');
+
+    // Parsing various classifications
+    const csvData = fs.readFileSync(DATA_PATH + OTHER_CLASSIFICATIONS, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      _(data.slice(1))
+        .map(line => ({
+          simplified: cleanText(line[0]),
+          categorized: cleanText(line[1]),
+          sitcrev1: cleanText(line[2]),
+          sitcrev2: cleanText(line[3]),
+          medicinal: +cleanText(line[4]) > 0 ? cleanText(line[0]) : null
+        }))
+        .forEach(categorizedProduct)
+        .forEach(medicinalProduct)
+        .forEach(sitcrev2Product)
+        .uniq('sitcrev2')
+        .forEach(sitcrev1Product)
+        .value();
+
+      return next();
+    });
+  },
+
+  countryVarious(next) {
+    console.log('  -- Countries various classifications');
+
+    // Parsing various classifications for countries
+    const csvData = fs.readFileSync(DATA_PATH + COUNTRY_CLASSIFICATIONS, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      _(data.slice(1))
+        .map(line => ({
+          original: cleanText(line[0]),
+          orthographic: cleanText(line[1]),
+          simplified: cleanText(line[2]),
+          grouped: cleanText(line[3]),
+          note: cleanText(line[4])
+        }))
+        .forEach(orthographicCountry)
+        .uniq('orthographic')
+        .forEach(simplifiedCountry)
+        .uniq('simplified')
+        .forEach(groupedCountry)
+        .value();
+
+      return next();
+    });
+  }
+}, err => err && console.error(err));
