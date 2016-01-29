@@ -9,7 +9,7 @@
     "dev": "kotatsu start --progress -s --babel ./scripts/start.js",
     "export": "kotatsu run --babel -s ./scripts/export.js",
     "import": "kotatsu run --babel -s ./scripts/import.js",
-    "create_indices": "kotatsu run --babel -s ./scripts/create_indices.js",
+    "indices": "kotatsu run --babel -s ./scripts/indices.js",
     "lint": "eslint -c eslint.config.js --ext .js --ext .jsx ./api ./lib ./test ./scripts ./client/js --ignore-pattern ./client/js/external",
     "postinstall": "mkdir -p .output && cd client && npm install",
     "review": "kotatsu --babel run --progress --source-maps ./scripts/review.js",
