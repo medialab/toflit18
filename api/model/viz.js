@@ -287,13 +287,26 @@ const Model = {
 
       // Computing Louvain modularity
       const modularity = Louvain()
-        .nodes(values(graph.nodes).filter(node => node.degree > 1).map(node => node.id))
+        .nodes(values(graph.nodes).map(node => node.id))
         .edges(values(graph.edges));
 
       const communities = modularity();
 
+      const useful = _(communities)
+        .values()
+        .countBy()
+        .pairs()
+        .sortBy(([, count]) => -count)
+        .take(19)
+        .map(([community]) => +community)
+        .value();
+
+      const usefulSet = new Set(useful);
+
       values(graph.nodes).forEach(node => {
-        node.community = communities[node.id] || -1;
+        const community = communities[node.id];
+
+        node.community = usefulSet.has(community) ? community : -1;
         delete node.degree;
       });
 
