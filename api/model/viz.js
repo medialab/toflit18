@@ -8,7 +8,7 @@ import database from '../connection';
 import {tokenizeTerms} from '../../lib/tokenizer';
 import config from '../../config.json';
 import {viz as queries} from '../queries';
-import _ from 'lodash';
+import _, {values} from 'lodash';
 
 const {Query} = decypher;
 
@@ -217,16 +217,69 @@ const Model = {
   },
 
   /**
-   * Retrieve all the unique terms the given classification.
+   * Retrieve the network of terms for the given classification.
    */
   terms(classification, callback) {
     database.cypher({query: queries.terms, params: {classification}}, function(err, rows) {
       if (err) return callback(err);
       if (!rows.length) return callback(null, null);
 
-      const terms = tokenizeTerms(rows.map(row => row.term));
+      const graph = {
+        nodes: {},
+        edges: {}
+      };
 
-      return callback(null, terms);
+      let edgeId = 0;
+
+      rows.forEach(row => {
+        const terms = tokenizeTerms(row.term);
+
+        terms.forEach((term, i) => {
+
+          // Creating the node if it does not exist yet
+          if (!graph.nodes[term]) {
+            graph.nodes[term] = {
+              id: term,
+              label: term,
+              occurrences: 1,
+              positions: [i]
+            };
+          }
+          else {
+            graph.nodes[term].occurrences++;
+            graph.nodes[term].positions.push(i);
+          }
+
+          const node = graph.nodes[term];
+
+          // Retrieving last node
+          if (!!i) {
+            const lastNode = graph.nodes[terms[i - 1]],
+                  hash = `~${lastNode.id}~->~${node.id}~`,
+                  reverseHash = `~${node.id}~->~${lastNode.id}~`;
+
+            // Creating a relationship or weighting it once more
+            const edge = graph.edges[hash] || graph.edges[reverseHash];
+
+            if (!edge) {
+              graph.edges[hash] = {
+                id: edgeId++,
+                weight: 1,
+                source: lastNode.id,
+                target: node.id
+              };
+            }
+            else {
+              edge.weight++;
+            }
+          }
+        });
+      });
+
+      return callback(null, {
+        nodes: values(graph.nodes),
+        edges: values(graph.edges)
+      });
     });
   }
 };

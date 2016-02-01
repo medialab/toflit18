@@ -4,7 +4,7 @@ import {tokenizeTerms} from '../../lib/tokenizer';
 describe('Tokenizer', function() {
   it('should correctly separate the terms of an expression.', function() {
     const tests = [
-      ['armes de guerre']
+      'armes de guerre'
     ];
 
     const results = [
