@@ -4,10 +4,15 @@
  *
  * Actions related to the globals' view.
  */
-import {values} from 'lodash';
+import {scaleCategory20} from 'd3-scale';
+import {six as palette} from '../lib/palettes';
+import {uniq, values} from 'lodash';
 
 const ROOT = ['states', 'exploration', 'globals'];
 
+/**
+ * Selecting a country classification.
+ */
 export function selectClassification(tree, classification) {
   const cursor = tree.select([...ROOT, 'network']);
 
@@ -37,7 +42,7 @@ export function selectClassification(tree, classification) {
         nodes[directionId] = {
           id: directionId,
           label: row.direction,
-          kind: 'direction',
+          color: palette[0],
           size: 1,
           x: Math.random(),
           y: Math.random(),
@@ -47,7 +52,7 @@ export function selectClassification(tree, classification) {
         nodes[countryId] = {
           id: countryId,
           label: row.country,
-          kind: 'country',
+          color: palette[1],
           size: 1,
           x: Math.random(),
           y: Math.random(),
@@ -62,5 +67,43 @@ export function selectClassification(tree, classification) {
     });
 
     cursor.set('graph', {nodes: values(nodes), edges});
+  });
+}
+
+/**
+ * Selecting a product classification.
+ */
+export function selectTerms(tree, classification) {
+  const cursor = tree.select([...ROOT, 'terms']);
+
+  cursor.set('classification', classification);
+  cursor.set('graph', null);
+
+  if (!classification)
+    return;
+
+  cursor.set('loading', true);
+
+  tree.client.terms({params: {id: classification.id}}, function(err, data) {
+    cursor.set('loading', false);
+
+    if (err)
+      return;
+
+    const colorScale = scaleCategory20()
+      .domain(uniq(data.result.nodes.map(node => node.community)));
+
+    data.result.nodes.forEach(node => {
+      node.size = 1;
+      node.color = colorScale(node.community);
+      node.x = Math.random();
+      node.y = Math.random();
+    });
+
+    data.result.edges.forEach(edge => {
+      edge.size = edge.weight;
+    });
+
+    cursor.set('graph', data.result);
   });
 }

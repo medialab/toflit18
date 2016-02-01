@@ -6,7 +6,6 @@
  * countries and directions.
  */
 import React, {Component} from 'react';
-import {six as palette} from '../../../lib/palettes';
 
 /**
  * Settings.
@@ -41,6 +40,7 @@ export default class Network extends Component {
       settings: SIGMA_SETTINGS
     });
     this.sigma.addCamera('main');
+    this.layoutSettings = LAYOUT_SETTINGS;
   }
 
   componentDidMount() {
@@ -62,6 +62,9 @@ export default class Network extends Component {
     if (!nextProps.graph)
       return this.sigma.refresh();
 
+    // Updating layout
+    this.layoutSettings.barnesHutOptimize = nextProps.graph.nodes.length > 1000;
+
     g.read(nextProps.graph);
 
     // Styling
@@ -70,13 +73,12 @@ export default class Network extends Component {
 
     nodes.forEach(function(node, i) {
       node.size = g.degree(node.id);
-      node.color = palette[+(node.kind === 'direction')];
       node.x = 100 * Math.cos(2 * i * Math.PI / N);
       node.y = 100 * Math.sin(2 * i * Math.PI / N);
     });
 
     this.sigma.refresh();
-    this.sigma.startForceAtlas2(LAYOUT_SETTINGS);
+    this.sigma.startForceAtlas2(this.layoutSettings);
   }
 
   componentWillUnmount() {
@@ -87,7 +89,7 @@ export default class Network extends Component {
   render() {
     return (
       <div id="sigma-graph" ref="mount">
-        <Controls instance={this.sigma} />
+        <Controls instance={this.sigma} layoutSettings={this.layoutSettings} />
       </div>
     );
   }
@@ -152,7 +154,7 @@ class Controls extends Component {
       if (instance.isForceAtlas2Running())
         instance.stopForceAtlas2();
       else
-        instance.startForceAtlas2(LAYOUT_SETTINGS);
+        instance.startForceAtlas2(this.props.layoutSettings);
 
       this.forceUpdate();
     };

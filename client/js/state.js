@@ -99,6 +99,11 @@ const defaultState = {
           graph: null,
           classification: null,
           loading: false
+        },
+        terms: {
+          graph: null,
+          classification: null,
+          loading: false
         }
       }
     }

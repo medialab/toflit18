@@ -6,6 +6,7 @@
 import decypher from 'decypher';
 import database from '../connection';
 import {tokenizeTerms} from '../../lib/tokenizer';
+import Louvain from '../../lib/louvain';
 import config from '../../config.json';
 import {viz as queries} from '../queries';
 import _, {values} from 'lodash';
@@ -234,6 +235,9 @@ const Model = {
       rows.forEach(row => {
         const terms = tokenizeTerms(row.term);
 
+        if (terms.length <= 1)
+          return;
+
         terms.forEach((term, i) => {
 
           // Creating the node if it does not exist yet
@@ -242,12 +246,13 @@ const Model = {
               id: term,
               label: term,
               occurrences: 1,
-              positions: [i]
+              position: i,
+              degree: 0
             };
           }
           else {
             graph.nodes[term].occurrences++;
-            graph.nodes[term].positions.push(i);
+            graph.nodes[term].position = Math.min(i, graph.nodes[term].position);
           }
 
           const node = graph.nodes[term];
@@ -257,6 +262,10 @@ const Model = {
             const lastNode = graph.nodes[terms[i - 1]],
                   hash = `~${lastNode.id}~->~${node.id}~`,
                   reverseHash = `~${node.id}~->~${lastNode.id}~`;
+
+            // Increasing degree
+            lastNode.degree++;
+            node.degree++;
 
             // Creating a relationship or weighting it once more
             const edge = graph.edges[hash] || graph.edges[reverseHash];
@@ -274,6 +283,18 @@ const Model = {
             }
           }
         });
+      });
+
+      // Computing Louvain modularity
+      const modularity = Louvain()
+        .nodes(values(graph.nodes).filter(node => node.degree > 1).map(node => node.id))
+        .edges(values(graph.edges));
+
+      const communities = modularity();
+
+      values(graph.nodes).forEach(node => {
+        node.community = communities[node.id] || -1;
+        delete node.degree;
       });
 
       return callback(null, {
