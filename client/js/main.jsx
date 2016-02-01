@@ -14,11 +14,11 @@ import client from './client';
 import state from './state';
 
 // Stylesheet
-require('!style!css!ladda/dist/ladda-themeless.min.css');
-require('!style!css!sass!react-select/scss/default.scss');
-require('!style!css!rc-tooltip/assets/bootstrap.css');
-require('!style!css!../style/font-awesome.min.css');
-require('!style!css!sass!../style/toflit18.scss');
+import '!style!css!ladda/dist/ladda-themeless.min.css';
+import '!style!css!sass!react-select/scss/default.scss';
+import '!style!css!rc-tooltip/assets/bootstrap.css';
+import '!style!css!../style/font-awesome.min.css';
+import '!style!css!sass!../style/toflit18.scss';
 
 const RootedApp = root(AppRouter, state);
 
@@ -37,14 +37,14 @@ if (module.hot) {
   module.hot.accept('./client', function() {
     parrot.release();
 
-    const newClient = require('./client');
+    const newClient = require('./client').default;
     state.client = newClient;
     parrot = makeParrot(state, newClient);
   });
 
   module.hot.accept('./parrot', function() {
     parrot.release();
-    parrot = require('./parrot')(state, state.client);
+    parrot = require('./parrot').default(state, state.client);
   });
 }
 

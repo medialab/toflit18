@@ -5,9 +5,10 @@
  */
 import decypher from 'decypher';
 import database from '../connection';
+import {tokenizeTerms} from '../../lib/tokenizer';
+import config from '../../config.json';
 import {viz as queries} from '../queries';
 import _ from 'lodash';
-import config from '../../config.json';
 
 const {Query} = decypher;
 
@@ -213,6 +214,20 @@ const Model = {
    */
   network(classification, callback) {
     database.cypher({query: queries.network, params: {classification}}, callback);
+  },
+
+  /**
+   * Retrieve all the unique terms the given classification.
+   */
+  terms(classification, callback) {
+    database.cypher({query: queries.terms, params: {classification}}, function(err, rows) {
+      if (err) return callback(err);
+      if (!rows.length) return callback(null, null);
+
+      const terms = tokenizeTerms(rows.map(row => row.term));
+
+      return callback(null, terms);
+    });
   }
 };
 

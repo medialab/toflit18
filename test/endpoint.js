@@ -4,6 +4,7 @@
  *
  * Requiring the unit testing suites.
  */
-require('./suites/batch.js');
-require('./suites/patch.js');
-require('./suites/republican_calendar.js');
+import './suites/batch.js';
+import './suites/patch.js';
+import './suites/republican_calendar.js';
+import './suites/tokenizer.js';

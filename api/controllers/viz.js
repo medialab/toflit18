@@ -83,6 +83,24 @@ const controller = [
         return res.ok(data);
       });
     }
+  },
+  {
+    url: '/terms/:id',
+    method: 'GET',
+    cache: {
+      key: 'terms',
+      hasher(req) {
+        return req.params.id;
+      }
+    },
+    action(req, res) {
+      return model.terms(+req.params.id, function(err, terms) {
+        if (err) return res.serverError(err);
+        if (!terms) return res.notFound();
+
+        return res.ok(terms);
+      });
+    }
   }
 ];
 

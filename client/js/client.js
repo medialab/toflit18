@@ -7,6 +7,8 @@
 import {endpoint} from '../config.json';
 import Client from 'djax-client';
 
+const FORM = 'application/x-www-form-urlencoded';
+
 const client = new Client({
   settings: {
     baseUrl: endpoint
@@ -45,7 +47,7 @@ const client = new Client({
     sourceTypes: '/source_types',
 
     search: {
-      contentType: 'application/x-www-form-urlencoded',
+      contentType: FORM,
       url: '/classification/:id/search'
     },
 
@@ -63,7 +65,7 @@ const client = new Client({
 
     // Viz
     viz: {
-      contentType: 'application/x-www-form-urlencoded',
+      contentType: FORM,
       url: '/viz/:name'
     },
 
@@ -72,8 +74,13 @@ const client = new Client({
     flowsPerYear: '/viz/flows_per_year/:type',
 
     network: {
-      contentType: 'application/x-www-form-urlencoded',
+      contentType: FORM,
       url: '/viz/network/:id'
+    },
+
+    terms: {
+      contentType: FORM,
+      url: '/viz/terms/:id'
     }
   }
 });
