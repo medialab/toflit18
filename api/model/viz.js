@@ -6,10 +6,11 @@
 import decypher from 'decypher';
 import database from '../connection';
 import {tokenizeTerms} from '../../lib/tokenizer';
+import {connectedComponents} from '../../lib/graph';
 import Louvain from '../../lib/louvain';
 import config from '../../config.json';
 import {viz as queries} from '../queries';
-import _, {values} from 'lodash';
+import _, {omit, values} from 'lodash';
 
 const {Query} = decypher;
 
@@ -247,7 +248,8 @@ const Model = {
               label: term,
               occurrences: 1,
               position: i,
-              degree: 0
+              degree: 0,
+              neighbours: []
             };
           }
           else {
@@ -277,12 +279,34 @@ const Model = {
                 source: lastNode.id,
                 target: node.id
               };
+
+              node.neighbours.push(lastNode);
+              lastNode.neighbours.push(node);
             }
             else {
               edge.weight++;
             }
           }
         });
+      });
+
+      // Detecting components
+      const components = connectedComponents(values(graph.nodes));
+
+      // Keeping only larger components
+      let nodesToDrop = _(components)
+        .filter(component => component.length < 4)
+        .flatten()
+        .value();
+
+      nodesToDrop = new Set(nodesToDrop);
+
+      // Dropping useless nodes
+      graph.nodes = omit(graph.nodes, node => nodesToDrop.has(node.id));
+
+      graph.edges = omit(graph.edges, edge => {
+        return nodesToDrop.has(edge.source) ||
+               nodesToDrop.has(edge.target);
       });
 
       // Computing Louvain modularity
@@ -297,7 +321,7 @@ const Model = {
         .countBy()
         .pairs()
         .sortBy(([, count]) => -count)
-        .take(19)
+        .take(20)
         .map(([community]) => +community)
         .value();
 
@@ -308,7 +332,15 @@ const Model = {
 
         node.community = usefulSet.has(community) ? community : -1;
         delete node.degree;
+        delete node.neighbours;
       });
+
+      // graph.edges = omit(graph.edges, edge => {
+      //   return !usefulSet.has(graph.nodes[edge.source].community) ||
+      //          !usefulSet.has(graph.nodes[edge.target].community);
+      // });
+
+      // graph.nodes = omit(graph.nodes, node => !usefulSet.has(node.community));
 
       return callback(null, {
         nodes: values(graph.nodes),

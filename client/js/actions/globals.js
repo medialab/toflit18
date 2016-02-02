@@ -95,7 +95,7 @@ export function selectTerms(tree, classification) {
 
     data.result.nodes.forEach(node => {
       node.size = 1;
-      node.color = colorScale(node.community);
+      node.color = node.community === -1 ? '#ACACAC' : colorScale(node.community);
       node.x = Math.random();
       node.y = Math.random();
     });
