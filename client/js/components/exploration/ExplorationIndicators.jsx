@@ -226,22 +226,22 @@ class GraphPanel extends Component {
  * Lines summary.
  */
 function buildDescription(params) {
-  const selectors = mapValues(params, 'name');
+  const selectors = mapValues(params, 'name'),
+        description = [];
 
-  let description = capitalize(selectors.kind || 'total') + ' flows';
+  description.push(<span key="kind">{capitalize(selectors.kind || 'total') + ' flows'}</span>);
 
-  if (selectors.product) {
-    description += ` of "${selectors.product}" (${selectors.productClassification})`;
-  }
+  if (selectors.product)
+    description.push(<span key="product"> of <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
 
   if (selectors.direction && selectors.direction !== '$all')
-    description += ` from "${selectors.direction}"`;
+    description.push(<span key="direction"> from <strong>{selectors.direction}</strong></span>);
 
   if (selectors.country)
-    description += ` to "${selectors.country}" (${selectors.countryClassification})`;
+    description.push(<span key="country"> to <strong>{selectors.country}</strong> (<em>{selectors.countryClassification}</em>)</span>);
 
   if (selectors.sourceType)
-    description += ` (source type: ${selectors.sourceType})`;
+    description.push(<span key="type"> - (source type: {selectors.sourceType})</span>);
 
   return description;
 }
