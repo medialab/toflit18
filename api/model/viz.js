@@ -58,10 +58,10 @@ const Model = {
 
       const data = _(result)
         .groupBy('dataType')
-        .mapValues((values, key) => {
+        .mapValues((rows, key) => {
           return {
             name: key,
-            data: values.map(e => _.pick(e, ['year', 'flows']))
+            data: rows.map(e => _.pick(e, ['year', 'flows']))
           };
         })
         .values();
@@ -222,7 +222,7 @@ const Model = {
    * Retrieve the network of terms for the given classification.
    */
   terms(classification, callback) {
-    database.cypher({query: queries.terms, params: {classification}}, function(err, rows) {
+    database.cypher({query: queries.terms, params: {classification}}, function(err, rows) {
       if (err) return callback(err);
       if (!rows.length) return callback(null, null);
 
