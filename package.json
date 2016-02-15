@@ -10,7 +10,7 @@
     "export": "kotatsu run --babel -s ./scripts/export.js",
     "import": "kotatsu run --babel -s ./scripts/import.js",
     "indices": "kotatsu run --babel -s ./scripts/indices.js",
-    "lint": "eslint -c eslint.config.js --ext .js --ext .jsx ./api ./lib ./test ./scripts ./client/js",
+    "lint": "eslint --ext .js --ext .jsx ./api ./lib ./test ./scripts ./client/js",
     "postinstall": "mkdir -p .output && cd client && npm install",
     "review": "kotatsu --babel run --progress --source-maps ./scripts/review.js",
     "start": "kotatsu run --babel ./scripts/start.js",
@@ -60,12 +60,24 @@
   },
   "devDependencies": {
     "@yomguithereal/eslint-config": "^2.0.0",
-    "babel-eslint": "4.1.8",
+    "babel-eslint": "5.0.0-beta10",
     "babel-preset-stage-2": "^6.3.13",
     "cypher-loader": "0.0.1",
     "eslint": "^2.0.0",
     "eslint-plugin-react": "^3.15.0",
     "kotatsu": "^0.9.0",
     "mocha": "^2.2.5"
+  },
+  "babel": {
+    "presets": ["es2015", "stage-2"]
+  },
+  "eslintConfig": {
+    "extends": [
+      "@yomguithereal/eslint-config/es7",
+      "@yomguithereal/eslint-config/react"
+    ],
+    "globals": {
+      "sigma": true
+    }
   }
 }
