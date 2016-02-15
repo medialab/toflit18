@@ -129,7 +129,6 @@ const Model = {
 
     // Building the query
     const query = new Query(),
-          init = query.segment(),
           withs = [];
 
     // TODO: refactor and move to decypher?
