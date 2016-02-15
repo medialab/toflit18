@@ -130,8 +130,7 @@ const Model = {
     // Building the query
     const query = new Query(),
           init = query.segment(),
-          withs = [],
-          starts = [];
+          withs = [];
 
     // TODO: refactor and move to decypher?
     const Where = function() {
@@ -148,29 +147,38 @@ const Model = {
 
     //-- Do we need to match a product?
     if (productClassification) {
-      starts.push('pc=node({productClassification})');
       query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*1..]->(pi)');
 
-      if (product)
-        query.where('id(pg) = {product}', {product});
+      const whereProduct = new Where();
+      whereProduct.and('id(pc) = {productClassification}');
+      query.params({productClassification});
 
-      withs.push('pi');
-      query.with('pi');
+      if (product) {
+        whereProduct.and('id(pg) = {product}');
+        query.params({product});
+      }
+
+      withs.push('products');
+      query.where(whereProduct.string);
+      query.with('collect(pi.name) AS products');
     }
 
     //-- Do we need to match a country?
     if (countryClassification) {
-      starts.push('cc=node({countryClassification})');
       query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*1..]->(ci)');
 
-      if (country)
-        query.where('id(cg) = {country}', {country});
+      const whereCountry = new Where();
+      whereCountry.and('id(cc) = {countryClassification}');
+      query.params({countryClassification});
 
-      query.with(withs.concat('ci').join(', '));
+      if (country) {
+        whereCountry.and('id(cg) = {country}');
+        query.params({country});
+      }
+
+      query.where(whereCountry.string);
+      query.with(withs.concat('collect(ci.name) AS countries').join(', '));
     }
-
-    if (starts.length)
-      init.start(starts, {productClassification, countryClassification});
 
     //-- Basic match
     query.match('(f:Flow)');
@@ -189,13 +197,15 @@ const Model = {
     else if (kind === 'export')
       where.and('not(f.import)');
 
-    if (sourceType)
+    if (sourceType) {
       where.and(`f.sourceType = "${sourceType}"`);
-    if (productClassification)
-      where.and('f.product = pi.name');
-    if (countryClassification)
-      where.and('f.country = ci.name');
-
+    }
+    if (productClassification) {
+      where.and('f.product IN products');
+    }
+    if (countryClassification) {
+      where.and('f.country IN countries');
+    }
 
     if (where.string)
       query.where(where.string);
