@@ -14,15 +14,15 @@ NEO4J_PATH=/opt/neo4j-community-2.2.3
 service neo4j-service stop &&
 
 # Erasing the current database
-rm -rf $NEO4J_PATH/data/graph.db &&
+rm -rf $NEO4J_PATH/data/toflit.graph.db &&
 
 # Creating the new database
 rm -rf graph.db &&
 $NEO4J_PATH/bin/neo4j-import --into graph.db --nodes ./.output/nodes.csv --relationships ./.output/edges.csv &&
 
 # Replacing the database
-mv graph.db $NEO4J_PATH/data/ &&
-chown -R neo4j:neo4j $NEO4J_PATH/data/graph.db &&
+mv graph.db $NEO4J_PATH/data/toflit.graph.db &&
+chown -R neo4j:neo4j $NEO4J_PATH/data/toflit.graph.db &&
 
 # Restarting the databse
 service neo4j-service start

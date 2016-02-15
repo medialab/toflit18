@@ -526,7 +526,8 @@ function outsiderProduct(line) {
  */
 function makeClassificationConsumer(groupIndex, classificationNode, parentNode, itemIndex, groupKey, itemKey, opts = {}) {
 
-  const linkedItemIndex = new Set();
+  const linkedItemIndex = new Set(),
+        linkedGroupIndex = new Set();
 
   return function(line) {
     const group = line[groupKey],
@@ -536,14 +537,9 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
     if (!group || !item)
       return;
 
-    if (!line[groupKey])
-      return;
-
     const itemNode = itemIndex[item];
 
     // Building the group node
-    let alreadyLinked = !!groupIndex[group];
-
     const nodeData = {
       name: group
     };
@@ -559,6 +555,13 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
       nodeData
     );
 
+    // Linking the group to the classification on first run
+    if (!linkedGroupIndex.has(group)) {
+      BUILDER.relate(classificationNode, 'HAS', groupNode);
+
+      linkedGroupIndex.add(group);
+    }
+
     // From sources
     if (itemNode) {
 
@@ -566,14 +569,6 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
       if (linkedItemIndex.has(item)) {
         console.log('  !! Warning: item is targeted by multiple groups:', item);
         return;
-      }
-
-      // Linking the group to the classification on first run
-      if (!alreadyLinked) {
-        BUILDER.relate(classificationNode, 'HAS', groupNode);
-
-        // NOTE: this is not strictly needed anymore
-        alreadyLinked = true;
       }
 
       // The group aggregates the item
