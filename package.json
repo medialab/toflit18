@@ -78,6 +78,9 @@
     ],
     "globals": {
       "sigma": true
+    },
+    "rules": {
+      "no-return-assign": 0
     }
   }
 }

@@ -28,7 +28,7 @@ const Model = {
       query.match('(f:Flow)');
       query.where(`has(f.${dataType}) AND f.year >= ${config.api.limits.minYear}`);
       query.return(`f.${dataType} AS dataType, f.year AS year, count(f) AS flows`);
-      query.orderBy(`f.year, dataType`);
+      query.orderBy('f.year, dataType');
     }
     else {
       // a classification
@@ -45,7 +45,7 @@ const Model = {
         query.match('(f:Flow)');
         query.where(`f.${classificationType} = sc  AND f.year >= ${config.api.limits.minYear}`);
         query.return('name AS dataType, count(f) AS flows, f.year AS year');
-        query.orderBy(`f.year, dataType`);
+        query.orderBy('f.year, dataType');
 
       }
       else {
@@ -98,7 +98,7 @@ const Model = {
         query.with('gc.name AS name, c.name AS sc');
         query.match('(f:Flow)');
         query.where(`f.${classificationType} = sc  AND f.year >= ${config.api.limits.minYear}`);
-        query.with(`size(collect(DISTINCT name)) AS data, f.year AS year`);
+        query.with('size(collect(DISTINCT name)) AS data, f.year AS year');
         query.return('year, data');
         query.orderBy('year');
       }

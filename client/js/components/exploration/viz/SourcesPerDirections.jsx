@@ -100,12 +100,10 @@ class Direction extends Component {
     const yPos = SIZE;
 
     function renderRect(local, {year, flows}) {
-      let rectYPos,
-          rectHeight,
-          xOffset;
+      const rectHeight = Math.max(1, y(flows)),
+            rectYPos = SIZE - rectHeight;
 
-      rectHeight = Math.max(1, y(flows));
-      rectYPos = SIZE - rectHeight;
+      let xOffset;
 
       if (local) {
         xOffset = bar / 4 + 2;
