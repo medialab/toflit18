@@ -34,7 +34,7 @@ export default class AppRouter extends Component {
         <Redirect from="/" to="/exploration/meta" />
         <Route path="/" component={App}>
           <Route path="/login" component={Login} />
-          <Route path="/" onEnter={(_, redirect) => !isLogged() && redirect(null, '/login')}>
+          <Route path="/" onEnter={(_, redirect) => !isLogged() && redirect({pathname: '/login'})}>
 
             <Redirect from="classification" to="classification/browser" />
             <Redirect from="exploration" to="exploration/meta" />

@@ -13,7 +13,7 @@ export function checkSession(tree) {
   tree.client.session(function(err, data) {
     if (data) {
       tree.set('user', data.result);
-      history.replaceState(null, '/');
+      history.replace({pathname: '/'});
     }
   });
 }
@@ -39,7 +39,7 @@ export function login(tree, name, password) {
 
     flags.set('failed', false);
     tree.set('user', data.result);
-    history.replaceState(null, '/');
+    history.replace({pathname: '/'});
   });
 }
 

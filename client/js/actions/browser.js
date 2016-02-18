@@ -114,5 +114,5 @@ export function modal(tree, type) {
   cursor.set('type', type);
   resetModal(tree);
 
-  history.replaceState(null, '/classification/modal');
+  history.replace({pathname: '/classification/modal'});
 }

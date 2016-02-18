@@ -5,5 +5,6 @@
  * Creating the app's browser history so it can be used elsewhere.
  */
 import {createHashHistory} from 'history';
+import {useRouterHistory} from 'react-router';
 
-export default createHashHistory({queryKey: false});
+export default useRouterHistory(createHashHistory)({queryKey: false});
