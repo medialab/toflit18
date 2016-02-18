@@ -191,11 +191,21 @@ class Classification extends Component {
 
     const offset = (level * 25) + 'px';
 
-    const itemsNotice = (itemsCount || null) && [
-      ' for ',
-      <em key="groups">{prettyPrint(itemsCount)}</em>,
-      ' items'
-    ];
+    let infoLine;
+
+    if (source)
+      infoLine = (
+        <span>
+          <em key="groups">{prettyPrint(itemsCount)}</em> items.
+        </span>
+      );
+    else
+      infoLine = (
+        <span>
+          <em key="groups">{prettyPrint(groupsCount)}</em> groups for
+          <em> {prettyPrint(groupsCount)}</em> items.
+        </span>
+      );
 
     const missingCount = (unclassifiedItemsCount || null) && (
       <span>
@@ -213,6 +223,7 @@ class Classification extends Component {
       </div>
     );
 
+
     return (
       <li className={cls('item', {active})}
           style={{marginLeft: offset}}
@@ -221,7 +232,7 @@ class Classification extends Component {
           <strong>{name}</strong> (<em>{author}</em>)
         </div>
         <div className="addendum">
-          <em>{prettyPrint(groupsCount)}</em> groups{itemsNotice}.
+          {infoLine}
         </div>
         {completionNotice}
       </li>
