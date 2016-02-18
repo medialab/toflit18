@@ -192,7 +192,7 @@ const Model = {
       where.and('f.country IN countries');
     }
 
-    if (where.compile())
+    if (!where.isEmpty())
       query.where(where);
 
     //-- Returning data
