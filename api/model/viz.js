@@ -12,7 +12,7 @@ import config from '../../config.json';
 import {viz as queries} from '../queries';
 import _, {omit, values} from 'lodash';
 
-const {Query} = decypher;
+const {Expression, Query} = decypher;
 
 const Model = {
 
@@ -129,27 +129,14 @@ const Model = {
 
     // Building the query
     const query = new Query(),
+          where = new Expression(),
           withs = [];
-
-    // TODO: refactor and move to decypher?
-    const Where = function() {
-      this.string = '';
-
-      this.and = function(clause) {
-        if (this.string)
-          this.string += ' AND ';
-        this.string += clause;
-      };
-    };
-
-    const where = new Where();
 
     //-- Do we need to match a product?
     if (productClassification) {
       query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*1..]->(pi)');
 
-      const whereProduct = new Where();
-      whereProduct.and('id(pc) = {productClassification}');
+      const whereProduct = new Expression('id(pc) = {productClassification}');
       query.params({productClassification});
 
       if (product) {
@@ -158,7 +145,7 @@ const Model = {
       }
 
       withs.push('products');
-      query.where(whereProduct.string);
+      query.where(whereProduct);
       query.with('collect(pi.name) AS products');
     }
 
@@ -166,8 +153,7 @@ const Model = {
     if (countryClassification) {
       query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*1..]->(ci)');
 
-      const whereCountry = new Where();
-      whereCountry.and('id(cc) = {countryClassification}');
+      const whereCountry = new Where('id(cc) = {countryClassification}');
       query.params({countryClassification});
 
       if (country) {
@@ -175,7 +161,7 @@ const Model = {
         query.params({country});
       }
 
-      query.where(whereCountry.string);
+      query.where(whereCountry);
       query.with(withs.concat('collect(ci.name) AS countries').join(', '));
     }
 
@@ -206,8 +192,8 @@ const Model = {
       where.and('f.country IN countries');
     }
 
-    if (where.string)
-      query.where(where.string);
+    if (where.compile())
+      query.where(where);
 
     //-- Returning data
     query.return('count(f) AS count, sum(f.value) AS value, f.year AS year');
