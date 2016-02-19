@@ -153,7 +153,7 @@ const Model = {
     if (countryClassification) {
       query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*1..]->(ci)');
 
-      const whereCountry = new Where('id(cc) = {countryClassification}');
+      const whereCountry = new Expression('id(cc) = {countryClassification}');
       query.params({countryClassification});
 
       if (country) {
