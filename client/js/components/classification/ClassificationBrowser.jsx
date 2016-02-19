@@ -203,7 +203,7 @@ class Classification extends Component {
       infoLine = (
         <span>
           <em key="groups">{prettyPrint(groupsCount)}</em> groups for
-          <em> {prettyPrint(groupsCount)}</em> items.
+          <em> {prettyPrint(itemsCount)}</em> items.
         </span>
       );
 
