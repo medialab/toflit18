@@ -14,6 +14,7 @@ import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 import {Row, Col} from '../misc/Grid.jsx';
 import {ItemSelector} from '../misc/Selectors.jsx';
 import {select} from '../../actions/metadata';
+import {prettyPrint} from '../../lib/helpers';
 
 import config from '../../../config.json';
 
@@ -41,10 +42,10 @@ export default class ExplorationMeta extends Component {
 
     const classificationsFiltered = classifications.product
       .concat(classifications.country)
-      .filter(c => c.groupsCount <= config.metadataGroupMax && !c.source)
+      .filter(c => c.groupsCount && !c.source)
       .map(e => ({
         ...e,
-        name: `${e.name} (${e.model === 'product' ? 'Products' : 'Countries'} - ${e.groupsCount} groups)`
+        name: `${e.name} (${e.model === 'product' ? 'Products' : 'Countries'} - ${prettyPrint(e.groupsCount)} groups)`
       }));
 
     return (
@@ -73,7 +74,7 @@ export default class ExplorationMeta extends Component {
             <DataQualityBarChart data={metadata.perYear} /> :
             <Waiter />}
         </div>}
-        {metadata.dataType && <div className="panel">
+        {metadata.dataType && metadata.dataType.groupsCount <= config.metadataGroupMax && <div className="panel">
           {metadata.flowsPerYear ?
            <SourcesPerDirections data={metadata.flowsPerYear} /> :
            <Waiter />}
