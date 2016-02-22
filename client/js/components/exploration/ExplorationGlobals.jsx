@@ -9,7 +9,12 @@ import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {ClassificationSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
-import {selectClassification, selectTerms} from '../../actions/globals';
+import {
+  selectClassification,
+  selectTerms,
+  selectColorization
+} from '../../actions/globals';
+
 
 export default class ExplorationGlobals extends Component {
   render() {
@@ -57,7 +62,8 @@ class NetworkPanel extends Component {
 
 @branch({
   actions: {
-    select: selectTerms
+    select: selectTerms,
+    selectColorization
   },
   cursors: {
     classifications: ['data', 'classifications', 'flat'],
@@ -72,6 +78,8 @@ class TermsPanel extends Component {
       state
     } = this.props;
 
+    const radioListener = e => actions.selectColorization(e.target.value);
+
     return (
       <div className="panel">
         <h4>Terms Network</h4>
@@ -82,6 +90,22 @@ class TermsPanel extends Component {
                                 data={classifications.product}
                                 onChange={actions.select}
                                 selected={state.classification} />
+        <label>
+          <input type="radio"
+                 name="optionsRadio"
+                 value="community"
+                 checked={state.colorization === 'community'}
+                 onChange={radioListener} />
+           Commmunity Color
+        </label>
+        <label>
+          <input type="radio"
+                 name="optionsRadio"
+                 value="position"
+                 checked={state.colorization === 'position'}
+                 onChange={radioListener} />
+           Position Color
+        </label>
         <Network graph={state.graph} />
       </div>
     );
