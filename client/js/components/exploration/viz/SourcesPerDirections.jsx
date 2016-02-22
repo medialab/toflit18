@@ -115,9 +115,8 @@ class Direction extends Component {
       const tooltip = `${flows} total flows (${year})`;
 
       return (
-        <Tooltip placement="top" align={{offset: [3, 0]}} overlay={tooltip}>
-          <rect key={year}
-                className={`${local ? 'local' : 'national'}-bar`}
+        <Tooltip placement="top" align={{offset: [3, 0]}} overlay={tooltip} key={year}>
+          <rect className={`${local ? 'local' : 'national'}-bar`}
                 width={bar}
                 height={rectHeight}
                 x={x(year) + xOffset}
