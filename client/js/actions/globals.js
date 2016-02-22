@@ -4,9 +4,9 @@
  *
  * Actions related to the globals' view.
  */
-import {scaleCategory20} from 'd3-scale';
+import {scaleCategory20, scaleLinear} from 'd3-scale';
 import {six as palette} from '../lib/palettes';
-import {uniq, values} from 'lodash';
+import {max, uniq, values} from 'lodash';
 
 const ROOT = ['states', 'exploration', 'globals'];
 
@@ -93,9 +93,16 @@ export function selectTerms(tree, classification) {
     const colorScale = scaleCategory20()
       .domain(uniq(data.result.nodes.map(node => node.community)));
 
+    const maxPosition = max(data.result.nodes, 'position').position;
+
+    const colorScalePosition = scaleLinear()
+      .domain([0, maxPosition])
+      .range(['red', 'white']);
+
     data.result.nodes.forEach(node => {
       node.size = 1;
       node.color = node.community === -1 ? '#ACACAC' : colorScale(node.community);
+      node.positionColor = colorScalePosition(node.position);
       node.x = Math.random();
       node.y = Math.random();
     });
@@ -106,4 +113,13 @@ export function selectTerms(tree, classification) {
 
     cursor.set('graph', data.result);
   });
+}
+
+/**
+ * Selecting a colorization.
+ */
+export function selectColorization(tree, colorization) {
+  const cursor = tree.select([...ROOT, 'terms', 'colorization']);
+
+  cursor.set(colorization);
 }
