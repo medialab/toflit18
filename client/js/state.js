@@ -103,6 +103,7 @@ const defaultState = {
         terms: {
           graph: null,
           classification: null,
+          colorization: 'community',
           loading: false
         }
       }
