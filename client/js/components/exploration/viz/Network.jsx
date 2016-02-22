@@ -57,25 +57,34 @@ export default class Network extends Component {
 
     const g = this.sigma.graph;
 
-    g.clear();
+    // We only reset the graph if it is structurally different
+    if (nextProps.graph && nextProps.graph !== this.props.graph) {
+      g.clear();
 
-    if (!nextProps.graph)
+      // Updating layout
+      this.layoutSettings.barnesHutOptimize = nextProps.graph.nodes.length > 1000;
+
+      g.read(nextProps.graph);
+
+      // Styling
+      const nodes = g.nodes(),
+            N = nodes.length;
+
+      nodes.forEach(function(node, i) {
+        node.size = g.degree(node.id);
+
+        node.x = 100 * Math.cos(2 * i * Math.PI / N);
+        node.y = 100 * Math.sin(2 * i * Math.PI / N);
+      });
+    }
+
+    if (!nextProps.graph) {
+      g.clear();
       return this.sigma.refresh();
+    }
 
-    // Updating layout
-    this.layoutSettings.barnesHutOptimize = nextProps.graph.nodes.length > 1000;
-
-    g.read(nextProps.graph);
-
-    // Styling
-    const nodes = g.nodes(),
-          N = nodes.length;
-
-    nodes.forEach(function(node, i) {
-      node.size = g.degree(node.id);
-      node.x = 100 * Math.cos(2 * i * Math.PI / N);
-      node.y = 100 * Math.sin(2 * i * Math.PI / N);
-    });
+    if (nextProps.colorKey)
+      g.nodes().forEach(node => node.color = node[nextProps.colorKey]);
 
     this.sigma.refresh();
     this.sigma.startForceAtlas2(this.layoutSettings);

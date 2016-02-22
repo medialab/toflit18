@@ -78,6 +78,10 @@ class TermsPanel extends Component {
       state
     } = this.props;
 
+    const colorKey = state.colorization === 'community' ?
+      'communityColor' :
+      'positionColor';
+
     const radioListener = e => actions.selectColorization(e.target.value);
 
     return (
@@ -106,7 +110,7 @@ class TermsPanel extends Component {
                  onChange={radioListener} />
            Position Color
         </label>
-        <Network graph={state.graph} />
+        <Network graph={state.graph} colorKey={colorKey} />
       </div>
     );
   }

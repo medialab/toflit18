@@ -97,14 +97,17 @@ export function selectTerms(tree, classification) {
 
     const colorScalePosition = scaleLinear()
       .domain([0, maxPosition])
-      .range(['red', 'white']);
+      .range(['red', 'blue']);
 
     data.result.nodes.forEach(node => {
       node.size = 1;
-      node.color = node.community === -1 ? '#ACACAC' : colorScale(node.community);
+      node.communityColor = node.community === -1 ? '#ACACAC' : colorScale(node.community);
       node.positionColor = colorScalePosition(node.position);
       node.x = Math.random();
       node.y = Math.random();
+
+      if (!~node.community)
+        node.hidden = true;
     });
 
     data.result.edges.forEach(edge => {
