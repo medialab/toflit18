@@ -6,6 +6,7 @@
  * themselves and how they interact with each other.
  */
 import React, {Component} from 'react';
+import {ExportButton} from '../misc/Button.jsx';
 import {Waiter} from '../misc/Loaders.jsx';
 import {branch} from 'baobab-react/decorators';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
@@ -24,6 +25,13 @@ const metadataSelectors = (config.metadataSelectors || []).map(option => {
     special: true
   };
 });
+
+function filename(dataType) {
+  if (dataType.description)
+    return dataType.description;
+  else
+    return null;
+}
 
 @branch({
   actions: {select},
@@ -73,6 +81,10 @@ export default class ExplorationMeta extends Component {
           {metadata.perYear ?
             <DataQualityBarChart data={metadata.perYear} /> :
             <Waiter />}
+            <ExportButton name={`Toflit18_Meta_view ${filename(metadata.dataType)} data_per_year`}
+                          data={metadata.perYear}>
+              Export
+            </ExportButton>
         </div>}
         {metadata.dataType && metadata.dataType.groupsCount <= config.metadataGroupMax && <div className="panel">
           {metadata.flowsPerYear ?
