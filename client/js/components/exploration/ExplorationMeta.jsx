@@ -26,13 +26,6 @@ const metadataSelectors = (config.metadataSelectors || []).map(option => {
   };
 });
 
-function filename(dataType) {
-  if (dataType.description)
-    return dataType.description;
-  else
-    return null;
-}
-
 function formatArrayToCSV(data) {
   const newArray = [];
 
@@ -97,7 +90,7 @@ export default class ExplorationMeta extends Component {
           {metadata.perYear ?
             <DataQualityBarChart data={metadata.perYear} /> :
             <Waiter />}
-            <ExportButton name={`Toflit18_Meta_view ${filename(metadata.dataType)} data_per_year`}
+            <ExportButton name={`Toflit18_Meta_view ${metadata.dataType.name} data_per_year`}
                           data={metadata.perYear}>
               Export
             </ExportButton>
@@ -106,7 +99,7 @@ export default class ExplorationMeta extends Component {
           {metadata.flowsPerYear ?
            <SourcesPerDirections data={metadata.flowsPerYear} /> :
            <Waiter />}
-           <ExportButton name={`Toflit18_Meta_view ${filename(metadata.dataType)} flows_per_year`}
+           <ExportButton name={`Toflit18_Meta_view ${metadata.dataType.name} flows_per_year`}
                           data={formatArrayToCSV(metadata.flowsPerYear)}>
               Export
            </ExportButton>
