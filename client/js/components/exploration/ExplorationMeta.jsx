@@ -33,6 +33,22 @@ function filename(dataType) {
     return null;
 }
 
+function formatArrayToCSV(data) {
+  const newArray = [];
+
+  data.forEach((d) =>
+    d.data.forEach((e) =>
+      newArray.push({
+        name: d.name,
+        flows: e.flows,
+        year: e.year
+      })
+    )
+  );
+
+  return newArray;
+}
+
 @branch({
   actions: {select},
   cursors: {
@@ -90,6 +106,10 @@ export default class ExplorationMeta extends Component {
           {metadata.flowsPerYear ?
            <SourcesPerDirections data={metadata.flowsPerYear} /> :
            <Waiter />}
+           <ExportButton name={`Toflit18_Meta_view ${filename(metadata.dataType)} flows_per_year`}
+                          data={formatArrayToCSV(metadata.flowsPerYear)}>
+              Export
+           </ExportButton>
         </div>}
       </div>
     );
