@@ -6,6 +6,8 @@
  */
 import React, {Component} from 'react';
 import Ladda from 'ladda';
+import csvParse from 'papaparse';
+import {saveAs} from 'browser-filesaver';
 
 export default class Button extends Component {
 
@@ -73,5 +75,24 @@ export default class Button extends Component {
 export class ButtonGroup extends Component {
   render() {
     return <div className="btn-group" role="group">{this.props.children}</div>;
+  }
+}
+
+export class ExportButton extends Component {
+
+  download() {
+    const data = this.props.data,
+          csv = csvParse.unparse(data),
+          blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
+
+    return saveAs(blob, this.props.name);
+  }
+
+  render() {
+    return (
+      <Button onClick={() => this.download()}>
+        {this.props.children}
+      </Button>
+    );
   }
 }
