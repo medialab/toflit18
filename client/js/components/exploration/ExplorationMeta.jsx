@@ -65,6 +65,14 @@ export default class ExplorationMeta extends Component {
         name: `${e.name} (${e.model === 'product' ? 'Products' : 'Countries'} - ${prettyPrint(e.groupsCount)} groups)`
       }));
 
+    const canDisplaySecondViz = (
+      metadata.dataType &&
+      (
+        metadata.dataType.groupsCount <= config.metadataGroupMax ||
+        metadata.dataType.special
+      )
+    );
+
     return (
       <div>
         <div className="panel">
@@ -95,7 +103,7 @@ export default class ExplorationMeta extends Component {
               Export
             </ExportButton>
         </div>}
-        {metadata.dataType && metadata.dataType.groupsCount <= config.metadataGroupMax && <div className="panel">
+        {canDisplaySecondViz && <div className="panel">
           {metadata.flowsPerYear ?
            <SourcesPerDirections data={metadata.flowsPerYear} /> :
            <Waiter />}
