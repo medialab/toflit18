@@ -106,8 +106,8 @@ export function selectTerms(tree, classification) {
       node.x = Math.random();
       node.y = Math.random();
 
-      if (!~node.community)
-        node.hidden = true;
+      // if (!~node.community)
+      //   node.hidden = true;
     });
 
     data.result.edges.forEach(edge => {
