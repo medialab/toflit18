@@ -108,7 +108,7 @@ export default class ExplorationMeta extends Component {
            <SourcesPerDirections data={metadata.flowsPerYear} /> :
            <Waiter />}
            <ExportButton name={`Toflit18_Meta_view ${metadata.dataType.name} flows_per_year`}
-                          data={formatArrayToCSV(metadata.flowsPerYear)}>
+                          data={formatArrayToCSV(metadata.flowsPerYear || [])}>
               Export
            </ExportButton>
         </div>}

@@ -4,6 +4,7 @@
  *
  * Actions related to the indicators' view.
  */
+import config from '../../config.json';
 
 const ROOT = ['states', 'exploration', 'metadata'];
 
@@ -18,6 +19,9 @@ export function select(tree, selected) {
   cursor.set('perYear', null);
   cursor.set('flowsPerYear', null);
 
+  if (!selected)
+    return;
+
   // Loading data from server
   const type = selected.id ?
     `${selected.model}_${selected.id}` :
@@ -29,6 +33,10 @@ export function select(tree, selected) {
 
     cursor.set('perYear', data.result);
   });
+
+  // Don't ask for data we don't need
+  if (selected.id && selected.groupsCount > config.metadataGroupMax)
+    return;
 
   tree.client.flowsPerYear({params: {type}}, function(err, data) {
     if (err)
