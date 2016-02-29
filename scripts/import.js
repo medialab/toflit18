@@ -32,6 +32,7 @@ const ROOT_PATH = '/base',
       BDD_OUTSIDERS = ROOT_PATH + '/marchandises_sourcees.csv',
       BDD_UNITS = ROOT_PATH + '/Units N1.csv',
       ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
+      REVISED_ORTHOGRAPHIC_CLASSIFICATION = '/traitements_marchandises/bdd_marchandises_normalisees_orthographique.csv',
       SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
       OTHER_CLASSIFICATIONS = ROOT_PATH + '/bdd_marchandises_classifiees.csv',
       COUNTRY_CLASSIFICATIONS = ROOT_PATH + '/bdd_pays.csv';
@@ -213,6 +214,13 @@ const CLASSIFICATION_NODES = {
     description: 'Fixing the source\'s somewhat faulty orthograph.',
     padding: 'limbo'
   }, 'Classification'),
+  product_revised_orthographic: BUILDER.save({
+    name: 'Revised Orthographic Normalization',
+    model: 'product',
+    slug: 'revised_orthographic_normalization',
+    description: 'Revised version of the initial orthographic normalization.',
+    padding: 'limbo'
+  }, 'Classification'),
   product_simplified: BUILDER.save({
     name: 'Simplification',
     model: 'product',
@@ -287,6 +295,7 @@ Object.keys(CLASSIFICATION_NODES).forEach(k => {
 });
 
 BUILDER.relate(CLASSIFICATION_NODES.product_orthographic, 'BASED_ON', CLASSIFICATION_NODES.product_sources);
+BUILDER.relate(CLASSIFICATION_NODES.product_revised_orthographic, 'BASED_ON', CLASSIFICATION_NODES.product_sources);
 BUILDER.relate(CLASSIFICATION_NODES.product_simplified, 'BASED_ON', CLASSIFICATION_NODES.product_orthographic);
 BUILDER.relate(CLASSIFICATION_NODES.product_categorized, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev2, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
@@ -588,6 +597,16 @@ const orthographicProduct = makeClassificationConsumer(
   {shouldTakeNote: true}
 );
 
+const revisedOrthographicProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_revised_orthographic,
+  CLASSIFICATION_NODES.product_revised_orthographic,
+  CLASSIFICATION_NODES.product_sources,
+  INDEXES.products,
+  'modified',
+  'original',
+  {}
+);
+
 const simplifiedProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_simplified,
   CLASSIFICATION_NODES.product_simplified,
@@ -773,6 +792,24 @@ async.series({
           note: cleanText(line[2])
         }))
         .forEach(orthographicProduct);
+
+      return next();
+    });
+  },
+
+  productRevisedOrthographic(next) {
+    console.log('  -- Products revised orthographic normalization');
+
+     // Parsing revised orthographic corrections for products
+    const csvData = fs.readFileSync(DATA_PATH + REVISED_ORTHOGRAPHIC_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          original: cleanText(line[0]),
+          modified: cleanText(line[1])
+        }))
+        .forEach(revisedOrthographicProduct);
 
       return next();
     });
