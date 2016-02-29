@@ -53,6 +53,7 @@
     "highland": "^2.5.1",
     "jquery": "^2.1.4",
     "lodash": "^3.10.0",
+    "lodash.words": "^4.0.0",
     "morgan": "^1.6.1",
     "neo4j": "^2.0.0-RC2",
     "session-file-store": "0.0.24",
