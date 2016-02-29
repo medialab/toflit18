@@ -46,7 +46,6 @@ const Model = {
         query.where(`f.${classificationType} = sc  AND f.year >= ${config.api.limits.minYear}`);
         query.return('name AS dataType, count(f) AS flows, f.year AS year');
         query.orderBy('f.year, dataType');
-
       }
       else {
         throw new Error('wrong parameter');
