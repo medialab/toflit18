@@ -36,7 +36,7 @@ export default class Button extends Component {
 
   render() {
     const {
-      kind,
+      kind = 'primary',
       disabled,
       onClick,
       size,
@@ -90,7 +90,7 @@ export class ExportButton extends Component {
 
   render() {
     return (
-      <Button onClick={() => this.download()}>
+      <Button onClick={() => this.download()} kind="secondary">
         {this.props.children}
       </Button>
     );

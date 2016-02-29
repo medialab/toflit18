@@ -7,7 +7,7 @@
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../misc/Grid.jsx';
-import Button from '../misc/Button.jsx';
+import Button, {ExportButton}  from '../misc/Button.jsx';
 import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
@@ -286,6 +286,7 @@ class Charts extends Component {
   render() {
     const lines = this.props.lines;
 
+    console.log("lines", lines);
     return (
       <div>
         <div>Number of flows per year</div>
