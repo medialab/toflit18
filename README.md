@@ -5,9 +5,9 @@ Repository holding the source code of the TOFLIT18's datascape.
 architecture : 
   
   - neo4J database v >2
-  - API coded in node using (dolman)[https://github.com/Yomguithereal/dolman] 
-  - a web client coded in (react)[https://github.com/facebook/react] and (baobab)[https://github.com/Yomguithereal/baobab]
-  - deployment scripts sweeten by (kotatsu)[https://github.com/Yomguithereal/kotatsu]  
+  - API coded in node using [dolman](https://github.com/Yomguithereal/dolman) 
+  - a web client coded in [react](https://github.com/facebook/react) and [baobab](https://github.com/Yomguithereal/baobab)
+  - deployment scripts sweeten by [kotatsu](https://github.com/Yomguithereal/kotatsu)  
 
 # install procedure
 
@@ -67,7 +67,12 @@ edges.csv  nodes.csv  sessions
 ```
 
 Now you need to ask neo4j to import those data.
-
+```bash
+service neo4j stop
+neo4j-import --into /store/neo4j-data/toflit18-prod/ --nodes .output/nodes.csv  --relationships .output/edges.csv
+chown -R neo4j:neo4j /store/neo4j-data/toflit18-prod
+service neo4j start
+```
 
 ## serve
 
@@ -103,7 +108,7 @@ an example for ngnins
 ```nginx
 server {
 	listen       80;
-    	server_name  "toflit18.medialab.sciences-po.fr";
+    	server_name  "server.domain.tld";
 
 ### ROOT
         root /store/toflit18/toflit18/client;
@@ -111,7 +116,7 @@ server {
 
 ### API
         location /api/ {
-                proxy_pass http://leegola.medialab.sciences-po.fr:4000/;
+                proxy_pass http://server.domain.tld:4000/;
         }
 
 
@@ -121,4 +126,6 @@ server {
 }
 ```
 
+## test 
 
+test by opening server.domain.tld
