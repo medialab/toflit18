@@ -179,7 +179,6 @@ class Classification extends Component {
       data: {
         id,
         name,
-        author,
         level,
         groupsCount,
         itemsCount,
