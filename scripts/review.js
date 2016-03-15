@@ -5,6 +5,7 @@
  *
  * Adhoc attempt to produce a review for upper classifications rewiring.
  */
+import yargs from 'yargs';
 import {parse, stringify} from 'csv';
 import async from 'async';
 import path from 'path';
@@ -16,10 +17,35 @@ import {classification as queries} from '../api/queries';
 import database from '../api/connection';
 import _ from 'lodash';
 
-const INPUT = path.join(__dirname, '..', '..', 'toflit18_data', 'base', 'pierre', 'bdd_marchandises_normalisees_orthographique.csv'),
-      OUTPUT = path.join(__dirname, '..', '.output', 'simplification.csv'),
-      CLASSIFICATION_ID = 2;
+const argv = yargs
+  .option('c', {
+    alias: 'classification',
+    describe: 'The Neo4j id of the classification to patch.'
+  })
+  .option('o', {
+    alias: 'output',
+    describe: 'The output file.'
+  })
+  .option('p', {
+    alias: 'patch',
+    describe: 'The CSV patch to apply to the given classification.'
+  })
+  .option('r', {
+    alias: 'rewire',
+    describe: 'The Neo4j id of the classification to rewire.'
+  })
+  .demand(['c', 'p', 'r'])
+  .help('h')
+  .alias('h', 'help')
+  .argv;
 
+const INPUT = argv.patch,
+      OUTPUT = argv.output || path.join(__dirname, '..', '.output'),
+      CLASSIFICATION_ID = argv.classification,
+      REWIRE_ID = argv.rewire;
+
+console.log(`Patching classification id n°${CLASSIFICATION_ID} with "${INPUT}"`);
+console.log(`To rewire classification id n°${REWIRE_ID}`);
 console.log('Parsing...');
 
 async.waterfall([
@@ -60,62 +86,17 @@ async.waterfall([
 
     existingGroupsInPatch = new Set(existingGroupsInPatch);
 
-    const links = review.rewires[0].links,
-          upperId = review.rewires[0].id,
+    const relevantRewires = _.find(review.rewires, rewire => rewire.id === REWIRE_ID);
+
+    const links = relevantRewires.links,
+          upperId = relevantRewires.id,
           virtual = review.virtual;
-
-    // TODO: refactor this with proper objects rather than with this array madness
-
-    // const reviewHeaders = [
-    //   'cluster',
-    //   'before_items',
-    //   'after_items',
-    //   'orthographic_normalization',
-    //   'simplification',
-    //   'imprimatur'
-    // ];
-
-    // const links = review
-    //   .rewires[0]
-    //   .links
-    //   .filter(link => !link.shouldExist)
-    //   .map(link => {
-
-    //     return [
-    //       link.cluster,
-    //       link.beforeItems.map(i => `[${i}]`).join(' '),
-    //       link.afterItems.map(i => `[${i}]`).join(' '),
-    //       link.group,
-    //       link.upper,
-    //       ''
-    //     ];
-    //   });
-
-    // const reportHeaders = [
-    //   'group',
-    //   'uppers',
-    //   'beforeItems',
-    //   'afterItems',
-    //   'choice',
-    //   'imprimatur'
-    // ];
 
     const report = rewireReport(links);
 
-    // const report = rewireReport(links).map(row => {
-    //   return [
-    //     row.group,
-    //     row.uppers.map(i => `[${i}]`).join(' '),
-    //     row.beforeItems.map(i => `[${i}]`).join(' '),
-    //     row.afterItems.map(i => `[${i}]`).join(' '),
-    //     '',
-    //     ''
-    //   ];
-    // });
-
     const headers = [
-      'orthographic_pierre',
-      'simplification',
+      'item',
+      'group',
       'status',
       'beforeItems',
       'afterItems',
@@ -234,5 +215,5 @@ async.waterfall([
   },
 
   // Writing
-  (csv, next) => fs.writeFile(OUTPUT, csv, next)
+  (csv, next) => fs.writeFile(path.join(OUTPUT, 'rewired.csv'), csv, next)
 ], err => err && console.error(err));
