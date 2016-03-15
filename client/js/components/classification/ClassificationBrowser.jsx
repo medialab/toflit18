@@ -229,7 +229,7 @@ class Classification extends Component {
           style={{marginLeft: offset}}
           onClick={() => !active && actions.select(id)}>
         <div>
-          <strong>{name}</strong> (<em>{author}</em>)
+          <strong>{name}</strong>
         </div>
         <div className="addendum">
           {infoLine}
