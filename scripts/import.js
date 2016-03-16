@@ -32,8 +32,8 @@ const ROOT_PATH = '/base',
       BDD_OUTSIDERS = ROOT_PATH + '/marchandises_sourcees.csv',
       BDD_UNITS = ROOT_PATH + '/Units N1.csv',
       ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
-      REVISED_ORTHOGRAPHIC_CLASSIFICATION = '/traitements_marchandises/bdd_marchandises_normalisees_orthographique.csv',
-      REVISED_SIMPLIFICATION = '/traitements_marchandises/simplification_travail.csv',
+      REVISED_ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_revised_marchandises_normalisees_orthographique.csv',
+      REVISED_SIMPLIFICATION = ROOT_PATH + '/bdd_revised_marchandises_simplifiees.csv',
       SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
       OTHER_CLASSIFICATIONS = ROOT_PATH + '/bdd_marchandises_classifiees.csv',
       COUNTRY_CLASSIFICATIONS = ROOT_PATH + '/bdd_pays.csv';
@@ -847,8 +847,8 @@ async.series({
       data
         .slice(1)
         .map(line => ({
-          simplified: cleanText(line[2]),
-          orthographic: cleanText(line[1])
+          simplified: cleanText(line[1]),
+          orthographic: cleanText(line[0])
         }))
         .forEach(revisedSimplifiedProduct);
 
