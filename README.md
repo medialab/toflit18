@@ -44,7 +44,7 @@ Repository holding the source code of the TOFLIT18's datascape.
 
 It is recommended that you use at least the fifth version of Node.js, but any version down to `0.12.x` should work anyway.
 
-### Intalling dependencies
+### Installing dependencies
 
 This will install dependencies for both the server and client side and create the `.output` folder.
 
@@ -157,22 +157,21 @@ The following is an example using `nginx`:
 
 ```nginx
 server {
-  listen       80;
-      server_name  "server.domain.tld";
+  listen 80;
+  server_name  "server.domain.tld";
 
-### ROOT
-        root /store/toflit18/toflit18/client;
-        index index.html;
+  ### ROOT
+  root /store/toflit18/toflit18/client;
+  index index.html;
 
-### API
-        location /api/ {
-                proxy_pass http://server.domain.tld:4000/;
-        }
+  ### API
+  location /api/ {
+    proxy_pass http://server.domain.tld:4000/;
+  }
 
-
-### LOGS
-    access_log /var/log/nginx/toflit18.medialab.access.log main;
-    error_log /var/log/nginx/toflit18.medialab.error.log error;
+  ### LOGS
+  access_log /var/log/nginx/toflit18.medialab.access.log main;
+  error_log /var/log/nginx/toflit18.medialab.error.log error;
 }
 ```
 
