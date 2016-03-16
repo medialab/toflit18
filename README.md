@@ -175,7 +175,9 @@ server {
 }
 ```
 
-## Miscellaneous commands
+## Commands
+
+### Miscellaneous
 
 ```bash
 # Export some data from the Neo4j database into CSV files
@@ -189,4 +191,13 @@ npm run start
 
 # Running the unit tests
 npm test
+```
+
+### Rewiring
+
+Using Neo4j ids.
+
+```bash
+npm run rewire -- -- --classification 4 --patch 5 --rewire 6
+npm run rewire -- -- --help
 ```
