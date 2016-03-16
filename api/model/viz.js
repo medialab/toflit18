@@ -184,11 +184,13 @@ const Model = {
     if (sourceType) {
       where.and(`f.sourceType = "${sourceType}"`);
     }
-    if (productClassification) {
-      where.and('f.product IN products');
-    }
+
+    // NOTE: country must come first for cardinality reasons
     if (countryClassification) {
       where.and('f.country IN countries');
+    }
+    if (productClassification) {
+      where.and('f.product IN products');
     }
 
     if (!where.isEmpty())

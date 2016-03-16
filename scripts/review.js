@@ -40,7 +40,7 @@ const argv = yargs
   .argv;
 
 const INPUT = argv.patch,
-      OUTPUT = argv.output || path.join(__dirname, '..', '.output'),
+      OUTPUT = argv.output || path.join(__dirname, '..', '.output'),
       CLASSIFICATION_ID = argv.classification,
       REWIRE_ID = argv.rewire;
 
