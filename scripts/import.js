@@ -225,7 +225,7 @@ const CLASSIFICATION_NODES = {
     description: 'Simplifying the source.'
   }, 'Classification'),
   product_revised_simplified: BUILDER.save({
-    name: 'Revised simplification',
+    name: 'Revised Simplification',
     model: 'product',
     slug: 'revised_simplification',
     description: 'Simplifying the source.'
