@@ -12,15 +12,24 @@ import path from 'path';
 import fs from 'fs';
 import model from '../api/model/classification';
 import {cleanText} from '../lib/clean';
-import {rewireReport} from '../lib/patch';
 import {classification as queries} from '../api/queries';
 import database from '../api/connection';
 import _ from 'lodash';
 
+import {
+  applyOperations,
+  solvePatch,
+  rewire,
+  rewireReport
+} from '../lib/patch';
+
+const cypher = database.cypher.bind(database);
+
 const argv = yargs
   .option('c', {
     alias: 'classification',
-    describe: 'The Neo4j id of the classification to patch.'
+    describe: 'The Neo4j id of the classification to patch.',
+    type: 'number'
   })
   .option('o', {
     alias: 'output',
@@ -28,49 +37,63 @@ const argv = yargs
   })
   .option('p', {
     alias: 'patch',
-    describe: 'The CSV patch to apply to the given classification.'
+    describe: 'The Neo4j id of the classification to use as patch.',
+    type: 'number'
   })
   .option('r', {
     alias: 'rewire',
-    describe: 'The Neo4j id of the classification to rewire.'
+    describe: 'The Neo4j id of the classification to rewire.',
+    type: 'number'
   })
   .demand(['c', 'p', 'r'])
   .help('h')
   .alias('h', 'help')
   .argv;
 
-const INPUT = argv.patch,
+const PATCH_ID = argv.patch,
       OUTPUT = argv.output || path.join(__dirname, '..', '.output'),
       CLASSIFICATION_ID = argv.classification,
       REWIRE_ID = argv.rewire;
 
-console.log(`Patching classification id n°${CLASSIFICATION_ID} with "${INPUT}"`);
+console.log(`Patching classification id n°${CLASSIFICATION_ID} with classification id n°${PATCH_ID}`);
 console.log(`To rewire classification id n°${REWIRE_ID}`);
 console.log('Parsing...');
 
 async.waterfall([
 
-  // Parsing
-  next => parse(fs.readFileSync(INPUT, 'utf-8'), {delimiter: ','}, next),
+  // Fetching necessary data
+  next => {
+    async.parallel({
+      classification: async.apply(cypher, {query: queries.allGroupsToSource, params: {id: CLASSIFICATION_ID}}),
+      patch: async.apply(cypher, {query: queries.allGroupsToSource, params: {id: PATCH_ID}})
+    }, next);
+  },
 
   // Applying patch
-  (csv, next) => {
-    console.log('Applying patch...');
+  (data, next) => {
 
-    const patch = _(csv)
-      .drop(1)
-      .map(row => {
-        return {
-          item: cleanText(row[0]) || null,
-          group: cleanText(row[1]) || null
-        };
-      })
-      .value();
+    // Computing operations
+    const operations = solvePatch(data.classification, data.patch);
 
-    model.review(CLASSIFICATION_ID, patch, function(err, review) {
+    // Computing a virtual updated version of the classification
+    const updatedClassification = applyOperations(data.classification, operations);
+
+    // Fetching upper groups
+    cypher({query: queries.upperGroups, params: {id: REWIRE_ID}}, function(err, upperGroups) {
       if (err) return next(err);
 
-      return next(null, patch, review);
+      const links = rewire(
+        upperGroups,
+        data.classification,
+        updatedClassification,
+        operations
+      );
+
+      return next(null, data.patch, {
+        operations,
+        links,
+        virtual: updatedClassification
+      });
     });
   },
 
@@ -88,9 +111,7 @@ async.waterfall([
 
     const relevantRewires = _.find(review.rewires, rewire => rewire.id === REWIRE_ID);
 
-    const links = relevantRewires.links,
-          upperId = relevantRewires.id,
-          virtual = review.virtual;
+    const {links, virtual} = review;
 
     const report = rewireReport(links);
 
@@ -150,7 +171,7 @@ async.waterfall([
       })
       .value();
 
-    database.cypher({query: queries.allGroups, params: {id: upperId}}, (err, classification) => {
+    database.cypher({query: queries.allGroups, params: {id: REWIRE_ID}}, (err, classification) => {
       if (err) return next(err);
 
       //-- 3) Existing

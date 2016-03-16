@@ -78,6 +78,19 @@ RETURN
   item.name AS item,
   id(item) AS itemId;
 
+// name: allGroupsToSource
+// Retrieving every groups for the given classification but mapped to the
+// source products themselves.
+//------------------------------------------------------------------------------
+MATCH (item:Product)
+OPTIONAL MATCH (item)<-[:AGGREGATES*1..]-(group:ClassifiedItem)<-[:HAS]-(c)
+WHERE id(c) = {id}
+RETURN
+  group.name AS group,
+  id(group) AS groupId,
+  item.name AS item,
+  id(item) AS itemId;
+
 // name: upper
 // Retrieving every classifications based on the given one.
 //------------------------------------------------------------------------------
