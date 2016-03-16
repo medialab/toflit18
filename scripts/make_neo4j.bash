@@ -26,3 +26,6 @@ chown -R neo4j:neo4j $NEO4J_PATH/data/toflit.graph.db &&
 
 # Restarting the databse
 service neo4j-service start
+
+# Building indices
+npm run indices
