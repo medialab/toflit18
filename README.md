@@ -195,9 +195,15 @@ npm test
 
 ### Rewiring
 
-Using Neo4j ids.
+When one user want to modify one classification, it should :
 
-```bash
-npm run rewire -- -- --classification 4 --patch 5 --rewire 6
-npm run rewire -- -- --help
-```
+1. first export one classification through npm run export.  
+2. Then modify the classification csv by hand.
+3. import the new version classification into the database (edit scripts/import.js)
+4. generate the rewire csv file
+     Using Neo4j ids.
+     ```bash
+     npm run rewire -- -- --classification 4 --patch 5 --rewire 6
+     npm run rewire -- -- --help
+     ```
+5. edit this file, solve the ambigious cases and then you have a new version of the targeted classification (got to 3)
