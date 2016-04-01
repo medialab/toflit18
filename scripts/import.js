@@ -30,12 +30,15 @@ import _ from 'lodash';
 const ROOT_PATH = '/base',
       BDD_CENTRALE_PATH = ROOT_PATH + '/bdd_centrale.csv',
       BDD_OUTSIDERS = ROOT_PATH + '/marchandises_sourcees.csv',
-      BDD_UNITS = ROOT_PATH + '/Units N1.csv',
+      BDD_UNITS = ROOT_PATH + '/Units_N1.csv',
       ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
       REVISED_ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_revised_marchandises_normalisees_orthographique.csv',
       REVISED_SIMPLIFICATION = ROOT_PATH + '/bdd_revised_marchandises_simplifiees.csv',
       SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
       OTHER_CLASSIFICATIONS = ROOT_PATH + '/bdd_marchandises_classifiees.csv',
+      COUNTRY_ORTHOGRAPHIC = ROOT_PATH + '/classification_country_orthographic_normalization.csv',
+      COUNTRY_SIMPLIFICATION = ROOT_PATH + '/classification_country_simplification.csv',
+      COUNTRY_GROUPED = ROOT_PATH + '/classification_country_grouping.csv',
       COUNTRY_CLASSIFICATIONS = ROOT_PATH + '/bdd_pays.csv';
 
 /**
@@ -881,28 +884,80 @@ async.series({
     });
   },
 
-  countryVarious(next) {
-    console.log('  -- Countries various classifications');
+  countryOrthographic(next) {
+    console.log('  -- Countries orthographic');
 
-    // Parsing various classifications for countries
-    const csvData = fs.readFileSync(DATA_PATH + COUNTRY_CLASSIFICATIONS, 'utf-8');
+     // Parsing revised orthographic corrections for products
+    const csvData = fs.readFileSync(DATA_PATH + COUNTRY_ORTHOGRAPHIC, 'utf-8');
     parseCsv(csvData, {delimiter: ','}, function(err, data) {
-      _(data.slice(1))
+      data
+        .slice(1)
         .map(line => ({
           original: cleanText(line[0]),
           orthographic: cleanText(line[1]),
-          simplified: cleanText(line[2]),
-          grouped: cleanText(line[3]),
-          note: cleanText(line[4])
+          note: cleanText(line[2])
         }))
-        .forEach(orthographicCountry)
-        .uniq('orthographic')
-        .forEach(simplifiedCountry)
-        .uniq('simplified')
-        .forEach(groupedCountry)
-        .value();
+        .forEach(orthographicCountry);
+      return next();
+    });
+  },
+  countrySimplification(next) {
+    console.log('  -- Countries simplification');
 
+     // Parsing revised orthographic corrections for products
+    const csvData = fs.readFileSync(DATA_PATH + COUNTRY_SIMPLIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          orthographic: cleanText(line[0]),
+          simplified: cleanText(line[1]),
+          note: cleanText(line[2])
+        }))
+        .forEach(simplifiedCountry);
+      return next();
+    });
+  },
+  countryGrouped(next) {
+    console.log('  -- Countries grouped');
+
+     // Parsing revised orthographic corrections for products
+    const csvData = fs.readFileSync(DATA_PATH + COUNTRY_GROUPED, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          simplified: cleanText(line[0]),
+          grouped: cleanText(line[1]),
+          note: cleanText(line[2])
+        }))
+        .forEach(groupedCountry);
       return next();
     });
   }
+
+  // countryVarious(next) {
+  //   console.log('  -- Countries various classifications');
+
+  //   // Parsing various classifications for countries
+  //   const csvData = fs.readFileSync(DATA_PATH + COUNTRY_CLASSIFICATIONS, 'utf-8');
+  //   parseCsv(csvData, {delimiter: ','}, function(err, data) {
+  //     _(data.slice(1))
+  //       .map(line => ({
+  //         original: cleanText(line[0]),
+  //         orthographic: cleanText(line[1]),
+  //         simplified: cleanText(line[2]),
+  //         grouped: cleanText(line[3]),
+  //         note: cleanText(line[4])
+  //       }))
+  //       .forEach(orthographicCountry)
+  //       .uniq('orthographic')
+  //       .forEach(simplifiedCountry)
+  //       .uniq('simplified')
+  //       .forEach(groupedCountry)
+  //       .value();
+
+  //     return next();
+  //   });
+  // }
 }, err => err && console.error(err));
