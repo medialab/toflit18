@@ -13,6 +13,7 @@ import {Waiter} from '../misc/Loaders.jsx';
 import Infinite from '../misc/Infinite.jsx';
 import {prettyPrint} from '../../lib/helpers';
 import cls from 'classnames';
+import {sortBy} from 'lodash';
 
 // Actions
 import {
@@ -101,11 +102,6 @@ class LeftPanel extends Component {
                         disabled
                         onClick={() => actions.modal('create')}>
                   Create From
-                </Button>
-                <Button kind="secondary"
-                        disabled={current.source || false}
-                        onClick={() => actions.modal('update')}>
-                  Update
                 </Button>
               </ButtonGroup>
             </Col>
@@ -300,10 +296,12 @@ class GroupsList extends Component {
   render() {
     const {groups, source} = this.props;
 
+    var groupsSort = sortBy(groups, function(g) { return g.name; });
+
     return (
       <ul className="entities-list">
-        {groups.length ?
-          groups.map(g => <Group source={source} key={g.id} {...g} />) :
+        {groupsSort.length ?
+          groupsSort.map(g => <Group source={source} key={g.id} {...g} />) :
           <span>No Results...</span>}
       </ul>
     );
