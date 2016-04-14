@@ -12,6 +12,7 @@ import {ExportButton} from '../misc/Button.jsx';
 import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
+import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import {capitalize, isEqual, mapValues, values} from 'lodash';
 import {
   updateSelector as update,
@@ -294,6 +295,8 @@ class Charts extends Component {
     const lines = this.props.lines;
         // .filter((l) =>
         //   lines.data.length > 0);
+
+    console.log("lines", lines);
     // create an array with all lines, add a column with name of country selected
     // create csv only with indicators selected
     const arrayDataLines = [];
@@ -336,10 +339,19 @@ class Charts extends Component {
                       data={arrayDataLines}>
           Export
         </ExportButton>
+        <br />
         <div>Total value of flows per year</div>
         <hr />
         <LineChart data={lines} />
         <ExportButton name= "Indicators_Total_value_of_flows_per_year"
+                      data={arrayDataLines}>
+          Export
+        </ExportButton>
+        <br />
+        <div>Total number of directions per year</div>
+        <hr />
+        <DataQualityBarChart valueKey="nb_direction" data={lines} />
+        <ExportButton name= "Indicators_Number_of_directions_per_year"
                       data={arrayDataLines}>
           Export
         </ExportButton>

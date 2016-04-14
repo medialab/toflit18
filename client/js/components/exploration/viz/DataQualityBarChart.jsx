@@ -19,7 +19,9 @@ export default class DataQualityBarChart extends Component {
   render() {
 
     // Basic properties
-    const {data, width} = this.props;
+    let {data, width} = this.props;
+
+    
 
     const bottomMargin = 25,
           topMargin = 20,
@@ -28,6 +30,18 @@ export default class DataQualityBarChart extends Component {
     // If no data was supplied, we don't render
     if (!data)
       return null;
+
+    console.log("data", data);
+    if (data[0].params) {
+      const nb_direction = [];
+      data.forEach(line => {
+       line.data.forEach((e)=> {
+             nb_direction.push({data:e.nb_direction.length, year:e.year});
+          })
+        })
+      console.log("nb_direction", nb_direction)
+      data = nb_direction
+    }
 
     // Computing max values
     const maxYear = data[data.length - 1].year,
