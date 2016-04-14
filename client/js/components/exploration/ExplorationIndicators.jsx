@@ -8,10 +8,11 @@ import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Row, Col} from '../misc/Grid.jsx';
 import Button from '../misc/Button.jsx';
+import {ExportButton} from '../misc/Button.jsx';
 import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
-import {capitalize, isEqual, mapValues} from 'lodash';
+import {capitalize, isEqual, mapValues, values} from 'lodash';
 import {
   updateSelector as update,
   addLine,
@@ -75,6 +76,11 @@ class LineForm extends Component {
         value: type
       };
     });
+
+    /*
+     * Display only product with data
+     */
+
 
     return (
       <div className="panel">
@@ -217,6 +223,7 @@ class GraphPanel extends Component {
                       drop={actions.dropLine} />
         <hr />
         <Charts lines={linesToRender} />
+
       </div>
     );
   }
@@ -285,16 +292,57 @@ class LinesSummary extends Component {
 class Charts extends Component {
   render() {
     const lines = this.props.lines;
+        // .filter((l) =>
+        //   lines.data.length > 0);
+    // create an array with all lines, add a column with name of country selected
+    // create csv only with indicators selected
+    const arrayDataLines = [];
+    lines.forEach(function (l) {
+      const dataLines = [];
+        // add info about classification, product, country, direction, kind
+        // add all column even if the info is not selected for the line
+        // copy element to add info keys
+      const elemCopy = {};
+      l.data.forEach(function (e) {
+        elemCopy.count = e.count;
+        elemCopy.value = e.value;
+        elemCopy.year = e.year;
+        elemCopy.sourceType ? elemCopy.sourceType = l.params.sourceType.name : elemCopy.sourceType = null;
+        l.params.productClassification ? elemCopy.productClassification = l.params.productClassification.name :
+        elemCopy.productClassification = null;
+        l.params.countryClassification ? elemCopy.countryClassification = l.params.countryClassification.name :
+        elemCopy.countryClassification = null;
+        l.params.country ? elemCopy.country = l.params.country.name : elemCopy.country = null;
+        l.params.product ? elemCopy.product = l.params.product.name : elemCopy.product = null;
+        l.params.kind ? elemCopy.kind = l.params.kind.name : elemCopy.kind = null;
+        l.params.direction ? elemCopy.direction = l.params.direction.name : elemCopy.direction = null;
+        dataLines.push(elemCopy);
+      });
 
+      // add all lines values in an array to export data in one csv
+      const data = values(dataLines);
+
+      data.forEach(function (d) {
+        arrayDataLines.push(d);
+      });
+    });
     return (
       <div>
         <div>Number of flows per year</div>
         <hr />
         <LineChart valueKey="count" data={lines} />
         <hr />
+        <ExportButton name= "Indicators_Number_of_flows_per_year"
+                      data={arrayDataLines}>
+          Export
+        </ExportButton>
         <div>Total value of flows per year</div>
         <hr />
         <LineChart data={lines} />
+        <ExportButton name= "Indicators_Total_value_of_flows_per_year"
+                      data={arrayDataLines}>
+          Export
+        </ExportButton>
       </div>
     );
   }
