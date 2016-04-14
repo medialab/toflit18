@@ -13,7 +13,6 @@ import {Waiter} from '../misc/Loaders.jsx';
 import Infinite from '../misc/Infinite.jsx';
 import {prettyPrint} from '../../lib/helpers';
 import cls from 'classnames';
-import {sortBy} from 'lodash';
 
 // Actions
 import {
@@ -296,7 +295,17 @@ class GroupsList extends Component {
   render() {
     const {groups, source} = this.props;
 
-    var groupsSort = sortBy(groups, function(g) { return g.name; });
+    function sortArray(arr, sortKey, reverse) {
+      const order = (reverse && reverse < 0) ? -1 : 1;
+      // sort on a copy to avoid mutating original array
+      return arr.slice().sort(function (a, b) {
+        a = a[sortKey].toLowerCase();
+        b = b[sortKey].toLowerCase();
+        return a === b ? 0 : a > b ? order : -order;
+      });
+    }
+
+    const groupsSort = sortArray(groups, 'name', 'reverse');
 
     return (
       <ul className="entities-list">
