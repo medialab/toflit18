@@ -59,7 +59,7 @@ export default class ExplorationMeta extends Component {
 
     const classificationsFiltered = classifications.product
       .concat(classifications.country)
-      .filter(c => c.groupsCount && !c.source)
+      .filter(c => c.groupsCount)
       .map(e => ({
         ...e,
         name: `${e.name} (${e.model === 'product' ? 'Products' : 'Countries'} - ${prettyPrint(e.groupsCount)} groups)`
