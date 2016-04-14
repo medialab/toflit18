@@ -197,7 +197,7 @@ const Model = {
       query.where(where);
 
     //-- Returning data
-    query.return('count(f) AS count, sum(f.value) AS value, f.year AS year');
+    query.return('count(f) AS count, sum(f.value) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction');
     query.orderBy('f.year');
 
     database.cypher(query.build(), function(err, data) {
