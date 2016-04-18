@@ -9,7 +9,7 @@ import React, {Component} from 'react';
 import Tooltip from 'rc-tooltip';
 import measured from '@yomguithereal/react-utilities/measured';
 import {scaleLinear as linear} from 'd3-scale';
-import {max, range} from 'lodash';
+import {max, range, uniq, concat} from 'lodash';
 
 /**
  * Main component.
@@ -21,8 +21,6 @@ export default class DataQualityBarChart extends Component {
     // Basic properties
     let {data, width} = this.props;
 
-    
-
     const bottomMargin = 25,
           topMargin = 20,
           height = 60;
@@ -31,16 +29,43 @@ export default class DataQualityBarChart extends Component {
     if (!data)
       return null;
 
-    console.log("data", data);
+    // check if data comes from indicators view
     if (data[0].params) {
-      const nb_direction = [];
+      const nbDirectionByYear = {};
       data.forEach(line => {
-       line.data.forEach((e)=> {
-             nb_direction.push({data:e.nb_direction.length, year:e.year});
-          })
-        })
-      console.log("nb_direction", nb_direction)
-      data = nb_direction
+        line.data.forEach((e) => {
+          // concat direction by year
+          if (nbDirectionByYear[e.year]) {
+            nbDirectionByYear[e.year] = nbDirectionByYear[e.year].concat(e.nb_direction);
+          }
+          else {
+            nbDirectionByYear[e.year] = e.nb_direction;
+          }
+        });
+      });
+
+      // create an array of data with nb of direction, year and directions
+      const nbDirectionByYear2 = [];
+      for (const key in nbDirectionByYear) {
+
+          let directions = [];
+
+          if (nbDirectionByYear[key]) {
+            nbDirectionByYear[key].forEach((d) => {
+              directions.push({direction: d});
+            });
+
+            // get unique value of direction
+            directions = uniq(directions, 'direction')
+                          .map((d) => {
+                            return d.direction;
+                          })
+                          .sort();
+          }
+        nbDirectionByYear2.push({data: directions.length, year: key, directions: directions});
+      }
+
+      data = nbDirectionByYear2;
     }
 
     // Computing max values
@@ -66,7 +91,7 @@ export default class DataQualityBarChart extends Component {
           {data.map(row => {
             return (
               <g key={row.year}>
-                <Tooltip placement="top" align={{offset: [3, 0]}} overlay={row.data + ` (${row.year})`}>
+                <Tooltip placement="top" align={{offset: [3, 0]}} overlay={row.directions + ` (${row.year})`}>
                   <rect className="bar"
                         x={x(row.year)}
                         y={y(row.data) + topMargin}
@@ -105,9 +130,44 @@ class Axis extends Component {
     }
 
     return (
-      <g className="axis" transform={`translate(0, ${height + 2})`}>
+      <g className="x axis" transform={`translate(0, ${height + 2})`}>
         <line x2={width} />
         {ticks.slice(0, -1).map(renderTick)}
+      </g>
+    );
+  }
+}
+
+/**
+ * Y axis.
+ */
+class YAxis extends Component {
+  render() {
+    const {margin, width, height, scale} = this.props;
+
+    const ticks = scale.ticks().filter(Number.isInteger);
+
+    function renderTick(t, i) {
+      const top = (margin.top + scale(t));
+
+      return (
+        <g key={i} className="tick" transform={`translate(${margin.left}, ${top})`}>
+          <line x1={-5} x2={0} />
+          <text x={-7} y="0.32em" textAnchor="end">
+            {axisFormat(t)}
+          </text>
+          <line className="dotted" x2={width - margin.right - margin.left} />
+        </g>
+      );
+    }
+
+    return (
+      <g className="y axis">
+        <line x1={margin.left}
+              x2={margin.left}
+              y1={margin.top}
+              y2={height - margin.bottom} />
+        {ticks.filter(d => !!d).map(renderTick)}
       </g>
     );
   }
