@@ -106,7 +106,9 @@ export class ItemSelector extends Component {
     // TODO: This could be optimized by using lodash's lazy chaining
     let options = this.props.data
       .filter(function(group) {
-        return !!~group.name.indexOf(input);
+        input = input.toLowerCase();
+        const name = group.name.toLowerCase();
+        return !!~name.indexOf(input);
       });
 
     if (options.length > MAX_LIST_SIZE) {
