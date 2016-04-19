@@ -13,7 +13,7 @@ import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
-import {capitalize, isEqual, mapValues, values} from 'lodash';
+import {capitalize, isEqual, mapValues, values, filter} from 'lodash';
 import {
   updateSelector as update,
   addLine,
@@ -292,11 +292,9 @@ class LinesSummary extends Component {
  */
 class Charts extends Component {
   render() {
-    const lines = this.props.lines;
-        // .filter((l) =>
-        //   lines.data.length > 0);
-
-    console.log("lines", lines);
+    let lines = this.props.lines;
+        
+    lines = filter(lines, (l) => { return l.data.length > 0 });
     // create an array with all lines, add a column with name of country selected
     // create csv only with indicators selected
     const arrayDataLines = [];
@@ -329,6 +327,7 @@ class Charts extends Component {
         arrayDataLines.push(d);
       });
     });
+
     return (
       <div>
         <div>Number of flows per year</div>

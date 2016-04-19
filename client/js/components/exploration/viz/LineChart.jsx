@@ -27,8 +27,9 @@ export default class LineChart extends Component {
       width: fullWidth
     } = this.props;
 
-    if (!data.length)
+    if (!data.length) {
       return null;
+    }
 
     const lines = data.map(line => {
       return line.data.map(row => {

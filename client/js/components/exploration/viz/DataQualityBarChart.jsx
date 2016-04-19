@@ -26,8 +26,9 @@ export default class DataQualityBarChart extends Component {
           height = 60;
 
     // If no data was supplied, we don't render
-    if (!data)
+    if (!data.length) {
       return null;
+    }
 
     // check if data comes from indicators view
     if (data[0].params) {
@@ -62,7 +63,11 @@ export default class DataQualityBarChart extends Component {
                           })
                           .sort();
           }
-        nbDirectionByYear2.push({data: directions.length, year: key, directions: directions});
+        nbDirectionByYear2.push({
+          data: directions.length,
+          year: key,
+          directions: directions
+        });
       }
 
       data = nbDirectionByYear2;
@@ -133,41 +138,6 @@ class Axis extends Component {
       <g className="x axis" transform={`translate(0, ${height + 2})`}>
         <line x2={width} />
         {ticks.slice(0, -1).map(renderTick)}
-      </g>
-    );
-  }
-}
-
-/**
- * Y axis.
- */
-class YAxis extends Component {
-  render() {
-    const {margin, width, height, scale} = this.props;
-
-    const ticks = scale.ticks().filter(Number.isInteger);
-
-    function renderTick(t, i) {
-      const top = (margin.top + scale(t));
-
-      return (
-        <g key={i} className="tick" transform={`translate(${margin.left}, ${top})`}>
-          <line x1={-5} x2={0} />
-          <text x={-7} y="0.32em" textAnchor="end">
-            {axisFormat(t)}
-          </text>
-          <line className="dotted" x2={width - margin.right - margin.left} />
-        </g>
-      );
-    }
-
-    return (
-      <g className="y axis">
-        <line x1={margin.left}
-              x2={margin.left}
-              y1={margin.top}
-              y2={height - margin.bottom} />
-        {ticks.filter(d => !!d).map(renderTick)}
       </g>
     );
   }
