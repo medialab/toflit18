@@ -233,13 +233,13 @@ class GraphPanel extends Component {
 /**
  * Lines summary.
  */
-function buildDescription(params) {
-  const selectors = mapValues(params, 'name'),
-        description = [];
+function buildDescription(params, data) {
+  const selectors = mapValues(params, 'name');
+  let   description = [];
 
   description.push(<span key="kind">{capitalize(selectors.kind || 'total') + ' flows'}</span>);
 
-  if (selectors.product)
+  if (selectors.product && data.length )
     description.push(<span key="product"> of <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
 
   if (selectors.direction && selectors.direction !== '$all')
@@ -251,12 +251,20 @@ function buildDescription(params) {
   if (selectors.sourceType)
     description.push(<span key="type"> - (source type: {selectors.sourceType})</span>);
 
+  if (selectors.product && data.length === 0) {
+    description = [];
+    description.push(<span key="kind">{'No data '}</span>);
+    description.push(<span key="product"> for <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
+  }
+
   return description;
 }
 
 class LinesSummary extends Component {
   render() {
     const {drop, lines} = this.props;
+
+    console.log("lines summary", lines)
 
     return (
       <ul className="summary">
@@ -272,7 +280,7 @@ class LinesSummary extends Component {
           return (
             <li key={i}>
               <span className="insert" style={style}>
-                {buildDescription(line.params)}
+                {buildDescription(line.params, line.data)}
               </span>
               <span className="insert drop"
                     onClick={drop.bind(null, i)}
@@ -294,7 +302,8 @@ class Charts extends Component {
   render() {
     let lines = this.props.lines;
         
-    lines = filter(lines, (l) => { return l.data.length > 0 });
+    // select only line with data ?
+    // lines = filter(lines, (l) => { return l.data.length > 0 });
     // create an array with all lines, add a column with name of country selected
     // create csv only with indicators selected
     const arrayDataLines = [];

@@ -9,7 +9,7 @@ import React, {Component} from 'react';
 import Tooltip from 'rc-tooltip';
 import measured from '@yomguithereal/react-utilities/measured';
 import {scaleLinear as linear} from 'd3-scale';
-import {max, range, uniq, concat} from 'lodash';
+import {max, range, uniq, filter, concat} from 'lodash';
 
 /**
  * Main component.
@@ -25,6 +25,8 @@ export default class DataQualityBarChart extends Component {
           topMargin = 20,
           height = 60;
 
+    console.log("data quality", data);
+    data = filter(data, (l) => { return l.data.length > 0 });
     // If no data was supplied, we don't render
     if (!data.length) {
       return null;
