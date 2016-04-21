@@ -264,8 +264,8 @@ class LinesSummary extends Component {
   render() {
     const {drop, lines} = this.props;
 
-    console.log("lines summary", lines)
-
+    console.log("lines", lines)
+    
     return (
       <ul className="summary">
         {lines.map(function(line, i) {

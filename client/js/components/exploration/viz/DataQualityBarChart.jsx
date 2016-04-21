@@ -26,14 +26,20 @@ export default class DataQualityBarChart extends Component {
           height = 60;
 
     console.log("data quality", data);
-    data = filter(data, (l) => { return l.data.length > 0 });
-    // If no data was supplied, we don't render
+    // manage meta or indicator context
     if (!data.length) {
       return null;
     }
 
+    if (data && data[0].params)
+      data = filter(data, (l) => { return l.data.length > 0 });
+    // If no data was supplied, we don't render
+
+    if (!data.length) {
+      return null;
+    }
     // check if data comes from indicators view
-    if (data[0].params) {
+    if (data.length > 0 && data[0].params) {
       const nbDirectionByYear = {};
       data.forEach(line => {
         line.data.forEach((e) => {
@@ -96,9 +102,15 @@ export default class DataQualityBarChart extends Component {
         <Axis width={width} height={height + topMargin} scale={x} years={allYears} />
         <g>
           {data.map(row => {
+            console.log("row", row);
+            let dataDisplayed;
+            if (row.directions)
+              dataDisplayed = row.directions;
+            else
+              dataDisplayed = row.data;
             return (
               <g key={row.year}>
-                <Tooltip placement="top" align={{offset: [3, 0]}} overlay={row.directions + ` (${row.year})`}>
+                <Tooltip placement="top" align={{offset: [3, 0]}} overlay={dataDisplayed + ` (${row.year})`}>
                   <rect className="bar"
                         x={x(row.year)}
                         y={y(row.data) + topMargin}
