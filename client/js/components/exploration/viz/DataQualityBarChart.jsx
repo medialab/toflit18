@@ -25,14 +25,15 @@ export default class DataQualityBarChart extends Component {
           topMargin = 20,
           height = 60;
 
-    console.log("data quality", data);
     // manage meta or indicator context
     if (!data.length) {
       return null;
     }
 
     if (data && data[0].params)
-      data = filter(data, (l) => { return l.data.length > 0 });
+      data = filter(data, (l) => { 
+        return l.data.length > 0; 
+      });
     // If no data was supplied, we don't render
 
     if (!data.length) {
@@ -102,7 +103,6 @@ export default class DataQualityBarChart extends Component {
         <Axis width={width} height={height + topMargin} scale={x} years={allYears} />
         <g>
           {data.map(row => {
-            console.log("row", row);
             let dataDisplayed;
             if (row.directions)
               dataDisplayed = row.directions;

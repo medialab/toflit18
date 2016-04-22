@@ -263,8 +263,6 @@ function buildDescription(params, data) {
 class LinesSummary extends Component {
   render() {
     const {drop, lines} = this.props;
-
-    console.log("lines", lines)
     
     return (
       <ul className="summary">
@@ -302,8 +300,6 @@ class Charts extends Component {
   render() {
     let lines = this.props.lines;
         
-    // select only line with data ?
-    // lines = filter(lines, (l) => { return l.data.length > 0 });
     // create an array with all lines, add a column with name of country selected
     // create csv only with indicators selected
     const arrayDataLines = [];

@@ -79,8 +79,9 @@ export function addLine(tree) {
   const payload = {};
 
   for (const k in selectors)
-    if (!!selectors[k])
+    if (!!selectors[k]) {
       payload[k] = (k === 'sourceType') ? selectors[k].value : selectors[k].id;
+    }
 
   tree.client.viz({params: {name: 'line'}, data: payload}, function(err, data) {
     cursor.set('creating', false);
