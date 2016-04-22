@@ -181,10 +181,6 @@ const Model = {
     else if (kind === 'export')
       where.and('not(f.import)');
 
-    if (sourceType) {
-      where.and(`f.sourceType = "${sourceType}"`);
-    }
-
     // NOTE: country must come first for cardinality reasons
     if (countryClassification) {
       where.and('f.country IN countries');
@@ -197,7 +193,13 @@ const Model = {
       query.where(where);
 
     //-- Returning data
-    query.return('count(f) AS count, sum(f.value) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction');
+    if (sourceType === 'National best guess') {
+      query.return('sum(f.value) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType, CASE WHEN 1787 <= f.year <= 1789 AND (\'Object général\' in collect(distinct(f.sourceType))) AND (\'Résumé\' in collect(distinct(f.sourceType))) THEN filter(x in collect(f.sourceType) where not x=\'Résumé\') WHEN 1749 <= f.year <= 1751 AND (\'Local\' in collect(distinct(f.sourceType))) AND (\'National par direction\' in collect(distinct(f.sourceType))) THEN filter(x in collect(f.sourceType) where not x=\'National par direction\') ELSE count(f) END as count');
+    }
+    else {
+      where.and(`f.sourceType = "${sourceType}"`);
+      query.return('count(f) AS count, sum(f.value) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType');
+    }
     query.orderBy('f.year');
 
     database.cypher(query.build(), function(err, data) {

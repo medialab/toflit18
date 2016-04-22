@@ -119,3 +119,4 @@ RETURN
   item.name AS item,
   group.note AS note,
   item:OutsiderClassifiedItem AS outsider;
+  
