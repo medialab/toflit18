@@ -7,7 +7,7 @@
  */
 import React, {Component} from 'react';
 import {Spinner} from './Loaders.jsx';
-import {debounce} from 'lodash';
+import {debounce, clone} from 'lodash';
 
 export default class Infinite extends Component {
   constructor(props, context) {
@@ -54,9 +54,10 @@ export default class Infinite extends Component {
 
     const scrollHandler = e => this.handleScroll(e);
 
+
     return (
       <div className={className}
-           onScroll={debounce(scrollHandler, 500)}>
+           onScroll={scrollHandler}>
         {this.props.children}
         {this.state.loading && <Spinner />}
       </div>
