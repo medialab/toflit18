@@ -51,6 +51,11 @@ const client = new Client({
       url: '/classification/:id/search'
     },
 
+    searchItem: {
+      contentType: FORM,
+      url: '/classification/:id/searchItem'
+    },
+
     export: '/classification/:id/export.json',
 
     review: {

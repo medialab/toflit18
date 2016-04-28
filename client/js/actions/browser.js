@@ -9,6 +9,8 @@ import history from '../history';
 
 import {reset as resetModal} from './patch';
 
+import _, {filter, forIn, sortBy} from 'lodash';
+
 const PATH = ['states', 'classification', 'browser'];
 
 /**
@@ -57,6 +59,7 @@ export function expand(tree, classification) {
   if (query)
     data.query = query;
 
+  // change this function
   return tree.client.search(
     {params: {id: classification.id}, data},
     function(err, response) {
@@ -70,17 +73,63 @@ export function expand(tree, classification) {
 /**
  * Searching something specific.
  */
-export function search(tree, id, query) {
+export function search(tree, id, query, type) {
   const loading = tree.select(PATH.concat('loading'));
 
+
   loading.set(true);
+
   return tree.client.search(
     {params: {id}, data: {query}},
     function(err, data) {
+
       loading.set(false);
       if (err) return;
 
-      tree.set(['states', 'classification', 'browser', 'rows'], data.result);
+      let allItems = {};
+
+      data.result.forEach(d => {
+        if (d.items.length > 0) {
+          let itemsInGroup = []
+
+          d.items.forEach( i => {
+          itemsInGroup = i.split(';');
+            itemsInGroup.forEach( e => {
+              let key = e;
+              allItems[e] = d.id;
+            })
+          })
+        }
+      })
+
+      let groupListWithItemMatches = {};
+      forIn(allItems, function(value, key) {
+        key = key.toLowerCase();
+        query = query.toLowerCase()
+        if (key.indexOf(query)) {
+          console.log("-------------")
+          console.log("key", key);
+          console.log("query", query);
+          console.log("value", value);
+          console.log("-------------")
+          groupListWithItemMatches[value] = true;
+        }
+      })
+
+      let dataResultMatch = [];
+      data.result.forEach(d => {
+        if (groupListWithItemMatches[d.id])
+          dataResultMatch.push(d);
+      })
+      console.log("dataResultMatch", dataResultMatch);
+
+      let result;
+      if (type = 'group')
+        result = data.result;
+      else
+        result = dataResultMatch;
+
+      tree.set(['states', 'classification', 'browser', 'rows'], result);
     }
   );
 }

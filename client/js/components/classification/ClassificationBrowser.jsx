@@ -125,7 +125,8 @@ class RightPanel extends Component {
       (
         <Infinite className="partial-height twice overflow"
                   action={() => actions.expand(current)}
-                  tracker={current.id}>
+                  tracker={current.id}
+                  data={current}>
           <GroupsList source={current.source} />
         </Infinite>
       );
@@ -253,7 +254,7 @@ class GroupQuery extends Component {
     const query = this.props.query;
 
     if (query)
-      return this.props.actions.search(this.props.id, query);
+      return this.props.actions.search(this.props.id, query, 'group');
   }
 
   render() {
@@ -267,7 +268,42 @@ class GroupQuery extends Component {
       <div className="input-group">
         <input type="text"
                className="form-control"
-               placeholder="Query..."
+               placeholder="Search group..."
+               value={query}
+               onKeyPress={e => e.which === 13 && this.submit()}
+               onChange={e => actions.update(e.target.value)} />
+        <span className="input-group-btn">
+          <Button kind="secondary"
+                  loading={loading}
+                  onClick={() => this.submit()}>
+            Filter
+          </Button>
+        </span>
+      </div>
+    );
+  }
+}
+
+class ItemQuery extends Component {
+  submit() {
+    const query = this.props.query;
+
+    if (query)
+      return this.props.actions.search(this.props.id, query, 'item');
+  }
+
+  render() {
+    const {
+      actions,
+      loading,
+      query
+    } = this.props;
+
+    return (
+      <div className="input-group">
+        <input type="text"
+               className="form-control"
+               placeholder="Search item..."
                value={query}
                onKeyPress={e => e.which === 13 && this.submit()}
                onChange={e => actions.update(e.target.value)} />
@@ -294,6 +330,9 @@ class GroupQuery extends Component {
 class GroupsList extends Component {
   render() {
     const {groups, source} = this.props;
+
+    console.log("groups", groups);
+    console.log("source", source);
 
     function sortArray(arr, sortKey, reverse) {
       const order = (reverse && reverse < 0) ? -1 : 1;

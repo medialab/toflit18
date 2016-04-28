@@ -44,6 +44,7 @@ const controller = [
       }
     },
     action(req, res) {
+      console.log("req", req.params);
       const opts = {
         limit: +(req.query.limit || limits.groups),
         offset: +(req.query.offset || 0),
@@ -51,6 +52,31 @@ const controller = [
       };
 
       return model.search(+req.params.id, opts, function(err, groups) {
+        if (err) return res.serverError(err);
+
+        return res.ok(groups);
+      });
+    }
+  },
+  {
+    url: '/:id/searchItem',
+    method: 'GET',
+    validate: {
+      query: {
+        limit: '?string',
+        offset: '?string',
+        query: '?string'
+      }
+    },
+    action(req, res) {
+      const opts = {
+        limit: +(req.query.limit || limits.groups),
+        offset: +(req.query.offset || 0),
+        query: req.query.query || null
+      };
+
+      return model.search(+req.params.id, opts, function(err, groups) {
+        console.log("groups", groups);
         if (err) return res.serverError(err);
 
         return res.ok(groups);

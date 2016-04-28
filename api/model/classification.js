@@ -95,6 +95,7 @@ const Model = {
    * Retrieving a sample of the classification's groups.
    */
   search(id, opts, callback) {
+    console.log("opts", opts);
     const query = queries[opts.query ? 'searchGroups' : 'groups'];
 
     return database.cypher(
@@ -116,6 +117,8 @@ const Model = {
             id: row.group._id
           };
         });
+
+        console.log("groups", groups);
 
         return callback(null, groups);
       }
