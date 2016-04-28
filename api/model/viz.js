@@ -10,7 +10,7 @@ import {connectedComponents} from '../../lib/graph';
 import Louvain from '../../lib/louvain';
 import config from '../../config.json';
 import {viz as queries} from '../queries';
-import _, {omit, values} from 'lodash';
+import _, {omit, values, mapValues, groupBy, filter, forIn, sortBy} from 'lodash';
 
 const {Expression, Query} = decypher;
 
@@ -181,6 +181,10 @@ const Model = {
     else if (kind === 'export')
       where.and('not(f.import)');
 
+    if (sourceType && sourceType != "National best guess" && sourceType != "Local best guess") {
+      where.and(`f.sourceType = "${sourceType}"`);
+    }
+
     // NOTE: country must come first for cardinality reasons
     if (countryClassification) {
       where.and('f.country IN countries');
@@ -194,15 +198,141 @@ const Model = {
 
     //-- Returning data
     if (sourceType === 'National best guess') {
-      query.return('sum(f.value) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType, CASE WHEN 1787 <= f.year <= 1789 AND (\'Object général\' in collect(distinct(f.sourceType))) AND (\'Résumé\' in collect(distinct(f.sourceType))) THEN filter(x in collect(f.sourceType) where not x=\'Résumé\') WHEN 1749 <= f.year <= 1751 AND (\'Local\' in collect(distinct(f.sourceType))) AND (\'National par direction\' in collect(distinct(f.sourceType))) THEN filter(x in collect(f.sourceType) where not x=\'National par direction\') ELSE count(f) END as count');
+      query.return('f.year AS year, collect(distinct(f.direction)) as nb_direction, CASE WHEN (1787 = f.year OR f.year = 1788) AND size(collect(distinct(f.sourceType))) >= 2 THEN collect(f) ELSE null  END as flows, CASE  WHEN f.year = 1750 THEN size(filter(x in collect(f.sourceType) where x="National par direction"))  WHEN f.year < 1787 THEN size(filter(x in collect(f.sourceType) where x="Object général"))   WHEN 1789 <= f.year THEN size(filter(x in collect(f.sourceType) where x="Résumé"))   ELSE null   END as count, CASE  WHEN f.year = 1750 AND f.sourceType="National par direction" THEN sum(f.value)  WHEN f.year < 1787 AND f.sourceType="Object général" THEN sum(f.value)  WHEN 1789 <= f.year AND f.sourceType="Résumé" THEN sum(f.value) ELSE null END as value');
+    }
+    else if (sourceType === 'Local best guess') {
+      query.return('count(f) AS count, sum(f.value) AS value, f.year AS year, collect(distinct(f.direction)) as nb_direction, collect(distinct(f.sourceType)) as sourceType, CASE WHEN 1749 <= f.year <= 1751 AND size(collect(distinct(f.sourceType))) >= 2 THEN collect(f) ELSE null END as flows');
     }
     else {
-      where.and(`f.sourceType = "${sourceType}"`);
       query.return('count(f) AS count, sum(f.value) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType');
     }
+
     query.orderBy('f.year');
 
+    console.log(query.build())
     database.cypher(query.build(), function(err, data) {
+      console.log("nb flows before processing : ", data)
+      if (sourceType === 'National best guess' || sourceType === 'Local best guess') {
+
+        // add flows we kept to render the line
+        let flowsKept = [];
+
+        // process element with flows non null
+        let flows = filter(data, (d) => { 
+          if (d.flows !== null) 
+            return d;
+          else {
+            // add flows to flowsKept
+            flowsKept.push(d);
+          } 
+        })
+
+        if (flows.length === 0) {
+          console.log("no duplicate flows.length empty, nb flows = ", flowsKept.length);
+        }
+        else {
+          // process the flow if directions detected
+          let flowsWithDirections = filter(flows, (d) => { 
+            if (d.nb_direction.length > 0)
+              return d;
+            else
+              flowsKept.push(d);
+            })
+
+          if (flowsWithDirections.length === 0) {
+            console.log("no direction, nb flows = ", flowsKept.length);
+          }
+          else {
+            console.log("there are possibly duplicates cases : ", flowsWithDirections.length)
+            
+            // process all flows groups detected by year
+            flowsWithDirections.forEach((elem) => {
+
+              let groupElemForProcess = [];
+              let groupElemWithoutDirection = [];
+
+              elem.flows.forEach((d) => {
+
+                // add only elem with direction properties
+                if (d.properties.direction) {
+                  groupElemForProcess.push(d.properties);
+                }
+                else
+                  groupElemWithoutDirection.push(d);
+              })
+              console.log("groupElemWithoutDirection", groupElemWithoutDirection.length);
+
+
+
+              // group by elem by direction (it's already by year)
+              let groupElemGB2 = groupBy(groupElemForProcess, 'direction');
+              console.log("groupElemGB2 len : ", Object.keys(groupElemGB2).length, Object.keys(groupElemGB2));
+
+              let localSourceType = [];
+              if (product) {
+                console.log("there is duplicate in product")
+                forIn(groupElemGB2, function (value, key) {
+                  let groupProduct = groupBy(value, 'product');
+                  console.log("groupProduct", groupProduct);
+                  forIn(groupElemGB2, function (value, key) {
+                    console.log("value", value);
+                    value.forEach(d => {
+                      console.log("d", d.sourceType);
+                      if (sourceType === 'Local best guess' && d.sourceType !== 'National par direction')
+                        localSourceType.push(d)
+
+                      if (sourceType === 'National best guess' && d.sourceType !== 'Résumé')
+                        localSourceType.push(d)
+                    })
+                  });
+                });
+              }
+              else {
+                // check if there are many sourceTypes
+                forIn(groupElemGB2, function (value, key) {
+                  console.log(key, value.length);
+                  value.forEach((d) => {
+                    if (sourceType === 'Local best guess' && d.sourceType !== 'National par direction')
+                      localSourceType.push(d)
+
+                    if (sourceType === 'National best guess' && d.sourceType !== 'Résumé')
+                      localSourceType.push(d)
+                    ;
+                  }) 
+                })
+              }
+
+              console.log("localSourceType", localSourceType.length)
+               
+              function sumValue() {
+                for (let i=0, len = localSourceType.length; i < len; i++ ) {
+                  if (i != len - 1)
+                    localSourceType[i].value += localSourceType[i+1].value;
+                  else
+                    return localSourceType[i].value
+                }
+              }
+              
+              const value2 = sumValue()
+              // console.log("value2", value2);
+              // console.log("localSourceType.length", localSourceType.length)
+              if (localSourceType.length > 0) {
+                let flowsAddedToData = {}
+                flowsAddedToData.count = localSourceType.length;
+                flowsAddedToData.value = value2;
+                flowsAddedToData.year = localSourceType[0].year;
+                //console.log("flowsAddedToData.year", flowsAddedToData.year);
+                flowsAddedToData.nb_direction = [direction];
+                flowsKept.push(flowsAddedToData);
+              }
+            })
+          }
+        } 
+        flowsKept = sortBy(flowsKept, 'year');
+        data = flowsKept;
+      }
+
+      console.log("data before display", data.length);
       if (err) return callback(err);
 
       return callback(null, data);
