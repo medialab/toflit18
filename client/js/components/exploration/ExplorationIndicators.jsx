@@ -323,10 +323,10 @@ class Charts extends Component {
           l.params.product ? elemCopy.product = l.params.product.name : elemCopy.product = null;
           l.params.kind ? elemCopy.kind = l.params.kind.name : elemCopy.kind = null;
           l.params.direction ? elemCopy.direction = l.params.direction.name : elemCopy.direction = null;
-          l.data[i].nb_direction.length ? elemCopy.nb_direction = l.data[i].nb_direction : elemCopy.nb_direction = null;
+          if (l.data[i].value !== null && l.data[i].count !== 0)
+            l.data[i].nb_direction.length ? elemCopy.nb_direction = l.data[i].nb_direction : elemCopy.nb_direction = null;
           dataLines.push(elemCopy);
         }
-
 
       // add all lines values in an array to export data in one csv
       const data = values(dataLines);
