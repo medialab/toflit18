@@ -13,7 +13,7 @@ import {viz as queries} from '../queries';
 import _, {omit, values, mapValues, groupBy, filter, forIn, sortBy} from 'lodash';
 
 const {Expression, Query} = decypher;
-
+ 
 const Model = {
 
   /**
@@ -203,15 +203,18 @@ const Model = {
     else if (sourceType === 'Local best guess') {
       query.return('count(f) AS count, sum(f.value) AS value, f.year AS year, collect(distinct(f.direction)) as nb_direction, collect(distinct(f.sourceType)) as sourceType, CASE WHEN 1749 <= f.year <= 1751 AND size(collect(distinct(f.sourceType))) >= 2 THEN collect(f) ELSE null END as flows');
     }
-    else {
+    else if (sourceType) {
       query.return('count(f) AS count, sum(f.value) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType');
+    }
+    else {
+      query.return('count(f) AS count, sum(f.value) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction');
     }
 
     query.orderBy('f.year');
 
     console.log(query.build())
     database.cypher(query.build(), function(err, data) {
-      console.log("nb flows before processing : ", data)
+      // console.log("nb flows before processing : ", data)
       if (sourceType === 'National best guess' || sourceType === 'Local best guess') {
 
         // add flows we kept to render the line
@@ -270,14 +273,14 @@ const Model = {
 
               let localSourceType = [];
               if (product) {
-                console.log("there is duplicate in product")
+                // console.log("there is duplicate in product")
                 forIn(groupElemGB2, function (value, key) {
                   let groupProduct = groupBy(value, 'product');
-                  console.log("groupProduct", groupProduct);
+                  // console.log("groupProduct", groupProduct);
                   forIn(groupElemGB2, function (value, key) {
-                    console.log("value", value);
+                    // console.log("value", value);
                     value.forEach(d => {
-                      console.log("d", d.sourceType);
+                      // console.log("d", d.sourceType);
                       if (sourceType === 'Local best guess' && d.sourceType !== 'National par direction')
                         localSourceType.push(d)
 
@@ -290,7 +293,7 @@ const Model = {
               else {
                 // check if there are many sourceTypes
                 forIn(groupElemGB2, function (value, key) {
-                  console.log(key, value.length);
+                  // console.log(key, value.length);
                   value.forEach((d) => {
                     if (sourceType === 'Local best guess' && d.sourceType !== 'National par direction')
                       localSourceType.push(d)
