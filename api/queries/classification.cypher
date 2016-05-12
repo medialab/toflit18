@@ -53,8 +53,8 @@ RETURN group, items;
 // Searching a sample of groups for the given classification.
 //------------------------------------------------------------------------------
 START c=node({id})
-MATCH (c)-[:HAS]->(group)
-WHERE group.name =~ {query}
+MATCH (c)-[:HAS]->(group)-[:AGGREGATES]->(item)
+WHERE group.name =~ {queryGroup} AND item.name =~{queryItem}
 WITH group
 ORDER BY group.name
 SKIP {offset}
@@ -63,8 +63,20 @@ LIMIT {limit}
 OPTIONAL MATCH (group)-[:AGGREGATES]->(item)
 WITH group, item ORDER BY item.name
 WITH group, collect(item.name) AS items
-
 RETURN group, items;
+
+// name: searchGroupsSource
+// Searching a sample of groups for the given classification.
+//------------------------------------------------------------------------------
+START c=node({id})
+MATCH (c)-[:HAS]->(group)
+WHERE group.name =~ {queryGroup}
+WITH group
+ORDER BY group.name
+SKIP {offset}
+LIMIT {limit}
+
+RETURN group;
 
 // name: allGroups
 // Retrieving every groups for the given classification.
