@@ -10,10 +10,10 @@ import {connectedComponents} from '../../lib/graph';
 import Louvain from '../../lib/louvain';
 import config from '../../config.json';
 import {viz as queries} from '../queries';
-import _, {omit, values, mapValues, groupBy, filter, forIn, sortBy} from 'lodash';
+import _, {omit, values} from 'lodash';
 
 const {Expression, Query} = decypher;
- 
+
 const Model = {
 
   /**
@@ -181,23 +181,23 @@ const Model = {
     else if (kind === 'export')
       where.and('not(f.import)');
 
-    if (sourceType && sourceType !== "National best guess" && sourceType !== "Local best guess") {
+    if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
       where.and(`f.sourceType = "${sourceType}"`);
     }
-    else if(sourceType === "National best guess"){
+    else if (sourceType === 'National best guess') {
       //where.and('(f.year=1750 AND f.sourceType = "National par direction") OR (f.year<1789 AND f.year !=1750 AND f.sourceType = "Object général") OR (f.year>=17879 AND f.sourceType = "Résumé")')
-      query.where('f.sourceType IN ["Objet Général", "Résumé", "National par direction"]');
+      query.where('f.sourceType IN ["Objet Général", "Résumé", "National par direction"] and f.year <> 1749 and f.year <> 1751');
       query.with('f.year AS year, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
       query.with('year, CASE  WHEN size(source_types)>1 and "Objet Général" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Objet Général") WHEN size(source_types)>1 and "Résumé" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Résumé") WHEN size(source_types)>1 and "National par direction" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National par direction") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
     }
-    else if(sourceType === "Local best guess"){
+    else if (sourceType === 'Local best guess') {
       // where.and('(f.year=1750 AND f.sourceType = "National par direction") OR (f.year<1789 AND f.year !=1750 AND f.sourceType = "Object général") OR (f.year>=17879 AND f.sourceType = "Résumé")')
-      query.where('f.sourceType IN ["Local","National par direction"]')
+      query.where('f.sourceType IN ["Local","National par direction"] and f.year <> 1749 and f.year <> 1751 ');
       query.with(' f.year AS year, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
       query.with(' year, CASE  WHEN size(source_types)>1 and "Local" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Local") WHEN size(source_types)>1 and "National par direction" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National par direction") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
     }
     else {
-      console.log('Ola'); 
+      console.log('Ola');
     }
 
     // NOTE: country must come first for cardinality reasons
@@ -212,12 +212,12 @@ const Model = {
       query.where(where);
 
     //-- Returning data
-    
-    if (sourceType && sourceType !== "National best guess" && sourceType !== "Local best guess") {
+
+    if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
       query.return('count(f) AS count, sum(f.value) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType');
       query.orderBy('f.year');
     }
-    else if(sourceType === "National best guess" || sourceType === "Local best guess") {
+    else if (sourceType === 'National best guess' || sourceType === 'Local best guess') {
       query.return('year, fs.sourceType, count(fs) as count, sum(toFloat(fs.value)) as value, collect(distinct(fs.direction)) as nb_direction');
       query.orderBy('year');
     }
@@ -226,9 +226,6 @@ const Model = {
       query.orderBy('f.year');
     }
 
-    
-
-    console.log(query.build())
     database.cypher(query.build(), function(err, data) {
 
       if (err) return callback(err);
