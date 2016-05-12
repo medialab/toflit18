@@ -13,7 +13,7 @@ import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
-import {capitalize, isEqual, mapValues, values, filter} from 'lodash';
+import {capitalize, isEqual, mapValues, values} from 'lodash';
 import {
   updateSelector as update,
   addLine,
@@ -235,11 +235,11 @@ class GraphPanel extends Component {
  */
 function buildDescription(params, data) {
   const selectors = mapValues(params, 'name');
-  let   description = [];
+  let description = [];
 
   description.push(<span key="kind">{capitalize(selectors.kind || 'total') + ' flows'}</span>);
 
-  if (selectors.product && data.length )
+  if (selectors.product && data.length)
     description.push(<span key="product"> of <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
 
   if (selectors.direction && selectors.direction !== '$all')
@@ -263,7 +263,7 @@ function buildDescription(params, data) {
 class LinesSummary extends Component {
   render() {
     const {drop, lines} = this.props;
-    
+
     return (
       <ul className="summary">
         {lines.map(function(line, i) {
@@ -298,8 +298,8 @@ class LinesSummary extends Component {
  */
 class Charts extends Component {
   render() {
-    let lines = this.props.lines;
-        
+    const lines = this.props.lines;
+
     // create an array with all lines, add a column with name of country selected
     // create csv only with indicators selected
     const arrayDataLines = [];
@@ -308,8 +308,8 @@ class Charts extends Component {
       // add all column even if the info is not selected for the line
       // copy element to add info keys
       const dataLines = [];
-      
-        for (let i=0, len = l.data.length; i<len; i++) {
+
+        for (let i = 0, len = l.data.length; i < len; i++) {
           const elemCopy = {};
           elemCopy.count = l.data[i].count;
           elemCopy.value = l.data[i].value;

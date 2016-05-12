@@ -9,7 +9,7 @@ import React, {Component} from 'react';
 import Tooltip from 'rc-tooltip';
 import measured from '@yomguithereal/react-utilities/measured';
 import {scaleLinear as linear} from 'd3-scale';
-import {max, range, uniq, filter, concat, mapValues, isEmpty} from 'lodash';
+import {max, range, uniq, filter, isEmpty} from 'lodash';
 
 /**
  * Main component.
@@ -31,8 +31,8 @@ export default class DataQualityBarChart extends Component {
     }
 
     if (data && data[0].params)
-      data = filter(data, (l) => { 
-        return l.data.length > 0; 
+      data = filter(data, (l) => {
+        return l.data.length > 0;
       });
     // If no data was supplied, we don't render
 
@@ -44,7 +44,6 @@ export default class DataQualityBarChart extends Component {
     function checkParams(data) {
       let test;
       data.forEach(d => {
-        console.log("d", d.hasOwnProperty('params'));
         if (d.hasOwnProperty('params') === true) {
           test = true;
           return;
@@ -52,19 +51,15 @@ export default class DataQualityBarChart extends Component {
         else
           test = false;
 
-      })
+      });
       return test;
     }
 
-    console.log("checkParams", checkParams(data));
-
-    console.log("data", data);
     // check if data comes from indicators view
     if (data.length > 0 && checkParams(data)) {
       const nbDirectionByYear = {};
       data.forEach(line => {
         line.data.forEach((e) => {
-          console.log("e", e);
           // concat direction by year & check if count and value available
           if (e.value !== null && e.count !== null) {
             if (nbDirectionByYear[e.year]) {
@@ -79,10 +74,8 @@ export default class DataQualityBarChart extends Component {
 
       // create an array of data with nb of direction, year and directions
       const nbDirectionByYear2 = [];
-      console.log("nbDirectionByYear", nbDirectionByYear);
 
       if (!isEmpty(nbDirectionByYear)) {
-        console.log("here");
         for (const key in nbDirectionByYear) {
 
 
@@ -108,16 +101,12 @@ export default class DataQualityBarChart extends Component {
         }
 
         data = nbDirectionByYear2;
-        
       }
       else {
-        console.log("no data");
         return null;
       }
 
     }
-
-    console.log("data --", data);
 
     // Computing max values
     const maxYear = data[data.length - 1].year,
@@ -140,7 +129,6 @@ export default class DataQualityBarChart extends Component {
         <Axis width={width} height={height + topMargin} scale={x} years={allYears} />
         <g>
           {data.map(row => {
-            console.log("row", row);
             let dataDisplayed;
             if (row.directions)
               dataDisplayed = row.directions;

@@ -10,7 +10,7 @@ import measured from '@yomguithereal/react-utilities/measured';
 import {format} from 'd3-format';
 import {scaleLinear as linear} from 'd3-scale';
 import shape from 'd3-shape';
-import {flatten, min, max, filter} from 'lodash';
+import {flatten, min, max} from 'lodash';
 import {prettyPrint} from '../../../lib/helpers';
 
 const axisFormat = format(',');
@@ -32,8 +32,10 @@ export default class LineChart extends Component {
     }
 
     const lines = data.map(line => {
-      return line.data.filter(row => { return row.count !== null && row.value !== null })
-                      .map((row,i) => {
+      return line.data.filter(row => {
+                          return row.count !== null && row.value !== null;
+                        })
+                      .map((row) => {
                         if (row.count !== null && row.value !== null) {
                           return {
                             year: row.year,
