@@ -44,7 +44,8 @@ const defaultState = {
       browser: {
         loading: false,
         selected: null,
-        query: '',
+        queryGroup: '',
+        queryItem: '',
         current: monkey(
           ['.', 'selected'],
           ['data', 'classifications', 'index'],

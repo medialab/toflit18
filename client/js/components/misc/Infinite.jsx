@@ -7,7 +7,6 @@
  */
 import React, {Component} from 'react';
 import {Spinner} from './Loaders.jsx';
-import {debounce, clone} from 'lodash';
 
 export default class Infinite extends Component {
   constructor(props, context) {
@@ -18,11 +17,13 @@ export default class Infinite extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if ((nextState.tracker !== this.state.tracker) && this.currentCall)
+    if ((nextState.tracker !== this.state.tracker) && this.currentCall) {
       this.currentCall.abort();
+    }
   }
 
   handleScroll({target}) {
+
     const {
       scrollHeight,
       scrollTop,
@@ -43,6 +44,7 @@ export default class Infinite extends Component {
         return;
 
       this.currentCall = promise;
+
       this.setState({loading: true});
 
       promise.then(reset, reset);
@@ -53,7 +55,6 @@ export default class Infinite extends Component {
     const className = this.props.className || false;
 
     const scrollHandler = e => this.handleScroll(e);
-
 
     return (
       <div className={className}

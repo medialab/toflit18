@@ -9,8 +9,6 @@ import history from '../history';
 
 import {reset as resetModal} from './patch';
 
-import _, {filter, forIn, sortBy} from 'lodash';
-
 const PATH = ['states', 'classification', 'browser'];
 
 /**
@@ -38,17 +36,16 @@ export function select(tree, id) {
 /**
  * Expand the rows displayed on screen.
  */
-export function expand(tree, classification) {
+export function expand(tree, classification, queryGroup, queryItem) {
   const state = tree.select(PATH),
-        current = state.get('rows'),
-        query = state.get('query');
+        current = state.get('rows');
 
   const comparedValue = classification.source ?
     classification.itemsCount :
     classification.groupsCount;
 
   // NOTE: this is hardcoded but can be found in the API's configuration
-  if (query && !(comparedValue % 200))
+  if (queryGroup || queryItem && !(comparedValue % 200))
     return;
 
   if (comparedValue <= current.length)
@@ -56,8 +53,10 @@ export function expand(tree, classification) {
 
   const data = {offset: current.length};
 
-  if (query)
-    data.query = query;
+  if (queryGroup || queryItem) {
+    data.queryGroup = queryGroup;
+    data.queryItem = queryItem;
+  }
 
   // change this function
   return tree.client.search(
@@ -73,63 +72,21 @@ export function expand(tree, classification) {
 /**
  * Searching something specific.
  */
-export function search(tree, id, query, type) {
+export function search(tree, id, queryGroup, queryItem) {
   const loading = tree.select(PATH.concat('loading'));
-
 
   loading.set(true);
 
   return tree.client.search(
-    {params: {id}, data: {query}},
+    {params: {id}, data: {queryGroup, queryItem}},
     function(err, data) {
 
       loading.set(false);
       if (err) return;
 
-      let allItems = {};
-
-      data.result.forEach(d => {
-        if (d.items.length > 0) {
-          let itemsInGroup = []
-
-          d.items.forEach( i => {
-          itemsInGroup = i.split(';');
-            itemsInGroup.forEach( e => {
-              let key = e;
-              allItems[e] = d.id;
-            })
-          })
-        }
-      })
-
-      let groupListWithItemMatches = {};
-      forIn(allItems, function(value, key) {
-        key = key.toLowerCase();
-        query = query.toLowerCase()
-        if (key.indexOf(query)) {
-          console.log("-------------")
-          console.log("key", key);
-          console.log("query", query);
-          console.log("value", value);
-          console.log("-------------")
-          groupListWithItemMatches[value] = true;
-        }
-      })
-
-      let dataResultMatch = [];
-      data.result.forEach(d => {
-        if (groupListWithItemMatches[d.id])
-          dataResultMatch.push(d);
-      })
-      console.log("dataResultMatch", dataResultMatch);
-
-      let result;
-      if (type = 'group')
-        result = data.result;
-      else
-        result = dataResultMatch;
-
-      tree.set(['states', 'classification', 'browser', 'rows'], result);
+      tree.set(['states', 'classification', 'browser', 'queryGroup'], queryGroup);
+      tree.set(['states', 'classification', 'browser', 'queryItem'], queryItem);
+      tree.set(['states', 'classification', 'browser', 'rows'], data.result);
     }
   );
 }
@@ -164,4 +121,34 @@ export function modal(tree, type) {
   resetModal(tree);
 
   history.replace({pathname: '/classification/modal'});
+}
+
+/**
+ * Reset filters
+ */
+export function resetFilters(tree, id) {
+  const loading = tree.select(PATH.concat('loading'));
+
+  loading.set(true);
+
+  // reset input fields
+  if (document.getElementById('searchGroup').value !== null)
+    document.getElementById('searchGroup').value = '';
+  if (id !== 1 && id !== 10 && document.getElementById('searchItem').value !== null)
+    document.getElementById('searchItem').value = '';
+
+  // reset tree fields
+  tree.set(['states', 'classification', 'browser', 'queryGroup'], '');
+  tree.set(['states', 'classification', 'browser', 'queryItem'], '');
+
+  return tree.client.search(
+    {params: {id}, data: ''},
+    function(err, data) {
+
+      loading.set(false);
+      if (err) return;
+
+      tree.set(['states', 'classification', 'browser', 'rows'], data.result);
+    }
+  );
 }

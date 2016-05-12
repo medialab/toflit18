@@ -95,30 +95,43 @@ const Model = {
    * Retrieving a sample of the classification's groups.
    */
   search(id, opts, callback) {
+
     console.log("opts", opts);
-    const query = queries[opts.query ? 'searchGroups' : 'groups'];
+    let query, params;
+    if (id !== 1 && id !== 10) {
+      query = queries[opts.queryGroup || opts.queryItem ? 'searchGroups' : 'groups'];
+      params = {
+          ...opts,
+          id,
+          queryGroup: searchPattern(opts.queryGroup || ''),
+          queryItem: searchPattern(opts.queryItem || '')
+        };
+    }
+    else {
+      query = queries["searchGroupsSource"];
+      params = {
+          ...opts,
+          id,
+          queryGroup: searchPattern(opts.queryGroup || '')
+        };
+    }
 
     return database.cypher(
       {
         query,
-        params: {
-          ...opts,
-          id,
-          query: searchPattern(opts.query || '')
-        }
+        params
       },
       function(err, results) {
         if (err) return callback(err);
 
         const groups = results.map(row => {
+
           return {
             ...row.group.properties,
             items: row.items,
             id: row.group._id
           };
         });
-
-        console.log("groups", groups);
 
         return callback(null, groups);
       }

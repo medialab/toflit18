@@ -20,7 +20,8 @@ import {
   expand,
   modal,
   search,
-  select
+  select,
+  resetFilters
 } from '../../actions/browser';
 import {linker} from '../../actions/factory';
 
@@ -31,12 +32,15 @@ import {linker} from '../../actions/factory';
   actions: {
     expand,
     download,
-    modal
+    modal,
+    resetFilters
   },
   cursors: {
     downloading: ['flags', 'downloading'],
     loading: ['states', 'classification', 'browser', 'loading'],
     current: ['states', 'classification', 'browser', 'current'],
+    queryGroup: ['states', 'classification', 'browser', 'queryGroup'],
+    queryItem: ['states', 'classification', 'browser', 'queryItem'],
     classifications: ['data', 'classifications', 'flat']
   }
 })
@@ -120,11 +124,14 @@ class RightPanel extends Component {
 
     const current = this.props.current || {};
 
+    const queryGroup = this.props.queryGroup,
+          queryItem = this.props.queryItem;
+
     const list = loading ?
       <Waiter /> :
       (
         <Infinite className="partial-height twice overflow"
-                  action={() => actions.expand(current)}
+                  action={() => actions.expand(current, queryGroup, queryItem)}
                   tracker={current.id}
                   data={current}>
           <GroupsList source={current.source} />
@@ -137,6 +144,10 @@ class RightPanel extends Component {
           <h4>{current.name || '...'}</h4>
           <hr />
           <GroupQuery id={current.id} loading={loading} />
+          <Button kind="secondary"
+                  onClick={() => actions.resetFilters(current.id)}>
+            Reset filters
+          </Button>
           <hr />
           {list}
         </div>
@@ -238,75 +249,71 @@ class Classification extends Component {
 /**
  * Group query.
  */
-const QUERY_PATH = ['states', 'classification', 'browser', 'query'];
+const QUERY_PATH_GROUP = ['states', 'classification', 'browser', 'queryGroup'];
+const QUERY_PATH_ITEM = ['states', 'classification', 'browser', 'queryItem'];
 
 @branch({
   cursors: {
-    query: QUERY_PATH
+    queryGroup: QUERY_PATH_GROUP,
+    queryItem: QUERY_PATH_ITEM
   },
   actions: {
-    update: linker(QUERY_PATH),
+    update_group: linker(QUERY_PATH_GROUP),
+    update_item: linker(QUERY_PATH_ITEM),
     search
   }
 })
 class GroupQuery extends Component {
-  submit() {
-    const query = this.props.query;
 
-    if (query)
-      return this.props.actions.search(this.props.id, query, 'group');
+  submit() {
+    const queryGroup = this.props.queryGroup;
+    const queryItem = this.props.queryItem;
+
+    if (queryGroup || queryItem)
+      return this.props.actions.search(this.props.id, queryGroup, queryItem);
   }
 
   render() {
     const {
       actions,
       loading,
-      query
+      queryGroup,
+      queryItem
     } = this.props;
+
+    const checkClassification = (
+      this.props.id !== 1 && this.props.id !== 10
+    );
 
     return (
       <div className="input-group">
-        <input type="text"
+        <input id="searchGroup"
+               type="text"
                className="form-control"
                placeholder="Search group..."
-               value={query}
-               onKeyPress={e => e.which === 13 && this.submit()}
-               onChange={e => actions.update(e.target.value)} />
-        <span className="input-group-btn">
-          <Button kind="secondary"
-                  loading={loading}
-                  onClick={() => this.submit()}>
-            Filter
-          </Button>
-        </span>
-      </div>
-    );
-  }
-}
-
-class ItemQuery extends Component {
-  submit() {
-    const query = this.props.query;
-
-    if (query)
-      return this.props.actions.search(this.props.id, query, 'item');
-  }
-
-  render() {
-    const {
-      actions,
-      loading,
-      query
-    } = this.props;
-
-    return (
-      <div className="input-group">
-        <input type="text"
+               value={queryGroup}
+               onKeyPress={e => {
+                e.which === 13 && this.submit();
+                }
+              }
+               onChange={e => {
+                actions.update_group(e.target.value);
+              }
+            } />
+            { checkClassification && <input id="searchItem"
+               type="text"
                className="form-control"
                placeholder="Search item..."
-               value={query}
-               onKeyPress={e => e.which === 13 && this.submit()}
-               onChange={e => actions.update(e.target.value)} />
+               value={queryItem}
+               onKeyPress={e => {
+                e.which === 13 && this.submit();
+                }
+              }
+               onChange={e => {
+                actions.update_item(e.target.value);
+              }
+            } />
+          }
         <span className="input-group-btn">
           <Button kind="secondary"
                   loading={loading}
@@ -330,9 +337,6 @@ class ItemQuery extends Component {
 class GroupsList extends Component {
   render() {
     const {groups, source} = this.props;
-
-    console.log("groups", groups);
-    console.log("source", source);
 
     function sortArray(arr, sortKey, reverse) {
       const order = (reverse && reverse < 0) ? -1 : 1;
@@ -374,8 +378,11 @@ class Group extends Component {
 
   render() {
     const {name, items, source} = this.props,
-          opened = this.state.opened,
-          count = items.length;
+          opened = this.state.opened;
+    let count;
+    if (items) {
+      count = items.length;
+    }
 
     let addendum;
 
