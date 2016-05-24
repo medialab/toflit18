@@ -14,103 +14,42 @@ import _, {omit, values} from 'lodash';
 
 const {Expression, Query} = decypher;
 
+//-- function to build expression for where statement for cypher query
+//-- when national or local best guess selected
+function addParamsToWhere (params, expression) {
+  const {
+        sourceType,
+        direction,
+        kind,
+        productClassification,
+        product,
+        countryClassification,
+        country
+      } = params;
+
+
+  if (productClassification) {
+    expression =  expression.concat(' and f.product IN products');
+  }
+
+  if (countryClassification) {
+    expression =  expression.concat(' and f.country IN countries');
+  }
+
+  if (direction) {
+    expression =  expression.concat(' and id(d) = ' + direction);
+    expression =  expression.concat(' and f.direction = d.name');  
+  }
+  //-- Import/Export
+  if (kind === 'import')
+    expression =  expression.concat(' and f.import');
+  else if (kind === 'export')
+    expression =  expression.concat(' and not(f.import)');
+
+  return expression;
+}
+
 const Model = {
-
-  /**
-   * Flows per year per data type.
-   */
-  flowsPerYearPerDataType(dataType, callback) {
-
-    const query = new Query();
-    if (dataType === 'direction' || dataType === 'sourceType') {
-
-      //direction or sourceType requested
-      query.match('(f:Flow)');
-      query.where(`has(f.${dataType}) AND f.year >= ${config.api.limits.minYear}`);
-      query.return(`f.${dataType} AS dataType, f.year AS year, count(f) AS flows`);
-      query.orderBy('f.year, dataType');
-    }
-    else {
-      // a classification
-      const [
-        ,
-        classificationType,
-        classificationId
-      ] = dataType.match(/(\w+)_(\d+)/) || [];
-
-      if (classificationType) {
-        query.start(`n=node(${classificationId})`);
-        query.match(`(n)-[:HAS]->(gc)-[:AGGREGATES*0..]->(c:${_.capitalize(classificationType)})`);
-        query.with('gc.name AS name, c.name AS sc');
-        query.match('(f:Flow)');
-        query.where(`f.${classificationType} = sc  AND f.year >= ${config.api.limits.minYear}`);
-        query.return('name AS dataType, count(f) AS flows, f.year AS year');
-        query.orderBy('f.year, dataType');
-      }
-      else {
-        throw new Error('wrong parameter');
-      }
-    }
-
-    database.cypher(query.build(), function(err, result) {
-      if (err) return callback(err);
-
-      const data = _(result)
-        .groupBy('dataType')
-        .mapValues((rows, key) => {
-          return {
-            name: key,
-            data: rows.map(e => _.pick(e, ['year', 'flows']))
-          };
-        })
-        .values();
-
-      return callback(null, data);
-    });
-  },
-
-  /**
-   * Available data per year.
-   */
-  availableDataTypePerYear(dataType, callback) {
-
-    const query = new Query();
-    if (dataType === 'direction' || dataType === 'sourceType') {
-      //direction or sourceType requested
-      query.match('(f:Flow)');
-      query.where(`has(f.${dataType})  AND f.year >= ${config.api.limits.minYear}`);
-      query.with(`size(collect(DISTINCT f.${dataType})) AS data, f.year AS year`);
-      query.return('year, data');
-      query.orderBy('year');
-    }
-    else {
-      // a classification
-      const [
-        ,
-        classificationType,
-        classificationId
-      ] = dataType.match(/(\w+)_(\d+)/) || [];
-
-      if (classificationType) {
-        query.start(`n=node(${classificationId})`);
-        query.match(`(n)-[:HAS]->(gc)-[:AGGREGATES*0..]->(c:${_.capitalize(classificationType)})`);
-        query.with('gc.name AS name, c.name AS sc');
-        query.match('(f:Flow)');
-        query.where(`f.${classificationType} = sc  AND f.year >= ${config.api.limits.minYear}`);
-        query.with('size(collect(DISTINCT name)) AS data, f.year AS year');
-        query.return('year, data');
-        query.orderBy('year');
-      }
-      else {
-        throw new Error('wrong parameter');
-      }
-    }
-
-    database.cypher(query.build(), function(err, result) {
-      if (err) return callback(err);
-      return callback(null, result);
-    });
-  },
 
   /**
    * Line creation.
@@ -168,43 +107,56 @@ const Model = {
     query.match('(f:Flow)');
 
     //-- Should we match a precise direction?
-    if (direction && direction !== '$all$') {
+    if (direction && direction !== '$all$' && sourceType !== 'National best guess' && sourceType !== 'Local best guess' ) {
       query.match('(d:Direction)');
       where.and('id(d) = {direction}');
       where.and('f.direction = d.name');
       query.params({direction});
     }
 
+    if (direction) {
+      query.match('(d:Direction)');
+      query.params({direction});
+    } 
+
     //-- Import/Export
-    if (kind === 'import')
+    if (kind === 'import' && sourceType !== 'National best guess' && sourceType !== 'Local best guess' )
       where.and('f.import');
-    else if (kind === 'export')
+    else if (kind === 'export' && sourceType !== 'National best guess' && sourceType !== 'Local best guess')
       where.and('not(f.import)');
 
     if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
       where.and(`f.sourceType = "${sourceType}"`);
     }
-    else if (sourceType === 'National best guess') {
-      //where.and('(f.year=1750 AND f.sourceType = "National par direction") OR (f.year<1789 AND f.year !=1750 AND f.sourceType = "Object général") OR (f.year>=17879 AND f.sourceType = "Résumé")')
-      query.where('f.sourceType IN ["Objet Général", "Résumé", "National par direction"] and f.year <> 1749 and f.year <> 1751');
+
+    if (sourceType === 'National best guess') {
+      let expression = 'f.sourceType IN ["Objet Général", "Résumé", "National par direction"] and f.year <> 1749 and f.year <> 1751';
+      const addParamsToExpression = addParamsToWhere(params, expression);
+
+      let where = new Expression(addParamsToWhere(params, expression));
+
+      query.where(where);
       query.with('f.year AS year, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
       query.with('year, CASE  WHEN size(source_types)>1 and "Objet Général" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Objet Général") WHEN size(source_types)>1 and "Résumé" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Résumé") WHEN size(source_types)>1 and "National par direction" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National par direction") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
     }
-    else if (sourceType === 'Local best guess') {
-      // where.and('(f.year=1750 AND f.sourceType = "National par direction") OR (f.year<1789 AND f.year !=1750 AND f.sourceType = "Object général") OR (f.year>=17879 AND f.sourceType = "Résumé")')
-      query.where('f.sourceType IN ["Local","National par direction"] and f.year <> 1749 and f.year <> 1751 ');
+
+    if (sourceType === 'Local best guess') {
+      let expression = 'f.sourceType IN ["Local","National par direction"] and f.year <> 1749 and f.year <> 1751 ';
+      const addParamsToExpression = addParamsToWhere(params, expression);
+
+      let where = new Expression(addParamsToWhere(params, expression));
+
+      query.where(where);
       query.with(' f.year AS year, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
       query.with(' year, CASE  WHEN size(source_types)>1 and "Local" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Local") WHEN size(source_types)>1 and "National par direction" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National par direction") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
     }
-    else {
-      console.log('Ola');
-    }
 
     // NOTE: country must come first for cardinality reasons
-    if (countryClassification) {
+    if (countryClassification && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
       where.and('f.country IN countries');
     }
-    if (productClassification) {
+
+    if (productClassification && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
       where.and('f.product IN products');
     }
 
@@ -226,6 +178,7 @@ const Model = {
       query.orderBy('f.year');
     }
 
+    console.log("query.build()", query.build())
     database.cypher(query.build(), function(err, data) {
 
       if (err) return callback(err);

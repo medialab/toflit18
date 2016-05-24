@@ -4,20 +4,42 @@
  *
  */
 import model from '../model/viz';
+import modelFlowsPerYear from '../model/flowsPerYear';
+import modelAvailableData from '../model/availableData';
 import {mapValues} from 'lodash';
 
 const controller = [
   {
     url: '/per_year/:type',
     method: 'GET',
-    cache: {
-      key: 'perYear',
-      hasher(req) {
-        return req.params.type;
+    validate: {
+      query: {
+        sourceType: '?string',
+        productClassification: '?string',
+        product: '?string',
+        countryClassification: '?string',
+        country: '?string',
+        direction: '?string',
+        kind: '?string'
       }
     },
+    // cache: {
+    //   key: 'perYear',
+    //   hasher(req) {
+    //     return req.params.type;
+    //   }
+    // },
     action(req, res) {
-      return model.availableDataTypePerYear(req.params.type, function(err, data) {
+      const payloadPerYear = mapValues(req.query, (v, k) => {
+        if (v !== 'null') {
+          return k !== 'kind' && k !== 'sourceType' ? +v : v;
+        }
+        else
+          console.log(v, k);
+
+      });
+
+      return modelAvailableData.availableDataTypePerYear(req.params.type, payloadPerYear, function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);
@@ -27,14 +49,35 @@ const controller = [
   {
     url: '/flows_per_year/:type',
     method: 'GET',
-    cache: {
-      key: 'flowsPerYear',
-      hasher(req) {
-        return req.params.type;
+    validate: {
+      query: {
+        sourceType: '?string',
+        productClassification: '?string',
+        product: '?string',
+        countryClassification: '?string',
+        country: '?string',
+        direction: '?string',
+        kind: '?string'
       }
     },
+    // cache: {
+    //   key: 'flowsPerYear',
+    //   hasher(req) {
+    //     console.log("hash req", req.params)
+    //     return req.params.type;
+    //   }
+    // },
     action(req, res) {
-      return model.flowsPerYearPerDataType(req.params.type, function(err, data) {
+      const payloadFlows = mapValues(req.query, (v, k) => {
+        if (v !== 'null') {
+          return k !== 'kind' && k !== 'sourceType' ? +v : v;
+        }
+        else
+          console.log(v, k);
+
+      });
+
+      return modelFlowsPerYear.flowsPerYearPerDataType(req.params.type, payloadFlows, function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);
