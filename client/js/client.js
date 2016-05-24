@@ -69,9 +69,15 @@ const client = new Client({
       url: '/viz/:name'
     },
 
-    perYear: '/viz/per_year/:type',
+    perYear: {
+      contentType : FORM,
+      url :'/viz/per_year/:type',
+    },
 
-    flowsPerYear: '/viz/flows_per_year/:type',
+    flowsPerYear: {
+      contentType: FORM,
+      url: '/viz/flows_per_year/:type'
+    },
 
     network: {
       contentType: FORM,
