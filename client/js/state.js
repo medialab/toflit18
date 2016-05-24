@@ -72,7 +72,20 @@ const defaultState = {
       metadata: {
         dataType: null,
         perYear: null,
-        flowsPerYear: null
+        flowsPerYear: null,
+        selectors: {
+          productClassification: null,
+          countryClassification: null,
+          product: null,
+          country: null,
+          direction: null,
+          kind: null,
+          sourceType: null
+        },
+        groups: {
+          country: [],
+          product: []
+        },
       },
 
       // Indicators view
