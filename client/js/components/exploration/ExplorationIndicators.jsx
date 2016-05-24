@@ -170,7 +170,7 @@ class LineForm extends Component {
             <Button kind="primary"
                     disabled={lineAlreadyExisting}
                     loading={creating}
-                    onClick={actions.addLine}>
+                    onClick={() => {actions.addLine()}}>
               {lineAlreadyExisting && !creating ? 'Already drawn' : 'Add the line'}
             </Button>
           </Col>
