@@ -5,47 +5,10 @@
  */
 import model from '../model/viz';
 import modelFlowsPerYear from '../model/flowsPerYear';
-import modelAvailableData from '../model/availableData';
+import modelCreateLine from '../model/createLine';
 import {mapValues} from 'lodash';
 
 const controller = [
-  {
-    url: '/per_year/:type',
-    method: 'GET',
-    validate: {
-      query: {
-        sourceType: '?string',
-        productClassification: '?string',
-        product: '?string',
-        countryClassification: '?string',
-        country: '?string',
-        direction: '?string',
-        kind: '?string'
-      }
-    },
-    // cache: {
-    //   key: 'perYear',
-    //   hasher(req) {
-    //     return req.params.type;
-    //   }
-    // },
-    action(req, res) {
-      const payloadPerYear = mapValues(req.query, (v, k) => {
-        if (v !== 'null') {
-          return k !== 'kind' && k !== 'sourceType' ? +v : v;
-        }
-        else
-          console.log(v, k);
-
-      });
-
-      return modelAvailableData.availableDataTypePerYear(req.params.type, payloadPerYear, function(err, data) {
-        if (err) return res.serverError(err);
-
-        return res.ok(data);
-      });
-    }
-  },
   {
     url: '/flows_per_year/:type',
     method: 'GET',
@@ -103,7 +66,7 @@ const controller = [
         return k !== 'kind' && k !== 'sourceType' ? +v : v;
       });
 
-      return model.createLine(payload, function(err, data) {
+      return modelCreateLine.createLine(payload, function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);

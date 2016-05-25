@@ -17,7 +17,7 @@ export function select(tree, selected) {
 
   cursor.set('dataType', selected);
 
-  // Deleting previous data
+
   cursor.set('perYear', null);
   cursor.set('flowsPerYear', null);
 
@@ -72,7 +72,6 @@ export function select(tree, selected) {
   else
     country = null;
 
-
   if (selectors.get('kind') !== null) {
     kind = selectors.get('kind').id;
   }
@@ -89,23 +88,24 @@ export function select(tree, selected) {
     kind: kind
   }
 
-  // Two API requests to update perYear & flowsPerYear vizs
-
-  tree.client.perYear({params: {type}, data: params}, function(err, data) {
-    if (err) {
-      console.log("error", err);
-      return;
-    }
-
-    cursor.set('perYear', data.result);
-  });
-
-  // Don't ask for data we don't need
-  if (selected.id && selected.groupsCount > config.metadataGroupMax)
-    return;
-
   tree.client.flowsPerYear({params: {type}, data: params}, function(err, data) {
     if (err)
+      return;
+
+    // aggregation perYear
+    let perYear=[]
+    _(data.result)
+        .map(e=> e.data)
+        .flatten()
+        .map(d => d.year)
+        .groupBy()
+        .forEach( (v,k) => perYear.push({year:+k, data:_.isArray(v) ? v.length : 0}))
+        .value()
+        
+    cursor.set('perYear', perYear);
+
+    // Don't ask for data we don't need
+    if (selected.id && selected.groupsCount > config.metadataGroupMax)
       return;
 
     cursor.set('flowsPerYear', data.result);
@@ -143,6 +143,9 @@ export function updateSelector(tree, name, item) {
 }
 
 export function addChart(tree) {
+  console.log("addChart")
   const cursor = tree.select(ROOT),
         selectors = tree.select([...ROOT, 'selectors']);
+
+  
 }
