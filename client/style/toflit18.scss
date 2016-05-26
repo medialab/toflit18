@@ -342,6 +342,9 @@ h1 {
   .panel {
     padding: 20px;
     margin-bottom: 10px;
+    .dataType {
+      color: red;
+    }
   }
 
   .indicators-wrapper {
