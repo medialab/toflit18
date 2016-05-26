@@ -16,6 +16,7 @@ import ExplorationPanel from './exploration/ExplorationPanel.jsx';
 import ExplorationMeta from './exploration/ExplorationMeta.jsx';
 import ExplorationIndicators from './exploration/ExplorationIndicators.jsx';
 import ExplorationGlobals from './exploration/ExplorationGlobals.jsx';
+import ExplorationGlobalsTerms from './exploration/ExplorationGlobalsTerms.jsx';
 import history from '../history';
 
 export default class AppRouter extends Component {
@@ -47,6 +48,7 @@ export default class AppRouter extends Component {
               <Route path="meta" component={ExplorationMeta} />
               <Route path="indicators" component={ExplorationIndicators} />
               <Route path="globals" component={ExplorationGlobals} />
+              <Route path="globalsterms" component={ExplorationGlobalsTerms} />
             </Route>
           </Route>
         </Route>

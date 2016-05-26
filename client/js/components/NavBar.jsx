@@ -19,8 +19,12 @@ const LINKS = [
     url: '/exploration/indicators'
   },
   {
-    label: 'Globals',
+    label: 'Countries Network',
     url: '/exploration/globals'
+  },
+  {
+    label: 'Product Terms',
+    url: '/exploration/globalsterms'
   },
   {
     label: 'Classification',
