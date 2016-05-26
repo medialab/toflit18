@@ -73,6 +73,7 @@ const defaultState = {
         dataType: null,
         perYear: null,
         flowsPerYear: null,
+        fileName: null,
         selectors: {
           productClassification: null,
           countryClassification: null,

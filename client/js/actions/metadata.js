@@ -8,6 +8,8 @@ import config from '../../config.json';
 
 const ROOT = ['states', 'exploration', 'metadata'];
 
+import {forIn} from 'lodash';
+
 /**
  * Selecting a data type.
  */
@@ -16,100 +18,6 @@ export function select(tree, selected) {
         selectors = tree.select([...ROOT, 'selectors']);
 
   cursor.set('dataType', selected);
-
-
-  cursor.set('perYear', null);
-  cursor.set('flowsPerYear', null);
-
-  if (!selected)
-    return;
-
-  // Loading data from server
-  const type = selected.id ?
-    `${selected.model}_${selected.id}` :
-    selected.value;
-
-  let sourceType,
-      direction,
-      productClassification,
-      product, 
-      countryClassification,
-      country,
-      kind;
-
-  if (selectors.get('sourceType') !== null)
-    sourceType = selectors.get('sourceType').value;
-  else
-    sourceType = null;
-
-  if (selectors.get('direction') !== null) {
-    direction = selectors.get('direction').id;
-  }
-  else
-    direction = null;
-
-  if (selectors.get('productClassification') !== null) {
-    productClassification = selectors.get('productClassification').id;
-  }
-  else
-    productClassification = null;
-
-  if (selectors.get('product') !== null) {
-    product = selectors.get('product').id;
-  }
-  else
-    product = null;
-
-  if (selectors.get('countryClassification') !== null) {
-    countryClassification = selectors.get('countryClassification').id;
-  }
-  else
-    countryClassification = null;
-
-  if (selectors.get('country') !== null) {
-    country = selectors.get('country').id;
-  }
-  else
-    country = null;
-
-  if (selectors.get('kind') !== null) {
-    kind = selectors.get('kind').id;
-  }
-  else
-    kind = null;
-
-  const params = {
-    sourceType: sourceType,
-    direction: direction,
-    productClassification: productClassification,
-    product: product,
-    countryClassification: countryClassification,
-    country: country,
-    kind: kind
-  }
-
-  tree.client.flowsPerYear({params: {type}, data: params}, function(err, data) {
-    if (err)
-      return;
-
-    // aggregation perYear
-    let perYear=[]
-    _(data.result)
-        .map(e=> e.data)
-        .flatten()
-        .map(d => d.year)
-        .groupBy()
-        .forEach( (v,k) => perYear.push({year:+k, data:_.isArray(v) ? v.length : 0}))
-        .value()
-        
-    cursor.set('perYear', perYear);
-
-    // Don't ask for data we don't need
-    if (selected.id && selected.groupsCount > config.metadataGroupMax)
-      return;
-
-    cursor.set('flowsPerYear', data.result);
-  });
 }
 
 /**
@@ -147,5 +55,66 @@ export function addChart(tree) {
   const cursor = tree.select(ROOT),
         selectors = tree.select([...ROOT, 'selectors']);
 
+  cursor.set('perYear', null);
+  cursor.set('flowsPerYear', null);
+  cursor.set('fileName', null);
+
+  const selected = cursor.get('dataType');
+
+  if (!selected) {
+    return;
+  }
+
+  // Loading data from server
+  const type = selected.id ?
+    `${selected.model}_${selected.id}` :
+    selected.value;
+
+  // set params for request
+  const params = {},
+        paramsRequest = {};
+
+  // get selectors choosen 
+  forIn(cursor.get('selectors'), (v, k) => {
+    if (v) {
+      params[k] = v;
+    }
+  })
+
+  // keep only params !== null for request
+  forIn(params, (v, k) => { k === "sourceType" ? 
+    paramsRequest[k] = v.value : paramsRequest[k] = v.id; })
+
+  tree.client.flowsPerYear({params: {type}, data: paramsRequest}, function(err, data) {
+    if (err)
+      return;
+
+    // aggregation perYear
+    let perYear=[]
+    _(data.result)
+        .map(e=> e.data)
+        .flatten()
+        .map(d => d.year)
+        .groupBy()
+        .forEach( (v,k) => perYear.push({year:+k, data:_.isArray(v) ? v.length : 0}))
+        .value()
+        
+    cursor.set('perYear', perYear);
+
+    // Don't ask for data we don't need
+    if (selected.id && selected.groupsCount > config.metadataGroupMax)
+      return;
+
+    cursor.set('flowsPerYear', data.result);
+  });
+
+  // set fileName form params selected
+  let fileName = "";
+
+  forIn(params, (v, k) => {
+    if (v)
+      fileName = fileName + v.name + " - ";
+  })
   
+  cursor.set('fileName', fileName);
 }
