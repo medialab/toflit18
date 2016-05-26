@@ -111,7 +111,7 @@ const ModelCreateLine = {
     //-- Returning data
 
     if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
-      query.return('count(f) AS count, sum(f.value) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType');
+      query.return('count(f) AS count, sum(toFloat(f.value)) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType');
       query.orderBy('f.year');
     }
     else if (sourceType === 'National best guess') {
@@ -127,7 +127,7 @@ const ModelCreateLine = {
       query.orderBy('year');
     }
     else {
-      query.return('count(f) AS count, sum(f.value) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction');
+      query.return('count(f) AS count, sum(toFloat(f.value)) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction');
       query.orderBy('f.year');
     }
 
