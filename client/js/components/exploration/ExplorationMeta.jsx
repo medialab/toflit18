@@ -22,9 +22,6 @@ import {select,
     updateSelector as update, 
     addChart
   } from '../../actions/metadata';
-// import {
-//   updateSelector as update
-// } from '../../actions/indicators';
 
 const metadataSelectors = (config.metadataSelectors || []).map(option => {
   return {
@@ -101,7 +98,7 @@ export default class ExplorationMeta extends Component {
         value: type
       };
     });
-
+    
     return (
       <div>
         <div className="panel">
@@ -110,9 +107,10 @@ export default class ExplorationMeta extends Component {
             <em>Some information about the data itself.</em>
           </p>
           <hr />
-            <Row>
-             <SectionTitle title="Data type"
-                           addendum="Select the type of data to control." />
+            <Row className="dataType">
+             <SectionTitle 
+                           title="Data type"
+                           addendum="You must select the type of data to control." />
               <Col md={6}>
                 <ItemSelector type="dataType"
                   data={[...metadataSelectors, ...classificationsFiltered]}
@@ -211,7 +209,7 @@ export default class ExplorationMeta extends Component {
           {metadata.perYear ?
             <DataQualityBarChart data={metadata.perYear} /> :
             <Waiter />}
-            <ExportButton name={`Toflit18_Meta_view ${metadata.dataType.name} data_per_year`}
+            <ExportButton name={`Toflit18_Meta_view ${metadata.dataType.name} - ${metadata.fileName} data_per_year`}
                           data={metadata.perYear}>
               Export
             </ExportButton>
@@ -220,7 +218,7 @@ export default class ExplorationMeta extends Component {
           {metadata.flowsPerYear ?
            <SourcesPerDirections data={metadata.flowsPerYear} /> :
            <Waiter />}
-           <ExportButton name={`Toflit18_Meta_view ${metadata.dataType.name} flows_per_year`}
+           <ExportButton name={`Toflit18_Meta_view ${metadata.dataType.name} - ${metadata.fileName} flows_per_year`}
                           data={formatArrayToCSV(metadata.flowsPerYear || [])}>
               Export
            </ExportButton>

@@ -127,6 +127,7 @@ export default class DataQualityBarChart extends Component {
     return (
       <svg width="100%" height={height + bottomMargin + topMargin} className="quality-bar-chart">
         <Axis width={width} height={height + topMargin} scale={x} years={allYears} />
+        <Legend x={10} y={10} label="Number of element by year" className="bar" />
         <g>
           {data.map(row => {
             let dataDisplayed;
@@ -180,5 +181,21 @@ class Axis extends Component {
         {ticks.slice(0, -1).map(renderTick)}
       </g>
     );
+  }
+}
+
+/*
+ * Legend
+ */
+class Legend extends Component {
+  render() {
+    const {x, y, label, className} = this.props;
+
+    return (
+      <g>
+        <rect x={x} y={y} width="10" height="10" className={className}/>
+        <text x={x + 20} y={y + 10} textAnchor="left" className="legend-label">{label}</text>
+      </g>
+      );
   }
 }
