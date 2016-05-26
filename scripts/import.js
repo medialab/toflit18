@@ -35,10 +35,11 @@ const ROOT_PATH = '/base',
       REVISED_ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_revised_marchandises_normalisees_orthographique.csv',
       REVISED_SIMPLIFICATION = ROOT_PATH + '/bdd_revised_marchandises_simplifiees.csv',
       SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
-      OTHER_CLASSIFICATIONS = ROOT_PATH + '/bdd_marchandises_classifiees.csv',
+      MEDICINAL_CLASSIFICATIONS = ROOT_PATH + '/bdd_marchandises_medicinales.csv',
       COUNTRY_ORTHOGRAPHIC = ROOT_PATH + '/classification_country_orthographic_normalization.csv',
       COUNTRY_SIMPLIFICATION = ROOT_PATH + '/classification_country_simplification.csv',
       COUNTRY_GROUPED = ROOT_PATH + '/classification_country_grouping.csv',
+      COUNTRY_OBRIEN = ROOT_PATH + '/classification_country_obrien.csv',
       COUNTRY_CLASSIFICATIONS = ROOT_PATH + '/bdd_pays.csv';
 
 /**
@@ -281,6 +282,12 @@ const CLASSIFICATION_NODES = {
     model: 'country',
     slug: 'grouping',
     description: 'Grouping the countries for convenience.'
+  }, 'Classification'),
+  country_obrien: BUILDER.save({
+    name: 'O\'brien',
+    model: 'country',
+    slug: 'obrien',
+    description: 'Grouping the countries from Obrien'
   }, 'Classification')
 };
 
@@ -302,6 +309,7 @@ BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev1, 'BASED_ON', CLASSIFICATION
 BUILDER.relate(CLASSIFICATION_NODES.country_orthographic, 'BASED_ON', CLASSIFICATION_NODES.country_sources);
 BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATION_NODES.country_orthographic);
 BUILDER.relate(CLASSIFICATION_NODES.country_grouped, 'BASED_ON', CLASSIFICATION_NODES.country_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.country_obrien, 'BASED_ON', CLASSIFICATION_NODES.country_simplified);
 
 const OUTSIDER_SOURCES_NODES = {
   sund: BUILDER.save({name: 'sund'}, 'ExternalSource'),
@@ -695,6 +703,16 @@ const groupedCountry = makeClassificationConsumer(
   {}
 );
 
+const obrienCountry = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.country_obrien,
+  CLASSIFICATION_NODES.country_obrien,
+  CLASSIFICATION_NODES.country_simplified,
+  CLASSIFICATION_INDEXES.country_simplified,
+  'obrien',
+  'simplified',
+  {}
+);
+
 /**
  * Process
  * ========
@@ -859,26 +877,19 @@ async.series({
     });
   },
 
-  productVarious(next) {
-    console.log('  -- Products various classifications');
+  productMedical(next) {
+    console.log('  -- Products medicinal classifications');
 
     // Parsing various classifications
-    const csvData = fs.readFileSync(DATA_PATH + OTHER_CLASSIFICATIONS, 'utf-8');
+    const csvData = fs.readFileSync(DATA_PATH + MEDICINAL_CLASSIFICATIONS, 'utf-8');
     parseCsv(csvData, {delimiter: ','}, function(err, data) {
-      _(data.slice(1))
+      data
+        .slice(1)
         .map(line => ({
           simplified: cleanText(line[0]),
-          categorized: cleanText(line[1]),
-          sitcrev1: cleanText(line[2]),
-          sitcrev2: cleanText(line[3]),
-          medicinal: +cleanText(line[4]) > 0 ? cleanText(line[0]) : null
+          medicinal: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
-        .forEach(categorizedProduct)
-        .forEach(medicinalProduct)
-        .forEach(sitcrev2Product)
-        .uniq('sitcrev2')
-        .forEach(sitcrev1Product)
-        .value();
+        .forEach(medicinalProduct);
 
       return next();
     });
@@ -934,7 +945,25 @@ async.series({
         .forEach(groupedCountry);
       return next();
     });
+  },
+  countryObrien(next) {
+    console.log('  -- Countries O\'brien');
+
+     // Parsing revised orthographic corrections for products
+    const csvData = fs.readFileSync(DATA_PATH + COUNTRY_OBRIEN, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          simplified: cleanText(line[0]),
+          obrien: cleanText(line[1]),
+          note: cleanText(line[2])
+        }))
+        .forEach(obrienCountry);
+      return next();
+    });
   }
+
 
   // countryVarious(next) {
   //   console.log('  -- Countries various classifications');
