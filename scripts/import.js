@@ -312,7 +312,7 @@ BUILDER.relate(CLASSIFICATION_NODES.product_revised_simplified, 'BASED_ON', CLAS
 BUILDER.relate(CLASSIFICATION_NODES.product_categorized, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev2, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_medicinal, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
-BUILDER.relate(CLASSIFICATION_NODES.product_hamburg, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.product_hamburg, 'BASED_ON', CLASSIFICATION_NODES.product_revised_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev1, 'BASED_ON', CLASSIFICATION_NODES.product_sitcrev2);
 BUILDER.relate(CLASSIFICATION_NODES.country_orthographic, 'BASED_ON', CLASSIFICATION_NODES.country_sources);
 BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATION_NODES.country_orthographic);
@@ -684,8 +684,8 @@ const medicinalProduct = makeClassificationConsumer(
 const hamburgProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_hamburg,
   CLASSIFICATION_NODES.product_hamburg,
-  CLASSIFICATION_NODES.product_simplified,
-  CLASSIFICATION_INDEXES.product_simplified,
+  CLASSIFICATION_NODES.product_revised_simplified,
+  CLASSIFICATION_INDEXES.product_revised_simplified,
   'hamburg',
   'simplified',
   {}
