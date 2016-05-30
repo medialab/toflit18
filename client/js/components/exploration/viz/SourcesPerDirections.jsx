@@ -1,3 +1,4 @@
+
 /**
  * TOFLIT18 Client Sources Per Directions Component
  * =================================================
@@ -35,6 +36,7 @@ export default class SourcesPerDirections extends Component {
 
     data.forEach(item => {
       item.data.forEach(({year, flows}) => {
+        console.log("year", year);
         allYears.add(year);
         allFlows.add(flows);
       });
@@ -43,8 +45,11 @@ export default class SourcesPerDirections extends Component {
     allYears = Array.from(allYears);
     allFlows = Array.from(allFlows);
 
+
     const minYear = min(allYears),
           maxYear = max(allYears);
+
+    console.log("maxYear", maxYear);
 
     const maxFlows = max(allFlows);
 
@@ -92,14 +97,19 @@ class Direction extends Component {
       bar,
       width,
       item,
-      x,
       y,
       allYears
     } = this.props;
 
     const yPos = SIZE;
 
+    // Building scales
+    const x = linear()
+      .domain([min(allYears), max(allYears)])
+      .range([0, width - 10]);
+
     function renderRect(local, {year, flows}) {
+      console.log("year renderRect", year);
       const rectHeight = Math.max(1, y(flows)),
             rectYPos = SIZE - rectHeight;
 
@@ -119,13 +129,14 @@ class Direction extends Component {
           <rect className={`${local ? 'local' : 'national'}-bar`}
                 width={bar}
                 height={rectHeight}
-                x={x(year) + xOffset}
+                x={x(year)}
                 y={rectYPos} />
         </Tooltip>
       );
     }
 
     function renderUnderline(year) {
+      console.log("year renderUnderline", year);
       return (
         <rect width={bar}
               key={year}
