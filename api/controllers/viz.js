@@ -37,7 +37,6 @@ const controller = [
         }
         else
           console.log(v, k);
-
       });
 
       return modelFlowsPerYear.flowsPerYearPerDataType(req.params.type, payloadFlows, function(err, data) {
@@ -93,14 +92,36 @@ const controller = [
   {
     url: '/terms/:id',
     method: 'GET',
-    cache: {
-      key: 'terms',
-      hasher(req) {
-        return req.params.id;
+    validate: {
+      query: {
+        sourceType: '?string',
+        productClassification: '?string',
+        product: '?string',
+        countryClassification: '?string',
+        country: '?string',
+        direction: '?string',
+        kind: '?string',
+        dateMin: '?string',
+        dateMax: '?string'
       }
     },
+    // cache: {
+    //   key: 'terms',
+    //   hasher(req) {
+    //     return req.params.id;
+    //   }
+    // },
     action(req, res) {
-      return model.terms(+req.params.id, function(err, terms) {
+      console.log("req.query", req.query);
+      const payloadTerms = mapValues(req.query, (v, k) => {
+        if (v !== 'null') {
+          return k !== 'kind' && k !== 'sourceType' ? +v : v;
+        }
+        else
+          console.log(v, k);
+      });
+
+      return model.terms(+req.params.id, payloadTerms, function(err, terms) {
         if (err) return res.serverError(err);
         if (!terms) return res.notFound();
 

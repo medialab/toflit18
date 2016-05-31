@@ -29,7 +29,22 @@ const Model = {
   /**
    * Retrieve the network of terms for the given classification.
    */
-  terms(classification, callback) {
+  terms(classification, params, callback) {
+    console.log("params viz", params);
+
+    const {
+      sourceType,
+      direction,
+      kind,
+      product,
+      country
+    } = params;
+
+    let {
+      productClassification,
+      countryClassification
+    } = params;
+
     database.cypher({query: queries.terms, params: {classification}}, function(err, rows) {
       if (err) return callback(err);
       if (!rows.length) return callback(null, null);

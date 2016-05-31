@@ -96,45 +96,39 @@ class TermsPanel extends Component {
     function buildDateMin(dateMin, dateMax) {
       const minArray= [];
       if (dateMin && dateMax) {
-        console.log("les 2")
         for (let i= dateMin; i < dateMax; i++) {
-          minArray.push({'name': i, 'value': i});
+          minArray.push({'name': i, 'id': i});
         }
       }
 
       if (dateMin && dateMin.length > 0 && !dateMax)
       {
-        console.log("juste dateMin")
         for ( let i=dateMin; i < config.api.limits.maxYear;  i++) {
-          minArray.push({'name': i, 'value': i});
+          minArray.push({'name': i, 'id': i});
         }
       }
 
       if (!dateMin && dateMax)
       {
-        console.log("pas dateMin mais dateMax")
         for ( let i=config.api.limits.minYear; i < dateMax;  i++) {
-          minArray.push({'name': i, 'value': i});
+          minArray.push({'name': i, 'id': i});
         }
       }
 
       if (!dateMax && dateMin)
       {
-        console.log("pas dateMax")
         for ( let i=dateMin; i < config.api.limits.maxYear;  i++) {
-          minArray.push({'name': i, 'value': i});
+          minArray.push({'name': i, 'id': i});
         }
       }
 
       if (!dateMax && !dateMin)
       {
-        console.log("pas dateMax")
         for ( let i=config.api.limits.minYear; i < config.api.limits.maxYear;  i++) {
-          minArray.push({'name': i, 'value': i});
+          minArray.push({'name': i, 'id': i});
         }
       }
 
-      //console.log("minArray", minArray);
       return minArray;
     }
 
@@ -144,21 +138,17 @@ class TermsPanel extends Component {
     dateMin = actions.updateDate('dateMin');
 
     if (dateMin) {
-      console.log("dateMin", dateMin);
-      dateMaxOptions = dateMax ? dateMax : buildDateMin(dateMin.value, dateMax);
+      dateMaxOptions = dateMax ? dateMax : buildDateMin(dateMin.id, dateMax);
     }
     else {
-      console.log("dateMin 2", dateMin);
       dateMaxOptions = dateMax ? dateMax : buildDateMin(dateMin, dateMax);
     }
 
     dateMax = actions.updateDate('dateMax');
     if (dateMax) {
-      console.log("dateMax", dateMax);
-      dateMinOptions = dateMin ? dateMin : buildDateMin(dateMin, dateMax.value);
+      dateMinOptions = dateMin ? dateMin : buildDateMin(dateMin, dateMax.id);
     }
     else {
-      console.log("dateMax 2", dateMax);
       dateMinOptions = dateMin ? dateMin : buildDateMin(dateMin, dateMax);
     }
 
@@ -179,9 +169,9 @@ class TermsPanel extends Component {
             </Col>
           </Row>
           <hr />
-          <Row>
+          <Row className="dataType">
             <SectionTitle title="Product"
-                          addendum="The type of product being shipped." />
+                          addendum="You must choose the type of product being shipped." />
             <Col md={4}>
               <ClassificationSelector type="product"
                                       loading={!classifications.product.length || loading}

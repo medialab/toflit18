@@ -6,7 +6,7 @@
  */
 import {scaleCategory20, scaleLinear} from 'd3-scale';
 import {six as palette} from '../lib/palettes';
-import {max, uniq, values} from 'lodash';
+import {max, uniq, values, forIn} from 'lodash';
 
 const ROOT = ['states', 'exploration', 'globals'];
 
@@ -79,43 +79,43 @@ export function selectTerms(tree, classification) {
   cursor.set('classification', classification);
   cursor.set('graph', null);
 
-  if (!classification)
-    return;
+  // if (!classification)
+  //   return;
 
-  cursor.set('loading', true);
+  // cursor.set('loading', true);
 
-  tree.client.terms({params: {id: classification.id}}, function(err, data) {
-    cursor.set('loading', false);
+  // tree.client.terms({params: {id: classification.id}}, function(err, data) {
+  //   cursor.set('loading', false);
 
-    if (err)
-      return;
+  //   if (err)
+  //     return;
 
-    const colorScale = scaleCategory20()
-      .domain(uniq(data.result.nodes.map(node => node.community)));
+  //   const colorScale = scaleCategory20()
+  //     .domain(uniq(data.result.nodes.map(node => node.community)));
 
-    const maxPosition = max(data.result.nodes, 'position').position;
+  //   const maxPosition = max(data.result.nodes, 'position').position;
 
-    const colorScalePosition = scaleLinear()
-      .domain([0, maxPosition])
-      .range(['red', 'blue']);
+  //   const colorScalePosition = scaleLinear()
+  //     .domain([0, maxPosition])
+  //     .range(['red', 'blue']);
 
-    data.result.nodes.forEach(node => {
-      node.size = 1;
-      node.communityColor = node.community === -1 ? '#ACACAC' : colorScale(node.community);
-      node.positionColor = colorScalePosition(node.position);
-      node.x = Math.random();
-      node.y = Math.random();
+  //   data.result.nodes.forEach(node => {
+  //     node.size = 1;
+  //     node.communityColor = node.community === -1 ? '#ACACAC' : colorScale(node.community);
+  //     node.positionColor = colorScalePosition(node.position);
+  //     node.x = Math.random();
+  //     node.y = Math.random();
 
-      // if (!~node.community)
-      //   node.hidden = true;
-    });
+  //     // if (!~node.community)
+  //     //   node.hidden = true;
+  //   });
 
-    data.result.edges.forEach(edge => {
-      edge.size = edge.weight;
-    });
+  //   data.result.edges.forEach(edge => {
+  //     edge.size = edge.weight;
+  //   });
 
-    cursor.set('graph', data.result);
-  });
+  //   cursor.set('graph', data.result);
+  // });
 }
 
 /**
@@ -172,11 +172,75 @@ export function updateSelector(tree, name, item) {
 }
 
 export function addChart(tree) {
-  const cursor = tree.select(ROOT),
-        selectors = tree.select([...ROOT, 'selectors']);
+  const cursor = tree.select([...ROOT, 'terms']),
+        selectors = cursor.select('selectors');
 
-  console.log("selectors", cursor.get('selectors'));    
+  console.log("selectors", cursor.get('selectors')); 
+
+  // set params for request
+  const params = {},
+        paramsRequest = {};
+
+  // get selectors choosen 
+  forIn(cursor.get('selectors'), (v, k) => {
+    if (v) {
+      params[k] = v;
+    }
+  })
+
+  // keep only params !== null for request
+  forIn(params, (v, k) => { k === "sourceType" ? 
+    paramsRequest[k] = v.value : paramsRequest[k] = v.id; 
+  })   
+
+  console.log("paramsRequest", paramsRequest);
+
+  const classification = cursor.get('classification');
+
+  console.log("classification", classification);
+
+  if (!classification)
+    return;
+
+  cursor.set('loading', true);
+
+  tree.client.terms({params: {id: classification.id}, data: paramsRequest}, function(err, data) {
+    console.log("request OK");
+    cursor.set('loading', false);
+
+    if (err)
+      return;
+
+    const colorScale = scaleCategory20()
+      .domain(uniq(data.result.nodes.map(node => node.community)));
+
+    const maxPosition = max(data.result.nodes, 'position').position;
+
+    const colorScalePosition = scaleLinear()
+      .domain([0, maxPosition])
+      .range(['red', 'blue']);
+
+    data.result.nodes.forEach(node => {
+      node.size = 1;
+      node.communityColor = node.community === -1 ? '#ACACAC' : colorScale(node.community);
+      node.positionColor = colorScalePosition(node.position);
+      node.x = Math.random();
+      node.y = Math.random();
+
+      // if (!~node.community)
+      //   node.hidden = true;
+    });
+
+    data.result.edges.forEach(edge => {
+      edge.size = edge.weight;
+    });
+
+    cursor.set('graph', data.result);
+  });
+  
 }
+
+
 
 export function updateDate(tree, dateChoosen) {
   const cursor = tree.select([...ROOT, 'terms']),
