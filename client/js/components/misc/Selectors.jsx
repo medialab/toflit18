@@ -67,7 +67,9 @@ const TEMPLATES = {
   country: [{name: 'All', id: '$all$'}],
   direction: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
   kind: [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}],
-  sourceType: []
+  sourceType: [],
+  dateMin: [],
+  dateMax: []
 };
 
 const PLACEHOLDERS = {
@@ -75,12 +77,15 @@ const PLACEHOLDERS = {
   country: 'Country...',
   direction: 'Direction...',
   kind: 'Import/Export...',
-  sourceType: 'Source type...'
+  sourceType: 'Source type...',
+  dateMin: 'Date min...',
+  dateMax: 'Date max...'
 };
 
-const MAX_LIST_SIZE = 100;
+const MAX_LIST_SIZE = 200;
 
 export class ItemSelector extends Component {
+
   static propTypes = {
     type: PropTypes.string.isRequired
   };
@@ -93,11 +98,18 @@ export class ItemSelector extends Component {
     this.compulsoryOptions = (TEMPLATES[type] || []).map(o => ({...o, special: true}));
   }
 
-  search(input, callback) {
+  search(input, type, callback) {
+    console.log("type", type);
     const warning = {
       id: '$warning$',
       disabled: true,
       name: 'This list contains too many elements. Try searching...'
+    };
+
+    const warningDate = {
+      id: '$warning$',
+      disabled: true,
+      name: 'Select a min date before'
     };
 
     if (!input.trim())
@@ -110,6 +122,8 @@ export class ItemSelector extends Component {
         const name = group.name.toLowerCase();
         return !!~name.indexOf(input);
       });
+
+      console.log("options", options);
 
     if (options.length > MAX_LIST_SIZE) {
       options = options
@@ -138,6 +152,12 @@ export class ItemSelector extends Component {
       type
     } = this.props;
 
+
+    if (this.props.type === "dateMax") {
+      console.log("this.props", this.props.type);
+
+    }
+
     const isTooLong = data.length > MAX_LIST_SIZE;
 
     const trulyDisabled = disabled || loading;
@@ -159,7 +179,7 @@ export class ItemSelector extends Component {
 
     return (
       <Select.Async {...commonProps}
-                    loadOptions={debounce(this.search.bind(this), 300)}
+                    loadOptions={debounce(this.search.bind(this), this.props.type ,300)}
                     filterOptions={identity}
                     ignoreAccents={false}
                     cache={false} />

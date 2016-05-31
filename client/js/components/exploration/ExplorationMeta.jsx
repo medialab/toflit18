@@ -108,8 +108,7 @@ export default class ExplorationMeta extends Component {
           </p>
           <hr />
             <Row className="dataType">
-             <SectionTitle 
-                           title="Data type"
+             <SectionTitle title="Data type"
                            addendum="You must select the type of data to control." />
               <Col md={6}>
                 <ItemSelector type="dataType"
@@ -276,35 +275,35 @@ function buildDescription(params, data) {
   return description;
 }
 
-class LinesSummary extends Component {
-  render() {
-    const {drop, lines} = this.props;
+// class LinesSummary extends Component {
+//   render() {
+//     const {drop, lines} = this.props;
 
-    return (
-      <ul className="summary">
-        {lines.map(function(line, i) {
-          const style = {
-            color: 'white',
-            backgroundColor: line.color
-          };
+//     return (
+//       <ul className="summary">
+//         {lines.map(function(line, i) {
+//           const style = {
+//             color: 'white',
+//             backgroundColor: line.color
+//           };
 
-          if (!line.data)
-            return <li key={i}><Waiter align="left" /></li>;
+//           if (!line.data)
+//             return <li key={i}><Waiter align="left" /></li>;
 
-          return (
-            <li key={i}>
-              <span className="insert" style={style}>
-                {buildDescription(line.params, line.data)}
-              </span>
-              <span className="insert drop"
-                    onClick={drop.bind(null, i)}
-                    style={style}>
-                ✕
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
-}
+//           return (
+//             <li key={i}>
+//               <span className="insert" style={style}>
+//                 {buildDescription(line.params, line.data)}
+//               </span>
+//               <span className="insert drop"
+//                     onClick={drop.bind(null, i)}
+//                     style={style}>
+//                 ✕
+//               </span>
+//             </li>
+//           );
+//         })}
+//       </ul>
+//     );
+//   }
+// }

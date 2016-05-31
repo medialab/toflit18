@@ -126,3 +126,63 @@ export function selectColorization(tree, colorization) {
 
   cursor.set(colorization);
 }
+
+/**
+ * Updating a selector.
+ */
+function fetchGroups(tree, cursor, id) {
+  tree.client.groups({params: {id}}, function(err, data) {
+    if (err) return;
+
+    cursor.set(data.result);
+  });
+}
+
+function buildDateMin() {
+  const min = {};
+
+  for (let i=1716; i < 1860; i++) {
+    min[i] = true;
+  }
+
+  return min;
+}
+
+//dateMin ? dateMin : buildDateMin();
+
+
+export function updateSelector(tree, name, item) {
+  const cursor = tree.select([...ROOT, 'terms']),
+        selectors = cursor.select('selectors'),
+        groups = tree.select([...ROOT, 'groups']);
+
+  // Updating the correct selector
+  selectors.set(name, item);
+
+  // If we updated a classification, we need to reset some things
+  if (/classification/i.test(name)) {
+    const model = name.match(/(.*?)Classification/)[1];
+
+    selectors.set(model, null);
+    groups.set(model, []);
+
+    if (item)
+      fetchGroups(tree, groups.select(model), item.id);
+  }
+}
+
+export function addChart(tree) {
+  const cursor = tree.select(ROOT),
+        selectors = tree.select([...ROOT, 'selectors']);
+
+  console.log("selectors", cursor.get('selectors'));    
+}
+
+export function updateDate(tree, dateChoosen) {
+  const cursor = tree.select([...ROOT, 'terms']),
+        selectors = cursor.select('selectors');
+
+  const date = selectors.get(dateChoosen);
+
+  return date;
+}
