@@ -170,7 +170,9 @@ class LineForm extends Component {
             <Button kind="primary"
                     disabled={lineAlreadyExisting}
                     loading={creating}
-                    onClick={() => {actions.addLine()}}>
+                    onClick={() => {
+                      actions.addLine();
+                    }}>
               {lineAlreadyExisting && !creating ? 'Already drawn' : 'Add the line'}
             </Button>
           </Col>
@@ -314,17 +316,23 @@ class Charts extends Component {
           elemCopy.count = l.data[i].count;
           elemCopy.value = l.data[i].value;
           elemCopy.year = l.data[i].year;
+
           elemCopy.sourceType ? elemCopy.sourceType = l.params.sourceType.name : elemCopy.sourceType = null;
+
           l.params.productClassification ? elemCopy.productClassification = l.params.productClassification.name :
           elemCopy.productClassification = null;
+
           l.params.countryClassification ? elemCopy.countryClassification = l.params.countryClassification.name :
           elemCopy.countryClassification = null;
+          
           l.params.country ? elemCopy.country = l.params.country.name : elemCopy.country = null;
           l.params.product ? elemCopy.product = l.params.product.name : elemCopy.product = null;
           l.params.kind ? elemCopy.kind = l.params.kind.name : elemCopy.kind = null;
           l.params.direction ? elemCopy.direction = l.params.direction.name : elemCopy.direction = null;
+          
           if (l.data[i].value !== null && l.data[i].count !== 0)
             l.data[i].nb_direction.length ? elemCopy.nb_direction = l.data[i].nb_direction : elemCopy.nb_direction = null;
+          
           dataLines.push(elemCopy);
         }
 

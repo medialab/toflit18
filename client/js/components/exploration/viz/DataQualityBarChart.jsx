@@ -19,7 +19,8 @@ export default class DataQualityBarChart extends Component {
   render() {
 
     // Basic properties
-    let {data, width} = this.props;
+    let data = this.props;
+    const width = this.props;
 
     const bottomMargin = 25,
           topMargin = 20,

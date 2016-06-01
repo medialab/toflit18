@@ -14,8 +14,7 @@ import {forIn} from 'lodash';
  * Selecting a data type.
  */
 export function select(tree, selected) {
-  const cursor = tree.select(ROOT),
-        selectors = tree.select([...ROOT, 'selectors']);
+  const cursor = tree.select(ROOT);
 
   cursor.set('dataType', selected);
 }
@@ -51,9 +50,7 @@ export function updateSelector(tree, name, item) {
 }
 
 export function addChart(tree) {
-  console.log("addChart")
-  const cursor = tree.select(ROOT),
-        selectors = tree.select([...ROOT, 'selectors']);
+  const cursor = tree.select(ROOT);
 
   cursor.set('perYear', null);
   cursor.set('flowsPerYear', null);
@@ -74,31 +71,32 @@ export function addChart(tree) {
   const params = {},
         paramsRequest = {};
 
-  // get selectors choosen 
+  // get selectors choosen
   forIn(cursor.get('selectors'), (v, k) => {
     if (v) {
       params[k] = v;
     }
-  })
+  });
 
   // keep only params !== null for request
-  forIn(params, (v, k) => { k === "sourceType" ? 
-    paramsRequest[k] = v.value : paramsRequest[k] = v.id; })
+  forIn(params, (v, k) => { 
+    k === 'sourceType' ? paramsRequest[k] = v.value : paramsRequest[k] = v.id; 
+  });
 
   tree.client.flowsPerYear({params: {type}, data: paramsRequest}, function(err, data) {
     if (err)
       return;
 
     // aggregation perYear
-    let perYear=[]
+    const perYear = [];
     _(data.result)
-        .map(e=> e.data)
+        .map(e => e.data)
         .flatten()
         .map(d => d.year)
         .groupBy()
-        .forEach( (v,k) => perYear.push({year:+k, data:_.isArray(v) ? v.length : 0}))
-        .value()
-        
+        .forEach((v, k) => perYear.push({year: +k, data: _.isArray(v) ? v.length : 0}))
+        .value();
+
     cursor.set('perYear', perYear);
 
     // Don't ask for data we don't need
@@ -109,12 +107,12 @@ export function addChart(tree) {
   });
 
   // set fileName form params selected
-  let fileName = "";
+  let fileName = '';
 
   forIn(params, (v, k) => {
     if (v)
-      fileName = fileName + v.name + " - ";
-  })
-  
+      fileName = fileName + v.name + ' - ';
+  });
+
   cursor.set('fileName', fileName);
 }

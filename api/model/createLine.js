@@ -5,11 +5,7 @@
  */
 import decypher from 'decypher';
 import database from '../connection';
-import {tokenizeTerms} from '../../lib/tokenizer';
 import {connectedComponents} from '../../lib/graph';
-import config from '../../config.json';
-import {viz as queries} from '../queries';
-import _, {omit, values} from 'lodash';
 
 const {Expression, Query} = decypher;
 
@@ -71,7 +67,7 @@ const ModelCreateLine = {
     query.match('(f:Flow)');
 
     //-- Should we match a precise direction?
-    if (direction && direction !== '$all$' ) {
+    if (direction && direction !== '$all$') {
       query.match('(d:Direction)');
       where.and('id(d) = {direction}');
       where.and('f.direction = d.name');
@@ -79,7 +75,7 @@ const ModelCreateLine = {
     }
 
     //-- Import/Export
-    if (kind === 'import' )
+    if (kind === 'import')
       where.and('f.import');
     else if (kind === 'export')
       where.and('not(f.import)');

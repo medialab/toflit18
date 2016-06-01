@@ -70,8 +70,8 @@ const client = new Client({
     },
 
     perYear: {
-      contentType : FORM,
-      url :'/viz/per_year/:type',
+      contentType: FORM,
+      url: '/viz/per_year/:type'
     },
 
     flowsPerYear: {

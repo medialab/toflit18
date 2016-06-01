@@ -36,7 +36,6 @@ export default class SourcesPerDirections extends Component {
 
     data.forEach(item => {
       item.data.forEach(({year, flows}) => {
-        console.log("year", year);
         allYears.add(year);
         allFlows.add(flows);
       });
@@ -48,8 +47,6 @@ export default class SourcesPerDirections extends Component {
 
     const minYear = min(allYears),
           maxYear = max(allYears);
-
-    console.log("maxYear", maxYear);
 
     const maxFlows = max(allFlows);
 
@@ -109,7 +106,6 @@ class Direction extends Component {
       .range([0, width - 10]);
 
     function renderRect(local, {year, flows}) {
-      console.log("year renderRect", year);
       const rectHeight = Math.max(1, y(flows)),
             rectYPos = SIZE - rectHeight;
 
@@ -136,7 +132,6 @@ class Direction extends Component {
     }
 
     function renderUnderline(year) {
-      console.log("year renderUnderline", year);
       return (
         <rect width={bar}
               key={year}

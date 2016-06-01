@@ -8,7 +8,7 @@ import {scaleCategory20, scaleLinear} from 'd3-scale';
 import {six as palette} from '../lib/palettes';
 import {max, uniq, values, forIn} from 'lodash';
 
-const ROOT = ['states', 'exploration', 'globals'];
+const ROOT = ['states', 'exploration', 'terms'];
 
 /**
  * Selecting a country classification.
@@ -74,48 +74,10 @@ export function selectClassification(tree, classification) {
  * Selecting a product classification.
  */
 export function selectTerms(tree, classification) {
-  const cursor = tree.select([...ROOT, 'terms']);
+  const cursor = tree.select(ROOT);
 
   cursor.set('classification', classification);
   cursor.set('graph', null);
-
-  // if (!classification)
-  //   return;
-
-  // cursor.set('loading', true);
-
-  // tree.client.terms({params: {id: classification.id}}, function(err, data) {
-  //   cursor.set('loading', false);
-
-  //   if (err)
-  //     return;
-
-  //   const colorScale = scaleCategory20()
-  //     .domain(uniq(data.result.nodes.map(node => node.community)));
-
-  //   const maxPosition = max(data.result.nodes, 'position').position;
-
-  //   const colorScalePosition = scaleLinear()
-  //     .domain([0, maxPosition])
-  //     .range(['red', 'blue']);
-
-  //   data.result.nodes.forEach(node => {
-  //     node.size = 1;
-  //     node.communityColor = node.community === -1 ? '#ACACAC' : colorScale(node.community);
-  //     node.positionColor = colorScalePosition(node.position);
-  //     node.x = Math.random();
-  //     node.y = Math.random();
-
-  //     // if (!~node.community)
-  //     //   node.hidden = true;
-  //   });
-
-  //   data.result.edges.forEach(edge => {
-  //     edge.size = edge.weight;
-  //   });
-
-  //   cursor.set('graph', data.result);
-  // });
 }
 
 /**
@@ -131,6 +93,7 @@ export function selectColorization(tree, colorization) {
  * Updating a selector.
  */
 function fetchGroups(tree, cursor, id) {
+
   tree.client.groups({params: {id}}, function(err, data) {
     if (err) return;
 
@@ -138,22 +101,8 @@ function fetchGroups(tree, cursor, id) {
   });
 }
 
-function buildDateMin() {
-  const min = {};
-
-  for (let i=1716; i < 1860; i++) {
-    min[i] = true;
-  }
-
-  return min;
-}
-
-//dateMin ? dateMin : buildDateMin();
-
-
 export function updateSelector(tree, name, item) {
-  const cursor = tree.select([...ROOT, 'terms']),
-        selectors = cursor.select('selectors'),
+  const selectors = tree.select([...ROOT, 'selectors']),
         groups = tree.select([...ROOT, 'groups']);
 
   // Updating the correct selector
@@ -164,40 +113,37 @@ export function updateSelector(tree, name, item) {
     const model = name.match(/(.*?)Classification/)[1];
 
     selectors.set(model, null);
-    groups.set(model, []);
+    groups.set('country', []);
 
-    if (item)
-      fetchGroups(tree, groups.select(model), item.id);
+    if (item) {
+      fetchGroups(tree, groups.select('country'), item.id);
+    }
   }
 }
 
 export function addChart(tree) {
-  const cursor = tree.select([...ROOT, 'terms']),
-        selectors = cursor.select('selectors');
+  const cursor = tree.select(ROOT);
 
-  console.log("selectors", cursor.get('selectors')); 
+  cursor.set('graph', null);
 
   // set params for request
   const params = {},
         paramsRequest = {};
 
-  // get selectors choosen 
+  // get selectors choosen
   forIn(cursor.get('selectors'), (v, k) => {
     if (v) {
       params[k] = v;
     }
-  })
+  });
 
   // keep only params !== null for request
-  forIn(params, (v, k) => { k === "sourceType" ? 
+  forIn(params, (v, k) => { 
+    k === 'sourceType' ? 
     paramsRequest[k] = v.value : paramsRequest[k] = v.id; 
-  })   
-
-  console.log("paramsRequest", paramsRequest);
+  });
 
   const classification = cursor.get('classification');
-
-  console.log("classification", classification);
 
   if (!classification)
     return;
@@ -205,7 +151,6 @@ export function addChart(tree) {
   cursor.set('loading', true);
 
   tree.client.terms({params: {id: classification.id}, data: paramsRequest}, function(err, data) {
-    console.log("request OK");
     cursor.set('loading', false);
 
     if (err)
@@ -240,10 +185,8 @@ export function addChart(tree) {
   
 }
 
-
-
 export function updateDate(tree, dateChoosen) {
-  const cursor = tree.select([...ROOT, 'terms']),
+  const cursor = tree.select(ROOT),
         selectors = cursor.select('selectors');
 
   const date = selectors.get(dateChoosen);
