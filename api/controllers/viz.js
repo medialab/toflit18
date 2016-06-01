@@ -6,6 +6,7 @@
 import model from '../model/viz';
 import modelFlowsPerYear from '../model/flowsPerYear';
 import modelCreateLine from '../model/createLine';
+import modelTerms from '../model/terms';
 import {mapValues} from 'lodash';
 
 const controller = [
@@ -112,7 +113,6 @@ const controller = [
     //   }
     // },
     action(req, res) {
-      console.log("req.query", req.query);
       const payloadTerms = mapValues(req.query, (v, k) => {
         if (v !== 'null') {
           return k !== 'kind' && k !== 'sourceType' ? +v : v;
@@ -121,7 +121,7 @@ const controller = [
           console.log(v, k);
       });
 
-      return model.terms(+req.params.id, payloadTerms, function(err, terms) {
+      return modelTerms.terms(+req.params.id, payloadTerms, function(err, terms) {
         if (err) return res.serverError(err);
         if (!terms) return res.notFound();
 

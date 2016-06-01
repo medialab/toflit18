@@ -46,30 +46,32 @@ export default class ExplorationGlobalsTerms extends Component {
     classifications: ['data', 'classifications', 'flat'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
-    state: ['states', 'exploration', 'globals', 'terms']
+    state: ['states', 'exploration', 'terms']
   }
 })
 class TermsPanel extends Component {
   render() {
-    let {
+    const {
       actions,
       classifications,
       directions,
       sourceTypes,
       state: {
-        creating,
         graph,
         classification,
         colorization,
         loading,
         selectors,
-        groups,
+        groups
+      }
+    } = this.props;
+
+    let {
+      state: {
         dateMin,
         dateMax
       }
     } = this.props;
-
-    
 
     const colorKey = colorization === 'community' ?
       'communityColor' :
@@ -84,55 +86,40 @@ class TermsPanel extends Component {
       };
     });
 
-    
-    const classificationsFiltered = classifications.product
-      .concat(classifications.country)
-      .filter(c => c.groupsCount)
-      .map(e => ({
-        ...e,
-        name: `${e.name} (${e.model === 'product' ? 'Products' : 'Countries'} - ${prettyPrint(e.groupsCount)} groups)`
-      }));
-
     function buildDateMin(dateMin, dateMax) {
-      const minArray= [];
+      const minArray = [];
       if (dateMin && dateMax) {
-        for (let i= dateMin; i < dateMax; i++) {
-          minArray.push({'name': i, 'id': i});
+        for (let i = dateMin; i < dateMax; i++) {
+          minArray.push({name: i, id: i});
         }
       }
 
-      if (dateMin && dateMin.length > 0 && !dateMax)
-      {
-        for ( let i=dateMin; i < config.api.limits.maxYear;  i++) {
-          minArray.push({'name': i, 'id': i});
+      if (dateMin && dateMin.length > 0 && !dateMax) {
+        for (let i = dateMin; i < config.api.limits.maxYear; i++) {
+          minArray.push({name: i, id: i});
         }
       }
 
-      if (!dateMin && dateMax)
-      {
-        for ( let i=config.api.limits.minYear; i < dateMax;  i++) {
-          minArray.push({'name': i, 'id': i});
+      if (!dateMin && dateMax) {
+        for (let i = config.api.limits.minYear; i < dateMax; i++) {
+          minArray.push({name: i, id: i});
         }
       }
 
-      if (!dateMax && dateMin)
-      {
-        for ( let i=dateMin; i < config.api.limits.maxYear;  i++) {
-          minArray.push({'name': i, 'id': i});
+      if (!dateMax && dateMin) {
+        for (let i = dateMin; i < config.api.limits.maxYear; i++) {
+          minArray.push({name: i, id: i});
         }
       }
 
-      if (!dateMax && !dateMin)
-      {
-        for ( let i=config.api.limits.minYear; i < config.api.limits.maxYear;  i++) {
-          minArray.push({'name': i, 'id': i});
+      if (!dateMax && !dateMin) {
+        for (let i = config.api.limits.minYear; i < config.api.limits.maxYear; i++) {
+          minArray.push({name: i, id: i});
         }
       }
 
       return minArray;
     }
-
-    //const dateMinOptions = dateMin ? dateMin : buildDateMin(dateMin, dateMax);
 
     let dateMaxOptions, dateMinOptions;
     dateMin = actions.updateDate('dateMin');
@@ -247,11 +234,14 @@ class TermsPanel extends Component {
               launch network
             </Button>
           </Col>
+          { !graph && 
+            <Col md={4}>
+            THERE IS NO DATA FOR YOUR REQUEST
+          </Col>
+          }
+
         </Row>
         <hr />
-
-
-
         <label>
           <input type="radio"
                  name="optionsRadio"

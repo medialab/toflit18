@@ -114,27 +114,26 @@ const defaultState = {
           graph: null,
           classification: null,
           loading: false
+        }
+      },
+      terms: {
+        creating: false,
+        graph: null,
+        classification: null,
+        colorization: 'community',
+        loading: false,
+        selectors: {
+          productClassification: null,
+          countryClassification: null,
+          country: null,
+          direction: null,
+          kind: null,
+          sourceType: null,
+          dateMin: null,
+          dateMax: null
         },
-        terms: {
-          creating: false,
-          graph: null,
-          classification: null,
-          colorization: 'community',
-          loading: false,
-          selectors: {
-            productClassification: null,
-            countryClassification: null,
-            country: null,
-            direction: null,
-            kind: null,
-            sourceType: null,
-            dateMin: null,
-            dateMax: null
-          },
-          groups: {
-            country: [],
-            product: []
-          }
+        groups: {
+          country: []
         }
       }
     }

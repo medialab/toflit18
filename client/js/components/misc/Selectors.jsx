@@ -98,18 +98,12 @@ export class ItemSelector extends Component {
     this.compulsoryOptions = (TEMPLATES[type] || []).map(o => ({...o, special: true}));
   }
 
-  search(input, type, callback) {
-    console.log("type", type);
+  search(input, callback) {
+
     const warning = {
       id: '$warning$',
       disabled: true,
       name: 'This list contains too many elements. Try searching...'
-    };
-
-    const warningDate = {
-      id: '$warning$',
-      disabled: true,
-      name: 'Select a min date before'
     };
 
     if (!input.trim())
@@ -122,8 +116,6 @@ export class ItemSelector extends Component {
         const name = group.name.toLowerCase();
         return !!~name.indexOf(input);
       });
-
-      console.log("options", options);
 
     if (options.length > MAX_LIST_SIZE) {
       options = options
@@ -152,12 +144,6 @@ export class ItemSelector extends Component {
       type
     } = this.props;
 
-
-    if (this.props.type === "dateMax") {
-      console.log("this.props", this.props.type);
-
-    }
-
     const isTooLong = data.length > MAX_LIST_SIZE;
 
     const trulyDisabled = disabled || loading;
@@ -179,7 +165,7 @@ export class ItemSelector extends Component {
 
     return (
       <Select.Async {...commonProps}
-                    loadOptions={debounce(this.search.bind(this), this.props.type ,300)}
+                    loadOptions={debounce(this.search.bind(this), 300)}
                     filterOptions={identity}
                     ignoreAccents={false}
                     cache={false} />
