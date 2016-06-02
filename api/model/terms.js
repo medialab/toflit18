@@ -21,10 +21,7 @@ const ModelTerms = {
           kind,
           country, 
           dateMin,
-          dateMax
-        } = params;
-
-        const {
+          dateMax,
           productClassification,
           countryClassification
         } = params;
@@ -101,7 +98,7 @@ const ModelTerms = {
             query.where(where);
         query.return('f.product as term');
 
-        console.log("query.build() flowsPerYearPerDataType", query.build())
+        console.log("query.build() terms", query.build())
 
         database.cypher(query.build(), function(err, data) {
             //console.log("data", data);

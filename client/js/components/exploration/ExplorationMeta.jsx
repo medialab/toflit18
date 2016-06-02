@@ -242,32 +242,3 @@ class SectionTitle extends Component {
   }
 }
 
-/**
- * Lines summary.
- */
-function buildDescription(params, data) {
-  const selectors = mapValues(params, 'name');
-  let description = [];
-
-  description.push(<span key="kind">{capitalize(selectors.kind || 'total') + ' flows'}</span>);
-
-  if (selectors.product && data.length)
-    description.push(<span key="product"> of <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
-
-  if (selectors.direction && selectors.direction !== '$all')
-    description.push(<span key="direction"> from <strong>{selectors.direction}</strong></span>);
-
-  if (selectors.country)
-    description.push(<span key="country"> to <strong>{selectors.country}</strong> (<em>{selectors.countryClassification}</em>)</span>);
-
-  if (selectors.sourceType)
-    description.push(<span key="type"> - (source type: {selectors.sourceType})</span>);
-
-  if (selectors.product && data.length === 0) {
-    description = [];
-    description.push(<span key="kind">{'No data '}</span>);
-    description.push(<span key="product"> for <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
-  }
-
-  return description;
-}

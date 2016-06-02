@@ -6,16 +6,13 @@
  * whole.
  */
 import React, {Component} from 'react';
-import ReactSlider from 'react-slider';
 import {branch} from 'baobab-react/decorators';
 import Button, {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
 import {Row, Col} from '../misc/Grid.jsx';
-import {prettyPrint} from '../../lib/helpers';
-import config from '../../../../config.json';
+import {buildDateMin} from '../../lib/helpers';
 import {
-  selectClassification,
   selectTerms,
   selectColorization,
   updateSelector as update,
@@ -28,7 +25,6 @@ export default class ExplorationGlobalsTerms extends Component {
     return (
       <div>
         <TermsPanel />
-        <ReactSlider defaultValue={[0, 100]} withBars />
       </div>
     );
   }
@@ -38,7 +34,7 @@ export default class ExplorationGlobalsTerms extends Component {
   actions: {
     selectTerms,
     selectColorization,
-    update, 
+    update,
     addChart,
     updateDate
   },
@@ -85,41 +81,6 @@ class TermsPanel extends Component {
         value: type
       };
     });
-
-    function buildDateMin(dateMin, dateMax) {
-      const minArray = [];
-      if (dateMin && dateMax) {
-        for (let i = dateMin; i < dateMax; i++) {
-          minArray.push({name: i, id: i});
-        }
-      }
-
-      if (dateMin && dateMin.length > 0 && !dateMax) {
-        for (let i = dateMin; i < config.api.limits.maxYear; i++) {
-          minArray.push({name: i, id: i});
-        }
-      }
-
-      if (!dateMin && dateMax) {
-        for (let i = config.api.limits.minYear; i < dateMax; i++) {
-          minArray.push({name: i, id: i});
-        }
-      }
-
-      if (!dateMax && dateMin) {
-        for (let i = dateMin; i < config.api.limits.maxYear; i++) {
-          minArray.push({name: i, id: i});
-        }
-      }
-
-      if (!dateMax && !dateMin) {
-        for (let i = config.api.limits.minYear; i < config.api.limits.maxYear; i++) {
-          minArray.push({name: i, id: i});
-        }
-      }
-
-      return minArray;
-    }
 
     let dateMaxOptions, dateMinOptions;
     dateMin = actions.updateDate('dateMin');
@@ -234,7 +195,7 @@ class TermsPanel extends Component {
               launch network
             </Button>
           </Col>
-          { !graph && 
+          {!graph &&
             <Col md={4}>
             THERE IS NO DATA FOR YOUR REQUEST
           </Col>
@@ -280,34 +241,4 @@ class SectionTitle extends Component {
       </Col>
     );
   }
-}
-
-/**
- * Lines summary.
- */
-function buildDescription(params, data) {
-  const selectors = mapValues(params, 'name');
-  let description = [];
-
-  description.push(<span key="kind">{capitalize(selectors.kind || 'total') + ' flows'}</span>);
-
-  if (selectors.product && data.length)
-    description.push(<span key="product"> of <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
-
-  if (selectors.direction && selectors.direction !== '$all')
-    description.push(<span key="direction"> from <strong>{selectors.direction}</strong></span>);
-
-  if (selectors.country)
-    description.push(<span key="country"> to <strong>{selectors.country}</strong> (<em>{selectors.countryClassification}</em>)</span>);
-
-  if (selectors.sourceType)
-    description.push(<span key="type"> - (source type: {selectors.sourceType})</span>);
-
-  if (selectors.product && data.length === 0) {
-    description = [];
-    description.push(<span key="kind">{'No data '}</span>);
-    description.push(<span key="product"> for <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
-  }
-
-  return description;
 }

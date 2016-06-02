@@ -3,10 +3,10 @@
  * ===================================
  *
  */
-import model from '../model/viz';
 import modelFlowsPerYear from '../model/flowsPerYear';
 import modelCreateLine from '../model/createLine';
 import modelTerms from '../model/terms';
+import modelNetwork from '../model/network';
 import {mapValues} from 'lodash';
 
 const controller = [
@@ -76,14 +76,36 @@ const controller = [
   {
     url: '/network/:id',
     method: 'GET',
-    cache: {
-      key: 'network',
-      hasher(req) {
-        return req.params.id;
+    validate: {
+      query: {
+        sourceType: '?string',
+        productClassification1: '?string',
+        productClassification2: '?string',
+        product: '?string',
+        countryClassification: '?string',
+        country: '?string',
+        direction: '?string',
+        kind: '?string',
+        dateMin: '?string',
+        dateMax: '?string'
       }
+    // cache: {
+    //   key: 'network',
+    //   hasher(req) {
+    //     return req.params.id;
+    //   }
     },
     action(req, res) {
-      return model.network(+req.params.id, function(err, data) {
+      const payloadNetwork = mapValues(req.query, (v, k) => {
+        if (v !== 'null') {
+          return k !== 'kind' && k !== 'sourceType' ? +v : v;
+        }
+        else
+          console.log(v, k);
+      });
+
+      console.log("payloadNetwork", payloadNetwork);
+      return modelNetwork.network(+req.params.id, payloadNetwork, function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);

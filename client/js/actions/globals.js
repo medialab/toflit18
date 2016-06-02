@@ -5,70 +5,9 @@
  * Actions related to the globals' view.
  */
 import {scaleCategory20, scaleLinear} from 'd3-scale';
-import {six as palette} from '../lib/palettes';
-import {max, uniq, values, forIn} from 'lodash';
+import {max, uniq, forIn} from 'lodash';
 
 const ROOT = ['states', 'exploration', 'terms'];
-
-/**
- * Selecting a country classification.
- */
-export function selectClassification(tree, classification) {
-  const cursor = tree.select([...ROOT, 'network']);
-
-  cursor.set('classification', classification);
-  cursor.set('graph', null);
-
-  if (!classification)
-    return;
-
-  cursor.set('loading', true);
-
-  // Fetching data
-  tree.client.network({params: {id: classification.id}}, function(err, data) {
-    cursor.set('loading', false);
-
-    if (err) return;
-
-    // Treating
-    const nodes = {},
-          edges = [];
-
-    data.result.forEach(function(row) {
-      const directionId = '$d$' + row.direction,
-            countryId = '$c$' + row.country;
-
-      if (!nodes[directionId])
-        nodes[directionId] = {
-          id: directionId,
-          label: row.direction,
-          color: palette[0],
-          size: 1,
-          x: Math.random(),
-          y: Math.random(),
-        };
-
-      if (!nodes[countryId])
-        nodes[countryId] = {
-          id: countryId,
-          label: row.country,
-          color: palette[1],
-          size: 1,
-          x: Math.random(),
-          y: Math.random(),
-        };
-
-      edges.push({
-        id: 'e' + edges.length,
-        size: row.count,
-        source: directionId,
-        target: countryId
-      });
-    });
-
-    cursor.set('graph', {nodes: values(nodes), edges});
-  });
-}
 
 /**
  * Selecting a product classification.
@@ -139,7 +78,7 @@ export function addChart(tree) {
 
   // keep only params !== null for request
   forIn(params, (v, k) => { 
-    k === 'sourceType' ? 
+    k === 'sourceType' ?
     paramsRequest[k] = v.value : paramsRequest[k] = v.id; 
   });
 
@@ -182,7 +121,6 @@ export function addChart(tree) {
 
     cursor.set('graph', data.result);
   });
-  
 }
 
 export function updateDate(tree, dateChoosen) {
