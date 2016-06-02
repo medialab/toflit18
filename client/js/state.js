@@ -108,12 +108,24 @@ const defaultState = {
         lines: []
       },
 
-      // Globals view
-      globals: {
-        network: {
-          graph: null,
-          classification: null,
-          loading: false
+      // Globals views
+      network: {
+        graph: null,
+        classification: null,
+        loading: false,
+        selectors: {
+          productClassification1: null,
+          productClassification2: null,
+          countryClassification: null,
+          country: null,
+          direction: null,
+          kind: null,
+          sourceType: null,
+          dateMin: null,
+          dateMax: null
+        },
+        groups: {
+          country: []
         }
       },
       terms: {
