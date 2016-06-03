@@ -32,7 +32,6 @@ export function selectColorization(tree, colorization) {
  * Updating a selector.
  */
 function fetchGroups(tree, cursor, id) {
-
   tree.client.groups({params: {id}}, function(err, data) {
     if (err) return;
 
@@ -41,6 +40,7 @@ function fetchGroups(tree, cursor, id) {
 }
 
 export function updateSelector(tree, name, item) {
+  console.log("name, item", name, item);
   const selectors = tree.select([...ROOT, 'selectors']),
         groups = tree.select([...ROOT, 'groups']);
 

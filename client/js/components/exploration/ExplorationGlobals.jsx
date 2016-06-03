@@ -14,11 +14,20 @@ import {Row, Col} from '../misc/Grid.jsx';
 import {buildDateMin} from '../../lib/helpers';
 import {
   selectClassification,
-  selectColorization,
+  selectPonderation,
   updateSelector as update,
   addNetwork,
   updateDate
 } from '../../actions/globalsNetwork';
+
+import config from '../../../config.json';
+
+const metadataSelectors = (config.metadataSelectors || []).map(option => {
+  return {
+    ...option,
+    special: true
+  };
+});
 
 
 export default class ExplorationGlobals extends Component {
@@ -34,6 +43,7 @@ export default class ExplorationGlobals extends Component {
 @branch({
   actions: {
     selectClassification,
+    selectPonderation,
     update,
     addNetwork,
     updateDate
@@ -50,12 +60,11 @@ class NetworkPanel extends Component {
     const {
       actions,
       classifications,
-      directions,
       sourceTypes,
       state: {
         graph,
         classification,
-        colorization,
+        ponderation,
         loading,
         selectors,
         groups
@@ -68,6 +77,19 @@ class NetworkPanel extends Component {
         dateMax
       }
     } = this.props;
+
+    const ponderationKey = ponderation === 'nbFlows' ?
+      'flowsPonderation' :
+      'valuePonderation';
+
+    const radioListener = e => actions.selectPonderation(e.target.value);
+
+    const sourceTypesOptions = (sourceTypes || []).map(type => {
+      return {
+        name: type,
+        value: type
+      };
+    });
 
     let dateMaxOptions, dateMinOptions;
     dateMin = actions.updateDate('dateMin');
@@ -111,16 +133,21 @@ class NetworkPanel extends Component {
               <ClassificationSelector type="product"
                                       loading={!classifications.product.length}
                                       data={classifications.product.filter(c => !c.source)}
-                                      onChange={actions.update.bind(null, 'productClassification1')}
-                                      selected={selectors.productClassification1} />
+                                      onChange={actions.update.bind(null, 'productClassification')}
+                                      selected={selectors.productClassification} />
             </Col>
-            <Col md={4}>
-              <ClassificationSelector type="product"
-                                      loading={!classifications.product.length}
-                                      data={classifications.product.filter(c => !c.source)}
-                                      onChange={actions.update.bind(null, 'productClassification2')}
-                                      selected={selectors.productClassification2} />
-            </Col>
+        </Row>
+        <hr />
+        <Row>
+         <SectionTitle title="Data type"
+                       addendum="You must select the type of data to control." />
+          <Col md={4}>
+            <ItemSelector type="dataType"
+              data={[...metadataSelectors]}
+              loading={!classifications.product.length}
+              onChange={actions.update.bind(null, 'dataType')}
+              selected={selectors.dataType} />
+          </Col>
         </Row>
         <hr />
         <Row>
@@ -165,7 +192,24 @@ class NetworkPanel extends Component {
 
         </Row>
         <hr />
-        <Network graph={graph} />
+        <label>
+          <input type="radio"
+                 name="optionsRadio"
+                 value="nbFlows"
+                 checked={ponderation === 'flowsPonderation'}
+                 onChange={radioListener} />
+           Ponderation by number of flows
+        </label>
+        <label>
+          <input type="radio"
+                 name="optionsRadio"
+                 value="value"
+                 checked={ponderation === 'valuePonderation'}
+                 onChange={radioListener} />
+           Ponderation by sum value of flows
+        </label>
+        <hr />
+        <Network graph={graph} ponderationKey={ponderationKey}/>
       </div>
     );
   }

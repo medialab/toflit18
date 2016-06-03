@@ -20,14 +20,12 @@ const ModelNetwork = {
     console.log("params", params);
 
     const {
-          sourceType,
           direction,
           kind,
-          country, 
           dateMin,
           dateMax,
-          productClassification1,
-          productClassification2,
+          productClassification,
+          dataType
         } = params;
 
     const query = new Query(),
@@ -51,36 +49,25 @@ const ModelNetwork = {
     query.with('collect(ci.name) AS countries');
 
 
-    if (productClassification1 && !productClassification2) {
+    if (productClassification) {
         query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)');
 
-        const whereProduct = new Expression('id(pc) = ' + productClassification1);
+        const whereProduct = new Expression('id(pc) = ' + productClassification);
         query.where(whereProduct);
         query.with('countries, collect(pi.name) AS products');
-        query.params({productClassification1});
+        query.params({productClassification});
         withs.push('products');
     }
 
-    if (productClassification1 && productClassification2) {
-        query.match('(pc1)-[:HAS]->(pg1)-[:AGGREGATES*0..]->(pi1), (pc2)-[:HAS]->(pg2)-[:AGGREGATES*0..]->(pi2)');
-
-        const whereProduct = new Expression('id(pc1) = ' + productClassification1 + ' AND id(pc2) = ' + productClassification2);
-        query.where(whereProduct);
-
-        query.with('countries, collect(pi1.name) AS products1, collect(pi2.name) AS products2');
-
-        query.params({productClassification1});
-        query.params({productClassification2});
-    }
-
      query.match('(f:Flow)');
-     if (productClassification1 && !productClassification2) {
+     if (productClassification) {
         where.and('f.product in products');
      }
-     if (productClassification1 && productClassification2) {
-        where.and('f.product in products1 AND f.product in products2');
-     }
-     where.and('f.country in countries AND has(f.direction)');
+     where.and('f.country in countries');
+
+     if (dataType)
+      where.and(has('f.direction'));
+     
 
     //-- Import/Export
     if (kind === 'import')
@@ -97,7 +84,7 @@ const ModelNetwork = {
     if (!where.isEmpty())
         query.where(where);
 
-    query.return('f.country as country, f.direction AS direction, count(f) AS count');
+    query.return('f.country as country, f.direction AS direction, count(f) AS count, sum(f.value) AS value');
 
     console.log("query.build() flowsPerYearPerDataType", query.build())
     database.cypher(query.build(), function(err, data) {

@@ -78,13 +78,9 @@ const controller = [
     method: 'GET',
     validate: {
       query: {
-        sourceType: '?string',
-        productClassification1: '?string',
-        productClassification2: '?string',
-        product: '?string',
+        dataType: '?string',
+        productClassification: '?string',
         countryClassification: '?string',
-        country: '?string',
-        direction: '?string',
         kind: '?string',
         dateMin: '?string',
         dateMax: '?string'
