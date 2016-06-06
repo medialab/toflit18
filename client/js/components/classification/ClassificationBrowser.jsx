@@ -292,28 +292,16 @@ class GroupQuery extends Component {
                className="form-control"
                placeholder="Search group..."
                value={queryGroup}
-               onKeyPress={e => {
-                e.which === 13 && this.submit();
-                }
-              }
-               onChange={e => {
-                actions.update_group(e.target.value);
-              }
-            } />
+               onKeyPress={e => e.which === 13 && this.submit()}
+               onChange={e => actions.update_group(e.target.value)} />
             { checkClassification && <input id="searchItem"
                type="text"
                className="form-control"
                placeholder="Search item..."
                value={queryItem}
-               onKeyPress={e => {
-                e.which === 13 && this.submit();
-                }
-              }
-               onChange={e => {
-                actions.update_item(e.target.value);
-              }
-            } />
-          }
+               onKeyPress={e => e.which === 13 && this.submit()}
+               onChange={e => actions.update_item(e.target.value)} />
+            }
         <span className="input-group-btn">
           <Button kind="secondary"
                   loading={loading}

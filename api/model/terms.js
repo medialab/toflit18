@@ -19,10 +19,9 @@ const ModelTerms = {
           sourceType,
           direction,
           kind,
-          country, 
+          country,
           dateMin,
           dateMax,
-          productClassification,
           countryClassification
         } = params;
 
@@ -32,7 +31,6 @@ const ModelTerms = {
 
         // Match product classification
         query.match('(pc)-[:HAS]->(group)');
-
         query.where('id(pc) = ' + classification);
         query.with('collect(group.name) as terms');
 
@@ -98,10 +96,7 @@ const ModelTerms = {
             query.where(where);
         query.return('f.product as term');
 
-        console.log("query.build() terms", query.build())
-
         database.cypher(query.build(), function(err, data) {
-            //console.log("data", data);
 
             if (err) return callback(err);
             if (!data.length) return callback(null, null);
@@ -226,7 +221,7 @@ const ModelTerms = {
             const exportData = [];
             forIn(graph.edges, d => {
               exportData.push({weigth: d.weight, source: d.source, target: d.target});
-            })
+            });
 
             return callback(null, {
                 data: exportData,

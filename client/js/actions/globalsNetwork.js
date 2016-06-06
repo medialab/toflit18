@@ -27,7 +27,7 @@ export function selectPonderation(tree, ponderation) {
   cursor.set('ponderation', ponderation);
 
   const data = cursor.get('graphResultAPI');
-  let size = null;
+  let edgeSize = null;
 
   // Treating
   const nodes = {},
@@ -35,9 +35,9 @@ export function selectPonderation(tree, ponderation) {
 
   data.forEach(function(row) {
     if (ponderation === 'flows')
-      size = row.count 
+      edgeSize = row.count;
     else
-      size = row.value
+      edgeSize = row.value;
 
     const directionId = '$d$' + row.direction,
           countryId = '$c$' + row.country;
@@ -64,7 +64,7 @@ export function selectPonderation(tree, ponderation) {
 
     edges.push({
       id: 'e' + edges.length,
-      size: size,
+      size: edgeSize,
       source: directionId,
       target: countryId
     });
@@ -90,12 +90,12 @@ export function addNetwork(tree) {
   });
 
   // keep only params !== null for request
-  forIn(params, (v, k) => { 
-    k === 'dataType' ?
-    paramsRequest[k] = v.value : paramsRequest[k] = v.id; 
+  forIn(params, (v, k) => {
+    if (k === 'dataType')
+      paramsRequest[k] = v.value;
+    else
+      paramsRequest[k] = v.id;
   });
-
-  console.log("paramsRequest", paramsRequest);
 
   const classification = cursor.get('classification');
 
@@ -166,13 +166,11 @@ function fetchGroups(tree, cursor, id) {
 
 // see meta or indicator view to change and adapt this function
 export function updateSelector(tree, name, item) {
-  console.log("name, item", name, item);
   const selectors = tree.select([...ROOT, 'selectors']),
         groups = tree.select([...ROOT, 'groups']);
 
   // Updating the correct selector
   selectors.set(name, item);
-  console.log("selector dataType", selectors.get('dataType'));
 
   // If we updated a classification, we need to reset some things
   if (/classification/i.test(name)) {

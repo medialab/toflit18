@@ -44,7 +44,6 @@ export default class SourcesPerDirections extends Component {
     allYears = Array.from(allYears);
     allFlows = Array.from(allFlows);
 
-
     const minYear = min(allYears),
           maxYear = max(allYears);
 

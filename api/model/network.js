@@ -17,10 +17,8 @@ const ModelNetwork = {
    * Building the (directions)--(country) network.
    */
   network(classification, params, callback) {
-    console.log("params", params);
 
     const {
-          direction,
           kind,
           dateMin,
           dateMax,
@@ -32,22 +30,11 @@ const ModelNetwork = {
           where = new Expression(),
           withs = [];
 
-    // START n=node({classification})
-    // MATCH (n)-[:HAS]->(gc)-[:AGGREGATES*0..]->(c:Country)
-    // WITH gc.name AS country, c.name AS sc
-    // MATCH (f:Flow)
-    // WHERE f.country = sc AND has(f.direction)
-    // RETURN
-    //   country,
-    //   f.direction AS direction,
-    //   count(f) AS count;
-
     // start query from country classification
     query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)');
     const whereCountry = new Expression('id(cc) = ' + classification);
     query.where(whereCountry);
     query.with('collect(ci.name) AS countries');
-
 
     if (productClassification) {
         query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)');
@@ -66,8 +53,7 @@ const ModelNetwork = {
      where.and('f.country in countries');
 
      if (dataType)
-      where.and(has('f.direction'));
-     
+      where.and('has(f.direction)');
 
     //-- Import/Export
     if (kind === 'import')
@@ -80,15 +66,13 @@ const ModelNetwork = {
 
     if (dateMax)
         where.and('f.year <= ' + dateMax);
-    
+
     if (!where.isEmpty())
         query.where(where);
 
     query.return('f.country as country, f.direction AS direction, count(f) AS count, sum(f.value) AS value');
 
-    console.log("query.build() flowsPerYearPerDataType", query.build())
     database.cypher(query.build(), function(err, data) {
-            //console.log("data", data.length);
 
             if (err) return callback(err);
             if (!data.length) return callback(null, null);

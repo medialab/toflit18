@@ -5,7 +5,6 @@
  */
 import decypher from 'decypher';
 import database from '../connection';
-import {connectedComponents} from '../../lib/graph';
 
 const {Expression, Query} = decypher;
 
@@ -127,7 +126,6 @@ const ModelCreateLine = {
       query.orderBy('f.year');
     }
 
-    console.log("query.build()", query.build())
     database.cypher(query.build(), function(err, data) {
 
       if (err) return callback(err);

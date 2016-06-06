@@ -193,7 +193,7 @@ class TermsPanel extends Component {
           <Col md={2}>
             <Button kind="primary"
                     onClick={actions.addChart}>
-              launch network
+              Add network
             </Button>
           </Col>
           {!graph &&
@@ -222,9 +222,9 @@ class TermsPanel extends Component {
         </label>
         <Network graph={graph} colorKey={colorKey} />
         <br />
-        <ExportButton name={`Toflit18_Global_Terms_Network_view`}
+        <ExportButton name={'Toflit18_Global_Terms_Network_view'}
                       data={graphResultAPI}>
-            Export 
+            Export
         </ExportButton>
       </div>
     );

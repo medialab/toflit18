@@ -100,7 +100,6 @@ const controller = [
           console.log(v, k);
       });
 
-      console.log("payloadNetwork", payloadNetwork);
       return modelNetwork.network(+req.params.id, payloadNetwork, function(err, data) {
         if (err) return res.serverError(err);
 

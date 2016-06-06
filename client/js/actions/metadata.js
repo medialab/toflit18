@@ -11,6 +11,17 @@ const ROOT = ['states', 'exploration', 'metadata'];
 import {forIn} from 'lodash';
 
 /**
+ * Updating a selector.
+ */
+function fetchGroups(tree, cursor, id) {
+  tree.client.groups({params: {id}}, function(err, data) {
+    if (err) return;
+
+    cursor.set(data.result);
+  });
+}
+
+/**
  * Selecting a data type.
  */
 export function select(tree, selected) {
@@ -18,9 +29,9 @@ export function select(tree, selected) {
         selectors = tree.select([...ROOT, 'selectors']),
         groups = tree.select([...ROOT, 'groups']);
 
-  if (selected && selected.value !== "direction" && selected.value !== "sourceType") {
+  if (selected && selected.value !== 'direction' && selected.value !== 'sourceType') {
     if (selected.model === 'country') {
-      selectors.set('countryClassification', selected)
+      selectors.set('countryClassification', selected);
       selectors.set('country', null);
       groups.set('country', []);
 
@@ -28,7 +39,7 @@ export function select(tree, selected) {
         fetchGroups(tree, groups.select('country'), selected.id);
     }
     else {
-      selectors.set('productClassification', selected)
+      selectors.set('productClassification', selected);
       selectors.set('product', null);
       groups.set('product', []);
 
@@ -38,17 +49,6 @@ export function select(tree, selected) {
   }
 
   cursor.set('dataType', selected);
-}
-
-/**
- * Updating a selector.
- */
-function fetchGroups(tree, cursor, id) {
-  tree.client.groups({params: {id}}, function(err, data) {
-    if (err) return;
-
-    cursor.set(data.result);
-  });
 }
 
 export function updateSelector(tree, name, item) {
@@ -100,8 +100,11 @@ export function addChart(tree) {
   });
 
   // keep only params !== null for request
-  forIn(params, (v, k) => { 
-    k === 'sourceType' ? paramsRequest[k] = v.value : paramsRequest[k] = v.id; 
+  forIn(params, (v, k) => {
+    if (k === 'sourceType')
+      paramsRequest[k] = v.value;
+    else
+      paramsRequest[k] = v.id;
   });
 
   tree.client.flowsPerYear({params: {type}, data: paramsRequest}, function(err, data) {

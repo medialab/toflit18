@@ -63,7 +63,7 @@ const ModelFlowsPerYear = {
 
         withs.push('products');
         query.where(whereProduct);
-        if (dataType === 'product') { 
+        if (dataType === 'product') {
           withs.push('classificationGroupName');
           query.with('pg.name as classificationGroupName, collect(pi.name) AS products');
         }
@@ -151,7 +151,7 @@ const ModelFlowsPerYear = {
       else if (sourceType === 'National best guess') {
         query.with('f.year AS year, ' + dataTypeField + ' AS dataType, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
         query.with('year, dataType, CASE  WHEN size(source_types)>1 and "Objet Général" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Objet Général") WHEN size(source_types)>1 and "Résumé" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Résumé") WHEN size(source_types)>1 and "National par direction" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National par direction") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
-        query.return(`dataType, year, count(fs) AS flows`);
+        query.return('dataType, year, count(fs) AS flows');
         query.orderBy('year, dataType');
       }
       else if (sourceType === 'Local best guess') {
@@ -165,7 +165,6 @@ const ModelFlowsPerYear = {
         query.orderBy('f.year, dataType');
       }
 
-      console.log("query.build() flowsPerYearPerDataType", query.build());
       database.cypher(query.build(), function(err, result) {
         if (err) return callback(err);
 

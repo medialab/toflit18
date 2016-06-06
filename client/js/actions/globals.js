@@ -40,7 +40,6 @@ function fetchGroups(tree, cursor, id) {
 }
 
 export function updateSelector(tree, name, item) {
-  console.log("name, item", name, item);
   const selectors = tree.select([...ROOT, 'selectors']),
         groups = tree.select([...ROOT, 'groups']);
 
@@ -77,9 +76,11 @@ export function addChart(tree) {
   });
 
   // keep only params !== null for request
-  forIn(params, (v, k) => { 
-    k === 'sourceType' ?
-    paramsRequest[k] = v.value : paramsRequest[k] = v.id; 
+  forIn(params, (v, k) => {
+    if (k === 'sourceType')
+      paramsRequest[k] = v.value;
+    else
+      paramsRequest[k] = v.id;
   });
 
   const classification = cursor.get('classification');

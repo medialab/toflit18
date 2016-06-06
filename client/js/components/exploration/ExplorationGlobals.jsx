@@ -51,7 +51,6 @@ export default class ExplorationGlobals extends Component {
   cursors: {
     classifications: ['data', 'classifications', 'flat'],
     directions: ['data', 'directions'],
-    sourceTypes: ['data', 'sourceTypes'],
     state: ['states', 'exploration', 'network']
   }
 })
@@ -60,7 +59,6 @@ class NetworkPanel extends Component {
     const {
       actions,
       classifications,
-      sourceTypes,
       state: {
         graphResultAPI,
         graph,
@@ -68,7 +66,6 @@ class NetworkPanel extends Component {
         ponderation,
         loading,
         selectors,
-        groups
       }
     } = this.props;
 
@@ -84,13 +81,6 @@ class NetworkPanel extends Component {
       'valuePonderation';
 
     const radioListener = e => actions.selectPonderation(e.target.value);
-
-    const sourceTypesOptions = (sourceTypes || []).map(type => {
-      return {
-        name: type,
-        value: type
-      };
-    });
 
     let dateMaxOptions, dateMinOptions;
     dateMin = actions.updateDate('dateMin');
@@ -182,7 +172,7 @@ class NetworkPanel extends Component {
           <Col md={2}>
             <Button kind="primary"
                     onClick={actions.addNetwork}>
-              launch network
+              Add network
             </Button>
           </Col>
           {!graph &&
@@ -212,9 +202,9 @@ class NetworkPanel extends Component {
         <hr />
         <Network graph={graph} ponderationKey={ponderationKey}/>
         <br />
-        <ExportButton name={`Toflit18_Global_Trade_Countries_Network_view`}
+        <ExportButton name={'Toflit18_Global_Trade_Countries_Network_view'}
                         data={graphResultAPI}>
-            Export 
+            Export
         </ExportButton>
       </div>
     );
