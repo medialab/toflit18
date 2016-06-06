@@ -23,9 +23,9 @@ export function selectTerms(tree, classification) {
  * Selecting a colorization.
  */
 export function selectColorization(tree, colorization) {
-  const cursor = tree.select([...ROOT, 'terms', 'colorization']);
+  const cursor = tree.select(ROOT);
 
-  cursor.set(colorization);
+  cursor.set('colorization', colorization);
 }
 
 /**
@@ -94,6 +94,8 @@ export function addChart(tree) {
 
     if (err)
       return;
+
+    cursor.set('graphResultAPI', data.result.data);
 
     const colorScale = scaleCategory20()
       .domain(uniq(data.result.nodes.map(node => node.community)));

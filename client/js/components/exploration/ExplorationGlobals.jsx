@@ -62,6 +62,7 @@ class NetworkPanel extends Component {
       classifications,
       sourceTypes,
       state: {
+        graphResultAPI,
         graph,
         classification,
         ponderation,
@@ -195,8 +196,8 @@ class NetworkPanel extends Component {
         <label>
           <input type="radio"
                  name="optionsRadio"
-                 value="nbFlows"
-                 checked={ponderation === 'flowsPonderation'}
+                 value="flows"
+                 checked={ponderation === 'flows'}
                  onChange={radioListener} />
            Ponderation by number of flows
         </label>
@@ -204,12 +205,17 @@ class NetworkPanel extends Component {
           <input type="radio"
                  name="optionsRadio"
                  value="value"
-                 checked={ponderation === 'valuePonderation'}
+                 checked={ponderation === 'value'}
                  onChange={radioListener} />
            Ponderation by sum value of flows
         </label>
         <hr />
         <Network graph={graph} ponderationKey={ponderationKey}/>
+        <br />
+        <ExportButton name={`Toflit18_Global_Trade_Countries_Network_view`}
+                        data={graphResultAPI}>
+            Export 
+        </ExportButton>
       </div>
     );
   }

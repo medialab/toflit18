@@ -22,10 +22,55 @@ export function selectClassification(tree, classification) {
  * Selecting a colorization.
  */
 export function selectPonderation(tree, ponderation) {
-console.log("ponderation", ponderation);
-  const cursor = tree.select([...ROOT, 'ponderation']);
+  const cursor = tree.select(ROOT);
 
-  cursor.set(ponderation);
+  cursor.set('ponderation', ponderation);
+
+  const data = cursor.get('graphResultAPI');
+  let size = null;
+
+  // Treating
+  const nodes = {},
+        edges = [];
+
+  data.forEach(function(row) {
+    if (ponderation === 'flows')
+      size = row.count 
+    else
+      size = row.value
+
+    const directionId = '$d$' + row.direction,
+          countryId = '$c$' + row.country;
+
+    if (!nodes[directionId])
+      nodes[directionId] = {
+        id: directionId,
+        label: row.direction,
+        color: palette[0],
+        size: 1,
+        x: Math.random(),
+        y: Math.random(),
+      };
+
+    if (!nodes[countryId])
+      nodes[countryId] = {
+        id: countryId,
+        label: row.country,
+        color: palette[1],
+        size: 1,
+        x: Math.random(),
+        y: Math.random(),
+      };
+
+    edges.push({
+      id: 'e' + edges.length,
+      size: size,
+      source: directionId,
+      target: countryId
+    });
+  });
+
+  cursor.set('graph', {nodes: values(nodes), edges});
 }
 
 export function addNetwork(tree) {
@@ -62,6 +107,7 @@ export function addNetwork(tree) {
   // Fetching data
   tree.client.network({params: {id: classification.id}, data: paramsRequest}, function(err, data) {
     cursor.set('loading', false);
+    cursor.set('graphResultAPI', data.result);
 
     if (err) return;
 
@@ -70,6 +116,7 @@ export function addNetwork(tree) {
           edges = [];
 
     data.result.forEach(function(row) {
+
       const directionId = '$d$' + row.direction,
             countryId = '$c$' + row.country;
 

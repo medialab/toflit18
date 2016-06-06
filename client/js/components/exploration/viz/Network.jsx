@@ -68,14 +68,22 @@ export default class Network extends Component {
 
       // Styling
       const nodes = g.nodes(),
+            edges = g.edges(),
             N = nodes.length;
 
       nodes.forEach(function(node, i) {
         node.size = g.degree(node.id);
-
         node.x = 100 * Math.cos(2 * i * Math.PI / N);
         node.y = 100 * Math.sin(2 * i * Math.PI / N);
       });
+
+      if (nextProps.ponderationKey) {
+        // groupBy target
+        // sum size of edge
+        // adapt size of node by sum
+
+        console.log("nextProps.ponderationKey", nextProps.ponderationKey);
+      } 
     }
 
     if (!nextProps.graph) {
