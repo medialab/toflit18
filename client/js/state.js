@@ -111,9 +111,10 @@ const defaultState = {
       // Globals views
       network: {
         graph: null,
+        graphResultAPI: null,
         classification: null,
+        ponderation: 'flows',
         loading: false,
-        ponderation: null,
         selectors: {
           dataType: null,
           productClassification: null,
@@ -129,6 +130,7 @@ const defaultState = {
       terms: {
         creating: false,
         graph: null,
+        graphResultAPI: null,
         classification: null,
         colorization: 'community',
         loading: false,

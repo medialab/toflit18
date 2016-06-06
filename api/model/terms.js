@@ -8,7 +8,7 @@ import database from '../connection';
 import {tokenizeTerms} from '../../lib/tokenizer';
 import {connectedComponents} from '../../lib/graph';
 import Louvain from '../../lib/louvain';
-import _, {omit, values} from 'lodash';
+import _, {omit, values, forIn} from 'lodash';
 
 const {Expression, Query} = decypher;
 
@@ -223,7 +223,13 @@ const ModelTerms = {
 
             // graph.nodes = omit(graph.nodes, node => !usefulSet.has(node.community));
 
+            const exportData = [];
+            forIn(graph.edges, d => {
+              exportData.push({weigth: d.weight, source: d.source, target: d.target});
+            })
+
             return callback(null, {
+                data: exportData,
                 nodes: values(graph.nodes),
                 edges: values(graph.edges)
             });

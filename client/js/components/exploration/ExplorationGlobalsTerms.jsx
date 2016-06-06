@@ -54,6 +54,7 @@ class TermsPanel extends Component {
       sourceTypes,
       state: {
         graph,
+        graphResultAPI,
         classification,
         colorization,
         loading,
@@ -220,6 +221,11 @@ class TermsPanel extends Component {
            Position Color
         </label>
         <Network graph={graph} colorKey={colorKey} />
+        <br />
+        <ExportButton name={`Toflit18_Global_Terms_Network_view`}
+                      data={graphResultAPI}>
+            Export 
+        </ExportButton>
       </div>
     );
   }
