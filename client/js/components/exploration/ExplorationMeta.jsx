@@ -97,6 +97,8 @@ export default class ExplorationMeta extends Component {
       };
     });
 
+    console.log("selectors.countryClassification", selectors.countryClassification);
+
     return (
       <div>
         <div className="panel">

@@ -14,7 +14,28 @@ import {forIn} from 'lodash';
  * Selecting a data type.
  */
 export function select(tree, selected) {
-  const cursor = tree.select(ROOT);
+  const cursor = tree.select(ROOT),
+        selectors = tree.select([...ROOT, 'selectors']),
+        groups = tree.select([...ROOT, 'groups']);
+
+  if (selected && selected.value !== "direction" && selected.value !== "sourceType") {
+    if (selected.model === 'country') {
+      selectors.set('countryClassification', selected)
+      selectors.set('country', null);
+      groups.set('country', []);
+
+      if (selected)
+        fetchGroups(tree, groups.select('country'), selected.id);
+    }
+    else {
+      selectors.set('productClassification', selected)
+      selectors.set('product', null);
+      groups.set('product', []);
+
+      if (selected)
+        fetchGroups(tree, groups.select('product'), selected.id);
+    }
+  }
 
   cursor.set('dataType', selected);
 }
