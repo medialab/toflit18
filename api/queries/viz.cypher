@@ -10,10 +10,3 @@ RETURN
   country,
   f.direction AS direction,
   count(f) AS count;
-
-// name: terms
-// Retrieving all the aggregated terms of a classification.
-//------------------------------------------------------------------------------
-START n=node({classification})
-MATCH (n)-[:HAS]->(group)
-RETURN group.name AS term;

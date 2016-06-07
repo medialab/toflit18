@@ -5,11 +5,8 @@
  */
 import decypher from 'decypher';
 import database from '../connection';
-import {tokenizeTerms} from '../../lib/tokenizer';
-import {connectedComponents} from '../../lib/graph';
 import config from '../../config.json';
-import {viz as queries} from '../queries';
-import _, {omit, values} from 'lodash';
+import _ from 'lodash';
 
 const {Expression, Query} = decypher;
 
@@ -38,8 +35,7 @@ const ModelFlowsPerYear = {
 
 
       // handle clasification dataType
-      if (dataType != 'direction' && dataType != 'sourceType')
-      {
+      if (dataType !== 'direction' && dataType !== 'sourceType') {
       // a classification
         const [
           ,
@@ -47,18 +43,17 @@ const ModelFlowsPerYear = {
           classificationId
         ] = dataType.match(/(\w+)_(\d+)/) || [];
 
-        if(classificationType=="product")
-          productClassification=classificationId
+        if (classificationType === 'product')
+          productClassification = classificationId;
         else
-          countryClassification=classificationId
-        dataType=classificationType
+          countryClassification = classificationId;
+        dataType = classificationType;
       }
 
-      //-- Do we need to match a product?
       if (productClassification) {
         query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)');
 
-        const whereProduct = new Expression('id(pc) = ' +  productClassification);
+        const whereProduct = new Expression('id(pc) = ' + productClassification);
         query.params({productClassification});
 
         if (product) {
@@ -68,8 +63,7 @@ const ModelFlowsPerYear = {
 
         withs.push('products');
         query.where(whereProduct);
-        if(dataType=="product")
-        { 
+        if (dataType === 'product') {
           withs.push('classificationGroupName');
           query.with('pg.name as classificationGroupName, collect(pi.name) AS products');
         }
@@ -84,12 +78,12 @@ const ModelFlowsPerYear = {
         query.params({countryClassification});
 
         if (country) {
-          whereCountry.and('id(cg) = ' + country );
+          whereCountry.and('id(cg) = ' + country);
           query.params({country});
         }
 
         query.where(whereCountry);
-        if(dataType=="country")
+        if (dataType === 'country')
           query.with(withs.concat('cg.name as classificationGroupName, collect(ci.name) AS countries').join(', '));
         else
           query.with(withs.concat('collect(ci.name) AS countries').join(', '));
@@ -99,20 +93,20 @@ const ModelFlowsPerYear = {
       query.match('(f:Flow)');
 
       //-- direction
-      if (direction && direction !== '$all$'  ) {
+      if (direction && direction !== '$all$') {
         query.match('(d:Direction)');
         where.and('id(d) = ' + direction);
         where.and('f.direction = d.name');
         query.params({direction});
       }
 
-       //-- Import/Export
-      if (kind === 'import'  )
+      //-- Import/Export
+      if (kind === 'import')
         where.and('f.import');
-      else if (kind === 'export'  )
+      else if (kind === 'export')
         where.and('not(f.import)');
 
-      if(dataType==="sourceType"||dataType==="direction")
+      if (dataType === 'sourceType' || dataType === 'direction')
         where.and(`has(f.${dataType})`);
 
       where.and(`f.year >= ${config.api.limits.minYear}`);
@@ -138,44 +132,39 @@ const ModelFlowsPerYear = {
       if (productClassification) {
         where.and('f.product IN products');
       }
-      
+
       if (!where.isEmpty())
         query.where(where);
-      //query.params({sourceType});
-      console.log("where", where);
 
       let dataTypeField;
       // dataType resolution
-      if(dataType==="sourceType"||dataType==="direction")
-          dataTypeField='f.' + dataType
+      if (dataType === 'sourceType' || dataType === 'direction')
+          dataTypeField = 'f.' + dataType;
       else
-          dataTypeField="classificationGroupName"
-
-
+          dataTypeField = 'classificationGroupName';
 
       //-- Special return for each sourceType or if no sourceType
       if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
-        query.return(dataTypeField +' AS dataType, count(f) AS flows, f.year AS year');
+        query.return(dataTypeField + ' AS dataType, count(f) AS flows, f.year AS year');
         query.orderBy('f.year, dataType');
       }
-      else if ( sourceType === 'National best guess' ){
-        query.with('f.year AS year, ' + dataTypeField +' AS dataType, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
+      else if (sourceType === 'National best guess') {
+        query.with('f.year AS year, ' + dataTypeField + ' AS dataType, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
         query.with('year, dataType, CASE  WHEN size(source_types)>1 and "Objet Général" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Objet Général") WHEN size(source_types)>1 and "Résumé" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Résumé") WHEN size(source_types)>1 and "National par direction" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National par direction") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
-        query.return(`dataType, year, count(fs) AS flows`);
+        query.return('dataType, year, count(fs) AS flows');
         query.orderBy('year, dataType');
       }
-      else if (  sourceType === 'Local best guess' ){
-        query.with(' f.year AS year, ' + dataTypeField +' as dataType, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
+      else if (sourceType === 'Local best guess') {
+        query.with(' f.year AS year, ' + dataTypeField + ' as dataType, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
         query.with(' year, dataType, CASE  WHEN size(source_types)>1 and "Local" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Local") WHEN size(source_types)>1 and "National par direction" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National par direction") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
         query.return('dataType, year, count(fs) AS flows');
         query.orderBy('year, dataType');
       }
       else {
-        query.return(dataTypeField +' AS dataType, count(f) AS flows, f.year AS year');
+        query.return(dataTypeField + ' AS dataType, count(f) AS flows, f.year AS year');
         query.orderBy('f.year, dataType');
       }
 
-      console.log("query.build() flowsPerYearPerDataType", query.build())
       database.cypher(query.build(), function(err, result) {
         if (err) return callback(err);
 

@@ -3,9 +3,10 @@
  * ===================================
  *
  */
-import model from '../model/viz';
 import modelFlowsPerYear from '../model/flowsPerYear';
 import modelCreateLine from '../model/createLine';
+import modelTerms from '../model/terms';
+import modelNetwork from '../model/network';
 import {mapValues} from 'lodash';
 
 const controller = [
@@ -37,7 +38,6 @@ const controller = [
         }
         else
           console.log(v, k);
-
       });
 
       return modelFlowsPerYear.flowsPerYearPerDataType(req.params.type, payloadFlows, function(err, data) {
@@ -76,14 +76,31 @@ const controller = [
   {
     url: '/network/:id',
     method: 'GET',
-    cache: {
-      key: 'network',
-      hasher(req) {
-        return req.params.id;
+    validate: {
+      query: {
+        dataType: '?string',
+        productClassification: '?string',
+        countryClassification: '?string',
+        kind: '?string',
+        dateMin: '?string',
+        dateMax: '?string'
       }
+    // cache: {
+    //   key: 'network',
+    //   hasher(req) {
+    //     return req.params.id;
+    //   }
     },
     action(req, res) {
-      return model.network(+req.params.id, function(err, data) {
+      const payloadNetwork = mapValues(req.query, (v, k) => {
+        if (v !== 'null') {
+          return k !== 'kind' && k !== 'sourceType' ? +v : v;
+        }
+        else
+          console.log(v, k);
+      });
+
+      return modelNetwork.network(+req.params.id, payloadNetwork, function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);
@@ -93,14 +110,35 @@ const controller = [
   {
     url: '/terms/:id',
     method: 'GET',
-    cache: {
-      key: 'terms',
-      hasher(req) {
-        return req.params.id;
+    validate: {
+      query: {
+        sourceType: '?string',
+        productClassification: '?string',
+        product: '?string',
+        countryClassification: '?string',
+        country: '?string',
+        direction: '?string',
+        kind: '?string',
+        dateMin: '?string',
+        dateMax: '?string'
       }
     },
+    // cache: {
+    //   key: 'terms',
+    //   hasher(req) {
+    //     return req.params.id;
+    //   }
+    // },
     action(req, res) {
-      return model.terms(+req.params.id, function(err, terms) {
+      const payloadTerms = mapValues(req.query, (v, k) => {
+        if (v !== 'null') {
+          return k !== 'kind' && k !== 'sourceType' ? +v : v;
+        }
+        else
+          console.log(v, k);
+      });
+
+      return modelTerms.terms(+req.params.id, payloadTerms, function(err, terms) {
         if (err) return res.serverError(err);
         if (!terms) return res.notFound();
 

@@ -13,7 +13,7 @@ import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
-import {capitalize, isEqual, mapValues, values} from 'lodash';
+import {capitalize, isEqual, mapValues} from 'lodash';
 import {
   updateSelector as update,
   addLine,
@@ -170,7 +170,9 @@ class LineForm extends Component {
             <Button kind="primary"
                     disabled={lineAlreadyExisting}
                     loading={creating}
-                    onClick={() => {actions.addLine()}}>
+                    onClick={() => {
+                      actions.addLine();
+                    }}>
               {lineAlreadyExisting && !creating ? 'Already drawn' : 'Add the line'}
             </Button>
           </Col>
@@ -224,7 +226,6 @@ class GraphPanel extends Component {
                       drop={actions.dropLine} />
         <hr />
         <Charts lines={linesToRender} />
-
       </div>
     );
   }
@@ -310,27 +311,59 @@ class Charts extends Component {
       const dataLines = [];
 
         for (let i = 0, len = l.data.length; i < len; i++) {
+          //console.log("l", l);
           const elemCopy = {};
           elemCopy.count = l.data[i].count;
           elemCopy.value = l.data[i].value;
           elemCopy.year = l.data[i].year;
-          elemCopy.sourceType ? elemCopy.sourceType = l.params.sourceType.name : elemCopy.sourceType = null;
-          l.params.productClassification ? elemCopy.productClassification = l.params.productClassification.name :
-          elemCopy.productClassification = null;
-          l.params.countryClassification ? elemCopy.countryClassification = l.params.countryClassification.name :
-          elemCopy.countryClassification = null;
-          l.params.country ? elemCopy.country = l.params.country.name : elemCopy.country = null;
-          l.params.product ? elemCopy.product = l.params.product.name : elemCopy.product = null;
-          l.params.kind ? elemCopy.kind = l.params.kind.name : elemCopy.kind = null;
-          l.params.direction ? elemCopy.direction = l.params.direction.name : elemCopy.direction = null;
-          if (l.data[i].value !== null && l.data[i].count !== 0)
-            l.data[i].nb_direction.length ? elemCopy.nb_direction = l.data[i].nb_direction : elemCopy.nb_direction = null;
+
+          if (l.params.sourceType)
+            elemCopy.sourceType = l.params.sourceType.name;
+          else
+            elemCopy.sourceType = null;
+
+          if (l.params.productClassification)
+            elemCopy.productClassification = l.params.productClassification.name;
+          else
+            elemCopy.productClassification = null;
+
+          if (l.params.countryClassification)
+            elemCopy.countryClassification = l.params.countryClassification.name;
+          else
+            elemCopy.countryClassification = null;
+
+          if (l.params.country)
+            elemCopy.country = l.params.country.name;
+          else
+            elemCopy.country = null;
+
+          if (l.params.product)
+            elemCopy.product = l.params.product.name;
+          else
+            elemCopy.product = null;
+
+          if (l.params.kind)
+            elemCopy.kind = l.params.kind.name;
+          else
+            elemCopy.kind = null;
+
+          if (l.params.direction)
+            elemCopy.direction = l.params.direction.name;
+          else
+            elemCopy.direction = null;
+
+          if (l.data[i].value !== null && l.data[i].count !== 0) {
+            if (l.data[i].nb_direction.length)
+              elemCopy.nb_direction = l.data[i].nb_direction;
+            else
+              elemCopy.nb_direction = null;
+          }
+
           dataLines.push(elemCopy);
         }
 
       // add all lines values in an array to export data in one csv
-      const data = values(dataLines);
-      data.forEach(function (d) {
+      dataLines.forEach(function (d) {
         arrayDataLines.push(d);
       });
     });

@@ -72,7 +72,6 @@ export default class Network extends Component {
 
       nodes.forEach(function(node, i) {
         node.size = g.degree(node.id);
-
         node.x = 100 * Math.cos(2 * i * Math.PI / N);
         node.y = 100 * Math.sin(2 * i * Math.PI / N);
       });

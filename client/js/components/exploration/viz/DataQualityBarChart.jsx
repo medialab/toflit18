@@ -30,12 +30,13 @@ export default class DataQualityBarChart extends Component {
       return null;
     }
 
-    if (data && data[0].params)
+    if (data && data[0].params) {
       data = filter(data, (l) => {
         return l.data.length > 0;
       });
-    // If no data was supplied, we don't render
+    }
 
+    // If no data was supplied, we don't render
     if (!data.length) {
       return null;
     }
@@ -135,6 +136,7 @@ export default class DataQualityBarChart extends Component {
               dataDisplayed = row.directions;
             else
               dataDisplayed = row.data;
+
             return (
               <g key={row.year}>
                 <Tooltip placement="top" align={{offset: [3, 0]}} overlay={dataDisplayed + ` (${row.year})`}>

@@ -1,4 +1,4 @@
- /**
+/**
  * TOFLIT18 Client Global Viz Display
  * ===================================
  *
@@ -13,28 +13,18 @@ import Network from './viz/Network.jsx';
 import {Row, Col} from '../misc/Grid.jsx';
 import {buildDateMin} from '../../lib/helpers';
 import {
-  selectClassification,
-  selectPonderation,
+  selectTerms,
+  selectColorization,
   updateSelector as update,
-  addNetwork,
+  addChart,
   updateDate
-} from '../../actions/globalsNetwork';
+} from '../../actions/globals';
 
-import config from '../../../config.json';
-
-const metadataSelectors = (config.metadataSelectors || []).map(option => {
-  return {
-    ...option,
-    special: true
-  };
-});
-
-
-export default class ExplorationGlobals extends Component {
+export default class ExplorationGlobalsTerms extends Component {
   render() {
     return (
       <div>
-        <NetworkPanel />
+        <TermsPanel />
       </div>
     );
   }
@@ -42,30 +32,34 @@ export default class ExplorationGlobals extends Component {
 
 @branch({
   actions: {
-    selectClassification,
-    selectPonderation,
+    selectTerms,
+    selectColorization,
     update,
-    addNetwork,
+    addChart,
     updateDate
   },
   cursors: {
     classifications: ['data', 'classifications', 'flat'],
     directions: ['data', 'directions'],
-    state: ['states', 'exploration', 'network']
+    sourceTypes: ['data', 'sourceTypes'],
+    state: ['states', 'exploration', 'terms']
   }
 })
-class NetworkPanel extends Component {
+class TermsPanel extends Component {
   render() {
     const {
       actions,
       classifications,
+      directions,
+      sourceTypes,
       state: {
-        graphResultAPI,
         graph,
+        graphResultAPI,
         classification,
-        ponderation,
+        colorization,
         loading,
         selectors,
+        groups
       }
     } = this.props;
 
@@ -76,11 +70,18 @@ class NetworkPanel extends Component {
       }
     } = this.props;
 
-    const ponderationKey = ponderation === 'nbFlows' ?
-      'flowsPonderation' :
-      'valuePonderation';
+    const colorKey = colorization === 'community' ?
+      'communityColor' :
+      'positionColor';
 
-    const radioListener = e => actions.selectPonderation(e.target.value);
+    const radioListener = e => actions.selectColorization(e.target.value);
+
+    const sourceTypesOptions = (sourceTypes || []).map(type => {
+      return {
+        name: type,
+        value: type
+      };
+    });
 
     let dateMaxOptions, dateMinOptions;
     dateMin = actions.updateDate('dateMin');
@@ -102,42 +103,62 @@ class NetworkPanel extends Component {
 
     return (
       <div className="panel">
-        <h4>Countries Network</h4>
-        <em>Choose a country classification and display a graph showing relations between countries & directions.</em>
+        <h4>Terms Network</h4>
+        <em>Choose a product classification and display a graph showing relations between terms of the aforementioned classification</em>
         <hr />
-        <Row className="dataType">
+       <Row>
+          <SectionTitle title="Source Type"
+                        addendum="From which sources does the data comes from?" />
+            <Col md={4}>
+              <ItemSelector type="sourceType"
+                            data={sourceTypesOptions}
+                            loading={!sourceTypesOptions.length}
+                            onChange={actions.update.bind(null, 'sourceType')}
+                            selected={selectors.sourceType} />
+            </Col>
+          </Row>
+          <hr />
+          <Row className="dataType">
+            <SectionTitle title="Product"
+                          addendum="You must choose the type of product being shipped." />
+            <Col md={4}>
+              <ClassificationSelector type="product"
+                                      loading={!classifications.product.length || loading}
+                                      data={classifications.product}
+                                      onChange={actions.selectTerms}
+                                      selected={classification} />
+            </Col>
+          </Row>
+          <hr />
+          <Row>
           <SectionTitle title="Country"
                         addendum="The country whence we got the products or wither we are sending them." />
           <Col md={4}>
             <ClassificationSelector type="country"
-                                loading={!classifications.country.length || loading}
-                                data={classifications.country}
-                                onChange={actions.selectClassification}
-                                selected={classification} />
-            </Col>
-        </Row>
-        <hr />
-        <Row>
-            <SectionTitle title="Product"
-                          addendum="Choose one or two types of product being shipped to cross or not result." />
-            <Col md={4}>
-              <ClassificationSelector type="product"
-                                      loading={!classifications.product.length}
-                                      data={classifications.product.filter(c => !c.source)}
-                                      onChange={actions.update.bind(null, 'productClassification')}
-                                      selected={selectors.productClassification} />
-            </Col>
-        </Row>
-        <hr />
-        <Row>
-         <SectionTitle title="Data type"
-                       addendum="You must select the type of data to control." />
+                                    loading={!classifications.country.length}
+                                    data={classifications.country.filter(c => !c.source)}
+                                    onChange={actions.update.bind(null, 'countryClassification')}
+                                    selected={selectors.countryClassification} />
+          </Col>
           <Col md={4}>
-            <ItemSelector type="dataType"
-              data={[...metadataSelectors]}
-              loading={!classifications.product.length}
-              onChange={actions.update.bind(null, 'dataType')}
-              selected={selectors.dataType} />
+            <ItemSelector type="country"
+                          disabled={!selectors.countryClassification || !groups.country.length}
+                          loading={selectors.countryClassification && !groups.country.length}
+                          data={groups.country}
+                          onChange={actions.update.bind(null, 'country')}
+                          selected={selectors.country} />
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <SectionTitle title="Direction"
+                        addendum="The French harbor where the transactions were recorded." />
+          <Col md={4}>
+            <ItemSelector type="direction"
+                          loading={!directions}
+                          data={directions || []}
+                          onChange={actions.update.bind(null, 'direction')}
+                          selected={selectors.direction} />
           </Col>
         </Row>
         <hr />
@@ -150,7 +171,7 @@ class NetworkPanel extends Component {
                           selected={selectors.kind} />
           </Col>
         </Row>
-         <hr />
+        <hr />
         <Row>
           <SectionTitle title="Dates"
                         addendum="Choose one date or a range date" />
@@ -171,7 +192,7 @@ class NetworkPanel extends Component {
           <Row>
           <Col md={2}>
             <Button kind="primary"
-                    onClick={actions.addNetwork}>
+                    onClick={actions.addChart}>
               Add network
             </Button>
           </Col>
@@ -186,24 +207,23 @@ class NetworkPanel extends Component {
         <label>
           <input type="radio"
                  name="optionsRadio"
-                 value="flows"
-                 checked={ponderation === 'flows'}
+                 value="community"
+                 checked={colorization === 'community'}
                  onChange={radioListener} />
-           Ponderation by number of flows
+           Commmunity Color
         </label>
         <label>
           <input type="radio"
                  name="optionsRadio"
-                 value="value"
-                 checked={ponderation === 'value'}
+                 value="position"
+                 checked={colorization === 'position'}
                  onChange={radioListener} />
-           Ponderation by sum value of flows
+           Position Color
         </label>
-        <hr />
-        <Network graph={graph} ponderationKey={ponderationKey}/>
+        <Network graph={graph} colorKey={colorKey} />
         <br />
-        <ExportButton name={'Toflit18_Global_Trade_Countries_Network_view'}
-                        data={graphResultAPI}>
+        <ExportButton name={'Toflit18_Global_Terms_Network_view'}
+                      data={graphResultAPI}>
             Export
         </ExportButton>
       </div>
@@ -228,4 +248,3 @@ class SectionTitle extends Component {
     );
   }
 }
-

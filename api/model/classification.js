@@ -96,7 +96,6 @@ const Model = {
    */
   search(id, opts, callback) {
 
-    console.log("opts", opts);
     let query, params;
     if (id !== 1 && id !== 10) {
       query = queries[opts.queryGroup || opts.queryItem ? 'searchGroups' : 'groups'];
@@ -108,7 +107,7 @@ const Model = {
         };
     }
     else {
-      query = queries["searchGroupsSource"];
+      query = queries['searchGroupsSource'];
       params = {
           ...opts,
           id,

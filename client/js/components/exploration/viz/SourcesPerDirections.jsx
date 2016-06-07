@@ -1,3 +1,4 @@
+
 /**
  * TOFLIT18 Client Sources Per Directions Component
  * =================================================
@@ -92,12 +93,16 @@ class Direction extends Component {
       bar,
       width,
       item,
-      x,
       y,
       allYears
     } = this.props;
 
     const yPos = SIZE;
+
+    // Building scales
+    const x = linear()
+      .domain([min(allYears), max(allYears)])
+      .range([0, width - 10]);
 
     function renderRect(local, {year, flows}) {
       const rectHeight = Math.max(1, y(flows)),
@@ -119,7 +124,7 @@ class Direction extends Component {
           <rect className={`${local ? 'local' : 'national'}-bar`}
                 width={bar}
                 height={rectHeight}
-                x={x(year) + xOffset}
+                x={x(year)}
                 y={rectYPos} />
         </Tooltip>
       );

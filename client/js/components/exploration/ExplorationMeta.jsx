@@ -19,7 +19,7 @@ import {prettyPrint} from '../../lib/helpers';
 import config from '../../../config.json';
 
 import {select,
-    updateSelector as update, 
+    updateSelector as update,
     addChart
   } from '../../actions/metadata';
 
@@ -69,9 +69,7 @@ export default class ExplorationMeta extends Component {
       directions,
       sourceTypes,
       state: {
-        creating,
         groups,
-        lines,
         selectors
       }
     } = this.props;
@@ -98,7 +96,7 @@ export default class ExplorationMeta extends Component {
         value: type
       };
     });
-    
+
     return (
       <div>
         <div className="panel">
@@ -108,16 +106,14 @@ export default class ExplorationMeta extends Component {
           </p>
           <hr />
             <Row className="dataType">
-             <SectionTitle 
-                           title="Data type"
+             <SectionTitle title="Data type"
                            addendum="You must select the type of data to control." />
               <Col md={6}>
                 <ItemSelector type="dataType"
                   data={[...metadataSelectors, ...classificationsFiltered]}
                   loading={!classifications.product.length}
                   onChange={actions.select}
-                  selected={metadata.dataType}
-                  />
+                  selected={metadata.dataType} />
               </Col>
             </Row>
             <hr />
@@ -246,65 +242,3 @@ class SectionTitle extends Component {
   }
 }
 
-/**
- * Lines summary.
- */
-function buildDescription(params, data) {
-  const selectors = mapValues(params, 'name');
-  let description = [];
-
-  description.push(<span key="kind">{capitalize(selectors.kind || 'total') + ' flows'}</span>);
-
-  if (selectors.product && data.length)
-    description.push(<span key="product"> of <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
-
-  if (selectors.direction && selectors.direction !== '$all')
-    description.push(<span key="direction"> from <strong>{selectors.direction}</strong></span>);
-
-  if (selectors.country)
-    description.push(<span key="country"> to <strong>{selectors.country}</strong> (<em>{selectors.countryClassification}</em>)</span>);
-
-  if (selectors.sourceType)
-    description.push(<span key="type"> - (source type: {selectors.sourceType})</span>);
-
-  if (selectors.product && data.length === 0) {
-    description = [];
-    description.push(<span key="kind">{'No data '}</span>);
-    description.push(<span key="product"> for <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
-  }
-
-  return description;
-}
-
-class LinesSummary extends Component {
-  render() {
-    const {drop, lines} = this.props;
-
-    return (
-      <ul className="summary">
-        {lines.map(function(line, i) {
-          const style = {
-            color: 'white',
-            backgroundColor: line.color
-          };
-
-          if (!line.data)
-            return <li key={i}><Waiter align="left" /></li>;
-
-          return (
-            <li key={i}>
-              <span className="insert" style={style}>
-                {buildDescription(line.params, line.data)}
-              </span>
-              <span className="insert drop"
-                    onClick={drop.bind(null, i)}
-                    style={style}>
-                ✕
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
-}

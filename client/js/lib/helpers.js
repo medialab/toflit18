@@ -5,6 +5,7 @@
  * Miscellaneous client helper functions.
  */
 import {chunk} from 'lodash';
+import config from '../../../config.json';
 
 /**
  * Flatten a recursive classification tree.
@@ -33,4 +34,44 @@ export function prettyPrint(nb) {
     .join(' ');
 
   return pretty + (afterDecimal ? '.' + afterDecimal : '');
+}
+
+/**
+ * Build dates selector
+ */
+
+export function buildDateMin(dateMin, dateMax) {
+  const minArray = [];
+
+  if (dateMin && dateMax) {
+    for (let i = dateMin; i < dateMax; i++) {
+      minArray.push({name: i, id: i});
+    }
+  }
+
+  if (dateMin && dateMin.length > 0 && !dateMax) {
+    for (let i = dateMin; i < config.api.limits.maxYear; i++) {
+      minArray.push({name: i, id: i});
+    }
+  }
+
+  if (!dateMin && dateMax) {
+    for (let i = config.api.limits.minYear; i < dateMax; i++) {
+      minArray.push({name: i, id: i});
+    }
+  }
+
+  if (!dateMax && dateMin) {
+    for (let i = dateMin; i < config.api.limits.maxYear; i++) {
+      minArray.push({name: i, id: i});
+    }
+  }
+
+  if (!dateMax && !dateMin) {
+    for (let i = config.api.limits.minYear; i < config.api.limits.maxYear; i++) {
+      minArray.push({name: i, id: i});
+    }
+  }
+
+  return minArray;
 }
