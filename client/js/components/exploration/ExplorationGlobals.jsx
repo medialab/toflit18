@@ -66,6 +66,7 @@ class NetworkPanel extends Component {
         ponderation,
         loading,
         selectors,
+        groups
       }
     } = this.props;
 
@@ -127,6 +128,14 @@ class NetworkPanel extends Component {
                                       onChange={actions.update.bind(null, 'productClassification')}
                                       selected={selectors.productClassification} />
             </Col>
+             <Col md={4}>
+              <ItemSelector type="product"
+                            disabled={!selectors.productClassification || !groups.product.length}
+                            loading={selectors.productClassification && !groups.product.length}
+                            data={groups.product}
+                            onChange={actions.update.bind(null, 'product')}
+                            selected={selectors.product} />
+            </Col>
         </Row>
         <hr />
         <Row>
@@ -177,7 +186,7 @@ class NetworkPanel extends Component {
           </Col>
           {!graph &&
             <Col md={4}>
-            THERE IS NO DATA FOR YOUR REQUEST
+            
           </Col>
           }
 

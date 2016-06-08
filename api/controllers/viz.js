@@ -80,6 +80,7 @@ const controller = [
       query: {
         dataType: '?string',
         productClassification: '?string',
+        product: '?string',
         countryClassification: '?string',
         kind: '?string',
         dateMin: '?string',

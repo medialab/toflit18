@@ -118,13 +118,15 @@ const defaultState = {
         selectors: {
           dataType: null,
           productClassification: null,
+          product: null,
           countryClassification: null,
           kind: null,
           dateMin: null,
           dateMax: null
         },
         groups: {
-          country: []
+          country: [],
+          product: []
         }
       },
       terms: {

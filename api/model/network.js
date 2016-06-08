@@ -23,12 +23,15 @@ const ModelNetwork = {
           dateMin,
           dateMax,
           productClassification,
+          product,
           dataType
         } = params;
 
     const query = new Query(),
           where = new Expression(),
           withs = [];
+
+    console.log("product", product);
 
     // start query from country classification
     query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)');
@@ -40,10 +43,17 @@ const ModelNetwork = {
         query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)');
 
         const whereProduct = new Expression('id(pc) = ' + productClassification);
+        query.params({productClassification});
+
+        if (product) {
+          console.log("product -----", product)
+          whereProduct.and('id(pg) = ' + product);
+          query.params({product});
+        }
+
+        withs.push('products');
         query.where(whereProduct);
         query.with('countries, collect(pi.name) AS products');
-        query.params({productClassification});
-        withs.push('products');
     }
 
      query.match('(f:Flow)');
@@ -72,6 +82,7 @@ const ModelNetwork = {
 
     query.return('f.country as country, f.direction AS direction, count(f) AS count, sum(f.value) AS value');
 
+    console.log("query", query.build());
     database.cypher(query.build(), function(err, data) {
 
             if (err) return callback(err);
