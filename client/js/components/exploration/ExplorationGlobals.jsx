@@ -139,18 +139,6 @@ class NetworkPanel extends Component {
         </Row>
         <hr />
         <Row>
-         <SectionTitle title="Data type"
-                       addendum="You must select the type of data to control." />
-          <Col md={4}>
-            <ItemSelector type="dataType"
-              data={[...metadataSelectors]}
-              loading={!classifications.product.length}
-              onChange={actions.update.bind(null, 'dataType')}
-              selected={selectors.dataType} />
-          </Col>
-        </Row>
-        <hr />
-        <Row>
           <SectionTitle title="Kind"
                         addendum="Should we look at import, export, or total?" />
           <Col md={4}>
@@ -209,6 +197,8 @@ class NetworkPanel extends Component {
            Ponderation by sum value of flows
         </label>
         <hr />
+        <Legend />
+        <br />
         <Network graph={graph} ponderationKey={ponderationKey}/>
         <br />
         <ExportButton name={'Toflit18_Global_Trade_Countries_Network_view'}
@@ -235,6 +225,26 @@ class SectionTitle extends Component {
         </div>
       </Col>
     );
+  }
+}
+
+/*
+ * Legend
+ */
+class Legend extends Component {
+  render() {
+    const {x, y, label, className, color} = this.props;
+
+    return (
+     <svg width="100%" height="30px" > 
+        <g>
+          <circle cx={10} cy={10} r={5} fill="#8d4d42"/>
+          <text x={30} y={15} textAnchor="left" className="legend-label">{"Country"}</text>
+          <circle cx={120} cy={10} r={5} fill="black"/>
+          <text x={140} y={15} textAnchor="left" className="legend-label">{"Direction"}</text>
+        </g>
+      </svg>
+      );
   }
 }
 

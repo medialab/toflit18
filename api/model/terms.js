@@ -29,11 +29,6 @@ const ModelTerms = {
               where = new Expression(),
               withs = [];
 
-        // Match product classification
-        query.match('(pc)-[:HAS]->(group)');
-        query.where('id(pc) = ' + classification);
-        query.with('collect(group.name) as terms');
-
         //-- Do we need to match a country?
         if (countryClassification) {
             query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)');
@@ -46,14 +41,21 @@ const ModelTerms = {
             }
             query.where(whereCountry);
 
-            withs.push('terms');
-            query.with(withs.concat('collect(ci.name) AS countries').join(', '));
+            // withs.push('terms');
+            query.with('collect(ci.name) AS countries');
         }
+
+        // Match product classification
+        query.match('(pc)-[:HAS]->(group)-[:AGGREGATES*0..]->(pi)');
+        query.where('id(pc) = ' + classification);
+        if (countryClassification)
+          query.with('countries, collect(pi.name) as terms');
+        else
+          query.with('collect(pi.name) as terms');
+
 
         // Match on flows with selectors choices
         query.match('(f:Flow)');
-        where.and('f.product IN terms');
-
         //-- direction
         if (direction && direction !== '$all$') {
             query.match('(d:Direction)');
@@ -61,6 +63,11 @@ const ModelTerms = {
             where.and('f.direction = d.name');
             query.params({direction});
         }
+        if (countryClassification) {
+            where.and('f.country IN countries');
+        }
+        where.and('f.product IN terms');
+
 
         // manage special sourceType
         if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
@@ -76,9 +83,7 @@ const ModelTerms = {
         }
 
         //-- Should we match a precise direction?
-        if (countryClassification) {
-            where.and('f.country IN countries');
-        }
+        
 
         //-- Import/Export
         if (kind === 'import')

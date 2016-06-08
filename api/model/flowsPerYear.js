@@ -165,6 +165,7 @@ const ModelFlowsPerYear = {
         query.orderBy('f.year, dataType');
       }
 
+      console.log("query", query.build());
       database.cypher(query.build(), function(err, result) {
         if (err) return callback(err);
 

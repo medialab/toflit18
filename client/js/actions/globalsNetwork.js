@@ -107,8 +107,7 @@ export function addNetwork(tree) {
   // Fetching data
   tree.client.network({params: {id: classification.id}, data: paramsRequest}, function(err, data) {
     cursor.set('loading', false);
-    if (data)
-      cursor.set('graphResultAPI', data.result);
+    cursor.set('graphResultAPI', data.result);
 
     if (err) return;
 
@@ -167,7 +166,6 @@ function fetchGroups(tree, cursor, id) {
 
 // see meta or indicator view to change and adapt this function
 export function updateSelector(tree, name, item) {
-  console.log("name, item", name, item);
   const selectors = tree.select([...ROOT, 'selectors']),
         groups = tree.select([...ROOT, 'groups']);
 
