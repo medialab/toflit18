@@ -9,6 +9,8 @@ import history from '../history';
 
 import {reset as resetModal} from './patch';
 
+import {groupBy, uniq} from 'lodash';
+
 const PATH = ['states', 'classification', 'browser'];
 
 /**
@@ -83,6 +85,10 @@ export function search(tree, id, queryGroup, queryItem) {
 
       loading.set(false);
       if (err) return;
+
+      data.result.forEach(d => {
+        d.items = uniq(d.items)
+      })
 
       tree.set(['states', 'classification', 'browser', 'queryGroup'], queryGroup);
       tree.set(['states', 'classification', 'browser', 'queryItem'], queryItem);

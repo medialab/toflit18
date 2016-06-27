@@ -66,6 +66,7 @@ class NetworkPanel extends Component {
         ponderation,
         loading,
         selectors,
+        groups
       }
     } = this.props;
 
@@ -127,18 +128,14 @@ class NetworkPanel extends Component {
                                       onChange={actions.update.bind(null, 'productClassification')}
                                       selected={selectors.productClassification} />
             </Col>
-        </Row>
-        <hr />
-        <Row>
-         <SectionTitle title="Data type"
-                       addendum="You must select the type of data to control." />
-          <Col md={4}>
-            <ItemSelector type="dataType"
-              data={[...metadataSelectors]}
-              loading={!classifications.product.length}
-              onChange={actions.update.bind(null, 'dataType')}
-              selected={selectors.dataType} />
-          </Col>
+             <Col md={4}>
+              <ItemSelector type="product"
+                            disabled={!selectors.productClassification || !groups.product.length}
+                            loading={selectors.productClassification && !groups.product.length}
+                            data={groups.product}
+                            onChange={actions.update.bind(null, 'product')}
+                            selected={selectors.product} />
+            </Col>
         </Row>
         <hr />
         <Row>
@@ -177,7 +174,7 @@ class NetworkPanel extends Component {
           </Col>
           {!graph &&
             <Col md={4}>
-            THERE IS NO DATA FOR YOUR REQUEST
+            
           </Col>
           }
 
@@ -200,6 +197,8 @@ class NetworkPanel extends Component {
            Ponderation by sum value of flows
         </label>
         <hr />
+        <Legend />
+        <br />
         <Network graph={graph} ponderationKey={ponderationKey}/>
         <br />
         <ExportButton name={'Toflit18_Global_Trade_Countries_Network_view'}
@@ -226,6 +225,26 @@ class SectionTitle extends Component {
         </div>
       </Col>
     );
+  }
+}
+
+/*
+ * Legend
+ */
+class Legend extends Component {
+  render() {
+    const {x, y, label, className, color} = this.props;
+
+    return (
+     <svg width="100%" height="30px" > 
+        <g>
+          <circle cx={10} cy={10} r={5} fill="#8d4d42"/>
+          <text x={30} y={15} textAnchor="left" className="legend-label">{"Country"}</text>
+          <circle cx={120} cy={10} r={5} fill="black"/>
+          <text x={140} y={15} textAnchor="left" className="legend-label">{"Direction"}</text>
+        </g>
+      </svg>
+      );
   }
 }
 

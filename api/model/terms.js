@@ -29,31 +29,20 @@ const ModelTerms = {
               where = new Expression(),
               withs = [];
 
-        // Match product classification
-        query.match('(pc)-[:HAS]->(group)');
-        query.where('id(pc) = ' + classification);
-        query.with('collect(group.name) as terms');
-
         //-- Do we need to match a country?
         if (countryClassification) {
-            query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)');
-            const whereCountry = new Expression('id(cc) = ' + countryClassification);
-            query.params({countryClassification});
-
-            if (country) {
-              whereCountry.and('id(cg) = ' + country);
-              query.params({country});
-            }
+            query.match('(cg)-[:AGGREGATES*0..]->(ci)');
+            const whereCountry = new Expression('id(cg) = ' + country);
             query.where(whereCountry);
-
-            withs.push('terms');
-            query.with(withs.concat('collect(ci.name) AS countries').join(', '));
         }
 
-        // Match on flows with selectors choices
-        query.match('(f:Flow)');
-        where.and('f.product IN terms');
+        // Match product classification
+        query.match('(pc)-[:HAS]->(group)-[:AGGREGATES*0..]->(pi)');
+        query.where('id(pc) = ' + classification);
+        query.with('collect(pi.name) as terms');
 
+        // Match on flows with selectors choices
+        query.match('(f:Flow)');//-[OF]->(pi)');
         //-- direction
         if (direction && direction !== '$all$') {
             query.match('(d:Direction)');
@@ -61,6 +50,7 @@ const ModelTerms = {
             where.and('f.direction = d.name');
             query.params({direction});
         }
+        where.and('f.product IN terms');
 
         // manage special sourceType
         if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
@@ -73,11 +63,6 @@ const ModelTerms = {
 
         if (sourceType === 'Local best guess') {
             where.and('f.sourceType IN ["Local","National par direction"] ');
-        }
-
-        //-- Should we match a precise direction?
-        if (countryClassification) {
-            where.and('f.country IN countries');
         }
 
         //-- Import/Export
@@ -96,8 +81,9 @@ const ModelTerms = {
             query.where(where);
         query.return('f.product as term');
 
+        console.log("query.build()", query.build());
         database.cypher(query.build(), function(err, data) {
-
+            
             if (err) return callback(err);
             if (!data.length) return callback(null, null);
 

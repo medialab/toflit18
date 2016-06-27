@@ -107,7 +107,8 @@ export function addNetwork(tree) {
   // Fetching data
   tree.client.network({params: {id: classification.id}, data: paramsRequest}, function(err, data) {
     cursor.set('loading', false);
-    cursor.set('graphResultAPI', data.result);
+    if (data)
+      cursor.set('graphResultAPI', data.result);
 
     if (err) return;
 
@@ -177,10 +178,10 @@ export function updateSelector(tree, name, item) {
     const model = name.match(/(.*?)Classification/)[1];
 
     selectors.set(model, null);
-    groups.set('country', []);
+    groups.set(model, []);
 
     if (item) {
-      fetchGroups(tree, groups.select('country'), item.id);
+      fetchGroups(tree, groups.select(model), item.id);
     }
   }
 }

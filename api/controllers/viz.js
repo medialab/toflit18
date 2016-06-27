@@ -6,7 +6,7 @@
 import modelFlowsPerYear from '../model/flowsPerYear';
 import modelCreateLine from '../model/createLine';
 import modelTerms from '../model/terms';
-import modelNetwork from '../model/network';
+import modelNetwork from '../model/country';
 import {mapValues} from 'lodash';
 
 const controller = [
@@ -80,6 +80,7 @@ const controller = [
       query: {
         dataType: '?string',
         productClassification: '?string',
+        product: '?string',
         countryClassification: '?string',
         kind: '?string',
         dateMin: '?string',
