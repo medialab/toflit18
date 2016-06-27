@@ -42,7 +42,7 @@ const ModelTerms = {
         query.with('collect(pi.name) as terms');
 
         // Match on flows with selectors choices
-        query.match('(f:Flow)-[OF]->(pi)');
+        query.match('(f:Flow)');//-[OF]->(pi)');
         //-- direction
         if (direction && direction !== '$all$') {
             query.match('(d:Direction)');
@@ -83,8 +83,7 @@ const ModelTerms = {
 
         console.log("query.build()", query.build());
         database.cypher(query.build(), function(err, data) {
-            console.log("data", data);
-
+            
             if (err) return callback(err);
             if (!data.length) return callback(null, null);
 
