@@ -107,7 +107,8 @@ export function addNetwork(tree) {
   // Fetching data
   tree.client.network({params: {id: classification.id}, data: paramsRequest}, function(err, data) {
     cursor.set('loading', false);
-    cursor.set('graphResultAPI', data.result);
+    if (data)
+      cursor.set('graphResultAPI', data.result);
 
     if (err) return;
 
