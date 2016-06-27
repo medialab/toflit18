@@ -31,31 +31,18 @@ const ModelTerms = {
 
         //-- Do we need to match a country?
         if (countryClassification) {
-            query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)');
-            const whereCountry = new Expression('id(cc) = ' + countryClassification);
-            query.params({countryClassification});
-
-            if (country) {
-              whereCountry.and('id(cg) = ' + country);
-              query.params({country});
-            }
+            query.match('(cg)-[:AGGREGATES*0..]->(ci)');
+            const whereCountry = new Expression('id(cg) = ' + country);
             query.where(whereCountry);
-
-            // withs.push('terms');
-            query.with('collect(ci.name) AS countries');
         }
 
         // Match product classification
         query.match('(pc)-[:HAS]->(group)-[:AGGREGATES*0..]->(pi)');
         query.where('id(pc) = ' + classification);
-        if (countryClassification)
-          query.with('countries, collect(pi.name) as terms');
-        else
-          query.with('collect(pi.name) as terms');
-
+        query.with('collect(pi.name) as terms');
 
         // Match on flows with selectors choices
-        query.match('(f:Flow)');
+        query.match('(f:Flow)-[OF]->(pi)');
         //-- direction
         if (direction && direction !== '$all$') {
             query.match('(d:Direction)');
@@ -63,11 +50,7 @@ const ModelTerms = {
             where.and('f.direction = d.name');
             query.params({direction});
         }
-        if (countryClassification) {
-            where.and('f.country IN countries');
-        }
         where.and('f.product IN terms');
-
 
         // manage special sourceType
         if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
@@ -81,9 +64,6 @@ const ModelTerms = {
         if (sourceType === 'Local best guess') {
             where.and('f.sourceType IN ["Local","National par direction"] ');
         }
-
-        //-- Should we match a precise direction?
-        
 
         //-- Import/Export
         if (kind === 'import')
