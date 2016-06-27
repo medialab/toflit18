@@ -80,9 +80,11 @@ const ModelNetwork = {
         query.with('collect(pi.name) AS products, country, sc');
       }
 
-     query.match('(f:Flow)-[OF]->(pi)');
-     where.and('f.country = sc AND has(f.direction)');
-
+     query.match('(f:Flow)');//-[OF]->(pi)');
+     where.and('has(f.direction) AND f.country = sc');
+    if (productClassification) {
+        where.and(' f.product IN products');
+    }
     //-- Import/Export
     if (kind === 'import')
         where.and('f.import');
