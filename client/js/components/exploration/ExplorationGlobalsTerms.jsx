@@ -196,12 +196,7 @@ class TermsPanel extends Component {
               Add network
             </Button>
           </Col>
-          {!graph &&
-            <Col md={4}>
-            THERE IS NO DATA FOR YOUR REQUEST
-          </Col>
-          }
-
+           
         </Row>
         <hr />
         <label>
