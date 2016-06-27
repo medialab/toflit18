@@ -63,8 +63,8 @@ export class ClassificationSelector extends Component {
  * Item selector.
  */
 const TEMPLATES = {
-  product: [{name: 'All', id: '$all$'}],
-  country: [{name: 'All', id: '$all$'}],
+  product: [],
+  country: [],
   direction: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
   kind: [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}],
   sourceType: [],
