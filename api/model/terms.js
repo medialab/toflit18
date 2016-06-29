@@ -81,11 +81,6 @@ const ModelTerms = {
         query.return('f.product as term');
 
         database.cypher(query.build(), function(err, data) {
-<<<<<<< HEAD
-
-=======
-            
->>>>>>> 247ff7bb483f8728a47add14f54b4899acb90eda
             if (err) return callback(err);
             if (!data.length) return callback(null, null);
 
