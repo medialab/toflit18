@@ -11,5 +11,9 @@
       "name": "Source Type",
       "value": "sourceType"
     }
-  ]
+  ],
+  "limits": {
+      "minYear": 1820,
+      "maxYear": 1839 
+  }
 }
