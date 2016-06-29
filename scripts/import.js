@@ -36,6 +36,7 @@ const ROOT_PATH = '/base',
       REVISED_SIMPLIFICATION = ROOT_PATH + '/bdd_revised_marchandises_simplifiees.csv',
       SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
       MEDICINAL_CLASSIFICATIONS = ROOT_PATH + '/bdd_marchandises_medicinales.csv',
+      HAMBURG_CLASSIFICATION = ROOT_PATH + '/bdd_revised_classification_hamburg.csv',
       COUNTRY_ORTHOGRAPHIC = ROOT_PATH + '/classification_country_orthographic_normalization.csv',
       COUNTRY_SIMPLIFICATION = ROOT_PATH + '/classification_country_simplification.csv',
       COUNTRY_GROUPED = ROOT_PATH + '/classification_country_grouping.csv',
@@ -258,6 +259,12 @@ const CLASSIFICATION_NODES = {
     slug: 'medicinal',
     description: 'Gathering some medicinal products.'
   }, 'Classification'),
+  product_hamburg: BUILDER.save({
+    name: 'Hamburg classification',
+    model: 'product',
+    slug: 'hamburg',
+    description: 'link to the Hamburg classification'
+  }, 'Classification'),
   country_sources: BUILDER.save({
     name: 'Sources',
     model: 'country',
@@ -305,6 +312,7 @@ BUILDER.relate(CLASSIFICATION_NODES.product_revised_simplified, 'BASED_ON', CLAS
 BUILDER.relate(CLASSIFICATION_NODES.product_categorized, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev2, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_medicinal, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.product_hamburg, 'BASED_ON', CLASSIFICATION_NODES.product_revised_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev1, 'BASED_ON', CLASSIFICATION_NODES.product_sitcrev2);
 BUILDER.relate(CLASSIFICATION_NODES.country_orthographic, 'BASED_ON', CLASSIFICATION_NODES.country_sources);
 BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATION_NODES.country_orthographic);
@@ -673,6 +681,16 @@ const medicinalProduct = makeClassificationConsumer(
   {}
 );
 
+const hamburgProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_hamburg,
+  CLASSIFICATION_NODES.product_hamburg,
+  CLASSIFICATION_NODES.product_revised_simplified,
+  CLASSIFICATION_INDEXES.product_revised_simplified,
+  'hamburg',
+  'simplified',
+  {}
+);
+
 const orthographicCountry = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.country_orthographic,
   CLASSIFICATION_NODES.country_orthographic,
@@ -890,6 +908,24 @@ async.series({
           medicinal: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
         .forEach(medicinalProduct);
+
+      return next();
+    });
+  },
+
+    productHamburg(next) {
+    console.log('  -- Products Hamburg classifications');
+
+    // Parsing various classifications
+    const csvData = fs.readFileSync(DATA_PATH + HAMBURG_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          simplified: cleanText(line[0]),
+          hamburg: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+        }))
+        .forEach(hamburgProduct);
 
       return next();
     });

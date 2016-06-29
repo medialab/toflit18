@@ -41,7 +41,7 @@ const ModelTerms = {
         query.with('collect(pi.name) as terms');
 
         // Match on flows with selectors choices
-        query.match('(f:Flow)-[OF]->(pi)');
+        query.match('(f:Flow)');//-[OF]->(pi)');
         //-- direction
         if (direction && direction !== '$all$') {
             query.match('(d:Direction)');
@@ -81,7 +81,11 @@ const ModelTerms = {
         query.return('f.product as term');
 
         database.cypher(query.build(), function(err, data) {
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 247ff7bb483f8728a47add14f54b4899acb90eda
             if (err) return callback(err);
             if (!data.length) return callback(null, null);
 
