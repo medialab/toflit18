@@ -172,12 +172,6 @@ class NetworkPanel extends Component {
               Add network
             </Button>
           </Col>
-          {!graph &&
-            <Col md={4}>
-            
-          </Col>
-          }
-
         </Row>
         <hr />
         <label>
@@ -201,9 +195,15 @@ class NetworkPanel extends Component {
         <br />
         <Network graph={graph} ponderationKey={ponderationKey}/>
         <br />
-        <ExportButton name={'Toflit18_Global_Trade_Countries_Network_view'}
-                        data={graphResultAPI}>
-            Export
+        <ExportButton name={'Toflit18_Global_Trade_Countries_Network_view.csv'}
+                      data={graphResultAPI}>
+            Export CSV
+        </ExportButton>
+        <ExportButton name={'Toflit18_Global_Trade_Countries_Network_view.gexf'}
+                      data={graph}
+                      type={'gexf'}
+                      network={'country'}>
+            EXPORT GEXF
         </ExportButton>
       </div>
     );
@@ -233,15 +233,14 @@ class SectionTitle extends Component {
  */
 class Legend extends Component {
   render() {
-    const {x, y, label, className, color} = this.props;
 
     return (
-     <svg width="100%" height="30px" > 
+     <svg width="100%" height="30px" >
         <g>
           <circle cx={10} cy={10} r={5} fill="#8d4d42"/>
-          <text x={30} y={15} textAnchor="left" className="legend-label">{"Country"}</text>
+          <text x={30} y={15} textAnchor="left" className="legend-label">{"Direction"}</text>
           <circle cx={120} cy={10} r={5} fill="black"/>
-          <text x={140} y={15} textAnchor="left" className="legend-label">{"Direction"}</text>
+          <text x={140} y={15} textAnchor="left" className="legend-label">{"Country"}</text>
         </g>
       </svg>
       );

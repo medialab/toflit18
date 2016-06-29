@@ -96,8 +96,9 @@ export function addChart(tree) {
     if (err)
       return;
 
-    if (data)
+    if (data) {
       cursor.set('graphResultAPI', data.result.data);
+    }
 
     const colorScale = scaleCategory20()
       .domain(uniq(data.result.nodes.map(node => node.community)));

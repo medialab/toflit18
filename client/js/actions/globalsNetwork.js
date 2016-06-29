@@ -46,6 +46,7 @@ export function selectPonderation(tree, ponderation) {
       nodes[directionId] = {
         id: directionId,
         label: row.direction,
+        community: 'direction',
         color: palette[0],
         size: 1,
         x: Math.random(),
@@ -56,6 +57,7 @@ export function selectPonderation(tree, ponderation) {
       nodes[countryId] = {
         id: countryId,
         label: row.country,
+        community: 'country',
         color: palette[1],
         size: 1,
         x: Math.random(),
@@ -125,6 +127,7 @@ export function addNetwork(tree) {
         nodes[directionId] = {
           id: directionId,
           label: row.direction,
+          community: 'direction',
           color: palette[0],
           size: 1,
           x: Math.random(),
@@ -135,6 +138,7 @@ export function addNetwork(tree) {
         nodes[countryId] = {
           id: countryId,
           label: row.country,
+          community: 'country',
           color: palette[1],
           size: 1,
           x: Math.random(),
