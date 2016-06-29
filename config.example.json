@@ -3,7 +3,8 @@
     "allowedOrigins": ["http://localhost:3000"],
     "limits": {
       "groups": 200,
-      "minYear": 1716
+      "minYear": 1716,
+      "maxYear": 1839 
     },
     "port": 4000,
     "secret": "merrain"
