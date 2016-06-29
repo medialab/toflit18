@@ -133,7 +133,7 @@ export function addChart(tree) {
   // set fileName form params selected
   let fileName = '';
 
-  forIn(params, (v, k) => {
+  forIn(params, (v) => {
     if (v)
       fileName = fileName + v.name + ' - ';
   });

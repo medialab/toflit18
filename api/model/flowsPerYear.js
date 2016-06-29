@@ -33,7 +33,6 @@ const ModelFlowsPerYear = {
             where = new Expression(),
             withs = [];
 
-
       // handle clasification dataType
       if (dataType !== 'direction' && dataType !== 'sourceType') {
       // a classification
@@ -165,7 +164,6 @@ const ModelFlowsPerYear = {
         query.orderBy('f.year, dataType');
       }
 
-      console.log("query", query.build());
       database.cypher(query.build(), function(err, result) {
         if (err) return callback(err);
 

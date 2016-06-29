@@ -97,7 +97,7 @@ export default class DataQualityBarChart extends Component {
           nbDirectionByYear2.push({
             data: directions.length,
             year: key,
-            directions: directions
+            directions
           });
         }
 

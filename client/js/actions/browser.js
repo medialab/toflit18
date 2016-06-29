@@ -87,8 +87,8 @@ export function search(tree, id, queryGroup, queryItem) {
       if (err) return;
 
       data.result.forEach(d => {
-        d.items = uniq(d.items)
-      })
+        d.items = uniq(d.items);
+      });
 
       tree.set(['states', 'classification', 'browser', 'queryGroup'], queryGroup);
       tree.set(['states', 'classification', 'browser', 'queryItem'], queryItem);

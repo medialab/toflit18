@@ -26,8 +26,7 @@ const ModelTerms = {
         } = params;
 
         const query = new Query(),
-              where = new Expression(),
-              withs = [];
+              where = new Expression();
 
         //-- Do we need to match a country?
         if (countryClassification) {
@@ -81,9 +80,7 @@ const ModelTerms = {
             query.where(where);
         query.return('f.product as term');
 
-        console.log("query.build()", query.build());
         database.cypher(query.build(), function(err, data) {
-            console.log("data", data);
 
             if (err) return callback(err);
             if (!data.length) return callback(null, null);
