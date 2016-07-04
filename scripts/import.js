@@ -31,12 +31,12 @@ const ROOT_PATH = '/base',
       BDD_CENTRALE_PATH = ROOT_PATH + '/bdd_centrale.csv',
       BDD_OUTSIDERS = ROOT_PATH + '/marchandises_sourcees.csv',
       BDD_UNITS = ROOT_PATH + '/Units_N1.csv',
-      ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
-      REVISED_ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_revised_marchandises_normalisees_orthographique.csv',
-      REVISED_SIMPLIFICATION = ROOT_PATH + '/bdd_revised_marchandises_simplifiees.csv',
-      SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
-      MEDICINAL_CLASSIFICATIONS = ROOT_PATH + '/bdd_marchandises_medicinales.csv',
+      ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_revised_marchandises_normalisees_orthographique.csv',
+      SIMPLIFICATION = ROOT_PATH + '/bdd_revised_marchandises_simplifiees.csv',
+      MEDICINAL_CLASSIFICATIONS = ROOT_PATH + '/bdd_revised_classification_medicinales.csv',
       HAMBURG_CLASSIFICATION = ROOT_PATH + '/bdd_revised_classification_hamburg.csv',
+      AMERIQUEDUNORD_CLASSIFICATION = ROOT_PATH + '/bdd_classification_AmeriqueduNord.csv',
+      EDENTREATY_CLASSIFICATION = ROOT_PATH + '/bdd_classification_edentreaty.csv',
       COUNTRY_ORTHOGRAPHIC = ROOT_PATH + '/classification_country_orthographic_normalization.csv',
       COUNTRY_SIMPLIFICATION = ROOT_PATH + '/classification_country_simplification.csv',
       COUNTRY_GROUPED = ROOT_PATH + '/classification_country_grouping.csv',
@@ -217,42 +217,42 @@ const CLASSIFICATION_NODES = {
     slug: 'orthographic_normalization',
     description: 'Fixing the source\'s somewhat faulty orthograph.'
   }, 'Classification'),
-  product_revised_orthographic: BUILDER.save({
-    name: 'Revised Orthographic Normalization',
-    model: 'product',
-    slug: 'revised_orthographic_normalization',
-    description: 'Revised version of the initial orthographic normalization.'
-  }, 'Classification'),
+  // product_revised_orthographic: BUILDER.save({
+  //   name: 'Revised Orthographic Normalization',
+  //   model: 'product',
+  //   slug: 'revised_orthographic_normalization',
+  //   description: 'Revised version of the initial orthographic normalization.'
+  // }, 'Classification'),
   product_simplified: BUILDER.save({
     name: 'Simplification',
     model: 'product',
     slug: 'simplification',
     description: 'Simplifying the source.'
-  }, 'Classification'),
-  product_revised_simplified: BUILDER.save({
-    name: 'Revised Simplification',
-    model: 'product',
-    slug: 'revised_simplification',
-    description: 'Simplifying the source.'
-  }, 'Classification'),
-  product_categorized: BUILDER.save({
-    name: 'Categorization',
-    model: 'product',
-    slug: 'categorization',
-    description: 'Categorizing the various products.'
-  }, 'Classification'),
-  product_sitcrev1: BUILDER.save({
-    name: 'SITC Rev.1',
-    model: 'product',
-    slug: 'sitc_rev1',
-    description: 'SITC Rev.1'
-  }, 'Classification'),
-  product_sitcrev2: BUILDER.save({
-    name: 'SITC Rev.2',
-    model: 'product',
-    slug: 'sitc_rev2',
-    description: 'SITC Rev.2'
-  }, 'Classification'),
+   }, 'Classification'),
+  // product_revised_simplified: BUILDER.save({
+  //   name: 'Revised Simplification',
+  //   model: 'product',
+  //   slug: 'revised_simplification',
+  //   description: 'Simplifying the source.'
+  // }, 'Classification'),
+  // product_categorized: BUILDER.save({
+  //   name: 'Categorization',
+  //   model: 'product',
+  //   slug: 'categorization',
+  //   description: 'Categorizing the various products.'
+  // }, 'Classification'),
+  // product_sitcrev1: BUILDER.save({
+  //   name: 'SITC Rev.1',
+  //   model: 'product',
+  //   slug: 'sitc_rev1',
+  //   description: 'SITC Rev.1'
+  // }, 'Classification'),
+  // product_sitcrev2: BUILDER.save({
+  //   name: 'SITC Rev.2',
+  //   model: 'product',
+  //   slug: 'sitc_rev2',
+  //   description: 'SITC Rev.2'
+  // }, 'Classification'),
   product_medicinal: BUILDER.save({
     name: 'Medicinal products',
     model: 'product',
@@ -264,6 +264,18 @@ const CLASSIFICATION_NODES = {
     model: 'product',
     slug: 'hamburg',
     description: 'link to the Hamburg classification'
+  }, 'Classification'),
+  product_ameriquedunord: BUILDER.save({
+    name: 'Amerique du Nord',
+    model: 'product',
+    slug: 'ameriquedunord',
+    description: 'indicates if products are from North America'
+  }, 'Classification'),
+  product_edentreaty: BUILDER.save({
+    name: 'Eden Treaty',
+    model: 'product',
+    slug: 'edentreaty',
+    description: '?'
   }, 'Classification'),
   country_sources: BUILDER.save({
     name: 'Sources',
@@ -306,14 +318,16 @@ Object.keys(CLASSIFICATION_NODES).forEach(k => {
 });
 
 BUILDER.relate(CLASSIFICATION_NODES.product_orthographic, 'BASED_ON', CLASSIFICATION_NODES.product_sources);
-BUILDER.relate(CLASSIFICATION_NODES.product_revised_orthographic, 'BASED_ON', CLASSIFICATION_NODES.product_sources);
+//BUILDER.relate(CLASSIFICATION_NODES.product_revised_orthographic, 'BASED_ON', CLASSIFICATION_NODES.product_sources);
 BUILDER.relate(CLASSIFICATION_NODES.product_simplified, 'BASED_ON', CLASSIFICATION_NODES.product_orthographic);
-BUILDER.relate(CLASSIFICATION_NODES.product_revised_simplified, 'BASED_ON', CLASSIFICATION_NODES.product_revised_orthographic);
-BUILDER.relate(CLASSIFICATION_NODES.product_categorized, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
-BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev2, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+//BUILDER.relate(CLASSIFICATION_NODES.product_revised_simplified, 'BASED_ON', CLASSIFICATION_NODES.product_revised_orthographic);
+//BUILDER.relate(CLASSIFICATION_NODES.product_categorized, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+//BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev2, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_medicinal, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
-BUILDER.relate(CLASSIFICATION_NODES.product_hamburg, 'BASED_ON', CLASSIFICATION_NODES.product_revised_simplified);
-BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev1, 'BASED_ON', CLASSIFICATION_NODES.product_sitcrev2);
+BUILDER.relate(CLASSIFICATION_NODES.product_hamburg, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.product_ameriquedunord, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.product_edentreaty, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+//BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev1, 'BASED_ON', CLASSIFICATION_NODES.product_sitcrev2);
 BUILDER.relate(CLASSIFICATION_NODES.country_orthographic, 'BASED_ON', CLASSIFICATION_NODES.country_sources);
 BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATION_NODES.country_orthographic);
 BUILDER.relate(CLASSIFICATION_NODES.country_grouped, 'BASED_ON', CLASSIFICATION_NODES.country_simplified);
@@ -349,9 +363,13 @@ function importer(csvLine) {
 
   // Year
   if (csvLine.year) {
-    nodeData.year = /semestre/.test(csvLine.year) ?
-      +csvLine.year.split('-')[0] :
-      normalizeYear(csvLine.year);
+    if (/semestre/.test(csvLine.year))
+       nodeData.year = csvLine.year.split('-')[0];
+    else
+      if (csvLine.year==="10 mars-31 décembre 1787")   
+          nodeData.year = 1787;
+      else
+        nodeData.year = normalizeYear(csvLine.year);
   }
 
   // Unit
@@ -611,15 +629,15 @@ const orthographicProduct = makeClassificationConsumer(
   {shouldTakeNote: true}
 );
 
-const revisedOrthographicProduct = makeClassificationConsumer(
-  CLASSIFICATION_INDEXES.product_revised_orthographic,
-  CLASSIFICATION_NODES.product_revised_orthographic,
-  CLASSIFICATION_NODES.product_sources,
-  INDEXES.products,
-  'modified',
-  'original',
-  {}
-);
+// const revisedOrthographicProduct = makeClassificationConsumer(
+//   CLASSIFICATION_INDEXES.product_revised_orthographic,
+//   CLASSIFICATION_NODES.product_revised_orthographic,
+//   CLASSIFICATION_NODES.product_sources,
+//   INDEXES.products,
+//   'modified',
+//   'original',
+//   {}
+// );
 
 const simplifiedProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_simplified,
@@ -631,45 +649,45 @@ const simplifiedProduct = makeClassificationConsumer(
   {}
 );
 
-const revisedSimplifiedProduct = makeClassificationConsumer(
-  CLASSIFICATION_INDEXES.product_revised_simplified,
-  CLASSIFICATION_NODES.product_revised_simplified,
-  CLASSIFICATION_NODES.product_revised_orthographic,
-  CLASSIFICATION_INDEXES.product_revised_orthographic,
-  'simplified',
-  'orthographic',
-  {}
-);
+// const revisedSimplifiedProduct = makeClassificationConsumer(
+//   CLASSIFICATION_INDEXES.product_revised_simplified,
+//   CLASSIFICATION_NODES.product_revised_simplified,
+//   CLASSIFICATION_NODES.product_revised_orthographic,
+//   CLASSIFICATION_INDEXES.product_revised_orthographic,
+//   'simplified',
+//   'orthographic',
+//   {}
+// );
 
-const categorizedProduct = makeClassificationConsumer(
-  CLASSIFICATION_INDEXES.product_categorized,
-  CLASSIFICATION_NODES.product_categorized,
-  CLASSIFICATION_NODES.product_simplified,
-  CLASSIFICATION_INDEXES.product_simplified,
-  'categorized',
-  'simplified',
-  {shouldTakeNote: true}
-);
+// const categorizedProduct = makeClassificationConsumer(
+//   CLASSIFICATION_INDEXES.product_categorized,
+//   CLASSIFICATION_NODES.product_categorized,
+//   CLASSIFICATION_NODES.product_simplified,
+//   CLASSIFICATION_INDEXES.product_simplified,
+//   'categorized',
+//   'simplified',
+//   {shouldTakeNote: true}
+// );
 
-const sitcrev2Product = makeClassificationConsumer(
-  CLASSIFICATION_INDEXES.product_sitcrev2,
-  CLASSIFICATION_NODES.product_sitcrev2,
-  CLASSIFICATION_NODES.product_simplified,
-  CLASSIFICATION_INDEXES.product_simplified,
-  'sitcrev2',
-  'simplified',
-  {}
-);
+// const sitcrev2Product = makeClassificationConsumer(
+//   CLASSIFICATION_INDEXES.product_sitcrev2,
+//   CLASSIFICATION_NODES.product_sitcrev2,
+//   CLASSIFICATION_NODES.product_simplified,
+//   CLASSIFICATION_INDEXES.product_simplified,
+//   'sitcrev2',
+//   'simplified',
+//   {}
+// );
 
-const sitcrev1Product = makeClassificationConsumer(
-  CLASSIFICATION_INDEXES.product_sitcrev1,
-  CLASSIFICATION_NODES.product_sitcrev1,
-  CLASSIFICATION_NODES.product_sitcrev2,
-  CLASSIFICATION_INDEXES.product_sitcrev2,
-  'sitcrev1',
-  'sitcrev2',
-  {}
-);
+// const sitcrev1Product = makeClassificationConsumer(
+//   CLASSIFICATION_INDEXES.product_sitcrev1,
+//   CLASSIFICATION_NODES.product_sitcrev1,
+//   CLASSIFICATION_NODES.product_sitcrev2,
+//   CLASSIFICATION_INDEXES.product_sitcrev2,
+//   'sitcrev1',
+//   'sitcrev2',
+//   {}
+// );
 
 const medicinalProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_medicinal,
@@ -684,9 +702,29 @@ const medicinalProduct = makeClassificationConsumer(
 const hamburgProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_hamburg,
   CLASSIFICATION_NODES.product_hamburg,
-  CLASSIFICATION_NODES.product_revised_simplified,
-  CLASSIFICATION_INDEXES.product_revised_simplified,
+  CLASSIFICATION_NODES.product_simplified,
+  CLASSIFICATION_INDEXES.product_simplified,
   'hamburg',
+  'simplified',
+  {}
+);
+
+const ameriquedunordProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_ameriquedunord,
+  CLASSIFICATION_NODES.product_ameriquedunord,
+  CLASSIFICATION_NODES.product_simplified,
+  CLASSIFICATION_INDEXES.product_simplified,
+  'ameriquedunord',
+  'simplified',
+  {}
+);
+
+const edentreatyProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_edentreaty,
+  CLASSIFICATION_NODES.product_edentreaty,
+  CLASSIFICATION_NODES.product_simplified,
+  CLASSIFICATION_INDEXES.product_simplified,
+  'edentreaty',
   'simplified',
   {}
 );
@@ -841,24 +879,6 @@ async.series({
     });
   },
 
-  productRevisedOrthographic(next) {
-    console.log('  -- Products revised orthographic normalization');
-
-     // Parsing revised orthographic corrections for products
-    const csvData = fs.readFileSync(DATA_PATH + REVISED_ORTHOGRAPHIC_CLASSIFICATION, 'utf-8');
-    parseCsv(csvData, {delimiter: ','}, function(err, data) {
-      data
-        .slice(1)
-        .map(line => ({
-          modified: cleanText(line[1]),
-          original: cleanText(line[0])
-        }))
-        .forEach(revisedOrthographicProduct);
-
-      return next();
-    });
-  },
-
   productSimplification(next) {
     console.log('  -- Products simplification');
 
@@ -877,23 +897,6 @@ async.series({
     });
   },
 
-  productRevisedSimplified(next) {
-    console.log('  -- Products revised simplification');
-
-     // Parsing revised orthographic corrections for products
-    const csvData = fs.readFileSync(DATA_PATH + REVISED_SIMPLIFICATION, 'utf-8');
-    parseCsv(csvData, {delimiter: ','}, function(err, data) {
-      data
-        .slice(1)
-        .map(line => ({
-          simplified: cleanText(line[1]),
-          orthographic: cleanText(line[0])
-        }))
-        .forEach(revisedSimplifiedProduct);
-
-      return next();
-    });
-  },
 
   productMedical(next) {
     console.log('  -- Products medicinal classifications');
@@ -926,6 +929,42 @@ async.series({
           hamburg: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
         .forEach(hamburgProduct);
+
+      return next();
+    });
+  },
+
+   productAmeriquedunord(next) {
+    console.log('  -- Products Amerique du Nord classifications');
+
+    // Parsing various classifications
+    const csvData = fs.readFileSync(DATA_PATH + AMERIQUEDUNORD_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          simplified: cleanText(line[0]),
+          ameriquedunord: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+        }))
+        .forEach(ameriquedunordProduct);
+
+      return next();
+    });
+  },
+
+   productEdentreaty(next) {
+    console.log('  -- Products Eden Treaty classifications');
+
+    // Parsing various classifications
+    const csvData = fs.readFileSync(DATA_PATH + HAMBURG_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          simplified: cleanText(line[0]),
+          edentreaty: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+        }))
+        .forEach(edentreatyProduct);
 
       return next();
     });
@@ -1000,29 +1039,4 @@ async.series({
     });
   }
 
-
-  // countryVarious(next) {
-  //   console.log('  -- Countries various classifications');
-
-  //   // Parsing various classifications for countries
-  //   const csvData = fs.readFileSync(DATA_PATH + COUNTRY_CLASSIFICATIONS, 'utf-8');
-  //   parseCsv(csvData, {delimiter: ','}, function(err, data) {
-  //     _(data.slice(1))
-  //       .map(line => ({
-  //         original: cleanText(line[0]),
-  //         orthographic: cleanText(line[1]),
-  //         simplified: cleanText(line[2]),
-  //         grouped: cleanText(line[3]),
-  //         note: cleanText(line[4])
-  //       }))
-  //       .forEach(orthographicCountry)
-  //       .uniq('orthographic')
-  //       .forEach(simplifiedCountry)
-  //       .uniq('simplified')
-  //       .forEach(groupedCountry)
-  //       .value();
-
-  //     return next();
-  //   });
-  // }
 }, err => err && console.error(err));
