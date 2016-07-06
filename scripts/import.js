@@ -35,8 +35,9 @@ const ROOT_PATH = '/base',
       SIMPLIFICATION = ROOT_PATH + '/bdd_revised_marchandises_simplifiees.csv',
       MEDICINAL_CLASSIFICATIONS = ROOT_PATH + '/bdd_revised_classification_medicinales.csv',
       HAMBURG_CLASSIFICATION = ROOT_PATH + '/bdd_revised_classification_hamburg.csv',
-      AMERIQUEDUNORD_CLASSIFICATION = ROOT_PATH + '/bdd_classification_AmeriqueduNord.csv',
+      AMERIQUEDUNORD_CLASSIFICATION = ROOT_PATH + '/bdd_classification_NorthAmerica.csv',
       EDENTREATY_CLASSIFICATION = ROOT_PATH + '/bdd_classification_edentreaty.csv',
+      GRAIN_CLASSIFICATION = ROOT_PATH + '/bdd_revised_grains.csv',
       COUNTRY_ORTHOGRAPHIC = ROOT_PATH + '/classification_country_orthographic_normalization.csv',
       COUNTRY_SIMPLIFICATION = ROOT_PATH + '/classification_country_simplification.csv',
       COUNTRY_GROUPED = ROOT_PATH + '/classification_country_grouping.csv',
@@ -266,7 +267,7 @@ const CLASSIFICATION_NODES = {
     description: 'link to the Hamburg classification'
   }, 'Classification'),
   product_ameriquedunord: BUILDER.save({
-    name: 'Amerique du Nord',
+    name: 'North America',
     model: 'product',
     slug: 'ameriquedunord',
     description: 'indicates if products are from North America'
@@ -275,7 +276,13 @@ const CLASSIFICATION_NODES = {
     name: 'Eden Treaty',
     model: 'product',
     slug: 'edentreaty',
-    description: '?'
+    description: 'goods impacted by Eden Treaty'
+  }, 'Classification'),
+  product_grain: BUILDER.save({
+    name: 'Grains',
+    model: 'product',
+    slug: 'grain',
+    description: 'classification of grains type'
   }, 'Classification'),
   country_sources: BUILDER.save({
     name: 'Sources',
@@ -327,6 +334,7 @@ BUILDER.relate(CLASSIFICATION_NODES.product_medicinal, 'BASED_ON', CLASSIFICATIO
 BUILDER.relate(CLASSIFICATION_NODES.product_hamburg, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_ameriquedunord, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_edentreaty, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.product_grain, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 //BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev1, 'BASED_ON', CLASSIFICATION_NODES.product_sitcrev2);
 BUILDER.relate(CLASSIFICATION_NODES.country_orthographic, 'BASED_ON', CLASSIFICATION_NODES.country_sources);
 BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATION_NODES.country_orthographic);
@@ -729,6 +737,16 @@ const edentreatyProduct = makeClassificationConsumer(
   {}
 );
 
+const grainProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_grain,
+  CLASSIFICATION_NODES.product_grain,
+  CLASSIFICATION_NODES.product_simplified,
+  CLASSIFICATION_INDEXES.product_simplified,
+  'grain',
+  'simplified',
+  {}
+);
+
 const orthographicCountry = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.country_orthographic,
   CLASSIFICATION_NODES.country_orthographic,
@@ -956,7 +974,7 @@ async.series({
     console.log('  -- Products Eden Treaty classifications');
 
     // Parsing various classifications
-    const csvData = fs.readFileSync(DATA_PATH + HAMBURG_CLASSIFICATION, 'utf-8');
+    const csvData = fs.readFileSync(DATA_PATH + EDENTREATY_CLASSIFICATION, 'utf-8');
     parseCsv(csvData, {delimiter: ','}, function(err, data) {
       data
         .slice(1)
@@ -969,7 +987,23 @@ async.series({
       return next();
     });
   },
+   productGrain(next) {
+    console.log('  -- Products grain classifications');
 
+    // Parsing various classifications
+    const csvData = fs.readFileSync(DATA_PATH + GRAIN_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          simplified: cleanText(line[0]),
+          grain: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+        }))
+        .forEach(grainProduct);
+
+      return next();
+    });
+  },
   countryOrthographic(next) {
     console.log('  -- Countries orthographic');
 
