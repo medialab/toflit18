@@ -38,7 +38,7 @@ const ModelTerms = {
         // Match product classification
         query.match('(pc)-[:HAS]->(group)-[:AGGREGATES*0..]->(pi)');
         query.where('id(pc) = ' + classification);
-        query.with('collect(pi.name) as terms');
+        query.with('collect(pi.name) as terms, group');
 
         // Match on flows with selectors choices
         query.match('(f:Flow)');//-[OF]->(pi)');
@@ -78,7 +78,10 @@ const ModelTerms = {
 
         if (!where.isEmpty())
             query.where(where);
-        query.return('f.product as term');
+        query.return('group.name as term');
+
+  //       WITH group.name as term,sum(toFloat(f.value)) as value, count(f) as occ
+  // RETURN term, value, occ
 
         database.cypher(query.build(), function(err, data) {
             if (err) return callback(err);
