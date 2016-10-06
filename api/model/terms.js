@@ -98,8 +98,8 @@ const ModelTerms = {
 
                 const terms = tokenizeTerms(row.term);
 
-                if (terms.length <= 1)
-                return;
+                //if (terms.length <= 1)
+                //return;
 
                 terms.forEach((term, i) => {
 
@@ -164,12 +164,12 @@ const ModelTerms = {
             nodesToDrop = new Set(nodesToDrop);
 
             // Dropping useless nodes
-            graph.nodes = omit(graph.nodes, node => nodesToDrop.has(node.id));
+            //graph.nodes = omit(graph.nodes, node => nodesToDrop.has(node.id));
 
-            graph.edges = omit(graph.edges, edge => {
+            /*graph.edges = omit(graph.edges, edge => {
                 return nodesToDrop.has(edge.source) ||
                        nodesToDrop.has(edge.target);
-            });
+            });*/
 
             // Computing Louvain modularity
             const modularity = Louvain()
