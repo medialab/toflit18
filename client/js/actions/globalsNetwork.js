@@ -129,10 +129,12 @@ export function addNetwork(tree) {
           label: row.direction,
           community: 'direction',
           color: palette[0],
-          size: 1,
+          size: row.count,
           x: Math.random(),
           y: Math.random(),
         };
+      else
+        nodes[directionId].size+=row.count;
 
       if (!nodes[countryId])
         nodes[countryId] = {
@@ -140,10 +142,12 @@ export function addNetwork(tree) {
           label: row.country,
           community: 'country',
           color: palette[1],
-          size: 1,
+          size: row.count,
           x: Math.random(),
           y: Math.random(),
         };
+      else
+        nodes[countryId].size+=row.count;
 
       edges.push({
         id: 'e' + edges.length,
