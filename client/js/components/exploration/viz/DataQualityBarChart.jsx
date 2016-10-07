@@ -19,7 +19,8 @@ export default class DataQualityBarChart extends Component {
   render() {
 
     // Basic properties
-    let {data, width} = this.props;
+    let data = this.props.data;
+    const width = this.props.width;
 
     const bottomMargin = 25,
           topMargin = 20,
@@ -42,9 +43,10 @@ export default class DataQualityBarChart extends Component {
     }
 
     // check if params available in data
-    function checkParams(data) {
+    // TODO: this smells very bad!
+    function checkParams(items) {
       let test;
-      data.forEach(d => {
+      items.forEach(d => {
         if (d.hasOwnProperty('params') === true) {
           test = true;
           return;
@@ -127,8 +129,16 @@ export default class DataQualityBarChart extends Component {
     // Rendering
     return (
       <svg width="100%" height={height + bottomMargin + topMargin} className="quality-bar-chart">
-        <Axis width={width} height={height + topMargin} scale={x} years={allYears} />
-        <Legend x={10} y={10} label="Number of element by year" className="bar" />
+        <Axis
+          width={width}
+          height={height + topMargin}
+          scale={x}
+          years={allYears} />
+        <Legend
+          x={10}
+          y={10}
+          label="Number of element by year"
+          className="bar" />
         <g>
           {data.map(row => {
             let dataDisplayed;
@@ -195,8 +205,19 @@ class Legend extends Component {
 
     return (
       <g>
-        <rect x={x} y={y} width="10" height="10" className={className} />
-        <text x={x + 20} y={y + 10} textAnchor="left" className="legend-label">{label}</text>
+        <rect
+          x={x}
+          y={y}
+          width="10"
+          height="10"
+          className={className} />
+        <text
+          x={x + 20}
+          y={y + 10}
+          textAnchor="left"
+          className="legend-label">
+          {label}
+        </text>
       </g>
       );
   }

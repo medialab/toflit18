@@ -9,7 +9,7 @@ import history from '../history';
 
 import {reset as resetModal} from './patch';
 
-import {groupBy, uniq} from 'lodash';
+import {uniq} from 'lodash';
 
 const PATH = ['states', 'classification', 'browser'];
 

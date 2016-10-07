@@ -10,6 +10,10 @@ import Button from './Button.jsx';
 import {uniqueId} from 'lodash';
 
 export default class FileInput extends Component {
+  static PropTypes = {
+    onFile: PropTypes.func.isRequired
+  };
+
   constructor(props, context) {
     super(props, context);
 
@@ -19,10 +23,6 @@ export default class FileInput extends Component {
       name: null
     };
   }
-
-  static PropTypes = {
-    onFile: PropTypes.func.isRequired
-  };
 
   handleClick() {
     this.refs.file.click();

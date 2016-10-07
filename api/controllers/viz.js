@@ -1,3 +1,4 @@
+/* eslint no-console: 0 */
 /**
  * TOFLIT18 Classification Controller
  * ===================================
@@ -36,8 +37,9 @@ const controller = [
         if (v !== 'null') {
           return k !== 'kind' && k !== 'sourceType' ? +v : v;
         }
-        else
+        else {
           console.log(v, k);
+        }
       });
 
       return modelFlowsPerYear.flowsPerYearPerDataType(req.params.type, payloadFlows, function(err, data) {
@@ -97,8 +99,9 @@ const controller = [
         if (v !== 'null') {
           return k !== 'kind' && k !== 'sourceType' ? +v : v;
         }
-        else
+        else {
           console.log(v, k);
+        }
       });
 
       return modelNetwork.network(+req.params.id, payloadNetwork, function(err, data) {
@@ -135,8 +138,9 @@ const controller = [
         if (v !== 'null') {
           return k !== 'kind' && k !== 'sourceType' ? +v : v;
         }
-        else
+        else {
           console.log(v, k);
+        }
       });
 
       return modelTerms.terms(+req.params.id, payloadTerms, function(err, terms) {

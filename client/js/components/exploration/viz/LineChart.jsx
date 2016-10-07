@@ -97,10 +97,10 @@ export default class LineChart extends Component {
 
       return parts
         .filter(part => part.length > 1)
-        .map(function(part) {
+        .map(function(part, key) {
 
           // Rendering a whole series
-          return <path stroke={palette[i]} d={lineShape(part)} />;
+          return <path key={key} stroke={palette[i]} d={lineShape(part)} />;
         });
     }
 

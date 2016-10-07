@@ -6,9 +6,9 @@
 import decypher from 'decypher';
 import database from '../connection';
 import {tokenizeTerms} from '../../lib/tokenizer';
-import {connectedComponents} from '../../lib/graph';
+// import {connectedComponents} from '../../lib/graph';
 import Louvain from '../../lib/louvain';
-import _, {omit, values, forIn} from 'lodash';
+import _, {values, forIn} from 'lodash';
 
 const {Expression, Query} = decypher;
 
@@ -153,23 +153,23 @@ const ModelTerms = {
             });
 
             // Detecting components
-            const components = connectedComponents(values(graph.nodes));
+            // const components = connectedComponents(values(graph.nodes));
 
             // Keeping only larger components
-            let nodesToDrop = _(components)
-                .filter(component => component.length < 4)
-                .flatten()
-                .value();
+            // let nodesToDrop = _(components)
+            //     .filter(component => component.length < 4)
+            //     .flatten()
+            //     .value();
 
-            nodesToDrop = new Set(nodesToDrop);
+            // nodesToDrop = new Set(nodesToDrop);
 
             // Dropping useless nodes
             //graph.nodes = omit(graph.nodes, node => nodesToDrop.has(node.id));
 
-            /*graph.edges = omit(graph.edges, edge => {
-                return nodesToDrop.has(edge.source) ||
-                       nodesToDrop.has(edge.target);
-            });*/
+            // graph.edges = omit(graph.edges, edge => {
+            //   return nodesToDrop.has(edge.source) ||
+            //          nodesToDrop.has(edge.target);
+            // });
 
             // Computing Louvain modularity
             const modularity = Louvain()

@@ -1,3 +1,4 @@
+/* eslint no-nested-ternary: 0 */
 /**
  * TOFLIT18 Client Classification Browser
  * =======================================
@@ -130,7 +131,8 @@ class RightPanel extends Component {
     const list = loading ?
       <Waiter /> :
       (
-        <Infinite className="partial-height twice overflow"
+        <Infinite
+          className="partial-height twice overflow"
           action={() => actions.expand(current, queryGroup, queryItem)}
           tracker={current.id}
           data={current}>
@@ -294,7 +296,8 @@ class GroupQuery extends Component {
           value={queryGroup}
           onKeyPress={e => e.which === 13 && this.submit()}
           onChange={e => actions.update_group(e.target.value)} />
-            { checkClassification && <input id="searchItem"
+            {checkClassification && <input
+              id="searchItem"
               type="text"
               className="form-control"
               placeholder="Search item..."
@@ -303,7 +306,8 @@ class GroupQuery extends Component {
               onChange={e => actions.update_item(e.target.value)} />
             }
         <span className="input-group-btn">
-          <Button kind="secondary"
+          <Button
+            kind="secondary"
             loading={loading}
             onClick={() => this.submit()}>
             Filter
@@ -379,7 +383,8 @@ class Group extends Component {
 
       // Potential ellipsis
       const ellipsis = (
-        <span className="ellipsis"
+        <span
+          className="ellipsis"
           title="Click to expand"
           onClick={() => this.toggle()}>[...]</span>
       );

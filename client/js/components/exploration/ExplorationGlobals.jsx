@@ -20,16 +20,6 @@ import {
   updateDate
 } from '../../actions/globalsNetwork';
 
-import config from '../../../config.json';
-
-const metadataSelectors = (config.metadataSelectors || []).map(option => {
-  return {
-    ...option,
-    special: true
-  };
-});
-
-
 export default class ExplorationGlobals extends Component {
   render() {
     return (
@@ -237,10 +227,30 @@ class Legend extends Component {
     return (
      <svg width="100%" height="30px" >
         <g>
-          <circle cx={10} cy={10} r={5} fill="#8d4d42" />
-          <text x={30} y={15} textAnchor="left" className="legend-label">{'Direction'}</text>
-          <circle cx={120} cy={10} r={5} fill="black" />
-          <text x={140} y={15} textAnchor="left" className="legend-label">{'Country'}</text>
+          <circle
+            cx={10}
+            cy={10}
+            r={5}
+            fill="#8d4d42" />
+          <text
+            x={30}
+            y={15}
+            textAnchor="left"
+            className="legend-label">
+            {'Direction'}
+          </text>
+          <circle
+            cx={120}
+            cy={10}
+            r={5}
+            fill="black" />
+          <text
+            x={140}
+            y={15}
+            textAnchor="left"
+            className="legend-label">
+            {'Country'}
+          </text>
         </g>
       </svg>
       );

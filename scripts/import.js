@@ -42,8 +42,9 @@ const ROOT_PATH = '/base',
       COUNTRY_ORTHOGRAPHIC = ROOT_PATH + '/classification_country_orthographic_normalization.csv',
       COUNTRY_SIMPLIFICATION = ROOT_PATH + '/classification_country_simplification.csv',
       COUNTRY_GROUPED = ROOT_PATH + '/classification_country_grouping.csv',
-      COUNTRY_OBRIEN = ROOT_PATH + '/classification_country_obrien.csv',
-      COUNTRY_CLASSIFICATIONS = ROOT_PATH + '/bdd_pays.csv';
+      COUNTRY_OBRIEN = ROOT_PATH + '/classification_country_obrien.csv';
+
+// const COUNTRY_CLASSIFICATIONS = ROOT_PATH + '/bdd_pays.csv';
 
 /**
  * Constants
@@ -847,10 +848,10 @@ async.series({
   flows(next) {
     console.log('Processing flows...');
 
-    let readStream = fs.createReadStream(DATA_PATH + BDD_CENTRALE_PATH)
+    const readStream = fs.createReadStream(DATA_PATH + BDD_CENTRALE_PATH)
       .pipe(parseCsv({delimiter: ',', columns: true}));
 
-    readStream = h(readStream)
+    h(readStream)
       .map(l => _.mapValues(l, cleanText))
       .each(importer)
       .on('end', () => next());

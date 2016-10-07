@@ -6,12 +6,10 @@
  * Adhoc attempt to produce a review for upper classifications rewiring.
  */
 import yargs from 'yargs';
-import {parse, stringify} from 'csv';
+import {stringify} from 'csv';
 import async from 'async';
 import path from 'path';
 import fs from 'fs';
-import model from '../api/model/classification';
-import {cleanText} from '../lib/clean';
 import {classification as queries} from '../api/queries';
 import database from '../api/connection';
 import _ from 'lodash';
@@ -109,7 +107,7 @@ async.waterfall([
 
     existingGroupsInPatch = new Set(existingGroupsInPatch);
 
-    const relevantRewires = _.find(review.rewires, rewire => rewire.id === REWIRE_ID);
+    // const relevantRewires = _.find(review.rewires, rewire => rewire.id === REWIRE_ID);
 
     const {links, virtual} = review;
 

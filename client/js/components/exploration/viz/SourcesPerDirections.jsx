@@ -66,7 +66,11 @@ export default class SourcesPerDirections extends Component {
     // Rendering logic
     return (
       <svg width="100%" height={height} className="sources-per-directions">
-        <Legend x={10} y={10} label="Number of flows" className="local-bar" />
+        <Legend
+          x={10}
+          y={10}
+          label="Number of flows"
+          className="local-bar" />
         <g>
           {data.map((direction, i) =>
             <Direction key={direction.name}
@@ -108,19 +112,14 @@ class Direction extends Component {
       const rectHeight = Math.max(1, y(flows)),
             rectYPos = SIZE - rectHeight;
 
-      let xOffset;
-
-      if (local) {
-        xOffset = bar / 4 + 2;
-      }
-      else {
-        xOffset = -bar / 4 + 2;
-      }
-
       const tooltip = `${flows} total flows (${year})`;
 
       return (
-        <Tooltip placement="top" align={{offset: [3, 0]}} overlay={tooltip} key={year}>
+        <Tooltip
+          placement="top"
+          align={{offset: [3, 0]}}
+          overlay={tooltip}
+          key={year}>
           <rect className={`${local ? 'local' : 'national'}-bar`}
             width={bar}
             height={rectHeight}
@@ -142,7 +141,11 @@ class Direction extends Component {
 
     return (
       <g transform={`translate(0, ${SIZE * order})`}>
-        <Axis width={width} height={SIZE} scale={x} years={allYears} />
+        <Axis
+          width={width}
+          height={SIZE}
+          scale={x}
+          years={allYears} />
 
         <text x={0}
           y={yPos - SIZE / 3}
@@ -166,8 +169,17 @@ class Legend extends Component {
 
     return (
       <g>
-        <rect x={x} y={y} width="10" height="10" className={className} />
-        <text x={x + 20} y={y + 10} textAnchor="left" className="legend-label">{label}</text>
+        <rect
+          x={x}
+          y={y}
+          width="10"
+          height="10"
+          className={className} />
+        <text
+          x={x + 20}
+          y={y + 10}
+          textAnchor="left"
+          className="legend-label">{label}</text>
       </g>
       );
   }

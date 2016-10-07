@@ -5,10 +5,9 @@
  * Actions related to the indicators' view.
  */
 import config from '../../config.json';
+import _, {forIn} from 'lodash';
 
 const ROOT = ['states', 'exploration', 'metadata'];
-
-import {forIn} from 'lodash';
 
 /**
  * Updating a selector.
