@@ -87,7 +87,7 @@ class LeftPanel extends Component {
         <div className="panel full-height">
           <h3>Classifications</h3>
           <hr />
-          <div className="partial-height twice overflow">
+          <div className="partial-height once overflow">
             {(!product || !product.length) ? <Waiter /> : list}
           </div>
           <hr />

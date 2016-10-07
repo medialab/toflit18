@@ -256,6 +256,10 @@ h1 {
     .partial-height {
       height: calc(100% - 65px);
 
+      &.once {
+        height: calc(100% - 130px);
+      }
+
       &.twice {
         height: calc(100% - 195px);
       }
