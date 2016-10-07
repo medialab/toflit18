@@ -59,12 +59,12 @@ export default class Button extends Component {
 
     return (
       <button ref="button"
-              type="button"
-              data-style="slide-left"
-              className={cls}
-              style={style}
-              onClick={e => !disabled && typeof onClick === 'function' && onClick(e)}
-              {...optional}>
+        type="button"
+        data-style="slide-left"
+        className={cls}
+        style={style}
+        onClick={e => !disabled && typeof onClick === 'function' && onClick(e)}
+        {...optional}>
         <span className="ladda-label">
           {this.props.children}
         </span>
@@ -144,7 +144,7 @@ export class ExportButton extends Component {
                   blob = new Blob([myGexf.serialize()], {type: 'text/gexf+xml;charset=utf-8'});
 
             return saveAs(blob, this.props.name);
-          } 
+          }
           else if (type === 'gexf' && network === 'country') {
 
             const meta = {

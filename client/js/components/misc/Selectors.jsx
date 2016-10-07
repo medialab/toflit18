@@ -46,15 +46,15 @@ export class ClassificationSelector extends Component {
 
     return (
       <Select className="selector selector-classification"
-              labelKey="name"
-              isLoading={this.props.loading}
-              disabled={this.props.loading}
-              placeholder={placeholder}
-              options={classifications}
-              optionRenderer={this.renderOption}
-              onChange={this.props.onChange}
-              value={this.props.selected}
-              valueRenderer={this.renderOption} />
+        labelKey="name"
+        isLoading={this.props.loading}
+        disabled={this.props.loading}
+        placeholder={placeholder}
+        options={classifications}
+        optionRenderer={this.renderOption}
+        onChange={this.props.onChange}
+        value={this.props.selected}
+        valueRenderer={this.renderOption} />
     );
   }
 }
@@ -165,10 +165,10 @@ export class ItemSelector extends Component {
 
     return (
       <Select.Async {...commonProps}
-                    loadOptions={debounce(this.search.bind(this), 300)}
-                    filterOptions={identity}
-                    ignoreAccents={false}
-                    cache={false} />
+        loadOptions={debounce(this.search.bind(this), 300)}
+        filterOptions={identity}
+        ignoreAccents={false}
+        cache={false} />
     );
   }
 }

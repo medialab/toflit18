@@ -70,29 +70,29 @@ class LoginForm extends Component {
         <fieldset className="form-group">
           <label htmlFor="name">Name</label>
           <input type="text"
-                 className="form-control"
-                 id="name"
-                 onChange={e => this.setState({name: e.target.value})}
-                 value={this.state.name}
-                 placeholder="..."
-                 onKeyPress={keySubmit}
-                 autoFocus />
+            className="form-control"
+            id="name"
+            onChange={e => this.setState({name: e.target.value})}
+            value={this.state.name}
+            placeholder="..."
+            onKeyPress={keySubmit}
+            autoFocus />
         </fieldset>
         <fieldset className="form-group">
           <label htmlFor="password">Password</label>
           <input type="password"
-                 className="form-control"
-                 id="password"
-                 onChange={e => this.setState({password: e.target.value})}
-                 value={this.state.password}
-                 placeholder="..."
-                 onKeyPress={keySubmit} />
+            className="form-control"
+            id="password"
+            onChange={e => this.setState({password: e.target.value})}
+            value={this.state.password}
+            placeholder="..."
+            onKeyPress={keySubmit} />
         </fieldset>
         {flags.failed && <div className="alert alert-danger">Unrecognized name/password combination.</div>}
         <Button loading={flags.loading}
-                kind="primary"
-                disabled={!this.state.name || !this.state.password}
-                onClick={() => this.submit()}>Connect</Button>
+          kind="primary"
+          disabled={!this.state.name || !this.state.password}
+          onClick={() => this.submit()}>Connect</Button>
       </div>
     );
   }

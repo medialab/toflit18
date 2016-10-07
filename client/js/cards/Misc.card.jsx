@@ -23,8 +23,8 @@ devcard(
       {KINDS.map(kind => {
         return (
           <Button key={kind}
-                  kind={kind}
-                  style={{marginRight: '10px'}}>
+            kind={kind}
+            style={{marginRight: '10px'}}>
             {kind}
           </Button>
         );
@@ -34,9 +34,9 @@ devcard(
       {KINDS.map(kind => {
         return (
           <Button key={kind}
-                  kind={kind}
-                  style={{marginRight: '10px'}}
-                  loading>
+            kind={kind}
+            style={{marginRight: '10px'}}
+            loading>
             {kind}
           </Button>
         );
@@ -46,9 +46,9 @@ devcard(
       {KINDS.map(kind => {
         return (
           <Button key={kind}
-                  kind={kind}
-                  style={{marginRight: '10px'}}
-                  disabled>
+            kind={kind}
+            style={{marginRight: '10px'}}
+            disabled>
             {kind}
           </Button>
         );

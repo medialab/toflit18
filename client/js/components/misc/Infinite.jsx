@@ -58,7 +58,7 @@ export default class Infinite extends Component {
 
     return (
       <div className={className}
-           onScroll={scrollHandler}>
+        onScroll={scrollHandler}>
         {this.props.children}
         {this.state.loading && <Spinner />}
       </div>

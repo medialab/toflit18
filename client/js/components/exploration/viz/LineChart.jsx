@@ -116,10 +116,10 @@ export default class LineChart extends Component {
       return (
         <Tooltip placement="top" align={{offset: [3, 0]}} overlay={overlay}>
           <circle cx={x(point.year)}
-                  cy={y(point.value)}
-                  r={2}
-                  fill="white"
-                  stroke={palette[i]} />
+            cy={y(point.value)}
+            r={2}
+            fill="white"
+            stroke={palette[i]} />
         </Tooltip>
       );
     }
@@ -127,13 +127,13 @@ export default class LineChart extends Component {
     return (
       <svg width="100%" height={fullHeight} className="line-chart">
         <XAxis width={fullWidth}
-               height={fullHeight}
-               margin={margin}
-               scale={x} />
+          height={fullHeight}
+          margin={margin}
+          scale={x} />
         <YAxis width={fullWidth}
-               height={fullHeight}
-               margin={margin}
-               scale={y} />
+          height={fullHeight}
+          margin={margin}
+          scale={y} />
         <g className="points" transform={`translate(${margin.left}, ${margin.top})`}>
           {lines.map(renderLines)}
           {lines.map((line, i) => line.map(row => renderPoint(row, i)))}
@@ -170,9 +170,9 @@ class XAxis extends Component {
     return (
       <g className="x axis">
         <line x1={margin.left}
-              x2={width - margin.right}
-              y1={bottom}
-              y2={bottom} />
+          x2={width - margin.right}
+          y1={bottom}
+          y2={bottom} />
         {ticks.map(renderTick)}
       </g>
     );
@@ -205,9 +205,9 @@ class YAxis extends Component {
     return (
       <g className="y axis">
         <line x1={margin.left}
-              x2={margin.left}
-              y1={margin.top}
-              y2={height - margin.bottom} />
+          x2={margin.left}
+          y1={margin.top}
+          y2={height - margin.bottom} />
         {ticks.filter(d => !!d).map(renderTick)}
       </g>
     );

@@ -74,10 +74,10 @@ class LeftPanel extends Component {
       <div className="full-height">
         <h4 className="classifications-category">Products</h4>
         <ClassificationsList items={product}
-                             selected={current.id} />
+          selected={current.id} />
         <h4 className="classifications-category">Countries</h4>
         <ClassificationsList items={country}
-                             selected={current.id} />
+          selected={current.id} />
       </div>
     );
 
@@ -93,17 +93,17 @@ class LeftPanel extends Component {
           <div className="actions">
             <Col md={3}>
               <Button kind="primary"
-                      onClick={() => actions.download(current.id)}
-                      disabled={current.source || false}
-                      loading={downloading}>
+                onClick={() => actions.download(current.id)}
+                disabled={current.source || false}
+                loading={downloading}>
                 Export
               </Button>
             </Col>
             <Col md={9} style={{textAlign: 'right'}}>
               <ButtonGroup>
                 <Button kind="secondary"
-                        disabled
-                        onClick={() => actions.modal('create')}>
+                  disabled
+                  onClick={() => actions.modal('create')}>
                   Create From
                 </Button>
               </ButtonGroup>
@@ -131,9 +131,9 @@ class RightPanel extends Component {
       <Waiter /> :
       (
         <Infinite className="partial-height twice overflow"
-                  action={() => actions.expand(current, queryGroup, queryItem)}
-                  tracker={current.id}
-                  data={current}>
+          action={() => actions.expand(current, queryGroup, queryItem)}
+          tracker={current.id}
+          data={current}>
           <GroupsList source={current.source} />
         </Infinite>
       );
@@ -145,7 +145,7 @@ class RightPanel extends Component {
           <hr />
           <GroupQuery id={current.id} loading={loading} />
           <Button kind="secondary"
-                  onClick={() => actions.resetFilters(current.id)}>
+            onClick={() => actions.resetFilters(current.id)}>
             Reset filters
           </Button>
           <hr />
@@ -164,8 +164,8 @@ function ClassificationsList({items, selected}) {
     <ul className="classifications-list">
       {items.map(data =>
         <Classification key={data.id}
-                        data={data}
-                        active={selected === data.id} />)}
+          data={data}
+          active={selected === data.id} />)}
     </ul>
   );
 }
@@ -232,8 +232,8 @@ class Classification extends Component {
 
     return (
       <li className={cls('item', {active})}
-          style={{marginLeft: offset}}
-          onClick={() => !active && actions.select(id)}>
+        style={{marginLeft: offset}}
+        onClick={() => !active && actions.select(id)}>
         <div>
           <strong>{name}</strong>
         </div>
@@ -288,24 +288,24 @@ class GroupQuery extends Component {
     return (
       <div className="input-group">
         <input id="searchGroup"
-               type="text"
-               className="form-control"
-               placeholder="Search group..."
-               value={queryGroup}
-               onKeyPress={e => e.which === 13 && this.submit()}
-               onChange={e => actions.update_group(e.target.value)} />
+          type="text"
+          className="form-control"
+          placeholder="Search group..."
+          value={queryGroup}
+          onKeyPress={e => e.which === 13 && this.submit()}
+          onChange={e => actions.update_group(e.target.value)} />
             { checkClassification && <input id="searchItem"
-               type="text"
-               className="form-control"
-               placeholder="Search item..."
-               value={queryItem}
-               onKeyPress={e => e.which === 13 && this.submit()}
-               onChange={e => actions.update_item(e.target.value)} />
+              type="text"
+              className="form-control"
+              placeholder="Search item..."
+              value={queryItem}
+              onKeyPress={e => e.which === 13 && this.submit()}
+              onChange={e => actions.update_item(e.target.value)} />
             }
         <span className="input-group-btn">
           <Button kind="secondary"
-                  loading={loading}
-                  onClick={() => this.submit()}>
+            loading={loading}
+            onClick={() => this.submit()}>
             Filter
           </Button>
         </span>
@@ -380,8 +380,8 @@ class Group extends Component {
       // Potential ellipsis
       const ellipsis = (
         <span className="ellipsis"
-              title="Click to expand"
-              onClick={() => this.toggle()}>[...]</span>
+          title="Click to expand"
+          onClick={() => this.toggle()}>[...]</span>
       );
 
       const itemsToDisplay = !opened ?

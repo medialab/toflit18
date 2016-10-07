@@ -134,7 +134,7 @@ export function addNetwork(tree) {
           y: Math.random(),
         };
       else
-        nodes[directionId].size+=row.count;
+        nodes[directionId].size += row.count;
 
       if (!nodes[countryId])
         nodes[countryId] = {
@@ -147,7 +147,7 @@ export function addNetwork(tree) {
           y: Math.random(),
         };
       else
-        nodes[countryId].size+=row.count;
+        nodes[countryId].size += row.count;
 
       edges.push({
         id: 'e' + edges.length,

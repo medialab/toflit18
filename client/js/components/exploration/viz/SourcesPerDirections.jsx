@@ -70,13 +70,13 @@ export default class SourcesPerDirections extends Component {
         <g>
           {data.map((direction, i) =>
             <Direction key={direction.name}
-                       order={i}
-                       width={width}
-                       bar={barWidth}
-                       item={direction}
-                       x={x}
-                       y={y}
-                       allYears={allYears} />)}
+              order={i}
+              width={width}
+              bar={barWidth}
+              item={direction}
+              x={x}
+              y={y}
+              allYears={allYears} />)}
         </g>
       </svg>
     );
@@ -122,10 +122,10 @@ class Direction extends Component {
       return (
         <Tooltip placement="top" align={{offset: [3, 0]}} overlay={tooltip} key={year}>
           <rect className={`${local ? 'local' : 'national'}-bar`}
-                width={bar}
-                height={rectHeight}
-                x={x(year)}
-                y={rectYPos} />
+            width={bar}
+            height={rectHeight}
+            x={x(year)}
+            y={rectYPos} />
         </Tooltip>
       );
     }
@@ -133,11 +133,10 @@ class Direction extends Component {
     function renderUnderline(year) {
       return (
         <rect width={bar}
-              key={year}
-              height={1}
-              x={x(year)}
-              y={SIZE + 2}>
-        </rect>
+          key={year}
+          height={1}
+          x={x(year)}
+          y={SIZE + 2} />
       );
     }
 
@@ -146,8 +145,8 @@ class Direction extends Component {
         <Axis width={width} height={SIZE} scale={x} years={allYears} />
 
         <text x={0}
-              y={yPos - SIZE / 3}
-              fill="black">
+          y={yPos - SIZE / 3}
+          fill="black">
           {item.name}
         </text>
 
@@ -167,7 +166,7 @@ class Legend extends Component {
 
     return (
       <g>
-        <rect x={x} y={y} width="10" height="10" className={className}/>
+        <rect x={x} y={y} width="10" height="10" className={className} />
         <text x={x + 20} y={y + 10} textAnchor="left" className="legend-label">{label}</text>
       </g>
       );

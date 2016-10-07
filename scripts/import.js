@@ -375,7 +375,7 @@ function importer(csvLine) {
     if (/semestre/.test(csvLine.year))
        nodeData.year = csvLine.year.split('-')[0];
     else
-      if (csvLine.year==="10 mars-31 décembre 1787")   
+      if (csvLine.year === '10 mars-31 décembre 1787')
           nodeData.year = 1787;
       else
         nodeData.year = normalizeYear(csvLine.year);

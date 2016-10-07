@@ -108,124 +108,124 @@ class TermsPanel extends Component {
         <hr />
        <Row>
           <SectionTitle title="Source Type"
-                        addendum="From which sources does the data comes from?" />
+            addendum="From which sources does the data comes from?" />
             <Col md={4}>
               <ItemSelector type="sourceType"
-                            data={sourceTypesOptions}
-                            loading={!sourceTypesOptions.length}
-                            onChange={actions.update.bind(null, 'sourceType')}
-                            selected={selectors.sourceType} />
+                data={sourceTypesOptions}
+                loading={!sourceTypesOptions.length}
+                onChange={actions.update.bind(null, 'sourceType')}
+                selected={selectors.sourceType} />
             </Col>
           </Row>
           <hr />
           <Row className="dataType">
             <SectionTitle title="Product"
-                          addendum="You must choose the type of product being shipped." />
+              addendum="You must choose the type of product being shipped." />
             <Col md={4}>
               <ClassificationSelector type="product"
-                                      loading={!classifications.product.length || loading}
-                                      data={classifications.product}
-                                      onChange={actions.selectTerms}
-                                      selected={classification} />
+                loading={!classifications.product.length || loading}
+                data={classifications.product}
+                onChange={actions.selectTerms}
+                selected={classification} />
             </Col>
           </Row>
           <hr />
           <Row>
           <SectionTitle title="Country"
-                        addendum="The country whence we got the products or wither we are sending them." />
+            addendum="The country whence we got the products or wither we are sending them." />
           <Col md={4}>
             <ClassificationSelector type="country"
-                                    loading={!classifications.country.length}
-                                    data={classifications.country.filter(c => !c.source)}
-                                    onChange={actions.update.bind(null, 'countryClassification')}
-                                    selected={selectors.countryClassification} />
+              loading={!classifications.country.length}
+              data={classifications.country.filter(c => !c.source)}
+              onChange={actions.update.bind(null, 'countryClassification')}
+              selected={selectors.countryClassification} />
           </Col>
           <Col md={4}>
             <ItemSelector type="country"
-                          disabled={!selectors.countryClassification || !groups.country.length}
-                          loading={selectors.countryClassification && !groups.country.length}
-                          data={groups.country}
-                          onChange={actions.update.bind(null, 'country')}
-                          selected={selectors.country} />
+              disabled={!selectors.countryClassification || !groups.country.length}
+              loading={selectors.countryClassification && !groups.country.length}
+              data={groups.country}
+              onChange={actions.update.bind(null, 'country')}
+              selected={selectors.country} />
           </Col>
         </Row>
         <hr />
         <Row>
           <SectionTitle title="Direction"
-                        addendum="The French harbor where the transactions were recorded." />
+            addendum="The French harbor where the transactions were recorded." />
           <Col md={4}>
             <ItemSelector type="direction"
-                          loading={!directions}
-                          data={directions || []}
-                          onChange={actions.update.bind(null, 'direction')}
-                          selected={selectors.direction} />
+              loading={!directions}
+              data={directions || []}
+              onChange={actions.update.bind(null, 'direction')}
+              selected={selectors.direction} />
           </Col>
         </Row>
         <hr />
         <Row>
           <SectionTitle title="Kind"
-                        addendum="Should we look at import, export, or total?" />
+            addendum="Should we look at import, export, or total?" />
           <Col md={4}>
             <ItemSelector type="kind"
-                          onChange={actions.update.bind(null, 'kind')}
-                          selected={selectors.kind} />
+              onChange={actions.update.bind(null, 'kind')}
+              selected={selectors.kind} />
           </Col>
         </Row>
         <hr />
         <Row>
           <SectionTitle title="Dates"
-                        addendum="Choose one date or a range date" />
+            addendum="Choose one date or a range date" />
           <Col md={2}>
             <ItemSelector type="dateMin"
-                          data={dateMinOptions}
-                          onChange={actions.update.bind(null, 'dateMin')}
-                          selected={selectors.dateMin}/>
+              data={dateMinOptions}
+              onChange={actions.update.bind(null, 'dateMin')}
+              selected={selectors.dateMin} />
           </Col>
           <Col md={2}>
             <ItemSelector type="dateMax"
-                          data={dateMaxOptions}
-                          onChange={actions.update.bind(null, 'dateMax')}
-                          selected={selectors.dateMax}/>
+              data={dateMaxOptions}
+              onChange={actions.update.bind(null, 'dateMax')}
+              selected={selectors.dateMax} />
           </Col>
         </Row>
         <hr />
           <Row>
           <Col md={2}>
             <Button kind="primary"
-                    onClick={actions.addChart}>
+              onClick={actions.addChart}>
               Add network
             </Button>
           </Col>
-           
+
         </Row>
         <hr />
         <label>
           <input type="radio"
-                 name="optionsRadio"
-                 value="community"
-                 checked={colorization === 'community'}
-                 onChange={radioListener} />
+            name="optionsRadio"
+            value="community"
+            checked={colorization === 'community'}
+            onChange={radioListener} />
            Commmunity Color
         </label>
         <label>
           <input type="radio"
-                 name="optionsRadio"
-                 value="position"
-                 checked={colorization === 'position'}
-                 onChange={radioListener} />
+            name="optionsRadio"
+            value="position"
+            checked={colorization === 'position'}
+            onChange={radioListener} />
            Position Color
         </label>
         <Network graph={graph} colorKey={colorKey} />
         <br />
         <ExportButton name={'Toflit18_Global_Terms_Network_view.csv'}
-                      data={graphResultAPI}
-                      type={'csv'}>
+          data={graphResultAPI}
+          type={'csv'}>
             Export CSV
         </ExportButton>
         <ExportButton name={'Toflit18_Global_Terms_Network_view.gexf'}
-                      data={graph}
-                      type={'gexf'}
-                      network={'terms'}>
+          data={graph}
+          type={'gexf'}
+          network={'terms'}>
             EXPORT GEXF
         </ExportButton>
       </div>

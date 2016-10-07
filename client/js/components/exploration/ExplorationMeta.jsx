@@ -107,7 +107,7 @@ export default class ExplorationMeta extends Component {
           <hr />
             <Row className="dataType">
              <SectionTitle title="Data type"
-                           addendum="You must select the type of data to control." />
+               addendum="You must select the type of data to control." />
               <Col md={6}>
                 <ItemSelector type="dataType"
                   data={[...metadataSelectors, ...classificationsFiltered]}
@@ -119,82 +119,82 @@ export default class ExplorationMeta extends Component {
             <hr />
             <Row>
             <SectionTitle title="Source Type"
-                          addendum="From which sources does the data comes from?" />
+              addendum="From which sources does the data comes from?" />
               <Col md={4}>
                 <ItemSelector type="sourceType"
-                              data={sourceTypesOptions}
-                              loading={!sourceTypesOptions.length}
-                              onChange={actions.update.bind(null, 'sourceType')}
-                              selected={selectors.sourceType} />
+                  data={sourceTypesOptions}
+                  loading={!sourceTypesOptions.length}
+                  onChange={actions.update.bind(null, 'sourceType')}
+                  selected={selectors.sourceType} />
               </Col>
             </Row>
             <hr />
           <Row>
             <SectionTitle title="Product"
-                          addendum="The type of product being shipped." />
+              addendum="The type of product being shipped." />
             <Col md={4}>
               <ClassificationSelector type="product"
-                                      loading={!classifications.product.length}
-                                      data={classifications.product.filter(c => !c.source)}
-                                      onChange={actions.update.bind(null, 'productClassification')}
-                                      selected={selectors.productClassification} />
+                loading={!classifications.product.length}
+                data={classifications.product.filter(c => !c.source)}
+                onChange={actions.update.bind(null, 'productClassification')}
+                selected={selectors.productClassification} />
             </Col>
             <Col md={4}>
               <ItemSelector type="product"
-                            disabled={!selectors.productClassification || !groups.product.length}
-                            loading={selectors.productClassification && !groups.product.length}
-                            data={groups.product}
-                            onChange={actions.update.bind(null, 'product')}
-                            selected={selectors.product} />
+                disabled={!selectors.productClassification || !groups.product.length}
+                loading={selectors.productClassification && !groups.product.length}
+                data={groups.product}
+                onChange={actions.update.bind(null, 'product')}
+                selected={selectors.product} />
             </Col>
           </Row>
           <hr />
           <Row>
             <SectionTitle title="Country"
-                          addendum="The country whence we got the products or wither we are sending them." />
+              addendum="The country whence we got the products or wither we are sending them." />
             <Col md={4}>
               <ClassificationSelector type="country"
-                                      loading={!classifications.country.length}
-                                      data={classifications.country.filter(c => !c.source)}
-                                      onChange={actions.update.bind(null, 'countryClassification')}
-                                      selected={selectors.countryClassification} />
+                loading={!classifications.country.length}
+                data={classifications.country.filter(c => !c.source)}
+                onChange={actions.update.bind(null, 'countryClassification')}
+                selected={selectors.countryClassification} />
             </Col>
             <Col md={4}>
               <ItemSelector type="country"
-                            disabled={!selectors.countryClassification || !groups.country.length}
-                            loading={selectors.countryClassification && !groups.country.length}
-                            data={groups.country}
-                            onChange={actions.update.bind(null, 'country')}
-                            selected={selectors.country} />
+                disabled={!selectors.countryClassification || !groups.country.length}
+                loading={selectors.countryClassification && !groups.country.length}
+                data={groups.country}
+                onChange={actions.update.bind(null, 'country')}
+                selected={selectors.country} />
             </Col>
           </Row>
           <hr />
           <Row>
             <SectionTitle title="Direction"
-                          addendum="The French harbor where the transactions were recorded." />
+              addendum="The French harbor where the transactions were recorded." />
             <Col md={4}>
               <ItemSelector type="direction"
-                            loading={!directions}
-                            data={directions || []}
-                            onChange={actions.update.bind(null, 'direction')}
-                            selected={selectors.direction} />
+                loading={!directions}
+                data={directions || []}
+                onChange={actions.update.bind(null, 'direction')}
+                selected={selectors.direction} />
             </Col>
           </Row>
           <hr />
           <Row>
             <SectionTitle title="Kind"
-                          addendum="Should we look at import, export, or total?" />
+              addendum="Should we look at import, export, or total?" />
             <Col md={4}>
               <ItemSelector type="kind"
-                            onChange={actions.update.bind(null, 'kind')}
-                            selected={selectors.kind} />
+                onChange={actions.update.bind(null, 'kind')}
+                selected={selectors.kind} />
             </Col>
           </Row>
           <hr />
           <Row>
           <Col md={2}>
             <Button kind="primary"
-                    onClick={actions.addChart}>
+              onClick={actions.addChart}>
               add charts
             </Button>
           </Col>
@@ -206,7 +206,7 @@ export default class ExplorationMeta extends Component {
             <DataQualityBarChart data={metadata.perYear} /> :
             <Waiter />}
             <ExportButton name={`Toflit18_Meta_view ${metadata.dataType.name} - ${metadata.fileName} data_per_year`}
-                          data={metadata.perYear}>
+              data={metadata.perYear}>
               Export
             </ExportButton>
         </div>}
@@ -215,7 +215,7 @@ export default class ExplorationMeta extends Component {
            <SourcesPerDirections data={metadata.flowsPerYear} /> :
            <Waiter />}
            <ExportButton name={`Toflit18_Meta_view ${metadata.dataType.name} - ${metadata.fileName} flows_per_year`}
-                          data={formatArrayToCSV(metadata.flowsPerYear || [])}>
+             data={formatArrayToCSV(metadata.flowsPerYear || [])}>
               Export
            </ExportButton>
         </div>}

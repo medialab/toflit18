@@ -93,84 +93,84 @@ class LineForm extends Component {
         <hr />
         <Row>
           <SectionTitle title="Source Type"
-                        addendum="From which sources does the flows come from?" />
+            addendum="From which sources does the flows come from?" />
           <Col md={4}>
             <ItemSelector type="sourceType"
-                          data={sourceTypesOptions}
-                          loading={!sourceTypesOptions.length}
-                          onChange={actions.update.bind(null, 'sourceType')}
-                          selected={selectors.sourceType} />
+              data={sourceTypesOptions}
+              loading={!sourceTypesOptions.length}
+              onChange={actions.update.bind(null, 'sourceType')}
+              selected={selectors.sourceType} />
           </Col>
         </Row>
         <hr />
         <Row>
           <SectionTitle title="Product"
-                        addendum="The type of product being shipped." />
+            addendum="The type of product being shipped." />
           <Col md={4}>
             <ClassificationSelector type="product"
-                                    loading={!classifications.product.length}
-                                    data={classifications.product.filter(c => !c.source)}
-                                    onChange={actions.update.bind(null, 'productClassification')}
-                                    selected={selectors.productClassification} />
+              loading={!classifications.product.length}
+              data={classifications.product.filter(c => !c.source)}
+              onChange={actions.update.bind(null, 'productClassification')}
+              selected={selectors.productClassification} />
           </Col>
           <Col md={6}>
             <ItemSelector type="product"
-                          disabled={!selectors.productClassification || !groups.product.length}
-                          loading={selectors.productClassification && !groups.product.length}
-                          data={groups.product}
-                          onChange={actions.update.bind(null, 'product')}
-                          selected={selectors.product} />
+              disabled={!selectors.productClassification || !groups.product.length}
+              loading={selectors.productClassification && !groups.product.length}
+              data={groups.product}
+              onChange={actions.update.bind(null, 'product')}
+              selected={selectors.product} />
           </Col>
         </Row>
         <hr />
         <Row>
           <SectionTitle title="Country"
-                        addendum="The country whence we got the products or wither we are sending them." />
+            addendum="The country whence we got the products or wither we are sending them." />
           <Col md={4}>
             <ClassificationSelector type="country"
-                                    loading={!classifications.country.length}
-                                    data={classifications.country.filter(c => !c.source)}
-                                    onChange={actions.update.bind(null, 'countryClassification')}
-                                    selected={selectors.countryClassification} />
+              loading={!classifications.country.length}
+              data={classifications.country.filter(c => !c.source)}
+              onChange={actions.update.bind(null, 'countryClassification')}
+              selected={selectors.countryClassification} />
           </Col>
           <Col md={6}>
             <ItemSelector type="country"
-                          disabled={!selectors.countryClassification || !groups.country.length}
-                          loading={selectors.countryClassification && !groups.country.length}
-                          data={groups.country}
-                          onChange={actions.update.bind(null, 'country')}
-                          selected={selectors.country} />
+              disabled={!selectors.countryClassification || !groups.country.length}
+              loading={selectors.countryClassification && !groups.country.length}
+              data={groups.country}
+              onChange={actions.update.bind(null, 'country')}
+              selected={selectors.country} />
           </Col>
         </Row>
         <hr />
         <Row>
           <SectionTitle title="Direction"
-                        addendum="The French harbor where the transactions were recorded." />
+            addendum="The French harbor where the transactions were recorded." />
           <Col md={4}>
             <ItemSelector type="direction"
-                          loading={!directions}
-                          data={directions || []}
-                          onChange={actions.update.bind(null, 'direction')}
-                          selected={selectors.direction} />
+              loading={!directions}
+              data={directions || []}
+              onChange={actions.update.bind(null, 'direction')}
+              selected={selectors.direction} />
           </Col>
         </Row>
         <hr />
         <Row>
           <SectionTitle title="Kind"
-                        addendum="Should we look at import, export, or total?" />
+            addendum="Should we look at import, export, or total?" />
           <Col md={4}>
             <ItemSelector type="kind"
-                          onChange={actions.update.bind(null, 'kind')}
-                          selected={selectors.kind} />
+              onChange={actions.update.bind(null, 'kind')}
+              selected={selectors.kind} />
           </Col>
         </Row>
         <hr />
         <Row>
           <Col md={2}>
             <Button kind="primary"
-                    disabled={lineAlreadyExisting}
-                    loading={creating}
-                    onClick={() => {
+              disabled={lineAlreadyExisting}
+              loading={creating}
+              onClick={() => {
                       actions.addLine();
                     }}>
               {lineAlreadyExisting && !creating ? 'Already drawn' : 'Add the line'}
@@ -223,7 +223,7 @@ class GraphPanel extends Component {
         </em>
         <hr />
         <LinesSummary lines={lines}
-                      drop={actions.dropLine} />
+          drop={actions.dropLine} />
         <hr />
         <Charts lines={linesToRender} />
       </div>
@@ -282,8 +282,8 @@ class LinesSummary extends Component {
                 {buildDescription(line.params, line.data)}
               </span>
               <span className="insert drop"
-                    onClick={drop.bind(null, i)}
-                    style={style}>
+                onClick={drop.bind(null, i)}
+                style={style}>
                 ✕
               </span>
             </li>
@@ -379,8 +379,8 @@ class Charts extends Component {
         <hr />
         <div>Total number of directions per year</div>
         <DataQualityBarChart valueKey="nb_direction" data={lines} />
-        <ExportButton name= "Indicators_Number_of_directions_per_year"
-                      data={arrayDataLines}>
+        <ExportButton name="Indicators_Number_of_directions_per_year"
+          data={arrayDataLines}>
           Export data
         </ExportButton>
       </div>

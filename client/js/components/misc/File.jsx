@@ -68,22 +68,22 @@ export default class FileInput extends Component {
     return (
       <div>
         <input ref="file"
-               type="file"
-               key={this.state.id}
-               style={{display: 'none'}}
-               onChange={e => this.handleChange(e)}/>
+          type="file"
+          key={this.state.id}
+          style={{display: 'none'}}
+          onChange={e => this.handleChange(e)} />
         <div className="input-group">
           <input type="text"
-                 className="form-control"
-                 disabled
-                 placeholder={fileChosen ? name : '...'} />
+            className="form-control"
+            disabled
+            placeholder={fileChosen ? name : '...'} />
           <span className="input-group-btn">
             {fileChosen ?
               <Button kind="danger" onClick={() => this.reset()}>
                 ✖
               </Button> :
               <Button kind={fileChosen ? 'primary' : 'secondary'}
-                      onClick={(e) => !fileChosen && this.handleClick(e)}>
+                onClick={(e) => !fileChosen && this.handleClick(e)}>
                 Choose File
               </Button>
             }

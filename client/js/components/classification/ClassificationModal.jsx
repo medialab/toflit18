@@ -37,16 +37,16 @@ export default class ClassificationModal extends Component {
             <div className="full-height">
               <div className="panel">
                 <ModalTitle name={target.name}
-                            model={target.model}
-                            action={modal.type} />
+                  model={target.model}
+                  action={modal.type} />
                 <Upload parser={actions.parse} reset={actions.reset} />
               </div>
               {hasInconsistencies && <ConsistencyReport report={modal.inconsistencies} />}
               {modal.step === 'review' &&
                 <Review get={actions.review.bind(null, target.id)}
-                        commit={actions.commit.bind(null, target.id)}
-                        loading={modal.loading}
-                        review={modal.review} />}
+                  commit={actions.commit.bind(null, target.id)}
+                  loading={modal.loading}
+                  review={modal.review} />}
             </div>
           </Col>
         </Row>
@@ -93,13 +93,13 @@ class Upload extends Component {
           </Col>
           <Col md={3}>
             <input type="text"
-                   className="form-control"
-                   placeholder="delimiter [ , ]" />
+              className="form-control"
+              placeholder="delimiter [ , ]" />
           </Col>
           <Col md={3}>
             <input type="text"
-                   className="form-control"
-                   placeholder={'escape character [ " ]'} />
+              className="form-control"
+              placeholder={'escape character [ " ]'} />
           </Col>
         </Row>
         <Row>
@@ -338,8 +338,8 @@ class Operations extends Component {
               {Object.keys(OPERATION_TYPES).map(type => <OperationsTable key={type} operations={groups[type]} type={type} />)}
               <div style={{textAlign: 'center', marginBottom: '100px'}}>
                 <Button kind="primary"
-                        onClick={() => this.fire()}
-                        loading={this.state.loading}>
+                  onClick={() => this.fire()}
+                  loading={this.state.loading}>
                   Commit
                 </Button>
               </div>
@@ -454,7 +454,7 @@ class OperationsTable extends Component {
           <div style={{textAlign: 'center'}}>
             <hr />
             <Button kind="secondary"
-                    onClick={() => this.setState({opened: true})}>
+              onClick={() => this.setState({opened: true})}>
               Show
             </Button>
           </div>

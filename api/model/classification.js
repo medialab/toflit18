@@ -107,7 +107,7 @@ const Model = {
         };
     }
     else {
-      query = queries['searchGroupsSource'];
+      query = queries.searchGroupsSource;
       params = {
           ...opts,
           id,

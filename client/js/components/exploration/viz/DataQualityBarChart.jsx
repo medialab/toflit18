@@ -141,10 +141,10 @@ export default class DataQualityBarChart extends Component {
               <g key={row.year}>
                 <Tooltip placement="top" align={{offset: [3, 0]}} overlay={dataDisplayed + ` (${row.year})`}>
                   <rect className="bar"
-                        x={x(row.year)}
-                        y={y(row.data) + topMargin}
-                        width={6}
-                        height={height - y(row.data)} />
+                    x={x(row.year)}
+                    y={y(row.data) + topMargin}
+                    width={6}
+                    height={height - y(row.data)} />
                 </Tooltip>
               </g>
             );
@@ -195,7 +195,7 @@ class Legend extends Component {
 
     return (
       <g>
-        <rect x={x} y={y} width="10" height="10" className={className}/>
+        <rect x={x} y={y} width="10" height="10" className={className} />
         <text x={x + 20} y={y + 10} textAnchor="left" className="legend-label">{label}</text>
       </g>
       );

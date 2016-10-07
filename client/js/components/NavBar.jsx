@@ -53,7 +53,7 @@ export default class NavBar extends Component {
     const logoutButton = (
       <li className="nav-item pull-right">
         <a className="nav-link logout"
-           onClick={() => this.props.actions.logout()}>
+          onClick={() => this.props.actions.logout()}>
           Logout
         </a>
       </li>
@@ -68,9 +68,9 @@ export default class NavBar extends Component {
             <ul className="nav navbar-nav">
               {LINKS.map(l => (
                 <li className={cls('nav-item', {active: router.isActive(l.url)})}
-                    key={l.url}>
+                  key={l.url}>
                   <Link to={l.url}
-                        className="nav-link">{l.label}</Link>
+                    className="nav-link">{l.label}</Link>
                 </li>
               ))}
               {logged && logoutButton}
