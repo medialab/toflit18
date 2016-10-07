@@ -195,11 +195,10 @@ export default class ExplorationMeta extends Component {
           <Col md={2}>
             <Button kind="primary"
               onClick={actions.addChart}>
-              add charts
+              Add Charts
             </Button>
           </Col>
         </Row>
-        <hr />
         </div>
         {metadata.dataType && <div className="panel">
           {metadata.perYear ?

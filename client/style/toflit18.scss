@@ -157,6 +157,15 @@ h1 {
   }
 }
 
+// Explanation
+.explanation {
+  font-size: 0.9em;
+}
+
+.section-explanation {
+  line-height: 0.9em;
+  font-size: 0.7em;
+}
 
 /**
  * Navbar.
@@ -342,20 +351,9 @@ h1 {
   .panel {
     padding: 20px;
     margin-bottom: 10px;
-    .dataType {
-      color: red;
-    }
   }
 
   .indicators-wrapper {
-    .explanation {
-      font-size: 0.9em;
-    }
-
-    .section-explanation {
-      line-height: 0.9em;
-      font-size: 0.7em;
-    }
 
     .summary {
       list-style-type: none;

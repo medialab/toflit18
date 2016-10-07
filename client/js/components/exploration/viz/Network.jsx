@@ -125,6 +125,7 @@ export default class Network extends Component {
       });
 
       this.sigma.startForceAtlas2(this.layoutSettings);
+      this.setState({layoutRunning: true});
     }
 
     if (!nextProps.graph) {

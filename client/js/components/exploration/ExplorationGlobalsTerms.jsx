@@ -118,7 +118,7 @@ class TermsPanel extends Component {
             </Col>
           </Row>
           <hr />
-          <Row className="dataType">
+          <Row className="red">
             <SectionTitle title="Product"
               addendum="You must choose the type of product being shipped." />
             <Col md={4}>
@@ -199,22 +199,20 @@ class TermsPanel extends Component {
 
         </Row>
         <hr />
-        <label>
-          <input type="radio"
-            name="optionsRadio"
-            value="community"
-            checked={colorization === 'community'}
-            onChange={radioListener} />
-           Commmunity Color
-        </label>
-        <label>
-          <input type="radio"
-            name="optionsRadio"
-            value="position"
-            checked={colorization === 'position'}
-            onChange={radioListener} />
-           Position Color
-        </label>
+        <input
+          type="radio"
+          name="optionsRadio"
+          value="community"
+          checked={colorization === 'community'}
+          onChange={radioListener} />
+        <span style={{marginLeft: '10px', marginRight: '10px'}}>Community color</span>
+        <input
+          type="radio"
+          name="optionsRadio"
+          value="position"
+          checked={colorization === 'position'}
+          onChange={radioListener} />
+        <span style={{marginLeft: '10px', marginRight: '10px'}}>Position color</span>
         <Network graph={graph} colorKey={colorKey} />
         <br />
         <div className="btn-group">

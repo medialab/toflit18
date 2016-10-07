@@ -96,7 +96,7 @@ class NetworkPanel extends Component {
         <h4>Countries Network</h4>
         <em>Choose a country classification and display a graph showing relations between countries & directions.</em>
         <hr />
-        <Row className="dataType">
+        <Row className="red">
           <SectionTitle title="Country"
             addendum="The country whence we got the products or wither we are sending them." />
           <Col md={4}>
@@ -164,22 +164,20 @@ class NetworkPanel extends Component {
           </Col>
         </Row>
         <hr />
-        <label>
-          <input type="radio"
-            name="optionsRadio"
-            value="flows"
-            checked={ponderation === 'flows'}
-            onChange={radioListener} />
-           Ponderation by number of flows
-        </label>
-        <label>
-          <input type="radio"
+        <input
+          type="radio"
+          name="optionsRadio"
+          value="flows"
+          checked={ponderation === 'flows'}
+          onChange={radioListener} />
+        <span style={{marginLeft: '10px', marginRight: '10px'}}>Ponderation by number of flows</span>
+        <input
+            type="radio"
             name="optionsRadio"
             value="value"
             checked={ponderation === 'value'}
             onChange={radioListener} />
-           Ponderation by sum value of flows
-        </label>
+        <span style={{marginLeft: '10px', marginRight: '10px'}}>Ponderation by sum value of flows</span>
         <hr />
         <Legend />
         <br />
