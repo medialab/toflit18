@@ -74,10 +74,12 @@ class LeftPanel extends Component {
     const list = (
       <div className="full-height">
         <h4 className="classifications-category">Products</h4>
-        <ClassificationsList items={product}
+        <ClassificationsList
+          items={product}
           selected={current.id} />
         <h4 className="classifications-category">Countries</h4>
-        <ClassificationsList items={country}
+        <ClassificationsList
+          items={country}
           selected={current.id} />
       </div>
     );
@@ -93,7 +95,8 @@ class LeftPanel extends Component {
           <hr />
           <div className="actions">
             <Col md={3}>
-              <Button kind="primary"
+              <Button
+                kind="primary"
                 onClick={() => actions.download(current.id)}
                 disabled={current.source || false}
                 loading={downloading}>
@@ -102,7 +105,8 @@ class LeftPanel extends Component {
             </Col>
             <Col md={9} style={{textAlign: 'right'}}>
               <ButtonGroup>
-                <Button kind="secondary"
+                <Button
+                  kind="secondary"
                   disabled
                   onClick={() => actions.modal('create')}>
                   Create From
