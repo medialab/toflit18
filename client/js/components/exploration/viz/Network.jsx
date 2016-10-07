@@ -6,6 +6,7 @@
  * countries and directions.
  */
 import React, {Component} from 'react';
+import screenfull from 'screenfull';
 
 /**
  * Settings.
@@ -95,9 +96,29 @@ export default class Network extends Component {
   }
 
   render() {
+    const toggleFullScreen = () => {
+      const mount = this.refs.mount;
+
+      screenfull.toggle(mount);
+
+      if (screenfull.isFullscreen) {
+        mount.style.width = '100%';
+        mount.style.height = '100%';
+      }
+      else {
+        mount.style.width = null;
+        mount.style.height = null;
+      }
+
+      this.sigma.refresh();
+    };
+
     return (
       <div id="sigma-graph" ref="mount">
-        <Controls instance={this.sigma} layoutSettings={this.layoutSettings} />
+        <Controls
+          toggleFullScreen={toggleFullScreen}
+          instance={this.sigma}
+          layoutSettings={this.layoutSettings} />
       </div>
     );
   }
@@ -155,6 +176,7 @@ class Controls extends Component {
 
   render() {
     const instance = this.props.instance,
+          toggleFullScreen = this.props.toggleFullScreen,
           running = instance.isForceAtlas2Running(),
           icon = running ? 'pause' : 'play';
 
@@ -169,6 +191,9 @@ class Controls extends Component {
 
     return (
       <div className="controls">
+        <div className="control" onClick={toggleFullScreen}>
+          <button><Glyph name="arrows-alt" /></button>
+        </div>
         <div className="control" onClick={() => this.zoom()}>
           <button><Glyph name="plus" /></button>
         </div>
