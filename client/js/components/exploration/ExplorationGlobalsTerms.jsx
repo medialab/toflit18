@@ -217,17 +217,21 @@ class TermsPanel extends Component {
         </label>
         <Network graph={graph} colorKey={colorKey} />
         <br />
-        <ExportButton name={'Toflit18_Global_Terms_Network_view.csv'}
-          data={graphResultAPI}
-          type={'csv'}>
-            Export CSV
-        </ExportButton>
-        <ExportButton name={'Toflit18_Global_Terms_Network_view.gexf'}
-          data={graph}
-          type={'gexf'}
-          network={'terms'}>
-            EXPORT GEXF
-        </ExportButton>
+        <div className="btn-group">
+          <ExportButton
+            name="Toflit18_Global_Terms_Network_view.csv"
+            data={graphResultAPI}
+            type="csv">
+              Export CSV
+          </ExportButton>
+          <ExportButton
+            name="Toflit18_Global_Terms_Network_view.gexf"
+            data={graph}
+            type="gexf"
+            network="terms">
+              Export GEXF
+          </ExportButton>
+        </div>
       </div>
     );
   }

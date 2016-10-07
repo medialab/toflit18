@@ -496,4 +496,16 @@ svg.line-chart {
       }
     }
   }
+
+  .filters {
+    position: absolute;
+    top: 20px;
+    left: 25px;
+    z-index: 1;
+    font-size: 0.7em;
+
+    label {
+      margin-left: 10px;
+    }
+  }
 }

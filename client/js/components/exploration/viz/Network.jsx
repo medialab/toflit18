@@ -13,6 +13,8 @@ import screenfull from 'screenfull';
  */
 const SIGMA_SETTINGS = {
   labelThreshold: 7,
+  labelSize: 'proportional',
+  labelSizeRatio: 2,
   minNodeSize: 2,
   maxEdgeSize: 6,
   edgeColor: 'default',
@@ -42,6 +44,52 @@ export default class Network extends Component {
     });
     this.sigma.addCamera('main');
     this.layoutSettings = LAYOUT_SETTINGS;
+
+    this.state = {
+      labelThreshold: SIGMA_SETTINGS.labelThreshold,
+      labelSizeRatio: SIGMA_SETTINGS.labelSizeRatio,
+      layoutRunning: true
+    };
+
+    this.toggleLayout = () => {
+      const running = this.sigma.isForceAtlas2Running();
+
+      if (!running) {
+        this.sigma.startForceAtlas2(this.layoutSettings);
+      }
+      else {
+        this.sigma.stopForceAtlas2();
+      }
+
+      this.setState({layoutRunning: !running});
+    };
+
+    this.toggleFullScreen = () => {
+      const mount = this.refs.mount;
+
+      screenfull.toggle(mount);
+
+      if (screenfull.isFullscreen) {
+        mount.style.width = '100%';
+        mount.style.height = '100%';
+      }
+      else {
+        mount.style.width = null;
+        mount.style.height = null;
+      }
+
+      this.sigma.refresh();
+    };
+
+    this.updateLabelThreshold = e => {
+      this.setState({labelThreshold: +e.target.value});
+      this.sigma.settings({labelThreshold: +e.target.value});
+    };
+
+    this.updateLabelSizeRatio = e => {
+      this.setState({labelSizeRatio: +e.target.value});
+      this.sigma.settings({labelSizeRatio: +e.target.value});
+    };
   }
 
   componentDidMount() {
@@ -54,12 +102,11 @@ export default class Network extends Component {
   }
 
   componentWillUpdate(nextProps) {
-    this.sigma.killForceAtlas2();
-
     const g = this.sigma.graph;
 
     // We only reset the graph if it is structurally different
     if (nextProps.graph && nextProps.graph !== this.props.graph) {
+      this.sigma.killForceAtlas2();
       g.clear();
 
       // Updating layout
@@ -76,6 +123,8 @@ export default class Network extends Component {
         node.x = 100 * Math.cos(2 * i * Math.PI / N);
         node.y = 100 * Math.sin(2 * i * Math.PI / N);
       });
+
+      this.sigma.startForceAtlas2(this.layoutSettings);
     }
 
     if (!nextProps.graph) {
@@ -87,7 +136,6 @@ export default class Network extends Component {
       g.nodes().forEach(node => node.color = node[nextProps.colorKey]);
 
     this.sigma.refresh();
-    this.sigma.startForceAtlas2(this.layoutSettings);
   }
 
   componentWillUnmount() {
@@ -96,29 +144,18 @@ export default class Network extends Component {
   }
 
   render() {
-    const toggleFullScreen = () => {
-      const mount = this.refs.mount;
-
-      screenfull.toggle(mount);
-
-      if (screenfull.isFullscreen) {
-        mount.style.width = '100%';
-        mount.style.height = '100%';
-      }
-      else {
-        mount.style.width = null;
-        mount.style.height = null;
-      }
-
-      this.sigma.refresh();
-    };
-
     return (
       <div id="sigma-graph" ref="mount">
+        <Filters
+          threshold={this.state.labelThreshold}
+          size={this.state.labelSizeRatio}
+          updateThreshold={this.updateLabelThreshold}
+          updateSizeRatio={this.updateLabelSizeRatio} />
         <Controls
-          toggleFullScreen={toggleFullScreen}
-          instance={this.sigma}
-          layoutSettings={this.layoutSettings} />
+          camera={this.sigma.cameras.main}
+          toggleFullScreen={this.toggleFullScreen}
+          toggleLayout={this.toggleLayout}
+          layoutRunning={this.state.layoutRunning} />
       </div>
     );
   }
@@ -145,7 +182,7 @@ class Controls extends Component {
   }
 
   rescale() {
-    const camera = this.props.instance.cameras.main;
+    const camera = this.props.camera;
 
     sigma.misc.animation.camera(
       camera,
@@ -155,7 +192,7 @@ class Controls extends Component {
   }
 
   zoom() {
-    const camera = this.props.instance.cameras.main;
+    const camera = this.props.camera;
 
     sigma.misc.animation.camera(
       camera,
@@ -165,7 +202,7 @@ class Controls extends Component {
   }
 
   unzoom() {
-    const camera = this.props.instance.cameras.main;
+    const camera = this.props.camera;
 
     sigma.misc.animation.camera(
       camera,
@@ -175,19 +212,9 @@ class Controls extends Component {
   }
 
   render() {
-    const instance = this.props.instance,
-          toggleFullScreen = this.props.toggleFullScreen,
-          running = instance.isForceAtlas2Running(),
-          icon = running ? 'pause' : 'play';
-
-    const toggleLayout = () => {
-      if (instance.isForceAtlas2Running())
-        instance.stopForceAtlas2();
-      else
-        instance.startForceAtlas2(this.props.layoutSettings);
-
-      this.forceUpdate();
-    };
+    const toggleFullScreen = this.props.toggleFullScreen,
+          toggleLayout = this.props.toggleLayout,
+          icon = this.props.layoutRunning ? 'pause' : 'play';
 
     return (
       <div className="controls">
@@ -203,9 +230,38 @@ class Controls extends Component {
         <div className="control" onClick={() => this.rescale()}>
           <button><Glyph name="dot-circle-o" /></button>
         </div>
-        <div className="control" onClick={() => toggleLayout()}>
+        <div className="control" onClick={toggleLayout}>
           <button><Glyph name={icon} /></button>
         </div>
+      </div>
+    );
+  }
+}
+
+/**
+ * Filters.
+ */
+class Filters extends Component {
+  render() {
+    return (
+      <div className="filters">
+        <input
+          name="threshold"
+          type="range"
+          min="0"
+          max="20"
+          value={this.props.threshold}
+          onChange={this.props.updateThreshold} />
+        <label htmlFor="threshold">Label Threshold ({this.props.threshold})</label>
+        <br />
+        <input
+          name="size"
+          type="range"
+          min="1"
+          max="10"
+          value={this.props.size}
+          onChange={this.props.updateSizeRatio} />
+        <label htmlFor="size">Label Size Ratio ({this.props.size})</label>
       </div>
     );
   }

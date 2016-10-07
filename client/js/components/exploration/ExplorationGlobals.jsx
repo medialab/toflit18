@@ -185,16 +185,20 @@ class NetworkPanel extends Component {
         <br />
         <Network graph={graph} ponderationKey={ponderationKey} />
         <br />
-        <ExportButton name={'Toflit18_Global_Trade_Countries_Network_view.csv'}
-          data={graphResultAPI}>
-            Export CSV
-        </ExportButton>
-        <ExportButton name={'Toflit18_Global_Trade_Countries_Network_view.gexf'}
-          data={graph}
-          type={'gexf'}
-          network={'country'}>
-            EXPORT GEXF
-        </ExportButton>
+        <div className="btn-group">
+          <ExportButton
+            name="Toflit18_Global_Trade_Countries_Network_view.csv"
+            data={graphResultAPI}>
+              Export CSV
+          </ExportButton>
+          <ExportButton
+            name="Toflit18_Global_Trade_Countries_Network_view.gexf"
+            data={graph}
+            type="gexf"
+            network="country">
+              Export GEXF
+          </ExportButton>
+        </div>
       </div>
     );
   }
