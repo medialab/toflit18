@@ -21,19 +21,19 @@ TODO: logo
 
 ===
 
-# Ricardo 
+## Ricardo 
 
 TODO: 19th century, worldwide, bilateral trade
 
 ===
 
-# TOFLIT18
+## TOFLIT18
 
 TODO: 18th century, France, product level
 
 ===
 
-# From sources to data
+## From sources to data
 
 archived books > pictures > ? > researchers
 
@@ -100,7 +100,7 @@ Mixing qualitative and quantitative approach
 
 ===
 
-# from data to database
+## From data to database
 \#téléologie
 database leverage access to data
 database choices depends on data usages
@@ -119,19 +119,19 @@ schema neo4J Agent Smith
 
 ===
 
-## classifications
+## Classifications
 Comment faire en sorte que le truc soit utilisable par plusieurs chercheurs 
 + rewire
 
 ===
 
-# to datascapes 
+# To datascapes
 
 Exploratory Data Analysis (slide ricardo)
 
 ===
 
-## data checking
+## Check the data (again?)
 
 Remember the currency issue.
 Here is how we discovered it.
@@ -139,7 +139,7 @@ Here is how we discovered it.
 
 ===
 
-## pipeline loop
+## The pipeline loop
 
 archived books > pictures > excel > csv > database > data viz > csv
 
@@ -151,17 +151,15 @@ metadata toflit screencapture
 
 ===
 
-## ricardo tour
+## Ricardo tour
 
 ===
 
-## toflit18 tour
+## TOFLIT18 tour
 
 ===
 
-## conclusion
-
-===
+## Conclusion
 
 Datascape rulez the world !
 
@@ -173,13 +171,13 @@ Datascape rulez the world !
 
 ## Bibliography & Links (1/2)
 
-<p style="font-size: 0.8em">
+<p class="smaller">
 Dedinger, Béatrice, and Paul Girard. 2016. <em>‘Exploring Trade Globalization in the Long Run : The RICardo Project’</em>. Historical Methods.
 <br>
 [http://ricardo.medialab.sciences-po.fr](http://ricardo.medialab.sciences-po.fr).
 </p>
 
-<p style="font-size: 0.8em">
+<p class="smaller">
 Girard, Paul, Béatrice Dedinger, Donato Ricci, Benjamin Ooghe-Tabanou, Mathieu Jacomy, Guillaume Plique, and Grégory Tible. 2016. <em>‘RICardo Project : Exploring XIX Century International Trade’. In . Kraków, Poland.</em>
 <br>
 [http://ricardo.medialab.sciences-po.fr/Girardetal_RICardo_dh2016_en.pdf](http://ricardo.medialab.sciences-po.fr/Girardetal_RICardo_dh2016_en.pdf).
@@ -189,15 +187,15 @@ Girard, Paul, Béatrice Dedinger, Donato Ricci, Benjamin Ooghe-Tabanou, Mathieu 
 
 ## Bibliography & Links (2/2)
 
-<p style="font-size: 0.8em">
+<p class="smaller">
 Latour, Bruno. 1993. <em>‘Le Topofil de Boa-Vista. La Référence Scientifique: Montage Photophilosophique’</em>. Raisons Pratiques 4: 187–216.
 </p>
 
-<p style="font-size: 0.8em">
+<p class="smaller">
 Latour, Bruno, Pablo Jensen, Tommaso Venturini, Sébastian Grauwin, and Dominique Boullier. 2012. <em>‘“The Whole Is Always Smaller than Its Parts” - a Digital Test of Gabriel Tardes’ Monads’</em>. The British Journal of Sociology 63 (4): 590–615. doi:10.1111/j.1468-4446.2012.01428.x.
 </p>
 
-<p style="font-size: 0.8em">
+<p class="smaller">
 Tukey, John Wilder. 1977. <em>Exploratory Data Analysis</em>. Addison-Wesley Publishing Company.
 </p>
 

@@ -322,3 +322,7 @@ body {
 #main > em {
   font-size: 0.7em;
 }
+
+.reveal p.smaller {
+  font-size: 0.8em;
+}
