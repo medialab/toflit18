@@ -163,17 +163,17 @@ Note: switch to yomgui
 
 ## Data versionning
 
-git: a software source code version constrol system 
-Applied to data corpus management
-Implies textual formats for data files
+- [git](https://git-scm.com/) - a software source code version constrol system 
+- Applied to data corpus management
+- Implies textual formats for data files
 
 ===
 
 ## Textual formats
-textual format ease computational treatments
-CSV, Json, xml are textual formats
 
-No, xls, xlsx and odt are not textual formats.
+- Textual format ease computational treatments
+- CSV, Json, xml are textual formats
+- No, xls, xlsx and odt are not textual formats.
 
 ===
 
@@ -287,7 +287,7 @@ John W. Tukey
 
 ![A broken curve because of null values (wrong value in 1887 & 1888)](./assets/0_null_oups.png)  
 
-oups !  <!-- .element: class="fragment" data-fragment-index="1"-->  
+⬆ oups !  <!-- .element: class="fragment" data-fragment-index="1" style="margin-left:400px"-->  
 
 ===
 <!-- .slide: data-transition="none"-->
@@ -295,25 +295,19 @@ oups !  <!-- .element: class="fragment" data-fragment-index="1"-->
 
 ![A broken curve because of null values](./assets/0_null_fixed.png)  
   
-\- better -
+\- better - <!-- .element: style="margin-left:400px"--> 
 
 ===
 
-## The pipeline loop
-
-archived books > pictures > excel > csv > database > data viz > csv
-
-===
-
-## Metadata views: scarce data aggregation
-
-metadata ricardo (slide ricardo)
+<a href="http://ricardo.medialab.sciences-po.fr/#/metadata" target="_blank">Ricardo metadata view</a> <!-- .element: style="margin:0px"--> 
+![ricardo metadata view](./assets/metadata_view.png) <!-- .element: style="margin:0px"--> 
 
 Note: switch to yomgui
 
 ===
 
-# metadata toflit screencapture
+<a href="http://toflit18.medialab.sciences-po.fr/#/exploration/meta" target="_blank">Toflit18 metadata view</a> <!-- .element: style="margin:0px"--> 
+![toflit18 metadata view](./assets/metadata_toflit18.png) <!-- .element: style="margin:0px"--> 
 
 ===
 
@@ -326,7 +320,7 @@ Note: switch to pom
 
 ===
 
-### Produce your own understanding of 18/19th century World trade
+### Produce your own understanding of 18/19th century French/World trade
 
 <a href="http://ricardo.medialab.sciences-po.fr" target="_blank">http://ricardo.medialab.sciences-po.fr</a>
 
@@ -334,9 +328,10 @@ Note: switch to pom
 
 ===
 
-## Conclusion
+## Organizing the reversible chain of transformations<br><em>From trade statistics records to datascapes
 
-Datascape rulez the world !
+archived books > pictures > excel > git(csv) > database > data viz > csv
+
 
 ===
 
