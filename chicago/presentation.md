@@ -259,6 +259,10 @@ Comment faire en sorte que le truc soit utilisable par plusieurs chercheurs
 
 ===
 
+<!-- .slide: data-background-image="./assets/toflit18_classifications.png"-->
+
+===
+
 ## TOFLIT18 database volumetry
 
 - 419,729 flows
@@ -347,10 +351,30 @@ Note: switch to yomgui
 
 ===
 
-## TOFLIT18 tour
+## TOFLIT18 - A quick tour
+
+===
+
+<!-- .slide: data-background-image="./assets/toflit18_meta.png"-->
+
+===
+
+<!-- .slide: data-background-image="./assets/toflit18_line.png"-->
+
+===
+
+<!-- .slide: data-background-image="./assets/toflit18_line2.png"-->
+
+===
+
+<!-- .slide: data-background-image="./assets/toflit18_network.png"-->
+
+===
 
 Note: switch to pom
+
 ===
+
 ## How to explore RICardo complexity ? 
 
 *Three progressive focus:*
