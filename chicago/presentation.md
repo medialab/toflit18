@@ -19,6 +19,13 @@
 * Mixing qualitative & quantitative approaches
 * Developing software
 * In social sciences & humanities
+===
+<h1 id="main">Organizing the reversible chain of transformations<br><em>From trade statistics records to datascapes</em></h1>
+* Illustrated by RICardo and TOFLIT18 projects
+* Methods and tools:
+  * from archives to data ?
+  * what about databases ?
+  * analysing corpus visually and interactively
 
 ===
 
