@@ -51,6 +51,7 @@ Trade flows between ~~countries~~ entities
 Trade flows between entity A and the world  
 **A <⋅⋅> W**
 
+Note: switch to yomgui
 ===
 
 ## Toflit18: the 18th century
@@ -77,6 +78,7 @@ Trade flows between France and other countries<br>
 Articles réunis ⋅ Indigo ⋅ Mercerie ⋅ Eau de vie ⋅ Librairie ⋅ Vinaigre ⋅ Cacao ⋅ Suif ⋅ Beurre ⋅ Alun ⋅ Liqueurs ⋅ Sel ⋅ Fromage ⋅ Rocou ⋅ Confitures ⋅ Acier ⋅ Fer ; en barres ⋅ Thé ⋅ Huile d'olive ⋅ Porcelaine ⋅ Poivre ⋅ Farine ⋅ Miel ⋅ Chandelle ⋅ Huile ; d'olive ⋅ Fayance ⋅ Savon ⋅ Amidon ⋅ Ris ⋅ Verdet ⋅ Bierre ⋅ Cochenille ⋅ Légumes ⋅ Bijouterie ⋅ Garance ⋅ Horlogerie ⋅ Chocolat ⋅ Meubles ⋅ Quinquina ⋅ Amandes ⋅ Crin ⋅ Papier ; blanc ⋅ Planches ; de sapin ⋅ Jambons ⋅ Lard ⋅ Drogues réunies ⋅ Argenterie ⋅ Bougie ⋅ Gaudron ⋅ Cuivre...
 </p>
 
+Note: switch to pom
 ===
 
 ## From sources to data
@@ -104,13 +106,14 @@ Quantitative analysis to feed qualitative cleaning
 
 ===
 
-## TOFLIT18 - The republican calendar
-
-===
-
 ## Ricardo doublons
 
 Exemple de rapport.csv
+
+Note; switch to yomgui
+===
+
+## TOFLIT18 - The republican calendar
 
 ===
 
@@ -130,6 +133,8 @@ No, xls, xlsx and odt are not textual formats.
 ===
 
 <!-- .slide: data-background-image="./assets/github_toflit18.png"-->
+
+Note: switch to pom
 
 ===
 
@@ -159,6 +164,7 @@ database choices depends on data usages
 
 ![RICardo database schema](./assets/ricardo_schema.svg)
 
+Note: switch to Yomgui
 ===
 
 ## network database for a flexible classifications system
@@ -173,17 +179,6 @@ Comment faire en sorte que le truc soit utilisable par plusieurs chercheurs
 
 ===
 
-## RICardo database volumetry
-
-- 294,138 flows
-- 1,492 RICentities
-- 152 years
-- 120 currencies
-- 7,206 exchange rates to £
-- 73 source types (919 volumes)
-
-===
-
 ## TOFLIT18 database volumetry
 
 - 419,729 flows
@@ -192,6 +187,19 @@ Comment faire en sorte que le truc soit utilisable par plusieurs chercheurs
 - 51 custom french bureaux
 - 120 years
 - 807 source volumes
+
+Note: switch to pom
+
+===
+
+## RICardo database volumetry
+
+- 294,138 flows
+- 1,492 RICentities
+- 152 years
+- 120 currencies
+- 7,206 exchange rates to £
+- 73 source types (919 volumes)
 
 ===
 
@@ -247,15 +255,21 @@ archived books > pictures > excel > csv > database > data viz > csv
 ## Metadata views: scarce data aggregation
 
 metadata ricardo (slide ricardo)
-metadata toflit screencapture
+
+Note: switch to yomgui
 
 ===
 
-## Ricardo tour
+# metadata toflit screencapture
 
 ===
 
 ## TOFLIT18 tour
+
+Note: switch to pom
+===
+
+## Ricardo tour
 
 ===
 
