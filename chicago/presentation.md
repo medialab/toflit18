@@ -128,6 +128,7 @@ Implies textual formats for data files
 ## Textual formats
 textual format ease computational treatments
 CSV, Json, xml are textual formats
+
 No, xls, xlsx and odt are not textual formats.
 
 ===
@@ -156,8 +157,9 @@ Mixing qualitative and quantitative approach
 ===
 
 ## From data to database
-\#téléologie
+
 database leverage access to data
+
 database choices depends on data usages
 
 ===
