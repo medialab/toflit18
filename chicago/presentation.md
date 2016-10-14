@@ -6,37 +6,33 @@
 </p>
 
 <p align="center">
-  <em>From Quantitative to Qualitative Analysis: New Perspectives on Research in Social History</em>
-</p>
-
-<p align="center">
+ <small>
+  <em>From Quantitative to Qualitative Analysis:<br> New Perspectives on Research in Social History</em><br>
   Neubauer Collegium for Culture and Society<br>
   10/14/2016
+  </small>
 </p>
 
 ===
-
-## SciencesPo médialab
-
+<img alt="!Sciences Po médialab" src="./assets/SciencesPO_MEDIALAB.png" style="margin: 0;">
 * Designing digital methods
 * Mixing qualitative & quantitative approaches
-* Developing software for social sciences & humanities
-
-TODO: logo
+* Developing software
+* In social sciences & humanities
 
 ===
 
-## RICardo: the 19th century
+## RICardo ⋅ 19th century
 
 <p align="center"><em>year by year</em><br> 
 1787 ⋅ ⋅ ⋅ ⋅ ⋅ ⋅ ⋅ ⋅ ⋅ ⋅ ⋅ ⋅ 1938</p>
 
 ===
 
-## RICardo: Bilateral trade
-
+## RICardo ⋅ bilateral trade
+<p align="center">
 Trade flows between ~~countries~~ entities  
-**A <⋅⋅> B**
+**A <⋅⋅> B**</p>
 
 ===
 
@@ -46,10 +42,10 @@ Trade flows between ~~countries~~ entities
 
 ===
 
-## RICardo: Total trade
-
+## RICardo ⋅ Total trade
+<p align="center">
 Trade flows between entity A and the world  
-**A <⋅⋅> W**
+**A <⋅⋅> W**</p>
 
 Note: switch to yomgui
 ===
@@ -82,35 +78,83 @@ Note: switch to pom
 ===
 
 ## From sources to data
-
+<p align="center">
 archived books > pictures > **?** > researchers
-
+</p>
 ===
 
-## Transcription
-
-TODO: image d'un stagiaire
-
+## Manual transcription
+<p align="center">
+![manual transcription](./assets/transcription.png)
+</p>
 ===
 
-## Data cleaning
+<!-- .slide: data-background-image="./assets/open_refine_ricardo.png"-->
 
-Open Refine clustering copie d'écran
+Note: cleaning Ricardo with Open Refine
 
 ===
 
 ## Data troubleshooting
 
-Data quality automatic checks
-Quantitative analysis to feed qualitative cleaning
+* Data quality automatic checks
+* Quantitative analysis to feed qualitative cleaning
 
 ===
+## Ricardo data-test report
+```python
+# RICnames TEST
+0 missing reporting in RICnames
+0 missing partners in RICnames
+missings written in out_data
+# CURRENCY TEST
+total number of currencies in flow 12366
+check number before/after set currency : 12366/12366
+check number before/after set modified_currency : 16382/16382
+in currency not in flow 4016
+in flow not in currency 0
+in flow and in currency 12366
+in flow in currency not in rate 1
+total known currencies in flow 12365
+missign rates exported in out_data
+# EXP IMP TEST
+missing expimp spe/gen in standards :0
+EXP IMP TEST : OK
+# FLOWS DUPLICATES TEST
+## Spe/gen Dups
+   number of spe/gen to clean 0
+   reporting countries with spe/gen dups :
+## dups
+   number of dups to clean 166
+   reporting countries with  dups :
+   Algeria: 8 flows
+   Portugal: 12 flows
+   Sri Lanka (Ceylon): 2 flows
+   British Somaliland (Somaliland Republic): 14 flows
+   United States of America: 10 flows
+   Malta: 4 flows
+   Straits Settlements: 6 flows
+   United Kingdom: 60 flows
+   Bermuda: 2 flows
+   New Hebrides: 32 flows
+   Lisbon: 2 flows
+   Spain: 2 flows
+   Zanzibar: 12 flows
+#TOTAL TRADE TEST
+470 undefined type of Total Trade to World
+21828 number of reporting exp or imp total annual flows on 255193 total
 
-## Ricardo doublons
+repartition of type of Total Trade to World as duplicates:
 
-Exemple de rapport.csv
+20892 95.7% flows compatible with world view
+17388 79.7% flows compatible with world view
+22 flows to World with only undefined Total
 
-Note; switch to yomgui
+isolating World_undefined-only flows :
+Reporting: Bremen, 22 cases, years: 1848|1848|1849|1849|1850|1850|1851|1851|1852|1852|1853|1853|1854|1854|1857|1857|1862|1862|1863|1863|1872|1872
+```
+
+Note: switch to yomgui
 ===
 
 ## TOFLIT18 - The republican calendar
