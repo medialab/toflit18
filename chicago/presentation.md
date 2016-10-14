@@ -315,8 +315,45 @@ Note: switch to yomgui
 
 Note: switch to pom
 ===
+## How to explore RICardo complexity ? 
 
-## Ricardo tour
+*Three progressive focus:*
+
+**World** > **Country** > **Bilateral**  
+
+*one visual documentation:*
+
+**Metadata**
+
+===
+## RICardo World view - general
+![Ricardo World view general view](./assets/ricardo_world_1.png)
+===
+## RICardo World view - detail
+![Ricardo World view detailed view](./assets/ricardo_world_2.png)
+===
+## RICardo Country view
+![Ricardo Country view ](./assets/ricardo_country_1.png)
+===
+## RICardo Country view - trade partners
+![Ricardo Country view trade partners view](./assets/ricardo_country_2.png)
+===
+## RICardo Bilateral view
+
+![bilateral trade discrepancy indicator between Austria-Hungary and United Kingdom](./assets/ricardo_bilateral.png)
+
+<small>**Dedinger, B.** (2012). The Franco-German trade puzzle: an analysis of the economic consequences of the Franco-Prussian war1: THE FRANCO-GERMAN TRADE PUZZLE. *The Economic History Review*, 65(3): 1029–54 doi:10.1111/j.1468-0289.2011.00604.x.</small>
+  
+  
+<small>**Don, Y.** (1968). Comparability of International Trade Statistics: Great Britain and Austria-Hungary
+before World War I. *The Economic History Review* 21:78-92.</small>
+
+===
+## About visualizing historical data issues
+
+[medialab.github.io/ricardo](http://medialab.github.io/ricardo/#/)
+
+<small>**Girard, P., Dedinger, B., Ricci, D., Ooghe-Tabanou, B., Jacomy, M., Plique, G. and Tible, G.** (2016). RICardo Project : Exploring XIX Century International Trade. Kraków, Poland http://ricardo.medialab.sciences-po.fr/Girardetal_RICardo_dh2016_en.pdf.</small>
 
 ===
 
@@ -328,8 +365,7 @@ Note: switch to pom
 
 ===
 
-## Organizing the reversible chain of transformations<br><em>From trade statistics records to datascapes
-
+### Organizing the reversible chain of transformations
 archived books > pictures > excel > git(csv) > database > data viz > csv
 
 
