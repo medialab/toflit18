@@ -254,8 +254,12 @@ Note: switch to Yomgui
 ===
 
 ## Classifications
-Comment faire en sorte que le truc soit utilisable par plusieurs chercheurs 
-+ rewire
+
+Going back to one of the main goal of the TOFLIT18 project: **classifications** built to answer one's research questions (why not linguistics?).
+
+The database model aims at solving this problem.
+
+If we have some time, we'll talk about working on recursive hierarchies rewiring not to break researchers' hard work.
 
 ===
 
