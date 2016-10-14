@@ -194,17 +194,15 @@ Note: switch to pom
 
 ## Data Care
 
-Towards data quality
-Mixing qualitative and quantitative approach
-\#bullshit alert
+* Towards data quality
+* Mixing qualitative and quantitative work
 
 ===
 
 ## From data to database
 
-database leverage access to data
-
-database choices depends on data usages
+* databases leverage access to data
+* one database choice depends on usages
 
 ===
 
@@ -283,12 +281,21 @@ John W. Tukey
 <small>**Tukey, J. W.** (1977). *Exploratory Data Analysis*. Addison-Wesley Publishing Company.</small>
 
 ===
+<!-- .slide: data-transition="none"-->
 
-## Check the data (again?)
+## Visualize the data
 
-Remember the currency issue.
-Here is how we discovered it.
-(slide ricardo)
+![A broken curve because of null values (wrong value in 1887 & 1888)](./assets/0_null_oups.png)  
+
+oups !  <!-- .element: class="fragment" data-fragment-index="1"-->  
+
+===
+<!-- .slide: data-transition="none"-->
+## Check and correct the data
+
+![A broken curve because of null values](./assets/0_null_fixed.png)  
+  
+\- better -
 
 ===
 
