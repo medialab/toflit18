@@ -50,7 +50,7 @@ Trade flows between entity A and the world
 Note: switch to yomgui
 ===
 
-## Toflit18: the 18th century
+## TOFLIT18: the 18th century
 
 <p align="center"><em>year by year</em><br>
 
@@ -332,7 +332,7 @@ Note: switch to yomgui
 
 ===
 
-<a href="http://toflit18.medialab.sciences-po.fr/#/exploration/meta" target="_blank">Toflit18 metadata view</a> <!-- .element: style="margin:0px"--> 
+<a href="http://toflit18.medialab.sciences-po.fr/#/exploration/meta" target="_blank">TOFLIT18 metadata view</a> <!-- .element: style="margin:0px"--> 
 ![toflit18 metadata view](./assets/metadata_toflit18.png) <!-- .element: style="margin:0px"--> 
 
 ===
