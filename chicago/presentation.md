@@ -14,7 +14,7 @@
 </p>
 
 ===
-<img alt="!Sciences Po médialab" src="./assets/SciencesPO_MEDIALAB.png" style="margin: 0;">
+<img alt="Sciences Po médialab" src="./assets/SciencesPO_MEDIALAB.png" style="margin: 0;">
 * Designing digital methods
 * Mixing qualitative & quantitative approaches
 * Developing software
@@ -157,7 +157,35 @@ Reporting: Bremen, 22 cases, years: 1848|1848|1849|1849|1850|1850|1851|1851|1852
 Note: switch to yomgui
 ===
 
-## TOFLIT18 - The republican calendar
+<p align="center">
+  <img alt="Republican Calendar" src="./assets/republican_calendar.jpg" style="width: 55%;"/>
+</p>
+
+===
+
+## The Republican Calendar
+
+Not French Revolution's best idea.
+
+```js
+const AN_REGEX = /An (\d+)/i;
+
+export function normalizeYear(year) {
+  const m = year.match(AN_REGEX);
+
+  if (!m)
+    return +year;
+
+  const nb = m[1];
+
+  if (nb < 2 || nb > 14)
+    throw Error(
+      `toflit18.republican_calendar.normalizeYear: invalid year ${year}.`
+    );
+
+  return 1792 + (+nb);
+}
+```
 
 ===
 
@@ -211,9 +239,7 @@ Note: switch to pom
 Note: switch to Yomgui
 ===
 
-## network database for a flexible classifications system
-
-schema neo4J Agent Smith
+![TOFLIT18 database schema](./assets/neo4j-schema.png)
 
 ===
 
