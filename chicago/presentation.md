@@ -373,8 +373,6 @@ Note: switch to yomgui
 
 <!-- .slide: data-background-image="./assets/toflit18_network.png"-->
 
-===
-
 Note: switch to pom
 
 ===
