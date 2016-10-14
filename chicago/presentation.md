@@ -27,6 +27,9 @@
   * what about databases ?
   * analysing corpus visually and interactively
 
+<p class="smaller">
+Latour, Bruno. 1993. <em>‘Le Topofil de Boa-Vista. La Référence Scientifique: Montage Photophilosophique’</em>. Raisons Pratiques 4: 187–216.
+</p>
 ===
 
 ## RICardo ⋅ 19th century
