@@ -6,7 +6,12 @@
 </p>
 
 <p align="center">
-  TODO: titre workshop, Neurbauer, dates
+  <em>From Quantitative to Qualitative Analysis: New Perspectives on Research in Social History</em>
+</p>
+
+<p align="center">
+  Neubauer Collegium for Culture and Society<br>
+  10/14/2016
 </p>
 
 ===
