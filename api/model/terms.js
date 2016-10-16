@@ -33,23 +33,24 @@ const ModelTerms = {
             query.match('(cg)-[:AGGREGATES*0..]->(ci)');
             const whereCountry = new Expression('id(cg) = ' + country);
             query.where(whereCountry);
+            query.with("collect(ci.name) as countries")
         }
 
         // Match product classification
-        query.match('(pc)-[:HAS]->(group)-[:AGGREGATES*0..]->(pi)');
-        query.where('id(pc) = ' + classification);
-        query.with('collect(pi.name) as terms, group');
-
-        // Match on flows with selectors choices
-        query.match('(f:Flow)');//-[OF]->(pi)');
-        //-- direction
+        let match = '(pc)-[:HAS]->(group)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow)';
         if (direction && direction !== '$all$') {
-            query.match('(d:Direction)');
-            where.and('id(d) = ' + direction);
-            where.and('f.direction = d.name');
-            query.params({direction});
+          match += '-[:FROM|:TO]->(d:Direction)';
         }
-        where.and('f.product IN terms');
+        query.match(match)
+
+        // build WHERE 
+        where.and('id(pc) = ' + classification);
+        if (direction && direction !== '$all$') {
+            where.and('id(d) = ' + direction);
+        }
+        if(countryClassification)
+          where.and('f.country IN countries')
+      
 
         // manage special sourceType
         if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
@@ -82,7 +83,7 @@ const ModelTerms = {
 
   //       WITH group.name as term,sum(toFloat(f.value)) as value, count(f) as occ
   // RETURN term, value, occ
-
+        console.log(query.compile())
         database.cypher(query.build(), function(err, data) {
             if (err) return callback(err);
             if (!data.length) return callback(null, null);
