@@ -27,9 +27,7 @@ export default class SourcesPerDirections extends Component {
 
     if (!unsorted)
       return null;
-
-    const data = sortBy(unsorted, 'name');
-
+    const data = sortBy(unsorted, function(d){ return d.data.length;}).reverse();
     // Computing max values
     let allYears = new Set(),
         allFlows = new Set();
