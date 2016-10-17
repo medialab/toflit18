@@ -21,7 +21,7 @@
 * In social sciences & humanities
 ===
 <h1 id="main">Organizing the reversible chain of transformations<br><em>From trade statistics records to datascapes</em></h1>
-* Illustrated by RICardo and TOFLIT18 projects
+* Illustrated by [RICardo](http://ricardo.medialab.sciences-po.fr) and [TOFLIT18](https://toflit18.hypotheses.org/) projects
 * Methods and tools:
   * from archives to data ?
   * what about databases ?
@@ -248,7 +248,7 @@ Note: switch to pom
 
 Note: switch to Yomgui
 ===
-
+## Toflit18 [NEO4J](https://neo4j.com/) schema
 ![TOFLIT18 database schema](./assets/neo4j-schema.png)
 
 ===
@@ -339,7 +339,7 @@ John W. Tukey
 
 ![A broken curve because of null values](./assets/0_null_fixed.png)  
   
-\- better - <!-- .element: style="margin-left:400px"--> 
+\- corrected as showed [slide 20](./#/20) -
 
 ===
 
@@ -372,6 +372,11 @@ Note: switch to yomgui
 ===
 
 <!-- .slide: data-background-image="./assets/toflit18_network.png"-->
+===
+![toflit18_term_network_LaRochelle_17201729_exports](./assets/toflit18_term_network_LaRochelle_17201729_exports.png)<!-- .element: style="height:450px"--> 
+
+Co-occurrences of product terms  
+in "La Rochelle" exports between 1720 and 1729
 
 Note: switch to pom
 
