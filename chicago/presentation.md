@@ -210,8 +210,8 @@ export function normalizeYear(year) {
 ## Textual formats
 
 - Textual format ease computational treatments
-- CSV, Json, xml are textual formats
-- No, xls, xlsx and odt are not textual formats.
+- CSV, JSON, XML are textual formats
+- No, XLS, XLSX and ODT are not textual formats.
 
 ===
 
