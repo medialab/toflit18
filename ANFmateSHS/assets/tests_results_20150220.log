@@ -1,0 +1,50 @@
+0 missing reporting in RICnames
+0 missing partners in RICnames
+missings written in out_data
+CURRENCY TEST : OK
+total number of currencies in flow 12366
+check number before/after set currency : 12366/12366
+check number before/after set modified_currency : 16382/16382
+in currency not in flow 4016
+in flow not in currency 0
+in flow and in currency 12366
+in flow in currency not in rate 1
+total known currencies in flow 12365
+missign rates exported in out_data
+CURRENCY TEST : OK
+missing expimp spe/gen in standards :0
+EXP IMP TEST : OK
+83
+# flow_joined
+## Spe/gen Dups
+   number of spe/gen to clean 0
+   reporting countries with spe/gen dups :
+## dups
+   number of dups to clean 166
+   reporting countries with  dups :
+   Algeria: 8 flows
+   Portugal: 12 flows
+   Sri Lanka (Ceylon): 2 flows
+   British Somaliland (Somaliland Republic): 14 flows
+   United States of America: 10 flows
+   Malta: 4 flows
+   Straits Settlements: 6 flows
+   United Kingdom: 60 flows
+   Bermuda: 2 flows
+   New Hebrides: 32 flows
+   Lisbon: 2 flows
+   Spain: 2 flows
+   Zanzibar: 12 flows
+FLOW TEST : OK
+470 undefined type of Total Trade to World
+21828 number of reporting exp or imp total annual flows on 255193 total
+
+repartition of type of Total Trade to World as duplicates:
+
+20892 95.7% flows compatible with world view
+17388 79.7% flows compatible with world view
+22 flows to World with only undefined Total
+
+isolating World_undefined-only flows :
+Reporting: Bremen, 22 cases, years: 1848|1848|1849|1849|1850|1850|1851|1851|1852|1852|1853|1853|1854|1854|1857|1857|1862|1862|1863|1863|1872|1872
+TOTAL_TYPE TEST : OK
