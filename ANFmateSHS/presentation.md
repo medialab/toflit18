@@ -71,7 +71,7 @@ Flux de commerce entre les entités A et le monde
 
 ## TOFLIT18: commerce de la France
 
-Flux de commerce entre la France and ses partenaires commerciaux<br>
+Flux de commerce entre la France et ses partenaires commerciaux<br>
 **France <⋅⋅> A,B,C**<br>
 *rapportés par l'état français*
 
@@ -210,7 +210,7 @@ export function normalizeYear(year) {
 
 - Les fichiers texte brut facilitent les traitements informatiques.
 - CSV, JSON, XML sont des formats de fichier texte brut.
-- Non, XLS, XLSX and ODT n'en sont pas.
+- Non, XLS, XLSX et ODT n'en sont pas.
 
 ===
 
@@ -270,8 +270,8 @@ Le modèle a été conçu pour proposer des **classifications** :
 
 ## la base de données TOFLIT18
 
-- 419,729 flux
-- 47,732 produits
+- 419729 flux
+- 47732 produits
 - 843 pays
 - 51 bureaux de commerce français
 - 120 années
@@ -281,11 +281,11 @@ Le modèle a été conçu pour proposer des **classifications** :
 
 ## la base de données RICardo
 
-- 294,138 flux
-- 1,492 RICentities
+- 294138 flux
+- 1492 RICentities
 - 152 années
 - 120 monnaies
-- 7,206 taux de change vers le £
+- 7206 taux de change vers le £
 - 73 types de sources (919 volumes)
 
 ===
@@ -320,8 +320,8 @@ en même temps et au même endroit.
 > « The greatest value of a picture is when it
 forces us to notice what we never expected to
 see. »  
-John W. Tukey
-  
+Tukey, J. W. 
+
 <small>**Tukey, J. W.** (1977). *Exploratory Data Analysis*. Addison-Wesley Publishing Company.</small>
 
 ===
@@ -363,8 +363,8 @@ Un avant goût de l'atelier TOFLIT18/Ricardo
 
 ![toflit18_term_network_LaRochelle_17201729_exports](./assets/toflit18_term_network_LaRochelle_17201729_exports.png)<!-- .element: style="height:450px"--> 
 
-Co-occurrences of product terms  
-in "La Rochelle" exports between 1720 and 1729
+Co-occurrences de termes dans les noms de produits  
+dans les exports de "La Rochelle" entre 1720 et 1729
 
 Rendez vous ce soir à 18h30.
 
@@ -382,10 +382,12 @@ Note: switch to pom
 ## Science ouverte
 
 - télécharger les données des visualizations en csv
-- corpus de données seront ouverts en 2017 (CC BY-SA)
-- RICardo code source: [github.com/medialab/ricardo](https://github.com/medialab/ricardo)
-- TOFLIT18 code source : [github.com/medialab/toflit18](https://github.com/medialab/toflit18)
-- cette presentation: [http://medialab.github.io/toflit18/ANFmateSHS](https://medialab.github.io/toflit18/ANFmateSHS)    
+- corpus de données seront ouverts en 2017  
+CC BY-SA
+- RICardo : [http://ricardo.medialab.sciences-po.fr](http://ricardo.medialab.sciences-po.fr)
+- sources RICardo : [github.com/medialab/ricardo](https://github.com/medialab/ricardo)
+- sources TOFLIT18 : [github.com/medialab/toflit18](https://github.com/medialab/toflit18)
+- cette présentation: [http://medialab.github.io/toflit18/ANFmateSHS](https://medialab.github.io/toflit18/ANFmateSHS)    
 
 ===
 
