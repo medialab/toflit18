@@ -61,6 +61,10 @@ Flux de commerce entre les entités A et le monde
 
 ===
 
+<!-- .slide: data-background-image="./assets/ricardo_source.png"-->
+
+===
+
 ## TOFLIT18: le XVIIIème siècle
 
 <p align="center"><em>données annuelles</em><br>
@@ -74,6 +78,12 @@ Flux de commerce entre les entités A et le monde
 Flux de commerce entre la France et ses partenaires commerciaux<br>
 **France <⋅⋅> A,B,C**<br>
 *rapportés par l'état français*
+
+===
+
+## TOFLIT18 : les sources
+
+![un exemple de source de TOFLTI18](./assets/toflit18_source.png)
 
 ===
 
