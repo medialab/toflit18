@@ -243,6 +243,8 @@ export function normalizeYear(year) {
 
 ![RICardo database schema](./assets/ricardo_schema.svg)
 
+<small>collaboration avec Karine ONFROY G.R.E.T.h.A (UMR CNRS 5113) Bordeaux</small>
+
 ===
 ## Toflit18 [NEO4J](https://neo4j.com/) schema
 ![TOFLIT18 database schema](./assets/neo4j-schema.png)
