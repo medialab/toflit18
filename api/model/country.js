@@ -28,40 +28,39 @@ const ModelNetwork = {
 
     const query = new Query(),
           where = new Expression(),
-          withs = [];
+          matchs = [];
+
 
     // start query from country classification
-    query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(c:Country)');
-    const whereCountry = new Expression('id(cc) = ' + classification);
-    query.where(whereCountry);
-    query.with('cg.name AS country, c.name AS sc');
-
-    if (productClassification) {
-        query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)');
-
-        const whereProduct = new Expression('id(pc) = ' + productClassification);
-        query.params({productClassification});
-
-        if (product) {
-          whereProduct.and('id(pg) = ' + product);
-          query.params({product});
-        }
-
-        withs.push('products');
-        query.where(whereProduct);
-        query.with('collect(pi.name) AS products, country, sc');
-      }
-
-     query.match('(f:Flow)');//-[OF]->(pi)');
-     where.and('has(f.direction) AND f.country = sc');
-    if (productClassification) {
-        where.and(' f.product IN products');
-    }
-    //-- Import/Export
+    // define import export edge type filter
+    let exportImportFilter = ':FROM|:TO';
     if (kind === 'import')
-        where.and('f.import');
+      exportImportFilter = ':FROM';
     else if (kind === 'export')
-        where.and('not(f.import)');
+      exportImportFilter = ':TO';
+    matchs.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
+    const whereCountry = new Expression('id(cc) = {classification}');
+    query.params({classification});
+
+    where.and(whereCountry);
+
+    //-- Do we need to match a product?
+    if (productClassification) {
+      matchs.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
+      const whereProduct = new Expression('id(pc) = {productClassification}');
+      query.params({productClassification});
+
+      if (product) {
+        whereProduct.and('id(pci) = {product}');
+        query.params({product});
+      }
+      where.and(whereProduct);
+    }
+
+    if (matchs.length > 0)
+      query.match(matchs);
+    //restrict flows to those which has direction
+    where.and('has(f.direction)');
 
     if (dateMin)
         where.and('f.year >= ' + dateMin);
@@ -72,7 +71,7 @@ const ModelNetwork = {
     if (!where.isEmpty())
         query.where(where);
 
-    query.return('country, f.direction AS direction, count(f) AS count, sum(f.value) AS value');
+    query.return('cci.name as country, f.direction AS direction, count(f) AS count, sum(f.value) AS value');
 
     database.cypher(query.build(), function(err, data) {
 

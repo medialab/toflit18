@@ -27,78 +27,74 @@ const ModelCreateLine = {
     // Building the query
     const query = new Query(),
           where = new Expression(),
-          withs = [];
+          match = [];
+
+
+    //-- Should we match a precise direction?
+    if (direction && direction !== '$all$') {
+      // define import export edge type filter
+      let exportImportFilter = ':FROM|:TO';
+      if (kind === 'import')
+        exportImportFilter = ':TO';
+      else if (kind === 'export')
+        exportImportFilter = ':FROM';
+      match.push(`(d:Direction)<-[${exportImportFilter}]-(f:Flow)`);
+      where.and('id(d) = {direction}');
+      query.params({direction});
+    }
 
     //-- Do we need to match a product?
     if (productClassification) {
-      query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*1..]->(pi)');
-
+      match.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
       const whereProduct = new Expression('id(pc) = {productClassification}');
       query.params({productClassification});
 
       if (product) {
-        whereProduct.and('id(pg) = {product}');
+        whereProduct.and('id(pci) = {product}');
         query.params({product});
       }
-
-      withs.push('products');
-      query.where(whereProduct);
-      query.with('collect(pi.name) AS products');
+      where.and(whereProduct);
     }
 
     //-- Do we need to match a country?
     if (countryClassification) {
-      query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*1..]->(ci)');
+      // define import export edge type filter
+      let exportImportFilter = ':FROM|:TO';
+      if (kind === 'import')
+        exportImportFilter = ':FROM';
+      else if (kind === 'export')
+        exportImportFilter = ':TO';
+      match.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
 
       const whereCountry = new Expression('id(cc) = {countryClassification}');
       query.params({countryClassification});
 
       if (country) {
-        whereCountry.and('id(cg) = {country}');
+        whereCountry.and('id(cci) = {country}');
         query.params({country});
       }
 
-      query.where(whereCountry);
-      query.with(withs.concat('collect(ci.name) AS countries').join(', '));
+      where.and(whereCountry);
     }
 
-    //-- Basic match
-    query.match('(f:Flow)');
+    //-- Do we need to match a source type
+    if (sourceType) {
+      match.push('(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)');
 
-    //-- Should we match a precise direction?
-    if (direction && direction !== '$all$') {
-      query.match('(d:Direction)');
-      where.and('id(d) = {direction}');
-      where.and('f.direction = d.name');
-      query.params({direction});
+      if (sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
+       where.and('s.type = {sourceType}');
+       query.params({sourceType});
+      }
+      else if (sourceType === 'National best guess') {
+       where.and('s.type IN ["Objet Général", "Résumé", "National par direction"]');
+      }
+      else if (sourceType === 'Local best guess') {
+       where.and('s.type IN ["Local","National par direction"] and f.year <> 1749 and f.year <> 1751');
+      }
     }
 
-    //-- Import/Export
-    if (kind === 'import')
-      where.and('f.import');
-    else if (kind === 'export')
-      where.and('not(f.import)');
-
-    if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
-      where.and(`f.sourceType = "${sourceType}"`);
-    }
-
-    if (sourceType === 'National best guess') {
-       where.and('f.sourceType IN ["Objet Général", "Résumé", "National par direction"]');
-    }
-
-    if (sourceType === 'Local best guess') {
-       where.and('f.sourceType IN ["Local","National par direction"] and f.year <> 1749 and f.year <> 1751');
-    }
-
-    // NOTE: country must come first for cardinality reasons
-    if (countryClassification) {
-      where.and('f.country IN countries');
-    }
-
-    if (productClassification) {
-      where.and('f.product IN products');
-    }
+    if (match.length > 0)
+      query.match(match);
 
     if (!where.isEmpty())
       query.where(where);

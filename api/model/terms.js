@@ -26,50 +26,67 @@ const ModelTerms = {
         } = params;
 
         const query = new Query(),
-              where = new Expression();
+              where = new Expression(),
+              matchs = [];
+
+        //-- Do we need to match a product?
+
+        matchs.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
+        const whereProduct = new Expression('id(pc) = {classification}');
+        query.params({classification});
+
+        where.and(whereProduct);
+
+        //-- Should we match a precise direction?
+        if (direction && direction !== '$all$') {
+          // define import export edge type filter
+          let exportImportFilter = ':FROM|:TO';
+          if (kind === 'import')
+            exportImportFilter = ':TO';
+          else if (kind === 'export')
+            exportImportFilter = ':FROM';
+          matchs.push(`(d:Direction)<-[${exportImportFilter}]-(f:Flow)`);
+          where.and('id(d) = {direction}');
+          query.params({direction});
+        }
+
 
         //-- Do we need to match a country?
         if (countryClassification) {
-            query.match('(cg)-[:AGGREGATES*0..]->(ci)');
-            const whereCountry = new Expression('id(cg) = ' + country);
-            query.where(whereCountry);
-            query.with("collect(ci.name) as countries")
+          // define import export edge type filter
+          let exportImportFilter = ':FROM|:TO';
+          if (kind === 'import')
+            exportImportFilter = ':FROM';
+          else if (kind === 'export')
+            exportImportFilter = ':TO';
+          matchs.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
+
+          const whereCountry = new Expression('id(cc) = {countryClassification}');
+          query.params({countryClassification});
+
+          if (country) {
+            whereCountry.and('id(cci) = {country}');
+            query.params({country});
+          }
+
+          where.and(whereCountry);
         }
 
-        // Match product classification
-        let match = '(pc)-[:HAS]->(group)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow)';
-        if (direction && direction !== '$all$') {
-          match += '-[:FROM|:TO]->(d:Direction)';
-        }
-        query.match(match)
+        //-- Do we need to match a source type
+        if (sourceType) {
+          matchs.push('(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)');
 
-        // build WHERE 
-        where.and('id(pc) = ' + classification);
-        if (direction && direction !== '$all$') {
-            where.and('id(d) = ' + direction);
+          if (sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
+           where.and('s.type = {sourceType}');
+           query.params({sourceType});
+          }
+          else if (sourceType === 'National best guess') {
+           where.and('s.type IN ["Objet Général", "Résumé", "National par direction"]');
+          }
+          else if (sourceType === 'Local best guess') {
+           where.and('s.type IN ["Local","National par direction"] and f.year <> 1749 and f.year <> 1751');
+          }
         }
-        if(countryClassification)
-          where.and('f.country IN countries')
-      
-
-        // manage special sourceType
-        if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
-            where.and(`f.sourceType = "${sourceType}"`);
-        }
-
-        if (sourceType === 'National best guess') {
-            where.and('(f.sourceType IN ["Objet Général", "Résumé"] or (f.sourceType= "National par direction" and f.year <> 1749 and f.year <> 1751))');
-        }
-
-        if (sourceType === 'Local best guess') {
-            where.and('f.sourceType IN ["Local","National par direction"] ');
-        }
-
-        //-- Import/Export
-        if (kind === 'import')
-            where.and('f.import');
-        else if (kind === 'export')
-            where.and('not(f.import)');
 
         if (dateMin)
             where.and('f.year >= ' + dateMin);
@@ -77,13 +94,17 @@ const ModelTerms = {
         if (dateMax)
             where.and('f.year <= ' + dateMax);
 
+        if (matchs.length > 0)
+          query.match(matchs);
+
         if (!where.isEmpty())
-            query.where(where);
-        query.return('group.name as term');
+          query.where(where);
+
+        query.return('pci.name as term');
 
   //       WITH group.name as term,sum(toFloat(f.value)) as value, count(f) as occ
   // RETURN term, value, occ
-        console.log(query.compile())
+
         database.cypher(query.build(), function(err, data) {
             if (err) return callback(err);
             if (!data.length) return callback(null, null);
