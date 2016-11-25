@@ -2,7 +2,7 @@
 <h1 id="main">Des archives du commerce<br>à des données quantifiables<br><em> une longue chaîne de transformation des données</em></h1>
 
 <p align="center">
-  Paul Girard<br>
+  Paul Girard & Guillaume Plique<br>
   Sciences Po, médialab
 </p>
 
