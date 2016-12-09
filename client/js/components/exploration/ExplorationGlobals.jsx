@@ -172,11 +172,11 @@ class NetworkPanel extends Component {
           onChange={radioListener} />
         <span style={{marginLeft: '10px', marginRight: '10px'}}>Ponderation by number of flows</span>
         <input
-            type="radio"
-            name="optionsRadio"
-            value="value"
-            checked={ponderation === 'value'}
-            onChange={radioListener} />
+          type="radio"
+          name="optionsRadio"
+          value="value"
+          checked={ponderation === 'value'}
+          onChange={radioListener} />
         <span style={{marginLeft: '10px', marginRight: '10px'}}>Ponderation by sum value of flows</span>
         <hr />
         <Legend />
