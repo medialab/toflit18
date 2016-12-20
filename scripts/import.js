@@ -33,12 +33,16 @@ const ROOT_PATH = '/base',
       BDD_UNITS = ROOT_PATH + '/Units_N1.csv',
       ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
       SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
-      MEDICINAL_CLASSIFICATIONS = ROOT_PATH + '/bdd_classification_medicinales.csv',
-      HAMBURG_CLASSIFICATION = ROOT_PATH + '/bdd_classification_hamburg.csv',
-      AMERIQUEDUNORD_CLASSIFICATION = ROOT_PATH + '/bdd_classification_NorthAmerica.csv',
-      EDENTREATY_CLASSIFICATION = ROOT_PATH + '/bdd_classification_edentreaty.csv',
-      GRAIN_CLASSIFICATION = ROOT_PATH + '/bdd_grains.csv',
+      //SIMPLIFICATION_NEW = ROOT_PATH + '/bdd_marchandises_simplifiees_new.csv',
+      MEDICINAL_CLASSIFICATIONS = ROOT_PATH + '/bdd_marchandises_medicinales.csv',
+      HAMBURG_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_hamburg.csv',
+      AMERIQUEDUNORD_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_NorthAmerica.csv',
+      EDENTREATY_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_edentreaty.csv',
+      GRAIN_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_grains.csv',
       SITC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_sitc.csv',
+      SITC_EN_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_sitc_EN.csv',
+      SITC_FR_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_sitc_FR.csv',
+      // Country classifications
       COUNTRY_ORTHOGRAPHIC = ROOT_PATH + '/classification_country_orthographic_normalization.csv',
       COUNTRY_SIMPLIFICATION = ROOT_PATH + '/classification_country_simplification.csv',
       COUNTRY_GROUPED = ROOT_PATH + '/classification_country_grouping.csv',
@@ -220,42 +224,12 @@ const CLASSIFICATION_NODES = {
     slug: 'orthographic_normalization',
     description: 'Fixing the source\'s somewhat faulty orthograph.'
   }, 'Classification'),
-  // product_revised_orthographic: BUILDER.save({
-  //   name: 'Revised Orthographic Normalization',
-  //   model: 'product',
-  //   slug: 'revised_orthographic_normalization',
-  //   description: 'Revised version of the initial orthographic normalization.'
-  // }, 'Classification'),
   product_simplified: BUILDER.save({
     name: 'Simplification',
     model: 'product',
     slug: 'simplification',
     description: 'Simplifying the source.'
    }, 'Classification'),
-  // product_revised_simplified: BUILDER.save({
-  //   name: 'Revised Simplification',
-  //   model: 'product',
-  //   slug: 'revised_simplification',
-  //   description: 'Simplifying the source.'
-  // }, 'Classification'),
-  // product_categorized: BUILDER.save({
-  //   name: 'Categorization',
-  //   model: 'product',
-  //   slug: 'categorization',
-  //   description: 'Categorizing the various products.'
-  // }, 'Classification'),
-  product_sitc: BUILDER.save({
-    name: 'SITC',
-    model: 'product',
-    slug: 'sitc',
-    description: 'SITC 20+ categories'
-  }, 'Classification'),
-  // product_sitcrev2: BUILDER.save({
-  //   name: 'SITC Rev.2',
-  //   model: 'product',
-  //   slug: 'sitc_rev2',
-  //   description: 'SITC Rev.2'
-  // }, 'Classification'),
   product_medicinal: BUILDER.save({
     name: 'Medicinal products',
     model: 'product',
@@ -285,6 +259,24 @@ const CLASSIFICATION_NODES = {
     model: 'product',
     slug: 'grain',
     description: 'classification of grains type'
+  }, 'Classification'),
+  product_sitc: BUILDER.save({
+    name: 'SITC',
+    model: 'product',
+    slug: 'sitc',
+    description: 'SITC 20+ categories'
+  }, 'Classification'),
+  product_sitc_en: BUILDER.save({
+    name: 'SITC EN',
+    model: 'product',
+    slug: 'sitc_en',
+    description: 'SITC 20+ categories in english'
+  }, 'Classification'),
+  product_sitc_fr: BUILDER.save({
+    name: 'SITC FR',
+    model: 'product',
+    slug: 'sitc_fr',
+    description: 'SITC 20+ categories in french'
   }, 'Classification'),
   country_sources: BUILDER.save({
     name: 'Sources',
@@ -327,17 +319,16 @@ Object.keys(CLASSIFICATION_NODES).forEach(k => {
 });
 
 BUILDER.relate(CLASSIFICATION_NODES.product_orthographic, 'BASED_ON', CLASSIFICATION_NODES.product_sources);
-//BUILDER.relate(CLASSIFICATION_NODES.product_revised_orthographic, 'BASED_ON', CLASSIFICATION_NODES.product_sources);
 BUILDER.relate(CLASSIFICATION_NODES.product_simplified, 'BASED_ON', CLASSIFICATION_NODES.product_orthographic);
-//BUILDER.relate(CLASSIFICATION_NODES.product_revised_simplified, 'BASED_ON', CLASSIFICATION_NODES.product_revised_orthographic);
-//BUILDER.relate(CLASSIFICATION_NODES.product_categorized, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
-//BUILDER.relate(CLASSIFICATION_NODES.product_sitcrev2, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_medicinal, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_hamburg, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_ameriquedunord, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_edentreaty, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_grain, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_sitc, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.product_sitc_en, 'BASED_ON', CLASSIFICATION_NODES.product_sitc);
+BUILDER.relate(CLASSIFICATION_NODES.product_sitc_fr, 'BASED_ON', CLASSIFICATION_NODES.product_sitc);
+// countries classifications
 BUILDER.relate(CLASSIFICATION_NODES.country_orthographic, 'BASED_ON', CLASSIFICATION_NODES.country_sources);
 BUILDER.relate(CLASSIFICATION_NODES.country_simplified, 'BASED_ON', CLASSIFICATION_NODES.country_orthographic);
 BUILDER.relate(CLASSIFICATION_NODES.country_grouped, 'BASED_ON', CLASSIFICATION_NODES.country_simplified);
@@ -639,16 +630,6 @@ const orthographicProduct = makeClassificationConsumer(
   {shouldTakeNote: true}
 );
 
-// const revisedOrthographicProduct = makeClassificationConsumer(
-//   CLASSIFICATION_INDEXES.product_revised_orthographic,
-//   CLASSIFICATION_NODES.product_revised_orthographic,
-//   CLASSIFICATION_NODES.product_sources,
-//   INDEXES.products,
-//   'modified',
-//   'original',
-//   {}
-// );
-
 const simplifiedProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_simplified,
   CLASSIFICATION_NODES.product_simplified,
@@ -656,46 +637,6 @@ const simplifiedProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_orthographic,
   'simplified',
   'orthographic',
-  {}
-);
-
-// const revisedSimplifiedProduct = makeClassificationConsumer(
-//   CLASSIFICATION_INDEXES.product_revised_simplified,
-//   CLASSIFICATION_NODES.product_revised_simplified,
-//   CLASSIFICATION_NODES.product_revised_orthographic,
-//   CLASSIFICATION_INDEXES.product_revised_orthographic,
-//   'simplified',
-//   'orthographic',
-//   {}
-// );
-
-// const categorizedProduct = makeClassificationConsumer(
-//   CLASSIFICATION_INDEXES.product_categorized,
-//   CLASSIFICATION_NODES.product_categorized,
-//   CLASSIFICATION_NODES.product_simplified,
-//   CLASSIFICATION_INDEXES.product_simplified,
-//   'categorized',
-//   'simplified',
-//   {shouldTakeNote: true}
-// );
-
-// const sitcrev2Product = makeClassificationConsumer(
-//   CLASSIFICATION_INDEXES.product_sitcrev2,
-//   CLASSIFICATION_NODES.product_sitcrev2,
-//   CLASSIFICATION_NODES.product_simplified,
-//   CLASSIFICATION_INDEXES.product_simplified,
-//   'sitcrev2',
-//   'simplified',
-//   {}
-// );
-
-const sitcProduct = makeClassificationConsumer(
-  CLASSIFICATION_INDEXES.product_sitc,
-  CLASSIFICATION_NODES.product_sitc,
-  CLASSIFICATION_NODES.product_simplified,
-  CLASSIFICATION_INDEXES.product_simplified,
-  'sitc',
-  'simplified',
   {}
 );
 
@@ -746,6 +687,36 @@ const grainProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_simplified,
   'grain',
   'simplified',
+  {}
+);
+
+const sitcProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_sitc,
+  CLASSIFICATION_NODES.product_sitc,
+  CLASSIFICATION_NODES.product_simplified,
+  CLASSIFICATION_INDEXES.product_simplified,
+  'sitc',
+  'simplified',
+  {}
+);
+
+const sitcENProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_sitc_en,
+  CLASSIFICATION_NODES.product_sitc_en,
+  CLASSIFICATION_NODES.product_sitc,
+  CLASSIFICATION_INDEXES.product_sitc,
+  'sitc_en',
+  'sitc',
+  {}
+);
+
+const sitcFRProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_sitc_fr,
+  CLASSIFICATION_NODES.product_sitc_fr,
+  CLASSIFICATION_NODES.product_sitc,
+  CLASSIFICATION_INDEXES.product_sitc,
+  'sitc_fr',
+  'sitc',
   {}
 );
 
@@ -917,7 +888,6 @@ async.series({
     });
   },
 
-
   productMedical(next) {
     console.log('  -- Products medicinal classifications');
 
@@ -971,23 +941,6 @@ async.series({
       return next();
     });
   },
-  productSITC(next) {
-    console.log('  -- Products SITC classifications');
-
-    // Parsing various classifications
-    const csvData = fs.readFileSync(DATA_PATH + SITC_CLASSIFICATION, 'utf-8');
-    parseCsv(csvData, {delimiter: ','}, function(err, data) {
-      data
-        .slice(1)
-        .map(line => ({
-          simplified: cleanText(line[0]),
-          sitc: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
-        }))
-        .forEach(sitcProduct);
-
-      return next();
-    });
-  },
    productEdentreaty(next) {
     console.log('  -- Products Eden Treaty classifications');
 
@@ -1018,6 +971,57 @@ async.series({
           grain: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
         .forEach(grainProduct);
+
+      return next();
+    });
+  },
+  productSITC(next) {
+    console.log('  -- Products SITC classifications');
+
+    // Parsing various classifications
+    const csvData = fs.readFileSync(DATA_PATH + SITC_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          simplified: cleanText(line[0]),
+          sitc: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+        }))
+        .forEach(sitcProduct);
+
+      return next();
+    });
+  },
+  productSITCEN(next) {
+    console.log('  -- Products SITC EN classifications');
+
+    // Parsing various classifications
+    const csvData = fs.readFileSync(DATA_PATH + SITC_EN_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          sitc: cleanText(line[0]),
+          sitc_en: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+        }))
+        .forEach(sitcENProduct);
+
+      return next();
+    });
+  },
+  productSITCFR(next) {
+    console.log('  -- Products SITC FR classifications');
+
+    // Parsing various classifications
+    const csvData = fs.readFileSync(DATA_PATH + SITC_FR_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          sitc: cleanText(line[0]),
+          sitc_fr: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+        }))
+        .forEach(sitcFRProduct);
 
       return next();
     });
