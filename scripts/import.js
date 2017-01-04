@@ -31,6 +31,7 @@ const ROOT_PATH = '/base',
       BDD_CENTRALE_PATH = ROOT_PATH + '/bdd_centrale.csv',
       BDD_OUTSIDERS = ROOT_PATH + '/marchandises_sourcees.csv',
       BDD_UNITS = ROOT_PATH + '/Units_N1.csv',
+      BDD_DIRECTIONS = ROOT_PATH + '/bdd_directions.csv',
       ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
       SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
       //SIMPLIFICATION_NEW = ROOT_PATH + '/bdd_marchandises_simplifiees_new.csv',
@@ -198,6 +199,7 @@ const INDEXES = {
 };
 
 const UNITS_INDEX = {};
+const DIRECTIONS_INDEX = {};
 const CONVERSION_TABLE = {};
 
 const OUTSIDER_INDEXES = {
@@ -353,7 +355,10 @@ const OUTSIDER_SOURCES_NODES = {
  */
 function importer(csvLine) {
 
-  // Direction
+  //Patching directions names
+  const direction = DIRECTIONS_INDEX[csvLine.direction] || csvLine.direction;
+
+  // Import or Export
   const isImport = /(imp|sortie)/i.test(csvLine.exportsimports);
 
   // Creating a flow node
@@ -419,8 +424,8 @@ function importer(csvLine) {
   // Additional static indexed properties for convenience
   if (csvLine.pays)
     nodeData.country = csvLine.pays;
-  if (csvLine.direction)
-    nodeData.direction = csvLine.direction;
+  if (direction)
+    nodeData.direction = direction;
   if (csvLine.marchandises)
     nodeData.product = csvLine.marchandises;
   if (csvLine.sourcetype)
@@ -487,9 +492,9 @@ function importer(csvLine) {
     else
       BUILDER.relate(flowNode, 'TO', officeNode);
 
-    if (csvLine.direction && !EDGE_INDEXES.offices.has(csvLine.bureaux)) {
-      const directionNode = indexedNode(INDEXES.directions, 'Direction', csvLine.direction, {
-        name: csvLine.direction
+    if (direction && !EDGE_INDEXES.offices.has(csvLine.bureaux)) {
+      const directionNode = indexedNode(INDEXES.directions, 'Direction', direction, {
+        name: direction
       });
 
       BUILDER.relate(directionNode, 'GATHERS', officeNode);
@@ -498,9 +503,9 @@ function importer(csvLine) {
   }
 
   // Direction
-  if (csvLine.direction) {
-    const directionNode = indexedNode(INDEXES.directions, 'Direction', csvLine.direction, {
-      name: csvLine.direction
+  if (direction) {
+    const directionNode = indexedNode(INDEXES.directions, 'Direction', direction, {
+      name: direction
     });
 
     if (isImport)
@@ -768,6 +773,23 @@ const obrienCountry = makeClassificationConsumer(
  * the graph.
  */
 async.series({
+
+  directions(next) {
+    console.log('Processing directions...');
+
+    const csvData = fs.readFileSync(DATA_PATH + BDD_DIRECTIONS, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+
+      data.forEach(row => {
+        const sourceDirection = cleanText(row[0]),
+              targetDirection = cleanText(row[1]);
+
+        DIRECTIONS_INDEX[sourceDirection] = targetDirection;
+      });
+
+      return next();
+    });
+  },
 
   units(next) {
     console.log('Processing units...');
