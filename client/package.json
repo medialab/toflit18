@@ -6,7 +6,6 @@
   "main": "./js/main.jsx",
   "scripts": {
     "build": "kotatsu build client -c webpack.config.prod.js --progress --minify",
-    "cards": "kotatsu serve -c webpack.config.js --progress --public ./data -p 3001 ./js/cards",
     "dev": "kotatsu serve -c webpack.config.js --progress --public ./ --index index.html"
   },
   "repository": {
@@ -41,7 +40,6 @@
     "babel-preset-react-hmre": "^1.0.1",
     "babel-preset-stage-0": "^6.3.13",
     "css-loader": "^0.23.0",
-    "devcards": "git+https://github.com/glenjamin/devcards-js.git",
     "file-loader": "^0.8.4",
     "json-loader": "^0.5.2",
     "kotatsu": "^0.14.0",
