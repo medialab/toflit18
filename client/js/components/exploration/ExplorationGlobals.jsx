@@ -104,7 +104,7 @@ class NetworkPanel extends Component {
             addendum="The country whence we got the products or wither we are sending them." />
           <Col md={4}>
             <ClassificationSelector type="country"
-              loading={!classifications.country.length || loading}
+              loading={!classifications.country.length}
               data={classifications.country}
               onChange={actions.selectClassification}
               selected={classification} />
@@ -164,7 +164,8 @@ class NetworkPanel extends Component {
           <Row>
           <Col md={2}>
             <Button kind="primary"
-              onClick={actions.addNetwork}>
+              onClick={actions.addNetwork}
+              loading={loading}>
               Add network
             </Button>
           </Col>
