@@ -9,7 +9,7 @@ import Tooltip from 'rc-tooltip';
 import measured from '@yomguithereal/react-utilities/measured';
 import {format} from 'd3-format';
 import {scaleLinear as linear} from 'd3-scale';
-import shape from 'd3-shape';
+import * as shape from 'd3-shape';
 import {flatten, min, max} from 'lodash';
 import {prettyPrint} from '../../../lib/helpers';
 
