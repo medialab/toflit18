@@ -39,7 +39,6 @@ export function prettyPrint(nb) {
 /**
  * Build dates selector
  */
-
 export function buildDateMin(dateMin, dateMax) {
   const minArray = [];
 
