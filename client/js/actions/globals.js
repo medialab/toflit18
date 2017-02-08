@@ -4,8 +4,15 @@
  *
  * Actions related to the globals' view.
  */
-import {scaleCategory20, scaleLinear} from 'd3-scale';
+import {
+  scaleOrdinal,
+  scaleLinear,
+  schemeCategory20
+} from 'd3-scale';
+
 import {max, uniq, forIn} from 'lodash';
+
+const scaleCategory20 = scaleOrdinal(schemeCategory20);
 
 const ROOT = ['states', 'exploration', 'terms'];
 
@@ -100,7 +107,7 @@ export function addChart(tree) {
       cursor.set('graphResultAPI', data.result.data);
     }
 
-    const colorScale = scaleCategory20()
+    const colorScale = scaleCategory20
       .domain(uniq(data.result.nodes.map(node => node.community)));
 
     const maxPosition = max(data.result.nodes, 'position').position;

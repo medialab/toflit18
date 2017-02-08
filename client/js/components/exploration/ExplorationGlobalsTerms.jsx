@@ -126,7 +126,7 @@ class TermsPanel extends Component {
               addendum="You must choose the type of product being shipped." />
             <Col md={4}>
               <ClassificationSelector type="product"
-                loading={!classifications.product.length || loading}
+                loading={!classifications.product.length}
                 data={classifications.product}
                 onChange={actions.selectTerms}
                 selected={classification} />
@@ -192,14 +192,15 @@ class TermsPanel extends Component {
           </Col>
         </Row>
         <hr />
-          <Row>
+        <Row>
           <Col md={2}>
-            <Button kind="primary"
+            <Button
+              kind="primary"
+              loading={loading}
               onClick={actions.addChart}>
               Add network
             </Button>
           </Col>
-
         </Row>
         <hr />
         <input
@@ -216,7 +217,10 @@ class TermsPanel extends Component {
           checked={colorization === 'position'}
           onChange={radioListener} />
         <span style={{marginLeft: '10px', marginRight: '10px'}}>Position color</span>
-        <Network graph={graph} colorKey={colorKey} />
+        <Network
+          ref={ref => this.networkComponent = ref}
+          graph={graph}
+          colorKey={colorKey} />
         <br />
         <div className="btn-group">
           <ExportButton
@@ -232,6 +236,11 @@ class TermsPanel extends Component {
             network="terms">
               Export GEXF
           </ExportButton>
+          <Button
+            onClick={() => this.networkComponent.downloadGraphAsSVG()}
+            kind="secondary">
+            Export SVG
+          </Button>
         </div>
       </div>
     );

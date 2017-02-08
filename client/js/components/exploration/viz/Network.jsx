@@ -152,6 +152,10 @@ export default class Network extends Component {
     document.removeEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
   }
 
+  downloadGraphAsSVG() {
+    this.sigma.toSVG({download: true, filename: 'graph.svg'});
+  }
+
   render() {
     return (
       <div id="sigma-graph" ref="mount">

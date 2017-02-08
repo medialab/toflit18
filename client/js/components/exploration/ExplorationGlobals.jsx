@@ -161,7 +161,7 @@ class NetworkPanel extends Component {
           </Col>
         </Row>
         <hr />
-          <Row>
+        <Row>
           <Col md={2}>
             <Button kind="primary"
               onClick={actions.addNetwork}
@@ -188,7 +188,10 @@ class NetworkPanel extends Component {
         <hr />
         <Legend />
         <br />
-        <Network graph={graph} ponderationKey={ponderationKey} />
+        <Network
+          ref={ref => this.networkComponent = ref}
+          graph={graph}
+          ponderationKey={ponderationKey} />
         <br />
         <div className="btn-group">
           <ExportButton
@@ -203,6 +206,11 @@ class NetworkPanel extends Component {
             network="country">
               Export GEXF
           </ExportButton>
+          <Button
+            onClick={() => this.networkComponent.downloadGraphAsSVG()}
+            kind="secondary">
+            Export SVG
+          </Button>
         </div>
       </div>
     );
