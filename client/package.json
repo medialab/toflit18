@@ -63,8 +63,8 @@
     "lodash": "^3.10.1",
     "papaparse": "^4.1.2",
     "rc-tooltip": "^3.2.0",
-    "react": "^0.14.0",
-    "react-dom": "^0.14.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "react-router": "^2.0.0",
     "react-select": "^1.0.0-beta6",
     "screenfull": "^3.0.2"

@@ -15,8 +15,10 @@ export class Row extends Component {
 
 export class Col extends Component {
   render() {
-    const size = `col-md-${this.props.md}`;
+    const {md, className, children, ...remainingProps} = this.props;
 
-    return <div {...this.props} className={cls(size, this.props.className)}>{this.props.children}</div>;
+    const size = `col-md-${md}`;
+
+    return <div {...remainingProps} className={cls(size, className)}>{children}</div>;
   }
 }
