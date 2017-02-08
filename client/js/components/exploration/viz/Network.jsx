@@ -68,6 +68,10 @@ export default class Network extends Component {
       const mount = this.refs.mount;
 
       screenfull.toggle(mount);
+    };
+
+    this.fullScreenHandler = () => {
+      const mount = this.refs.mount;
 
       if (screenfull.isFullscreen) {
         mount.style.width = '100%';
@@ -97,6 +101,8 @@ export default class Network extends Component {
       camera: 'main',
       container: this.refs.mount
     });
+
+    document.addEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
 
     this.componentWillUpdate(this.props);
   }
@@ -142,6 +148,8 @@ export default class Network extends Component {
   componentWillUnmount() {
     this.sigma.kill();
     this.sigma = null;
+
+    document.removeEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
   }
 
   render() {
