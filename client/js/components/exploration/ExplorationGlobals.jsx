@@ -7,6 +7,7 @@
  */
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
+import cls from 'classnames';
 import Button, {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
@@ -96,8 +97,10 @@ class NetworkPanel extends Component {
         <h4>Countries Network</h4>
         <em>Choose a country classification and display a graph showing relations between countries & directions.</em>
         <hr />
-        <Row className="red">
-          <SectionTitle title="Country"
+        <Row>
+          <SectionTitle
+            title="Country"
+            emphasized
             addendum="The country whence we got the products or wither we are sending them." />
           <Col md={4}>
             <ClassificationSelector type="country"
@@ -109,17 +112,20 @@ class NetworkPanel extends Component {
         </Row>
         <hr />
         <Row>
-            <SectionTitle title="Product"
+            <SectionTitle
+              title="Product"
               addendum="Choose one or two types of product being shipped to cross or not result." />
             <Col md={4}>
-              <ClassificationSelector type="product"
+              <ClassificationSelector
+                type="product"
                 loading={!classifications.product.length}
                 data={classifications.product.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification} />
             </Col>
              <Col md={4}>
-              <ItemSelector type="product"
+              <ItemSelector
+                type="product"
                 disabled={!selectors.productClassification || !groups.product.length}
                 loading={selectors.productClassification && !groups.product.length}
                 data={groups.product}
@@ -207,10 +213,10 @@ class NetworkPanel extends Component {
  */
 class SectionTitle extends Component {
   render() {
-    const {title, addendum} = this.props;
+    const {title, addendum, emphasized = false} = this.props;
 
     return (
-      <Col md={4}>
+      <Col md={4} className={cls(emphasized && 'bold')}>
         <div>{title}</div>
         <div className="section-explanation">
           <em>{addendum}</em>

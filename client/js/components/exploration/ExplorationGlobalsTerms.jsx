@@ -7,6 +7,7 @@
  */
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
+import cls from 'classnames';
 import Button, {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
@@ -118,8 +119,10 @@ class TermsPanel extends Component {
             </Col>
           </Row>
           <hr />
-          <Row className="red">
-            <SectionTitle title="Product"
+          <Row>
+            <SectionTitle
+              emphasized
+              title="Product"
               addendum="You must choose the type of product being shipped." />
             <Col md={4}>
               <ClassificationSelector type="product"
@@ -240,10 +243,10 @@ class TermsPanel extends Component {
  */
 class SectionTitle extends Component {
   render() {
-    const {title, addendum} = this.props;
+    const {title, addendum, emphasized} = this.props;
 
     return (
-      <Col md={4}>
+      <Col md={4} className={cls(emphasized && 'bold')}>
         <div>{title}</div>
         <div className="section-explanation">
           <em>{addendum}</em>
