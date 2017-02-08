@@ -47,7 +47,7 @@
     "cors": "^2.7.1",
     "csv": "^1.1.1",
     "decypher": "^0.11.0",
-    "dolman": "^0.3.0",
+    "dolman": "^0.4.0",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
     "highland": "^2.5.1",
