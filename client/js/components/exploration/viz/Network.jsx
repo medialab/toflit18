@@ -153,7 +153,11 @@ export default class Network extends Component {
   }
 
   downloadGraphAsSVG() {
-    this.sigma.toSVG({download: true, filename: 'graph.svg'});
+    this.sigma.toSVG({
+      download: true,
+      filename: 'graph.svg',
+      labels: true
+    });
   }
 
   render() {
