@@ -76,6 +76,7 @@ const POSSIBLE_NODE_PROPERTIES = [
   'description',
   'source:boolean',
   'direction',
+  'originalDirection',
   'country',
   'sourceType',
   'product'
@@ -356,7 +357,14 @@ const OUTSIDER_SOURCES_NODES = {
 function importer(csvLine) {
 
   //Patching directions names
-  const direction = DIRECTIONS_INDEX[csvLine.direction] || csvLine.direction;
+  const originalDirection = csvLine.direction;
+
+  let direction = DIRECTIONS_INDEX[originalDirection];
+
+  if (!!originalDirection && !direction) {
+    direction = originalDirection;
+    console.log('  !! Could not find simplified direction for:', originalDirection);
+  }
 
   // Import or Export
   const isImport = /(imp|sortie)/i.test(csvLine.exportsimports);
@@ -426,6 +434,8 @@ function importer(csvLine) {
     nodeData.country = csvLine.pays;
   if (direction)
     nodeData.direction = direction;
+  if (originalDirection)
+    nodeData.originalDirection = originalDirection;
   if (csvLine.marchandises)
     nodeData.product = csvLine.marchandises;
   if (csvLine.sourcetype)
