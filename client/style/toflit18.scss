@@ -481,6 +481,15 @@ svg.line-chart {
   margin-top: 10px;
   position: relative;
 
+  .message {
+    font-size: 1.2em;
+    font-weight: bold;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: 45%;
+  }
+
   .controls {
     position: absolute;
     bottom: 20px;

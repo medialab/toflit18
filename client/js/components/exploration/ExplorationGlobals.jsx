@@ -164,6 +164,7 @@ class NetworkPanel extends Component {
         <Row>
           <Col md={2}>
             <Button kind="primary"
+              disabled={!classification}
               onClick={actions.addNetwork}
               loading={loading}>
               Add network

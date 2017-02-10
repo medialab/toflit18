@@ -109,8 +109,12 @@ export function addNetwork(tree) {
   // Fetching data
   tree.client.network({params: {id: classification.id}, data: paramsRequest}, function(err, data) {
     cursor.set('loading', false);
+
+    // NOTE: the API should probably return an empty array somehow
+    const result = data.result || [];
+
     if (data)
-      cursor.set('graphResultAPI', data.result);
+      cursor.set('graphResultAPI', result);
 
     if (err) return;
 
@@ -118,7 +122,7 @@ export function addNetwork(tree) {
     const nodes = {},
           edges = [];
 
-    data.result.forEach(function(row) {
+    result.forEach(function(row) {
 
       const directionId = '$d$' + row.direction,
             countryId = '$c$' + row.country;

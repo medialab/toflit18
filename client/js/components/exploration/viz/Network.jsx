@@ -161,8 +161,12 @@ export default class Network extends Component {
   }
 
   render() {
+    const graph = this.props.graph,
+          isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length);
+
     return (
       <div id="sigma-graph" ref="mount">
+        {isGraphEmpty && <Message text="No Data to display." />}
         <Filters
           threshold={this.state.labelThreshold}
           size={this.state.labelSizeRatio}
@@ -173,6 +177,19 @@ export default class Network extends Component {
           toggleFullScreen={this.toggleFullScreen}
           toggleLayout={this.toggleLayout}
           layoutRunning={this.state.layoutRunning} />
+      </div>
+    );
+  }
+}
+
+/**
+ * Message.
+ */
+class Message extends Component {
+  render() {
+    return (
+      <div className="message">
+        {this.props.text}
       </div>
     );
   }

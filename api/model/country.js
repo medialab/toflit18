@@ -74,11 +74,10 @@ const ModelNetwork = {
     query.return('cci.name as country, f.direction AS direction, count(f) AS count, sum(f.value) AS value');
 
     database.cypher(query.build(), function(err, data) {
+      if (err) return callback(err);
+      if (!data.length) return callback(null, null);
 
-            if (err) return callback(err);
-            if (!data.length) return callback(null, null);
-
-            return callback(null, data);
+      return callback(null, data);
     });
   }
 };

@@ -195,6 +195,7 @@ class TermsPanel extends Component {
         <Row>
           <Col md={2}>
             <Button
+              disabled={!classification}
               kind="primary"
               loading={loading}
               onClick={actions.addChart}>
