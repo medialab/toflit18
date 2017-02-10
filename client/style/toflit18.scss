@@ -480,6 +480,7 @@ svg.line-chart {
   border: 1px solid $medium-grey;
   margin-top: 10px;
   position: relative;
+  user-select: none;
 
   .message {
     font-size: 1.2em;

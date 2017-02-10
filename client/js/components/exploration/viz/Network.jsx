@@ -16,6 +16,7 @@ const SIGMA_SETTINGS = {
   labelSize: 'proportional',
   labelSizeRatio: 2,
   minNodeSize: 2,
+  maxNodeSize: 7,
   maxEdgeSize: 6,
   edgeColor: 'default',
   defaultEdgeType: 'arrow',
