@@ -55,7 +55,7 @@ class TermsPanel extends Component {
       sourceTypes,
       state: {
         graph,
-        graphResultAPI,
+        data,
         classification,
         colorization,
         loading,
@@ -226,7 +226,7 @@ class TermsPanel extends Component {
         <div className="btn-group">
           <ExportButton
             name="Toflit18_Global_Terms_Network_view.csv"
-            data={graphResultAPI}
+            data={data}
             type="csv">
               Export CSV
           </ExportButton>

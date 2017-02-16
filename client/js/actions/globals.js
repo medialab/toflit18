@@ -104,7 +104,7 @@ export function addChart(tree) {
       return;
 
     if (data) {
-      cursor.set('graphResultAPI', data.result.data);
+      cursor.set('data', data.result.data);
     }
 
     const colorScale = scaleCategory20

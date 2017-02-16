@@ -26,7 +26,7 @@ export function selectPonderation(tree, ponderation) {
 
   cursor.set('ponderation', ponderation);
 
-  const data = cursor.get('graphResultAPI');
+  const data = cursor.get('data');
   let edgeSize = null;
 
   // Treating
@@ -114,7 +114,7 @@ export function addNetwork(tree) {
     const result = data.result || [];
 
     if (data)
-      cursor.set('graphResultAPI', result);
+      cursor.set('data', result);
 
     if (err) return;
 

@@ -51,7 +51,7 @@ class NetworkPanel extends Component {
       actions,
       classifications,
       state: {
-        graphResultAPI,
+        data,
         graph,
         classification,
         ponderation,
@@ -197,7 +197,7 @@ class NetworkPanel extends Component {
         <div className="btn-group">
           <ExportButton
             name="Toflit18_Global_Trade_Countries_Network_view.csv"
-            data={graphResultAPI}>
+            data={data}>
               Export CSV
           </ExportButton>
           <ExportButton
