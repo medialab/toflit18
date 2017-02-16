@@ -524,4 +524,12 @@ svg.line-chart {
       margin-left: 10px;
     }
   }
+
+  .fuzzy-node-searcher {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    width: 40%;
+    z-index: 5;
+  }
 }

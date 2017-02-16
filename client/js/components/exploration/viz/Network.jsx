@@ -7,6 +7,7 @@
  */
 import React, {Component} from 'react';
 import screenfull from 'screenfull';
+import ExplorationFuzzyNodeSearcher from '../ExplorationFuzzyNodeSearcher.jsx';
 
 /**
  * Settings.
@@ -32,6 +33,34 @@ const LAYOUT_SETTINGS = {
   scalingRatio: 10,
   slowDown: 2
 };
+
+/**
+ * Helper function that moves the camera on the desired node.
+ */
+function focusNode(camera, node) {
+  sigma.misc.animation.camera(
+    camera,
+    {
+      x: node['read_cammain:x'],
+      y: node['read_cammain:y'],
+      ratio: 0.075
+    },
+    {
+      duration: 150
+    }
+  );
+}
+
+/**
+ * Helper function used to rescale the camera.
+ */
+function rescale(camera) {
+  sigma.misc.animation.camera(
+    camera,
+    {x: 0, y: 0, angle: 0, ratio: 1},
+    {duration: 150}
+  );
+}
 
 /**
  * Sigma wrapper component.
@@ -94,6 +123,15 @@ export default class Network extends Component {
     this.updateLabelSizeRatio = e => {
       this.setState({labelSizeRatio: +e.target.value});
       this.sigma.settings({labelSizeRatio: +e.target.value});
+    };
+
+    this.focusNode = node => {
+      if (!node) {
+        rescale(this.sigma.cameras.main);
+      }
+      else {
+        focusNode(this.sigma.cameras.main, this.sigma.graph.nodes(node.id));
+      }
     };
   }
 
@@ -173,6 +211,9 @@ export default class Network extends Component {
           size={this.state.labelSizeRatio}
           updateThreshold={this.updateLabelThreshold}
           updateSizeRatio={this.updateLabelSizeRatio} />
+        <ExplorationFuzzyNodeSearcher
+          nodes={graph ? graph.nodes : []}
+          onChange={this.focusNode} />
         <Controls
           camera={this.sigma.cameras.main}
           toggleFullScreen={this.toggleFullScreen}
@@ -219,11 +260,7 @@ class Controls extends Component {
   rescale() {
     const camera = this.props.camera;
 
-    sigma.misc.animation.camera(
-      camera,
-      {x: 0, y: 0, angle: 0, ratio: 1},
-      {duration: 150}
-    );
+    rescale(camera);
   }
 
   zoom() {
