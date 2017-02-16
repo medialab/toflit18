@@ -2,12 +2,12 @@
  * TOFLIT18 Client Fuzzy Node Searcher
  * ====================================
  *
- * Component performing fuzzy queries in a graph's node.
+ * Component used to find & zoom on a graph's particular node.
  */
 import React, {PureComponent} from 'react';
 import Select from 'react-select';
 
-export default class ExplorationFuzzyNodeSearcher extends PureComponent {
+export default class ExplorationNodeSearcher extends PureComponent {
   constructor(props, context) {
     super(props, context);
 

@@ -7,7 +7,7 @@
  */
 import React, {Component} from 'react';
 import screenfull from 'screenfull';
-import ExplorationFuzzyNodeSearcher from '../ExplorationFuzzyNodeSearcher.jsx';
+import ExplorationNodeSearcher from '../ExplorationNodeSearcher.jsx';
 
 /**
  * Settings.
@@ -211,7 +211,7 @@ export default class Network extends Component {
           size={this.state.labelSizeRatio}
           updateThreshold={this.updateLabelThreshold}
           updateSizeRatio={this.updateLabelSizeRatio} />
-        <ExplorationFuzzyNodeSearcher
+        <ExplorationNodeSearcher
           nodes={graph ? graph.nodes : []}
           onChange={this.focusNode} />
         <Controls
