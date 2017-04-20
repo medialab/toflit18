@@ -30,15 +30,27 @@ const ModelCreateLine = {
           match = [];
 
 
+    // import export
+    // define import export edge type filter
+    let exportImportFilterDirection = ':FROM|:TO';
+    let exportImportFilterCountry = ':FROM|:TO';
+    if (kind === 'import'){
+      exportImportFilterDirection = ':TO';
+      exportImportFilterCountry = ':FROM';
+      // add a where clause an flow import index to match flows which doesn't have a country or direction link
+      where.and('f.import')
+    }
+    else if (kind === 'export'){
+      exportImportFilterDirection = ':FROM';
+      exportImportFilterCountry = ':TO';
+      // add a where clause an flow import index to match flows which doesn't have a country or direction link
+      where.and('f.export')
+    }
+
+    
     //-- Should we match a precise direction?
     if (direction && direction !== '$all$') {
-      // define import export edge type filter
-      let exportImportFilter = ':FROM|:TO';
-      if (kind === 'import')
-        exportImportFilter = ':TO';
-      else if (kind === 'export')
-        exportImportFilter = ':FROM';
-      match.push(`(d:Direction)<-[${exportImportFilter}]-(f:Flow)`);
+      match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
       where.and('id(d) = {direction}');
       query.params({direction});
     }
@@ -59,12 +71,8 @@ const ModelCreateLine = {
     //-- Do we need to match a country?
     if (countryClassification) {
       // define import export edge type filter
-      let exportImportFilter = ':FROM|:TO';
-      if (kind === 'import')
-        exportImportFilter = ':FROM';
-      else if (kind === 'export')
-        exportImportFilter = ':TO';
-      match.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
+      match.push(`(f:Flow)-[${exportImportFilterCountry}]->(c:Country)`);
+      match.push(`(c:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
 
       const whereCountry = new Expression('id(cc) = {countryClassification}');
       query.params({countryClassification});
@@ -121,7 +129,7 @@ const ModelCreateLine = {
       query.return('count(f) AS count, sum(toFloat(f.value)) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction');
       query.orderBy('f.year');
     }
-
+    console.log(query.build())
     database.cypher(query.build(), function(err, data) {
 
       if (err) return callback(err);
