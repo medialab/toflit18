@@ -30,7 +30,7 @@ LIMIT {limit};
 // Get all the classification for the given model.
 //------------------------------------------------------------------------------
 MATCH (c:Classification)-[:BASED_ON]->(p:Classification)
-WHERE not(has(c.source)) AND c.model IN {models}
+WHERE not(exists(c.source)) AND c.model IN {models}
 RETURN c AS classification, p.slug AS parent;
 
 // name: products

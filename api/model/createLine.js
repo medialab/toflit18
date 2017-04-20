@@ -50,18 +50,18 @@ const ModelCreateLine = {
     if (direction && direction !== '$all$') {
       match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
       where.and('id(d) = {direction}');
-      query.params({direction});
+      query.params({direction: database.int(direction)});
     }
 
     //-- Do we need to match a product?
     if (productClassification) {
       match.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
       const whereProduct = new Expression('id(pc) = {productClassification}');
-      query.params({productClassification});
+      query.params({productClassification: database.int(productClassification)});
 
       if (product) {
         whereProduct.and('id(pci) = {product}');
-        query.params({product});
+        query.params({product: database.int(product)});
       }
       where.and(whereProduct);
     }
@@ -73,11 +73,11 @@ const ModelCreateLine = {
       match.push('(c:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)');
 
       const whereCountry = new Expression('id(cc) = {countryClassification}');
-      query.params({countryClassification});
+      query.params({countryClassification: database.int(countryClassification)});
 
       if (country) {
         whereCountry.and('id(cci) = {country}');
-        query.params({country});
+        query.params({country: database.int(country)});
       }
 
       where.and(whereCountry);

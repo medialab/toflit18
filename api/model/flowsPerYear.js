@@ -106,7 +106,7 @@ const ModelFlowsPerYear = {
         where.and('not(f.import)');
 
       if (dataType === 'sourceType' || dataType === 'direction')
-        where.and(`has(f.${dataType})`);
+        where.and(`exists(f.${dataType})`);
 
       where.and(`f.year >= ${config.api.limits.minYear}`);
 

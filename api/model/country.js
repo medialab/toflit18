@@ -40,7 +40,7 @@ const ModelNetwork = {
       exportImportFilter = ':TO';
     matchs.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
     const whereCountry = new Expression('id(cc) = {classification}');
-    query.params({classification});
+    query.params({classification: database.int(classification)});
 
     where.and(whereCountry);
 
@@ -48,11 +48,11 @@ const ModelNetwork = {
     if (productClassification) {
       matchs.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
       const whereProduct = new Expression('id(pc) = {productClassification}');
-      query.params({productClassification});
+      query.params({productClassification: database.int(productClassification)});
 
       if (product) {
         whereProduct.and('id(pci) = {product}');
-        query.params({product});
+        query.params({product: database.int(product)});
       }
       where.and(whereProduct);
     }
@@ -60,7 +60,7 @@ const ModelNetwork = {
     if (matchs.length > 0)
       query.match(matchs);
     //restrict flows to those which has direction
-    where.and('has(f.direction)');
+    where.and('exists(f.direction)');
 
     if (dateMin)
         where.and('f.year >= ' + dateMin);

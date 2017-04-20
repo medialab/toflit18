@@ -83,7 +83,7 @@ const Model = {
    * Retrieving every one of the classification's groups.
    */
   groups(id, callback) {
-    return database.cypher({query: queries.rawGroups, params: {id}}, function(err, result) {
+    return database.cypher({query: queries.rawGroups, params: {id: database.int(id)}}, function(err, result) {
       if (err) return callback(err);
       if (!result.length) return callback(null, null);
 
@@ -141,7 +141,7 @@ const Model = {
    * Exporting to csv.
    */
   export(id, callback) {
-    return database.cypher({query: queries.export, params: {id}}, function(err, results) {
+    return database.cypher({query: queries.export, params: {id: database.int(id)}}, function(err, results) {
       if (err) return callback(err);
       if (!results.length) return callback(null, null);
 
@@ -170,7 +170,7 @@ const Model = {
    * Review the given patch for the given classification.
    */
   review(id, patch, callback) {
-    return database.cypher({query: queries.allGroups, params: {id}}, function(err1, classification) {
+    return database.cypher({query: queries.allGroups, params: {id: database.int(id)}}, function(err1, classification) {
       if (err1) return callback(err1);
       if (!classification.length) return callback(null, null);
 
@@ -187,14 +187,14 @@ const Model = {
       const updatedClassification = applyOperations(classification, operations);
 
       // Retrieving upper classifications
-      return database.cypher({query: queries.upper, params: {id}}, function(err2, upper) {
+      return database.cypher({query: queries.upper, params: {id: database.int(id)}}, function(err2, upper) {
         if (err2) return callback(err2);
 
         const ids = map(upper, c => c.upper._id);
 
         // Rewiring each upper classification
         return async.map(ids, function(upperId, next) {
-          return database.cypher({query: queries.upperGroups, params: {id: upperId}}, function(err3, upperGroups) {
+          return database.cypher({query: queries.upperGroups, params: {id: database.int(upperId)}}, function(err3, upperGroups) {
             if (err3) return next(err3);
 
             const links = rewire(
@@ -228,7 +228,7 @@ const Model = {
     async.waterfall([
 
       function getData(next) {
-        return database.cypher({query: queries.info, params: {id}}, next);
+        return database.cypher({query: queries.info, params: {id: database.int(id)}}, next);
       },
 
       function computeBatch(result, next) {

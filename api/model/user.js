@@ -23,7 +23,7 @@ const Model = {
       },
       function(err, results) {
         if (err) return err;
-console.log(results);
+
         const user = results[0] ? results[0].user.properties : null;
         return callback(null, user);
       }

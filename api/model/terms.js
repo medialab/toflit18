@@ -33,7 +33,7 @@ const ModelTerms = {
 
         matchs.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
         const whereProduct = new Expression('id(pc) = {classification}');
-        query.params({classification});
+        query.params({classification: database.int(classification)});
 
         where.and(whereProduct);
 
@@ -47,7 +47,7 @@ const ModelTerms = {
             exportImportFilter = ':FROM';
           matchs.push(`(d:Direction)<-[${exportImportFilter}]-(f:Flow)`);
           where.and('id(d) = {direction}');
-          query.params({direction});
+          query.params({direction: database.int(direction)});
         }
 
 
@@ -62,11 +62,11 @@ const ModelTerms = {
           matchs.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
 
           const whereCountry = new Expression('id(cc) = {countryClassification}');
-          query.params({countryClassification});
+          query.params({countryClassification: database.int(countryClassification)});
 
           if (country) {
             whereCountry.and('id(cci) = {country}');
-            query.params({country});
+            query.params({country: database.int(country)});
           }
 
           where.and(whereCountry);
