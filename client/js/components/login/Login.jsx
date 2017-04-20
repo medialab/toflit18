@@ -48,8 +48,8 @@ class LoginForm extends Component {
     super(props);
 
     this.state = {
-      name: null,
-      password: null
+      name: '',
+      password: ''
     };
   }
 

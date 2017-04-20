@@ -7,6 +7,7 @@
  */
 import React, {Component} from 'react';
 import screenfull from 'screenfull';
+import ExplorationNodeSearcher from '../ExplorationNodeSearcher.jsx';
 
 /**
  * Settings.
@@ -16,6 +17,7 @@ const SIGMA_SETTINGS = {
   labelSize: 'proportional',
   labelSizeRatio: 2,
   minNodeSize: 2,
+  maxNodeSize: 7,
   maxEdgeSize: 6,
   edgeColor: 'default',
   defaultEdgeType: 'arrow',
@@ -31,6 +33,34 @@ const LAYOUT_SETTINGS = {
   scalingRatio: 10,
   slowDown: 2
 };
+
+/**
+ * Helper function that moves the camera on the desired node.
+ */
+function focusNode(camera, node) {
+  sigma.misc.animation.camera(
+    camera,
+    {
+      x: node['read_cammain:x'],
+      y: node['read_cammain:y'],
+      ratio: 0.075
+    },
+    {
+      duration: 150
+    }
+  );
+}
+
+/**
+ * Helper function used to rescale the camera.
+ */
+function rescale(camera) {
+  sigma.misc.animation.camera(
+    camera,
+    {x: 0, y: 0, angle: 0, ratio: 1},
+    {duration: 150}
+  );
+}
 
 /**
  * Sigma wrapper component.
@@ -68,6 +98,10 @@ export default class Network extends Component {
       const mount = this.refs.mount;
 
       screenfull.toggle(mount);
+    };
+
+    this.fullScreenHandler = () => {
+      const mount = this.refs.mount;
 
       if (screenfull.isFullscreen) {
         mount.style.width = '100%';
@@ -90,6 +124,15 @@ export default class Network extends Component {
       this.setState({labelSizeRatio: +e.target.value});
       this.sigma.settings({labelSizeRatio: +e.target.value});
     };
+
+    this.focusNode = node => {
+      if (!node) {
+        rescale(this.sigma.cameras.main);
+      }
+      else {
+        focusNode(this.sigma.cameras.main, this.sigma.graph.nodes(node.id));
+      }
+    };
   }
 
   componentDidMount() {
@@ -97,6 +140,8 @@ export default class Network extends Component {
       camera: 'main',
       container: this.refs.mount
     });
+
+    document.addEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
 
     this.componentWillUpdate(this.props);
   }
@@ -142,21 +187,51 @@ export default class Network extends Component {
   componentWillUnmount() {
     this.sigma.kill();
     this.sigma = null;
+
+    document.removeEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
+  }
+
+  downloadGraphAsSVG() {
+    this.sigma.toSVG({
+      download: true,
+      filename: 'graph.svg',
+      labels: true
+    });
   }
 
   render() {
+    const graph = this.props.graph,
+          isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length);
+
     return (
       <div id="sigma-graph" ref="mount">
+        {isGraphEmpty && <Message text="No Data to display." />}
         <Filters
           threshold={this.state.labelThreshold}
           size={this.state.labelSizeRatio}
           updateThreshold={this.updateLabelThreshold}
           updateSizeRatio={this.updateLabelSizeRatio} />
+        <ExplorationNodeSearcher
+          nodes={graph ? graph.nodes : []}
+          onChange={this.focusNode} />
         <Controls
           camera={this.sigma.cameras.main}
           toggleFullScreen={this.toggleFullScreen}
           toggleLayout={this.toggleLayout}
           layoutRunning={this.state.layoutRunning} />
+      </div>
+    );
+  }
+}
+
+/**
+ * Message.
+ */
+class Message extends Component {
+  render() {
+    return (
+      <div className="message">
+        {this.props.text}
       </div>
     );
   }
@@ -185,11 +260,7 @@ class Controls extends Component {
   rescale() {
     const camera = this.props.camera;
 
-    sigma.misc.animation.camera(
-      camera,
-      {x: 0, y: 0, angle: 0, ratio: 1},
-      {duration: 150}
-    );
+    rescale(camera);
   }
 
   zoom() {

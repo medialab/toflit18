@@ -7,6 +7,7 @@
  */
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
+import cls from 'classnames';
 import Button, {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
@@ -54,7 +55,7 @@ class TermsPanel extends Component {
       sourceTypes,
       state: {
         graph,
-        graphResultAPI,
+        data,
         classification,
         colorization,
         loading,
@@ -118,12 +119,14 @@ class TermsPanel extends Component {
             </Col>
           </Row>
           <hr />
-          <Row className="red">
-            <SectionTitle title="Product"
+          <Row>
+            <SectionTitle
+              emphasized
+              title="Product"
               addendum="You must choose the type of product being shipped." />
             <Col md={4}>
               <ClassificationSelector type="product"
-                loading={!classifications.product.length || loading}
+                loading={!classifications.product.length}
                 data={classifications.product}
                 onChange={actions.selectTerms}
                 selected={classification} />
@@ -189,14 +192,16 @@ class TermsPanel extends Component {
           </Col>
         </Row>
         <hr />
-          <Row>
+        <Row>
           <Col md={2}>
-            <Button kind="primary"
+            <Button
+              disabled={!classification}
+              kind="primary"
+              loading={loading}
               onClick={actions.addChart}>
               Add network
             </Button>
           </Col>
-
         </Row>
         <hr />
         <input
@@ -213,12 +218,15 @@ class TermsPanel extends Component {
           checked={colorization === 'position'}
           onChange={radioListener} />
         <span style={{marginLeft: '10px', marginRight: '10px'}}>Position color</span>
-        <Network graph={graph} colorKey={colorKey} />
+        <Network
+          ref={ref => this.networkComponent = ref}
+          graph={graph}
+          colorKey={colorKey} />
         <br />
         <div className="btn-group">
           <ExportButton
             name="Toflit18_Global_Terms_Network_view.csv"
-            data={graphResultAPI}
+            data={data}
             type="csv">
               Export CSV
           </ExportButton>
@@ -229,6 +237,11 @@ class TermsPanel extends Component {
             network="terms">
               Export GEXF
           </ExportButton>
+          <Button
+            onClick={() => this.networkComponent.downloadGraphAsSVG()}
+            kind="secondary">
+            Export SVG
+          </Button>
         </div>
       </div>
     );
@@ -240,10 +253,10 @@ class TermsPanel extends Component {
  */
 class SectionTitle extends Component {
   render() {
-    const {title, addendum} = this.props;
+    const {title, addendum, emphasized} = this.props;
 
     return (
-      <Col md={4}>
+      <Col md={4} className={cls(emphasized && 'bold')}>
         <div>{title}</div>
         <div className="section-explanation">
           <em>{addendum}</em>

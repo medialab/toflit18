@@ -7,6 +7,7 @@
  */
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
+import cls from 'classnames';
 import Button, {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
@@ -50,7 +51,7 @@ class NetworkPanel extends Component {
       actions,
       classifications,
       state: {
-        graphResultAPI,
+        data,
         graph,
         classification,
         ponderation,
@@ -96,12 +97,14 @@ class NetworkPanel extends Component {
         <h4>Countries Network</h4>
         <em>Choose a country classification and display a graph showing relations between countries & directions.</em>
         <hr />
-        <Row className="red">
-          <SectionTitle title="Country"
+        <Row>
+          <SectionTitle
+            title="Country"
+            emphasized
             addendum="The country whence we got the products or wither we are sending them." />
           <Col md={4}>
             <ClassificationSelector type="country"
-              loading={!classifications.country.length || loading}
+              loading={!classifications.country.length}
               data={classifications.country}
               onChange={actions.selectClassification}
               selected={classification} />
@@ -109,17 +112,20 @@ class NetworkPanel extends Component {
         </Row>
         <hr />
         <Row>
-            <SectionTitle title="Product"
+            <SectionTitle
+              title="Product"
               addendum="Choose one or two types of product being shipped to cross or not result." />
             <Col md={4}>
-              <ClassificationSelector type="product"
+              <ClassificationSelector
+                type="product"
                 loading={!classifications.product.length}
                 data={classifications.product.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification} />
             </Col>
              <Col md={4}>
-              <ItemSelector type="product"
+              <ItemSelector
+                type="product"
                 disabled={!selectors.productClassification || !groups.product.length}
                 loading={selectors.productClassification && !groups.product.length}
                 data={groups.product}
@@ -155,10 +161,12 @@ class NetworkPanel extends Component {
           </Col>
         </Row>
         <hr />
-          <Row>
+        <Row>
           <Col md={2}>
             <Button kind="primary"
-              onClick={actions.addNetwork}>
+              disabled={!classification}
+              onClick={actions.addNetwork}
+              loading={loading}>
               Add network
             </Button>
           </Col>
@@ -181,12 +189,15 @@ class NetworkPanel extends Component {
         <hr />
         <Legend />
         <br />
-        <Network graph={graph} ponderationKey={ponderationKey} />
+        <Network
+          ref={ref => this.networkComponent = ref}
+          graph={graph}
+          ponderationKey={ponderationKey} />
         <br />
         <div className="btn-group">
           <ExportButton
             name="Toflit18_Global_Trade_Countries_Network_view.csv"
-            data={graphResultAPI}>
+            data={data}>
               Export CSV
           </ExportButton>
           <ExportButton
@@ -196,6 +207,11 @@ class NetworkPanel extends Component {
             network="country">
               Export GEXF
           </ExportButton>
+          <Button
+            onClick={() => this.networkComponent.downloadGraphAsSVG()}
+            kind="secondary">
+            Export SVG
+          </Button>
         </div>
       </div>
     );
@@ -207,10 +223,10 @@ class NetworkPanel extends Component {
  */
 class SectionTitle extends Component {
   render() {
-    const {title, addendum} = this.props;
+    const {title, addendum, emphasized = false} = this.props;
 
     return (
-      <Col md={4}>
+      <Col md={4} className={cls(emphasized && 'bold')}>
         <div>{title}</div>
         <div className="section-explanation">
           <em>{addendum}</em>
