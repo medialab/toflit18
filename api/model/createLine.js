@@ -29,7 +29,6 @@ const ModelCreateLine = {
           where = new Expression(),
           match = [];
 
-
     // import export
     // define import export edge type filter
     let exportImportFilterDirection = ':FROM|:TO';
@@ -44,9 +43,8 @@ const ModelCreateLine = {
       exportImportFilterDirection = ':FROM';
       exportImportFilterCountry = ':TO';
       // add a where clause an flow import index to match flows which doesn't have a country or direction link
-      where.and('f.export');
+      where.and('NOT f.import');
     }
-
 
     //-- Should we match a precise direction?
     if (direction && direction !== '$all$') {
@@ -103,6 +101,8 @@ const ModelCreateLine = {
 
     if (match.length > 0)
       query.match(match);
+    else
+      query.match('(f:Flow)');
 
     if (!where.isEmpty())
       query.where(where);
