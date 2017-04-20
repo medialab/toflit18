@@ -34,20 +34,20 @@ const ModelCreateLine = {
     // define import export edge type filter
     let exportImportFilterDirection = ':FROM|:TO';
     let exportImportFilterCountry = ':FROM|:TO';
-    if (kind === 'import'){
+    if (kind === 'import') {
       exportImportFilterDirection = ':TO';
       exportImportFilterCountry = ':FROM';
       // add a where clause an flow import index to match flows which doesn't have a country or direction link
-      where.and('f.import')
+      where.and('f.import');
     }
-    else if (kind === 'export'){
+    else if (kind === 'export') {
       exportImportFilterDirection = ':FROM';
       exportImportFilterCountry = ':TO';
       // add a where clause an flow import index to match flows which doesn't have a country or direction link
-      where.and('f.export')
+      where.and('f.export');
     }
 
-    
+
     //-- Should we match a precise direction?
     if (direction && direction !== '$all$') {
       match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
@@ -72,7 +72,7 @@ const ModelCreateLine = {
     if (countryClassification) {
       // define import export edge type filter
       match.push(`(f:Flow)-[${exportImportFilterCountry}]->(c:Country)`);
-      match.push(`(c:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
+      match.push('(c:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)');
 
       const whereCountry = new Expression('id(cc) = {countryClassification}');
       query.params({countryClassification});
@@ -129,7 +129,7 @@ const ModelCreateLine = {
       query.return('count(f) AS count, sum(toFloat(f.value)) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction');
       query.orderBy('f.year');
     }
-    console.log(query.build())
+
     database.cypher(query.build(), function(err, data) {
 
       if (err) return callback(err);
