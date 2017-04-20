@@ -54,7 +54,7 @@
     "lodash": "^3.10.0",
     "lodash.words": "^4.0.0",
     "morgan": "^1.6.1",
-    "neo4j": "^2.0.0-RC2",
+    "neo4j-driver": "^1.2.0",
     "session-file-store": "^1.0.0",
     "yargs": "^3.14.0"
   },
