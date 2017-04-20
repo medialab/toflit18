@@ -6,6 +6,8 @@
 # Helper that will erase the current neo4j database and
 # re-create it with the latest version of the data.
 #
+# Note: this is outadated!
+#
 
 # Variables
 NEO4J_PATH=/opt/neo4j-community-2.2.3
@@ -24,7 +26,7 @@ $NEO4J_PATH/bin/neo4j-import --into graph.db --nodes ./.output/nodes.csv --relat
 mv graph.db $NEO4J_PATH/data/toflit.graph.db &&
 chown -R neo4j:neo4j $NEO4J_PATH/data/toflit.graph.db &&
 
-# Restarting the databse
+# Restarting the database
 service neo4j-service start
 
 # Building indices

@@ -8,23 +8,23 @@
 #
 
 # Variables
-NEO4J_PATH=~/app/neo4j-community-2.3.9
+NEO4J_PATH=~/app/neo4j-community-3.1.3
 
 # Stopping the neo4j service
 $NEO4J_PATH/bin/neo4j stop &&
 
 # Erasing the current database
-rm -rf $NEO4J_PATH/data/toflit.graph.db &&
+rm -rf $NEO4J_PATH/data/databases/toflit.graph.db &&
 
 # Creating the new database
-rm -rf graph.db &&
-$NEO4J_PATH/bin/neo4j-import --into graph.db --nodes ./.output/nodes.csv --relationships ./.output/edges.csv &&
+$NEO4J_PATH/bin/neo4j-admin import --database toflit.graph.db --nodes ./.output/nodes.csv --relationships ./.output/edges.csv &&
 
-# Replacing the database
-mv graph.db $NEO4J_PATH/data/toflit.graph.db &&
-
-# Restarting the databse
+# Restarting the database
 $NEO4J_PATH/bin/neo4j start &&
+sleep 5 &&
 
 # Building indices
-npm run indices
+npm run indices &&
+
+# Cleaning up
+rm import.report
