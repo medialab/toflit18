@@ -39,13 +39,13 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-react-hmre": "^1.0.1",
     "babel-preset-stage-0": "^6.3.13",
-    "css-loader": "^0.23.0",
-    "file-loader": "^0.8.4",
+    "css-loader": "^0.28.0",
+    "file-loader": "^0.11.1",
     "json-loader": "^0.5.2",
-    "kotatsu": "^0.14.0",
-    "node-sass": "^3.3.2",
-    "sass-loader": "^3.0.0",
-    "style-loader": "^0.13.0"
+    "kotatsu": "^0.15.0",
+    "node-sass": "^4.5.2",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.16.1"
   },
   "dependencies": {
     "@yomguithereal/react-utilities": "^1.1.1",
