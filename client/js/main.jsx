@@ -14,11 +14,11 @@ import client from './client';
 import state from './state';
 
 // Stylesheet
-import '!style!css!ladda/dist/ladda-themeless.min.css';
-import '!style!css!sass!react-select/scss/default.scss';
-import '!style!css!rc-tooltip/assets/bootstrap.css';
-import '!style!css!../style/font-awesome.min.css';
-import '!style!css!sass!../style/toflit18.scss';
+import 'ladda/dist/ladda-themeless.min.css';
+import 'react-select/scss/default.scss';
+import 'rc-tooltip/assets/bootstrap.css';
+import '../style/font-awesome.min.css';
+import '../style/toflit18.scss';
 
 const RootedApp = root(AppRouter, state);
 
