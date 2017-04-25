@@ -4,7 +4,7 @@ Repository holding the source code of the TOFLIT18's datascape.
 
 ## Architecture
 
-* Neo4j database v > 2
+* Neo4j database v >= 3
 * API coded for node.js using [express](http://expressjs.com/fr/) wrapped in a [dolman](https://github.com/Yomguithereal/dolman).
 * A web client coded in [React](https://github.com/facebook/react) and using [Baobab](https://github.com/Yomguithereal/baobab) as its state manager.
 * Scripts are run & built using [kotatsu](https://github.com/Yomguithereal/kotatsu).
@@ -39,6 +39,16 @@ Repository holding the source code of the TOFLIT18's datascape.
 * **test**: unit tests.
 
 ## Installation
+
+### Neo4j
+
+It is recommended that you install Neo4j v3.
+
+Also, you should probably set the following parameter to ensure that long queries won't clog the server:
+
+```
+dbms.transaction.timeout=20s
+```
 
 ### Node
 
