@@ -5,32 +5,8 @@
  */
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
-import {Link} from 'react-router';
 import cls from 'classnames';
 import {logout} from '../actions/session';
-
-const LINKS = [
-  {
-    label: 'MetaData',
-    url: '/exploration/meta'
-  },
-  {
-    label: 'Indicators',
-    url: '/exploration/indicators'
-  },
-  {
-    label: 'Countries Network',
-    url: '/exploration/globals'
-  },
-  {
-    label: 'Product Terms',
-    url: '/exploration/globalsterms'
-  },
-  {
-    label: 'Classification',
-    url: '/classification/browser'
-  }
-];
 
 @branch({
   actions: {logout},
@@ -39,42 +15,40 @@ const LINKS = [
   }
 })
 export default class NavBar extends Component {
-  static contextTypes = {
-    router: React.PropTypes.object
-  };
-
   render() {
-    const router = this.context.router,
-          logged = this.props.logged;
+    const logged = this.props.logged,
+          onMenu = this.props.onMenu,
+          sidenavOpened = this.props.sidenavOpened
 
     if (!logged)
       return null;
 
     const logoutButton = (
-      <li className="nav-item pull-right">
+      <span className="nav-item">
         <a className="nav-link logout"
           onClick={() => this.props.actions.logout()}>
           Logout
         </a>
-      </li>
+      </span>
     );
 
     return (
       <div>
-        <div className="navbar-emphasis" />
-        <nav className="navbar navbar-light bg-faded">
+        <nav className="navbar navbar-toggleable-md fixed-top navbar-light bg-faded">
           <div className="container">
-            <a className="navbar-brand" href="#">TOFLIT18</a>
-            <ul className="nav navbar-nav">
-              {LINKS.map(l => (
-                <li className={cls('nav-item', {active: router.isActive(l.url)})}
-                  key={l.url}>
-                  <Link to={l.url}
-                    className="nav-link">{l.label}</Link>
+            <div className="collapse navbar-collapse">
+              <ul className="navbar-nav mr-auto">
+                <li className={cls('nav-item', 'menu-link', sidenavOpened && 'active')} onClick={onMenu}>
+                  <a className="nav-link">
+                    <i className="fa fa-bars" />
+                  </a>
                 </li>
-              ))}
+                <li className="nav-item menu-link">
+                  <a className="navbar-brand" href="#">TOFLIT18</a>
+                </li>
+              </ul>
               {logged && logoutButton}
-            </ul>
+            </div>
           </div>
         </nav>
       </div>

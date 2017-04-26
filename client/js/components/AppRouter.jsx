@@ -9,6 +9,7 @@ import {Router, Route, Redirect} from 'react-router';
 import PropTypes from 'baobab-react/prop-types';
 import App from './App.jsx';
 import Login from './login/Login.jsx';
+import Home from './Home.jsx';
 import ClassificationPanel from './classification/ClassificationPanel.jsx';
 import ClassificationModal from './classification/ClassificationModal.jsx';
 import ClassificationBrowser from './classification/ClassificationBrowser.jsx';
@@ -32,7 +33,7 @@ export default class AppRouter extends Component {
 
     return (
       <Router history={history}>
-        <Redirect from="/" to="/exploration/meta" />
+        <Redirect from="/" to="/home" />
         <Route path="/" component={App}>
           <Route path="/login" component={Login} />
           <Route path="/" onEnter={(_, redirect) => !isLogged() && redirect({pathname: '/login'})}>
@@ -40,6 +41,7 @@ export default class AppRouter extends Component {
             <Redirect from="classification" to="classification/browser" />
             <Redirect from="exploration" to="exploration/meta" />
 
+            <Route path="home" component={Home} />
             <Route path="classification" component={ClassificationPanel}>
               <Route path="browser" component={ClassificationBrowser} />
               <Route path="modal" component={ClassificationModal} />

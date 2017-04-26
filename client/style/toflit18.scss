@@ -11,7 +11,7 @@
  */
 
 // Colors
-$text-black:       #373a3c;
+$text-black:       #373a3c;
 
 $light-grey:       #F5F5F5;
 $medium-grey:      #E7E7E7;
@@ -51,7 +51,7 @@ $btn-danger-bg:  $poison-blusher;
 $input-border-focus: $old-blue;
 
 // Import
-@import "bootstrap/bootstrap";
+@import "~bootstrap/scss/bootstrap.scss";
 
 /**
  * Globals.
@@ -63,6 +63,16 @@ html, body, #mount, #main {
 
 main {
   position: relative;
+  top: 53px;
+}
+
+button {
+  font-family: $font-family-base;
+  cursor: pointer;
+}
+
+input {
+  font-family: $font-family-base;
 }
 
 /**
@@ -115,6 +125,68 @@ h1 {
 /**
  * Components.
  */
+
+// Side navigation
+#sidenav {
+  height: calc(100% - 53px); /* 100% Full-height */
+  width: 250px; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 100; /* Stay on top */
+  top: 53px;
+  left: -250px;
+  background-color: white;
+  border-right: 1px solid $medium-grey;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.3s;
+
+  &.opened {
+    left: 0px;
+  }
+
+  .close-btn {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+  .sidenav-links {
+    overflow-x: hidden;
+    list-style-type: none;
+
+    .sidenav-link {
+      padding: 10px;
+
+      &.active {
+        font-weight: bold;
+      }
+
+      a {
+        color: $text-black;
+      }
+    }
+  }
+}
+
+// Sidenav overlay
+#sidenav-overlay {
+  z-index: 99;
+  width: 0;
+  height: calc(100% - 53px);
+  position: fixed;
+  top: 53px;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.5s;
+
+  &.opened {
+    width: 100%;
+    background-color: rgba(0, 0, 0, .3);
+  }
+}
 
 // Waiter
 .waiter {
@@ -174,14 +246,10 @@ h1 {
 /**
  * Navbar.
  */
-.navbar-emphasis {
-  height: 3px;
-  background-color: $poison-blusher;
-}
-
 .navbar {
   background-color: white;
   border-bottom: 1px solid $medium-grey;
+  border-top: 3px solid $poison-blusher;
   padding: 0px;
   line-height: 35px;
 
@@ -190,7 +258,7 @@ h1 {
     padding: 0px;
     color: #777;
     font-family: Montserrat, Arial, sans-serif;
-    margin-right: 35px;
+    margin-right: 0px;
   }
 
   .nav-item {
@@ -203,8 +271,8 @@ h1 {
       border-left: 1px solid $medium-grey;
     }
 
-    &.active {
-      background-color: $medium-grey;
+    &.menu-link {
+      cursor: pointer;
     }
 
     .nav-link {
@@ -222,7 +290,8 @@ h1 {
 
   .logout {
     border-left: 1px solid $medium-grey;
-    padding-left: 15px;
+    // padding-left: 15px;
+    padding-right: 0px;
     cursor: pointer;
   }
 }
@@ -236,6 +305,26 @@ h1 {
 
   .login-panel {
     padding: 40px;
+  }
+}
+
+/**
+ * Home.
+ */
+#home {
+  padding: 15px;
+
+  .panel {
+    padding: 20px;
+    margin-bottom: 10px;
+  }
+
+  a {
+    color: $text-black;
+  }
+
+  p {
+    margin-bottom: 0;
   }
 }
 

@@ -103,16 +103,6 @@ class LeftPanel extends Component {
                 Export
               </Button>
             </Col>
-            <Col md={9} style={{textAlign: 'right'}}>
-              <ButtonGroup>
-                <Button
-                  kind="secondary"
-                  disabled
-                  onClick={() => actions.modal('create')}>
-                  Create From
-                </Button>
-              </ButtonGroup>
-            </Col>
           </div>
         </div>
       </Col>

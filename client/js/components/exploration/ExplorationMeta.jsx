@@ -105,30 +105,31 @@ export default class ExplorationMeta extends Component {
             <em>Some information about the data itself.</em>
           </p>
           <hr />
-            <Row className="dataType">
-             <SectionTitle title="Data type"
-               addendum="You must select the type of data to control." />
-              <Col md={6}>
-                <ItemSelector type="dataType"
-                  data={[...metadataSelectors, ...classificationsFiltered]}
-                  loading={!classifications.product.length}
-                  onChange={actions.select}
-                  selected={metadata.dataType} />
-              </Col>
-            </Row>
-            <hr />
-            <Row>
-            <SectionTitle title="Source Type"
+          <Row className="dataType">
+           <SectionTitle title="Data type"
+             addendum="You must select the type of data to control." />
+            <Col md={6}>
+              <ItemSelector type="dataType"
+                data={[...metadataSelectors, ...classificationsFiltered]}
+                loading={!classifications.product.length}
+                onChange={actions.select}
+                selected={metadata.dataType} />
+            </Col>
+          </Row>
+          <hr />
+          <Row>
+            <SectionTitle
+              title="Source Type"
               addendum="From which sources does the data comes from?" />
-              <Col md={4}>
-                <ItemSelector type="sourceType"
-                  data={sourceTypesOptions}
-                  loading={!sourceTypesOptions.length}
-                  onChange={actions.update.bind(null, 'sourceType')}
-                  selected={selectors.sourceType} />
-              </Col>
-            </Row>
-            <hr />
+            <Col md={4}>
+              <ItemSelector type="sourceType"
+                data={sourceTypesOptions}
+                loading={!sourceTypesOptions.length}
+                onChange={actions.update.bind(null, 'sourceType')}
+                selected={selectors.sourceType} />
+            </Col>
+          </Row>
+          <hr />
           <Row>
             <SectionTitle title="Product"
               addendum="The type of product being shipped." />

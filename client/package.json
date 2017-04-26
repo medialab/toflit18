@@ -51,6 +51,7 @@
     "@yomguithereal/react-utilities": "^1.1.1",
     "baobab": "^2.3.0",
     "baobab-react": "^1.0.1",
+    "bootstrap": "4.0.0-alpha.6",
     "browser-filesaver": "^1.1.0",
     "classnames": "^2.1.3",
     "d3-format": "^1.0.2",
