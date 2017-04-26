@@ -97,6 +97,8 @@ const Model = {
   search(id, opts, callback) {
 
     let query, params;
+
+    // TODO: should not base yourself on an id, this is a bad idea
     if (id !== 1 && id !== 10) {
       query = queries[opts.queryGroup || opts.queryItem ? 'searchGroups' : 'groups'];
       params = {
@@ -114,6 +116,11 @@ const Model = {
           queryGroup: searchPattern(opts.queryGroup || '')
         };
     }
+
+    // Casting
+    params.id = database.int(params.id);
+    params.limit = database.int(params.limit);
+    params.offset = database.int(params.offset);
 
     return database.cypher(
       {
