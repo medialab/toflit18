@@ -497,7 +497,7 @@ function importer(csvLine) {
       name: csvLine.bureaux
     });
 
-    if (isImport)
+    if (!isImport)
       BUILDER.relate(flowNode, 'FROM', officeNode);
     else
       BUILDER.relate(flowNode, 'TO', officeNode);
@@ -518,7 +518,7 @@ function importer(csvLine) {
       name: direction
     });
 
-    if (isImport)
+    if (!isImport)
       BUILDER.relate(flowNode, 'FROM', directionNode);
     else
       BUILDER.relate(flowNode, 'TO', directionNode);
@@ -532,7 +532,7 @@ function importer(csvLine) {
       name: csvLine.pays
     });
 
-    if (!isImport)
+    if (isImport)
       BUILDER.relate(flowNode, 'FROM', countryNode);
     else
       BUILDER.relate(flowNode, 'TO', countryNode);
