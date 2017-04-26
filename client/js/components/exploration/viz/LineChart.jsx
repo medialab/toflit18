@@ -32,17 +32,19 @@ export default class LineChart extends Component {
     }
 
     const lines = data.map(line => {
-      return line.data.filter(row => {
-                          return row.count !== null && row.value !== null;
-                        })
-                      .map((row) => {
-                        if (row.count !== null && row.value !== null) {
-                          return {
-                            year: row.year,
-                            value: row[valueKey]
-                          };
-                        }
-                      });
+      return line
+        .data
+        .filter(row => {
+            return row.count !== null && row.value !== null;
+          })
+        .map((row) => {
+          if (row.count !== null && row.value !== null) {
+            return {
+              year: row.year,
+              value: row[valueKey]
+            };
+          }
+        });
     });
 
     const palette = data.map(line => line.color);
