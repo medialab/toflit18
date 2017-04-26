@@ -60,6 +60,43 @@ export default class Home extends Component {
             </em>
           </p>
         </div>
+        <div className="panel">
+          <h5>
+            <Link to="exploration/indicators">
+              3. Indicators
+            </Link>
+          </h5>
+          <p>
+            <em>
+              Build & explore time series showing the evolution of trade flows in values
+              & quantities using.
+            </em>
+          </p>
+        </div>
+        <div className="panel">
+          <h5>
+            <Link to="exploration/globals">
+              4. Countries networks
+            </Link>
+          </h5>
+          <p>
+            <em>
+              Explore networks of countries whither France exported or whence France imported.
+            </em>
+          </p>
+        </div>
+        <div className="panel">
+          <h5>
+            <Link to="exploration/globalsterms">
+              5. Product terms networks
+            </Link>
+          </h5>
+          <p>
+            <em>
+              Explore networks of product terms traded by & with France.
+            </em>
+          </p>
+        </div>
       </div>
     );
   }
