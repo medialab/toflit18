@@ -48,7 +48,7 @@ function recordToObject(record) {
 // Database abstraction
 const DB = {
   close() {
-    return driver.close()
+    return driver.close();
   },
   cypher(body, callback) {
     let query,
