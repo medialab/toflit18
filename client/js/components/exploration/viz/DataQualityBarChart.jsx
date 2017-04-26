@@ -149,7 +149,11 @@ export default class DataQualityBarChart extends Component {
 
             return (
               <g key={row.year}>
-                <Tooltip placement="top" align={{offset: [3, 0]}} overlay={dataDisplayed + ` (${row.year})`}>
+                <Tooltip
+                  placement="top"
+                  align={{offset: [3, 0]}}
+                  overlay={dataDisplayed + ` (${row.year})`}
+                  mouseLeaveDelay={0}>
                   <rect className="bar"
                     x={x(row.year)}
                     y={y(row.data) + topMargin}

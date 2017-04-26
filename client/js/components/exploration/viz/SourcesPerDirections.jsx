@@ -119,7 +119,8 @@ class Direction extends Component {
           placement="top"
           align={{offset: [3, 0]}}
           overlay={tooltip}
-          key={year}>
+          key={year}
+          mouseLeaveDelay={0}>
           <rect className={`${local ? 'local' : 'national'}-bar`}
             width={bar}
             height={rectHeight}
