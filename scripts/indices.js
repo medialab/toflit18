@@ -33,5 +33,7 @@ async.eachSeries(indices, function(prop, next) {
     }
   );
 }, function(err) {
+  database.close();
+
   if (err) console.error(err);
 });
