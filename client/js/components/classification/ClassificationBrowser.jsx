@@ -126,7 +126,7 @@ class RightPanel extends Component {
       <Waiter /> :
       (
         <Infinite
-          className="partial-height twice overflow"
+          className="partial-height once overflow"
           action={() => actions.expand(current, queryGroup, queryItem)}
           tracker={current.id}
           data={current}>
@@ -139,11 +139,10 @@ class RightPanel extends Component {
         <div className="panel full-height">
           <h4>{current.name || '...'}</h4>
           <hr />
-          <GroupQuery id={current.id} loading={loading} />
-          <Button kind="secondary"
-            onClick={() => actions.resetFilters(current.id)}>
-            Reset filters
-          </Button>
+          <GroupQuery
+            current={current}
+            loading={loading}
+            resetFilters={actions.resetFilters} />
           <hr />
           {list}
         </div>
@@ -254,8 +253,8 @@ const QUERY_PATH_ITEM = ['states', 'classification', 'browser', 'queryItem'];
     queryItem: QUERY_PATH_ITEM
   },
   actions: {
-    update_group: linker(QUERY_PATH_GROUP),
-    update_item: linker(QUERY_PATH_ITEM),
+    updateGroup: linker(QUERY_PATH_GROUP),
+    updateItem: linker(QUERY_PATH_ITEM),
     search
   }
 })
@@ -266,20 +265,18 @@ class GroupQuery extends Component {
     const queryItem = this.props.queryItem;
 
     if (queryGroup || queryItem)
-      return this.props.actions.search(this.props.id, queryGroup, queryItem);
+      return this.props.actions.search(this.props.current.id, queryGroup, queryItem);
   }
 
   render() {
     const {
       actions,
+      current,
       loading,
       queryGroup,
-      queryItem
+      queryItem,
+      resetFilters
     } = this.props;
-
-    const checkClassification = (
-      this.props.id !== 1 && this.props.id !== 10
-    );
 
     return (
       <div className="input-group">
@@ -289,23 +286,29 @@ class GroupQuery extends Component {
           placeholder="Search group..."
           value={queryGroup}
           onKeyPress={e => e.which === 13 && this.submit()}
-          onChange={e => actions.update_group(e.target.value)} />
-            {checkClassification && <input
-              id="searchItem"
-              type="text"
-              className="form-control"
-              placeholder="Search item..."
-              value={queryItem}
-              onKeyPress={e => e.which === 13 && this.submit()}
-              onChange={e => actions.update_item(e.target.value)} />
-            }
+          onChange={e => actions.updateGroup(e.target.value)} />
+          {!current.source && <input
+            id="searchItem"
+            type="text"
+            className="form-control"
+            placeholder="Search item..."
+            value={queryItem}
+            onKeyPress={e => e.which === 13 && this.submit()}
+            onChange={e => actions.updateItem(e.target.value)} />
+          }
         <span className="input-group-btn">
-          <Button
-            kind="secondary"
-            loading={loading}
-            onClick={() => this.submit()}>
-            Filter
-          </Button>
+          <ButtonGroup>
+            <Button
+              kind="secondary"
+              loading={loading}
+              onClick={() => this.submit()}>
+              Filter
+            </Button>
+            <Button kind="secondary"
+              onClick={() => resetFilters(current.id)}>
+              Reset
+            </Button>
+          </ButtonGroup>
         </span>
       </div>
     );
