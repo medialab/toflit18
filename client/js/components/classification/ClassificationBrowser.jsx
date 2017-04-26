@@ -142,7 +142,7 @@ class RightPanel extends Component {
           <GroupQuery
             current={current}
             loading={loading}
-            resetFilters={actions.resetFilters} />
+            reset={actions.resetFilters} />
           <hr />
           {list}
         </div>
@@ -275,7 +275,7 @@ class GroupQuery extends Component {
       loading,
       queryGroup,
       queryItem,
-      resetFilters
+      reset
     } = this.props;
 
     return (
@@ -305,7 +305,7 @@ class GroupQuery extends Component {
               Filter
             </Button>
             <Button kind="secondary"
-              onClick={() => resetFilters(current.id)}>
+              onClick={() => reset(current.id)}>
               Reset
             </Button>
           </ButtonGroup>

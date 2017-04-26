@@ -31,7 +31,7 @@ const LINKS = [
   }
 ];
 
-export default function SideNav(props, context) {
+export default function SideNav(props, context) {
   const {
     opened = false,
     onClose

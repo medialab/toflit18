@@ -16,9 +16,11 @@ import {logout} from '../actions/session';
 })
 export default class NavBar extends Component {
   render() {
-    const logged = this.props.logged,
-          onMenu = this.props.onMenu,
-          sidenavOpened = this.props.sidenavOpened
+    const {
+      logged,
+      onMenu,
+      sidenavOpened
+    } = this.props;
 
     if (!logged)
       return null;
