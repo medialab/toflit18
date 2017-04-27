@@ -149,6 +149,10 @@ export default class Network extends Component {
   componentWillUpdate(nextProps) {
     const g = this.sigma.graph;
 
+    // If the graph's directedness changes
+    const defaultEdgeType = nextProps.directed ? 'arrow' : 'def';
+    this.sigma.settings({defaultEdgeType});
+
     // We only reset the graph if it is structurally different
     if (nextProps.graph && nextProps.graph !== this.props.graph) {
       this.sigma.killForceAtlas2();

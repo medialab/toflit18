@@ -72,7 +72,9 @@ export function selectPonderation(tree, ponderation) {
     });
   });
 
-  cursor.set('graph', {nodes: values(nodes), edges});
+  const directed = cursor.get('graph', 'directed');
+
+  cursor.set('graph', {nodes: values(nodes), edges, directed});
 }
 
 export function addNetwork(tree) {
@@ -161,7 +163,11 @@ export function addNetwork(tree) {
       });
     });
 
-    cursor.set('graph', {nodes: values(nodes), edges});
+    const kind = cursor.get('selectors', 'kind', 'id');
+
+    const directed = kind === 'import' || kind === 'export';
+
+    cursor.set('graph', {nodes: values(nodes), edges, directed});
   });
 }
 

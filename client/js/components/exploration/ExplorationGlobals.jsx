@@ -192,6 +192,7 @@ class NetworkPanel extends Component {
           <br />
           <Network
             ref={ref => this.networkComponent = ref}
+            directed={graph && graph.directed}
             graph={graph}
             ponderationKey={ponderationKey} />
           <br />

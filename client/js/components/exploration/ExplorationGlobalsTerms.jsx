@@ -224,6 +224,7 @@ class TermsPanel extends Component {
           <Network
             ref={ref => this.networkComponent = ref}
             graph={graph}
+            directed
             colorKey={colorKey} />
           <br />
           <div className="btn-group">
