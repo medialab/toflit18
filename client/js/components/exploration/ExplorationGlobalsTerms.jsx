@@ -123,14 +123,14 @@ class TermsPanel extends Component {
           <h6 className="section-separator">Filters:</h6>
           <Row>
             <SectionTitle
-                title="Source Type"
-                addendum="From which sources does the data comes from?" />
+              title="Source Type"
+              addendum="From which sources does the data comes from?" />
             <Col md={4}>
               <ItemSelector type="sourceType"
-                  data={sourceTypesOptions}
-                  loading={!sourceTypesOptions.length}
-                  onChange={actions.update.bind(null, 'sourceType')}
-                  selected={selectors.sourceType} />
+                data={sourceTypesOptions}
+                loading={!sourceTypesOptions.length}
+                onChange={actions.update.bind(null, 'sourceType')}
+                selected={selectors.sourceType} />
             </Col>
           </Row>
           <hr />
