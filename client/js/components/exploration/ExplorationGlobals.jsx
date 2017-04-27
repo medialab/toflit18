@@ -97,11 +97,10 @@ class NetworkPanel extends Component {
         <div className="panel">
           <h4>Countries Network</h4>
           <em>Choose a country classification and display a graph showing relations between countries & directions.</em>
-          <hr />
+          <h6 className="section-separator">What we represent as country nodes:</h6>
           <Row>
             <SectionTitle
               title="Country"
-              emphasized
               addendum="The country whence we got the products or wither we are sending them." />
             <Col md={4}>
               <ClassificationSelector type="country"
@@ -111,7 +110,7 @@ class NetworkPanel extends Component {
                 selected={classification} />
               </Col>
           </Row>
-          <hr />
+          <h6 className="section-separator">Filters:</h6>
           <Row>
               <SectionTitle
                 title="Product"
@@ -230,7 +229,7 @@ class SectionTitle extends Component {
 
     return (
       <Col md={4} className={cls(emphasized && 'bold')}>
-        <div>{title}</div>
+        <div className="section-title">{title}</div>
         <div className="section-explanation">
           <em>{addendum}</em>
         </div>

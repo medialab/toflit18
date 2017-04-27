@@ -92,7 +92,8 @@ class LineForm extends Component {
         </em>
         <hr />
         <Row>
-          <SectionTitle title="Source Type"
+          <SectionTitle
+            title="Source Type"
             addendum="From which sources does the flows come from?" />
           <Col md={4}>
             <ItemSelector type="sourceType"
@@ -104,7 +105,8 @@ class LineForm extends Component {
         </Row>
         <hr />
         <Row>
-          <SectionTitle title="Product"
+          <SectionTitle
+            title="Product"
             addendum="The type of product being shipped." />
           <Col md={4}>
             <ClassificationSelector type="product"
@@ -124,7 +126,8 @@ class LineForm extends Component {
         </Row>
         <hr />
         <Row>
-          <SectionTitle title="Country"
+          <SectionTitle
+            title="Country"
             addendum="The country whence we got the products or wither we are sending them." />
           <Col md={4}>
             <ClassificationSelector type="country"
@@ -191,7 +194,7 @@ class SectionTitle extends Component {
 
     return (
       <Col md={2}>
-        <div>{title}</div>
+        <div className="section-title">{title}</div>
         <div className="section-explanation">
           <em>{addendum}</em>
         </div>

@@ -325,7 +325,6 @@ h1 {
 
   a {
     color: $text-black;
-    text-decoration: underline;
   }
 
   p {
@@ -453,6 +452,19 @@ h1 {
   .panel {
     padding: 20px;
     margin-bottom: 10px;
+  }
+
+  .section-title, .section-explanation {
+    padding: 0px 5px;
+  }
+
+  .section-separator {
+    font-weight: bold;
+    background-color: $light-grey;
+    padding: 15px 5px;
+    margin: 10px 0px;
+    border-bottom: 1px solid $medium-grey;
+    border-top: 1px solid $medium-grey;
   }
 
   .indicators-wrapper {

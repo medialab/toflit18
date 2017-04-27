@@ -48,9 +48,8 @@ export default function SideNav(props, context) {
             return (
               <li
                 key={link.url}
-                onClick={onClose}
                 className={cls('sidenav-link', router.isActive(link.url) && 'active')}>
-                <Link to={link.url}>
+                <Link to={link.url} onClick={onClose}>
                   {link.label}
                 </Link>
               </li>

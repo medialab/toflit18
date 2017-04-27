@@ -107,103 +107,104 @@ class TermsPanel extends Component {
         <div className="panel">
           <h4>Terms Network</h4>
           <em>Choose a product classification and display a graph showing relations between terms of the aforementioned classification</em>
-          <hr />
-         <Row>
-            <SectionTitle title="Source Type"
-              addendum="From which sources does the data comes from?" />
-              <Col md={4}>
-                <ItemSelector type="sourceType"
+          <h6 className="section-separator">Whence do we extract our terms:</h6>
+          <Row>
+            <SectionTitle
+              title="Product"
+              addendum="You must choose the type of product being shipped." />
+            <Col md={4}>
+              <ClassificationSelector type="product"
+                loading={!classifications.product.length}
+                data={classifications.product}
+                onChange={actions.selectTerms}
+                selected={classification} />
+            </Col>
+          </Row>
+          <h6 className="section-separator">Filters:</h6>
+          <Row>
+            <SectionTitle
+                title="Source Type"
+                addendum="From which sources does the data comes from?" />
+            <Col md={4}>
+              <ItemSelector type="sourceType"
                   data={sourceTypesOptions}
                   loading={!sourceTypesOptions.length}
                   onChange={actions.update.bind(null, 'sourceType')}
                   selected={selectors.sourceType} />
-              </Col>
-            </Row>
-            <hr />
-            <Row>
-              <SectionTitle
-                emphasized
-                title="Product"
-                addendum="You must choose the type of product being shipped." />
-              <Col md={4}>
-                <ClassificationSelector type="product"
-                  loading={!classifications.product.length}
-                  data={classifications.product}
-                  onChange={actions.selectTerms}
-                  selected={classification} />
-              </Col>
-            </Row>
-            <hr />
-            <Row>
-            <SectionTitle title="Country"
+            </Col>
+          </Row>
+          <hr />
+          <Row>
+            <SectionTitle
+              title="Country"
               addendum="The country whence we got the products or wither we are sending them." />
-            <Col md={4}>
-              <ClassificationSelector type="country"
-                loading={!classifications.country.length}
-                data={classifications.country.filter(c => !c.source)}
-                onChange={actions.update.bind(null, 'countryClassification')}
-                selected={selectors.countryClassification} />
-            </Col>
-            <Col md={4}>
-              <ItemSelector type="country"
-                disabled={!selectors.countryClassification || !groups.country.length}
-                loading={selectors.countryClassification && !groups.country.length}
-                data={groups.country}
-                onChange={actions.update.bind(null, 'country')}
-                selected={selectors.country} />
-            </Col>
-          </Row>
-          <hr />
-          <Row>
-            <SectionTitle title="Direction"
-              addendum="The French harbor where the transactions were recorded." />
-            <Col md={4}>
-              <ItemSelector type="direction"
-                loading={!directions}
-                data={directions || []}
-                onChange={actions.update.bind(null, 'direction')}
-                selected={selectors.direction} />
-            </Col>
-          </Row>
-          <hr />
-          <Row>
-            <SectionTitle title="Kind"
-              addendum="Should we look at import, export, or total?" />
-            <Col md={4}>
-              <ItemSelector type="kind"
-                onChange={actions.update.bind(null, 'kind')}
-                selected={selectors.kind} />
-            </Col>
-          </Row>
-          <hr />
-          <Row>
-            <SectionTitle title="Dates"
-              addendum="Choose one date or a range date" />
-            <Col md={2}>
-              <ItemSelector type="dateMin"
-                data={dateMinOptions}
-                onChange={actions.update.bind(null, 'dateMin')}
-                selected={selectors.dateMin} />
-            </Col>
-            <Col md={2}>
-              <ItemSelector type="dateMax"
-                data={dateMaxOptions}
-                onChange={actions.update.bind(null, 'dateMax')}
-                selected={selectors.dateMax} />
-            </Col>
-          </Row>
-          <hr />
-          <Row>
-            <Col md={2}>
-              <Button
-                disabled={!classification}
-                kind="primary"
-                loading={loading}
-                onClick={actions.addChart}>
-                Add network
-              </Button>
-            </Col>
-          </Row>
+              <Col md={4}>
+                <ClassificationSelector type="country"
+                  loading={!classifications.country.length}
+                  data={classifications.country.filter(c => !c.source)}
+                  onChange={actions.update.bind(null, 'countryClassification')}
+                  selected={selectors.countryClassification} />
+              </Col>
+              <Col md={4}>
+                <ItemSelector type="country"
+                  disabled={!selectors.countryClassification || !groups.country.length}
+                  loading={selectors.countryClassification && !groups.country.length}
+                  data={groups.country}
+                  onChange={actions.update.bind(null, 'country')}
+                  selected={selectors.country} />
+              </Col>
+            </Row>
+            <hr />
+            <Row>
+              <SectionTitle title="Direction"
+                addendum="The French harbor where the transactions were recorded." />
+              <Col md={4}>
+                <ItemSelector type="direction"
+                  loading={!directions}
+                  data={directions || []}
+                  onChange={actions.update.bind(null, 'direction')}
+                  selected={selectors.direction} />
+              </Col>
+            </Row>
+            <hr />
+            <Row>
+              <SectionTitle title="Kind"
+                addendum="Should we look at import, export, or total?" />
+              <Col md={4}>
+                <ItemSelector type="kind"
+                  onChange={actions.update.bind(null, 'kind')}
+                  selected={selectors.kind} />
+              </Col>
+            </Row>
+            <hr />
+            <Row>
+              <SectionTitle title="Dates"
+                addendum="Choose one date or a range date" />
+              <Col md={2}>
+                <ItemSelector type="dateMin"
+                  data={dateMinOptions}
+                  onChange={actions.update.bind(null, 'dateMin')}
+                  selected={selectors.dateMin} />
+              </Col>
+              <Col md={2}>
+                <ItemSelector type="dateMax"
+                  data={dateMaxOptions}
+                  onChange={actions.update.bind(null, 'dateMax')}
+                  selected={selectors.dateMax} />
+              </Col>
+            </Row>
+            <hr />
+            <Row>
+              <Col md={2}>
+                <Button
+                  disabled={!classification}
+                  kind="primary"
+                  loading={loading}
+                  onClick={actions.addChart}>
+                  Add network
+                </Button>
+              </Col>
+            </Row>
         </div>
         <div className={cls('panel', !graph && 'hidden')}>
           <input
@@ -260,7 +261,7 @@ class SectionTitle extends Component {
 
     return (
       <Col md={4} className={cls(emphasized && 'bold')}>
-        <div>{title}</div>
+        <div className="section-title">{title}</div>
         <div className="section-explanation">
           <em>{addendum}</em>
         </div>
