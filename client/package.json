@@ -33,7 +33,7 @@
   "homepage": "https://github.com/medialab/toflit18",
   "devDependencies": {
     "babel-core": "^6.7.2",
-    "babel-loader": "^6.2.4",
+    "babel-loader": "^7.0.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
@@ -42,7 +42,7 @@
     "css-loader": "^0.28.0",
     "file-loader": "^0.11.1",
     "json-loader": "^0.5.2",
-    "kotatsu": "^0.15.0",
+    "kotatsu": "^0.15.1",
     "node-sass": "^4.5.2",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.16.1"
