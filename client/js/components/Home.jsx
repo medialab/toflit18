@@ -30,8 +30,9 @@ export default class Home extends Component {
         </div>
         <div className="panel">
           <h5>
+            1.&nbsp;
             <Link to="exploration/meta">
-              1. Metadata about the collected data
+              Metadata about the collected data
             </Link>
           </h5>
           <p>
@@ -44,8 +45,9 @@ export default class Home extends Component {
         </div>
         <div className="panel">
           <h5>
+            2.&nbsp;
             <Link to="classification/browser">
-              2. Classifications browser
+              Classifications browser
             </Link>
           </h5>
           <p>
@@ -62,8 +64,9 @@ export default class Home extends Component {
         </div>
         <div className="panel">
           <h5>
+            3.&nbsp;
             <Link to="exploration/indicators">
-              3. Indicators
+              Indicators
             </Link>
           </h5>
           <p>
@@ -75,8 +78,9 @@ export default class Home extends Component {
         </div>
         <div className="panel">
           <h5>
+            4.&nbsp;
             <Link to="exploration/globals">
-              4. Countries networks
+              Countries networks
             </Link>
           </h5>
           <p>
@@ -87,8 +91,9 @@ export default class Home extends Component {
         </div>
         <div className="panel">
           <h5>
+            5.&nbsp;
             <Link to="exploration/globalsterms">
-              5. Product terms networks
+              Product terms networks
             </Link>
           </h5>
           <p>
