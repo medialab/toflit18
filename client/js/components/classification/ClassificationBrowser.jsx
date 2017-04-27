@@ -49,7 +49,7 @@ export default class ClassificationBrowser extends Component {
   render() {
     return (
       <div className="browser-wrapper">
-        <Row className="full-height">
+        <Row className="panel full-height">
           <LeftPanel {...this.props} />
           <RightPanel {...this.props} />
         </Row>
@@ -86,7 +86,7 @@ class LeftPanel extends Component {
 
     return (
       <Col md={5} className="full-height">
-        <div className="panel full-height">
+        <div className="full-height">
           <h3>Classifications</h3>
           <hr />
           <div className="partial-height once overflow">
@@ -136,8 +136,8 @@ class RightPanel extends Component {
 
     return (
       <Col md={7} className="full-height">
-        <div className="panel full-height">
-          <h4>{current.name || '...'}</h4>
+        <div className="full-height">
+          <h3>{current.name || '...'}</h3>
           <hr />
           <GroupQuery
             current={current}
