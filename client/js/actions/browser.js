@@ -79,7 +79,7 @@ export function search(tree, id, queryGroup, queryItem) {
 
   loading.set(true);
 
-  const source = tree.get(PATH.concat('current', 'source'));
+  const source = tree.get(PATH.concat('current', 'source')) || false;
 
   return tree.client.search(
     {params: {id}, data: {queryGroup, queryItem, source}},

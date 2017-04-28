@@ -47,7 +47,7 @@ const controller = [
     },
     action(req, res) {
       const opts = {
-        source: !!req.query.source,
+        source: req.query.source === 'true',
         limit: +(req.query.limit || limits.groups),
         offset: +(req.query.offset || 0),
         queryGroup: req.query.queryGroup || null,
