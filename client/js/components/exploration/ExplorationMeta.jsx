@@ -53,7 +53,6 @@ function formatArrayToCSV(data) {
     addChart
   },
   cursors: {
-    metadata: ['states', 'exploration', 'metadata'],
     classifications: ['data', 'classifications', 'flat'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
@@ -65,14 +64,15 @@ export default class ExplorationMeta extends Component {
     const {
       actions,
       classifications,
-      metadata,
       directions,
       sourceTypes,
-      state: {
-        groups,
-        selectors
-      }
+      state
     } = this.props;
+
+    const {
+      groups,
+      selectors
+    } = state;
 
     const classificationsFiltered = classifications.product
       .concat(classifications.country)
@@ -83,10 +83,10 @@ export default class ExplorationMeta extends Component {
       }));
 
     const canDisplaySecondViz = (
-      metadata.dataType &&
+      state.dataType &&
       (
-        metadata.dataType.groupsCount <= config.metadataGroupMax ||
-        metadata.dataType.special
+        state.dataType.groupsCount <= config.metadataGroupMax ||
+        state.dataType.special
       )
     );
 
@@ -104,7 +104,7 @@ export default class ExplorationMeta extends Component {
           <p>
             <em>Some information about the data itself.</em>
           </p>
-          <hr />
+          <h6 className="section-separator">What we want information about:</h6>
           <Row className="dataType">
            <SectionTitle title="Data type"
              addendum="You must select the type of data to control." />
@@ -113,10 +113,10 @@ export default class ExplorationMeta extends Component {
                 data={[...metadataSelectors, ...classificationsFiltered]}
                 loading={!classifications.product.length}
                 onChange={actions.select}
-                selected={metadata.dataType} />
+                selected={state.dataType} />
             </Col>
           </Row>
-          <hr />
+          <h6 className="section-separator">Filters:</h6>
           <Row>
             <SectionTitle
               title="Source Type"
@@ -194,30 +194,35 @@ export default class ExplorationMeta extends Component {
           <hr />
           <Row>
           <Col md={2}>
-            <Button kind="primary"
+            <Button
+              kind="primary"
+              disabled={!state.dataType}
+              loading={state.loading}
               onClick={actions.addChart}>
               Add Charts
             </Button>
           </Col>
         </Row>
         </div>
-        {metadata.dataType && <div className="panel">
-          {metadata.perYear ?
-            <DataQualityBarChart data={metadata.perYear} /> :
+        {state.perYear && state.dataType && <div className="panel">
+          {state.perYear ?
+            <DataQualityBarChart data={state.perYear} /> :
             <Waiter />}
-            <ExportButton name={`Toflit18_Meta_view ${metadata.dataType.name} - ${metadata.fileName} data_per_year`}
-              data={metadata.perYear}>
+            <ExportButton
+              name={`Toflit18_Meta_view ${state.dataType.name} - ${state.fileName} data_per_year`}
+              data={state.perYear}>
               Export
             </ExportButton>
         </div>}
-        {canDisplaySecondViz && <div className="panel">
-          {metadata.flowsPerYear ?
-           <SourcesPerDirections data={metadata.flowsPerYear} /> :
-           <Waiter />}
-           <ExportButton name={`Toflit18_Meta_view ${metadata.dataType.name} - ${metadata.fileName} flows_per_year`}
-             data={formatArrayToCSV(metadata.flowsPerYear || [])}>
+        {canDisplaySecondViz && state.flowsPerYear && state.dataType && <div className="panel">
+          {state.flowsPerYear ?
+            <SourcesPerDirections data={state.flowsPerYear} /> :
+            <Waiter />}
+            <ExportButton
+              name={`Toflit18_Meta_view ${state.dataType.name} - ${state.fileName} flows_per_year`}
+              data={formatArrayToCSV(state.flowsPerYear || [])}>
               Export
-           </ExportButton>
+            </ExportButton>
         </div>}
       </div>
     );
@@ -233,7 +238,7 @@ class SectionTitle extends Component {
 
     return (
       <Col md={4}>
-        <div>{title}</div>
+        <div className="section-title">{title}</div>
         <div className="section-explanation">
           <em>{addendum}</em>
         </div>

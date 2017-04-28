@@ -47,6 +47,8 @@ export function select(tree, selected) {
     }
   }
 
+  cursor.set('perYear', null);
+  cursor.set('flowsPerYear', null);
   cursor.set('dataType', selected);
 }
 
@@ -75,6 +77,7 @@ export function addChart(tree) {
   cursor.set('perYear', null);
   cursor.set('flowsPerYear', null);
   cursor.set('fileName', null);
+  cursor.set('loading', true);
 
   const selected = cursor.get('dataType');
 
@@ -107,18 +110,21 @@ export function addChart(tree) {
   });
 
   tree.client.flowsPerYear({params: {type}, data: paramsRequest}, function(err, data) {
+    cursor.set('loading', false);
+
     if (err)
       return;
 
-    // aggregation perYear
+    // Aggregation per year
     const perYear = [];
+
     _(data.result)
-        .map(e => e.data)
-        .flatten()
-        .map(d => d.year)
-        .groupBy()
-        .forEach((v, k) => perYear.push({year: +k, data: _.isArray(v) ? v.length : 0}))
-        .value();
+      .map(e => e.data)
+      .flatten()
+      .map(d => d.year)
+      .groupBy()
+      .forEach((v, k) => perYear.push({year: +k, data: _.isArray(v) ? v.length : 0}))
+      .value();
 
     cursor.set('perYear', perYear);
 

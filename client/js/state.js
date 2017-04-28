@@ -74,6 +74,7 @@ const defaultState = {
         perYear: null,
         flowsPerYear: null,
         fileName: null,
+        loading: false,
         selectors: {
           productClassification: null,
           countryClassification: null,
