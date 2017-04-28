@@ -29,7 +29,8 @@ export class Spinner extends Component {
   render() {
     return (
       <div className="loader">
-        <button ref="button"
+        <button
+          ref="button"
           type="button"
           className="btn btn-primary ladda-button"
           data-style="contract">

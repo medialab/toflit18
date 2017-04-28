@@ -6,7 +6,7 @@
  * behaviors.
  */
 import React, {Component} from 'react';
-import {Spinner} from './Loaders.jsx';
+import {Waiter} from './Loaders.jsx';
 
 export default class Infinite extends Component {
   constructor(props, context) {
@@ -60,7 +60,7 @@ export default class Infinite extends Component {
       <div className={className}
         onScroll={scrollHandler}>
         {this.props.children}
-        {this.state.loading && <Spinner />}
+        {this.state.loading && <Waiter />}
       </div>
     );
   }
