@@ -66,7 +66,7 @@ WITH group, collect(item.name) AS items
 RETURN group, items;
 
 // name: searchGroupsSource
-// Searching a sample of groups for the given classification.
+// Searching a sample of groups for the given source classification.
 //------------------------------------------------------------------------------
 START c=node({id})
 MATCH (c)-[:HAS]->(group)
@@ -131,4 +131,4 @@ RETURN
   item.name AS item,
   group.note AS note,
   item:OutsiderClassifiedItem AS outsider;
-  
+

@@ -98,8 +98,7 @@ const Model = {
 
     let query, params;
 
-    // TODO: should not base yourself on an id, this is a bad idea
-    if (id !== 1 && id !== 10) {
+    if (!opts.source) {
       query = queries[opts.queryGroup || opts.queryItem ? 'searchGroups' : 'groups'];
       params = {
           ...opts,

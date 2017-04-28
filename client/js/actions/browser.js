@@ -79,8 +79,10 @@ export function search(tree, id, queryGroup, queryItem) {
 
   loading.set(true);
 
+  const source = tree.get(PATH.concat('current', 'source'));
+
   return tree.client.search(
-    {params: {id}, data: {queryGroup, queryItem}},
+    {params: {id}, data: {queryGroup, queryItem, source}},
     function(err, data) {
 
       loading.set(false);
@@ -90,9 +92,9 @@ export function search(tree, id, queryGroup, queryItem) {
         d.items = uniq(d.items);
       });
 
-      tree.set(['states', 'classification', 'browser', 'queryGroup'], queryGroup);
-      tree.set(['states', 'classification', 'browser', 'queryItem'], queryItem);
-      tree.set(['states', 'classification', 'browser', 'rows'], data.result);
+      tree.set(PATH.concat(['queryGroup']), queryGroup);
+      tree.set(PATH.concat(['queryItem']), queryItem);
+      tree.set(PATH.concat(['rows']), data.result);
     }
   );
 }

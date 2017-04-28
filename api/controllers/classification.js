@@ -38,6 +38,7 @@ const controller = [
     method: 'GET',
     validate: {
       query: {
+        source: '?string',
         limit: '?string',
         offset: '?string',
         queryGroup: '?string',
@@ -46,6 +47,7 @@ const controller = [
     },
     action(req, res) {
       const opts = {
+        source: !!req.query.source,
         limit: +(req.query.limit || limits.groups),
         offset: +(req.query.offset || 0),
         queryGroup: req.query.queryGroup || null,
