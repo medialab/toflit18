@@ -10,7 +10,7 @@ import {exporter as queries} from '../api/queries';
 import {parse, stringify} from 'csv';
 import async from 'async';
 import {default as h} from 'highland';
-import _, {fill, indexBy, uniq} from 'lodash';
+import _, {fill, keyBy, uniq} from 'lodash';
 import fs from 'fs';
 
 /**
@@ -161,7 +161,7 @@ async.series([
           database.cypher({query: queries.classifiedItemsToSource, params: {id: classification._id}}, function(err, data) {
             if (err) return next(err);
 
-            const index = indexBy(data, 'item');
+            const index = keyBy(data, 'item');
 
             for (let i = 0, l = rows.length; i < l; i++) {
               const row = rows[i],
@@ -226,7 +226,7 @@ async.series([
           database.cypher({query: queries.classifiedItemsToSource, params: {id: classification._id}}, function(err, data) {
             if (err) return next(err);
 
-            const index = indexBy(data, 'item');
+            const index = keyBy(data, 'item');
 
             for (let i = 0, l = rows.length; i < l; i++) {
               const row = rows[i],
@@ -319,8 +319,8 @@ async.series([
       if (err) return callback(err);
 
       const indexes = {
-        products: indexBy(classifications.products.slice(1), e => e[1]),
-        countries: indexBy(classifications.countries.slice(1), e => e[0]),
+        products: keyBy(classifications.products.slice(1), e => e[1]),
+        countries: keyBy(classifications.countries.slice(1), e => e[0]),
       };
 
       const productPadding = fill(Array(classifications.products[0].length - 1), ''),

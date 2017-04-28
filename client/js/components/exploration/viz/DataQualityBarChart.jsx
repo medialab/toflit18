@@ -9,7 +9,7 @@ import React, {Component} from 'react';
 import Tooltip from 'rc-tooltip';
 import measured from '@yomguithereal/react-utilities/measured';
 import {scaleLinear as linear} from 'd3-scale';
-import {max, range, uniq, filter, isEmpty} from 'lodash';
+import {maxBy, range, uniq, filter, isEmpty} from 'lodash';
 
 /**
  * Main component.
@@ -114,7 +114,7 @@ export default class DataQualityBarChart extends Component {
     // Computing max values
     const maxYear = data[data.length - 1].year,
           minYear = data[0].year,
-          maxDirectionsCount = max(data.map(r => r.data)),
+          maxDirectionsCount = maxBy(data.map(r => r.data)),
           allYears = range(0, maxYear - minYear + 1).map((_, i) => minYear + i);
 
     // Building scales

@@ -5,11 +5,11 @@
  * Simple functions describing computed data nodes for the state tree.
  */
 import {flattenTree} from './lib/helpers';
-import {indexBy} from 'lodash';
+import {keyBy} from 'lodash';
 
 export function classificationsIndex(data) {
   const {product = [], country = []} = (data || {});
-  return indexBy(product.concat(country), 'id');
+  return keyBy(product.concat(country), 'id');
 }
 
 export function flatClassifications(data) {

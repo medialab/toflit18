@@ -84,7 +84,7 @@ const POSSIBLE_NODE_PROPERTIES = [
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
   .map((p, i) => [p.split(':')[0], i])
-  .zipObject()
+  .fromPairs()
   .value();
 
 const NODE_PROPERTIES_TYPES = POSSIBLE_NODE_PROPERTIES;
@@ -136,9 +136,9 @@ class Builder {
 
   save(data, label) {
     const row = _({})
-      .merge(_.mapValues(NODE_PROPERTIES_MAPPING, () => ''))
-      .merge(data)
-      .pairs()
+      .assign(_.mapValues(NODE_PROPERTIES_MAPPING, () => ''))
+      .assign(data)
+      .toPairs()
       .sortBy(e => NODE_PROPERTIES_MAPPING[e[0]])
       .map(e => e[1])
       .concat([[].concat(label || []).join(';'), this.nodesCount])

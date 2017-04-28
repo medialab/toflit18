@@ -123,8 +123,7 @@ export function addChart(tree) {
       .flatten()
       .map(d => d.year)
       .groupBy()
-      .forEach((v, k) => perYear.push({year: +k, data: _.isArray(v) ? v.length : 0}))
-      .value();
+      .forEach((v, k) => perYear.push({year: +k, data: _.isArray(v) ? v.length : 0}));
 
     cursor.set('perYear', perYear);
 

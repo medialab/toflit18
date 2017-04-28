@@ -10,7 +10,7 @@ import measured from '@yomguithereal/react-utilities/measured';
 import {format} from 'd3-format';
 import {scaleLinear as linear} from 'd3-scale';
 import * as shape from 'd3-shape';
-import {flatten, min, max} from 'lodash';
+import {flatten, minBy, maxBy} from 'lodash';
 import {prettyPrint} from '../../../lib/helpers';
 
 const axisFormat = format(',');
@@ -64,9 +64,9 @@ export default class LineChart extends Component {
     // Computing max values
     const fullData = flatten(lines);
 
-    const minYear = min(fullData, d => d.year).year,
-          maxYear = max(fullData, d => d.year).year,
-          maxValue = max(fullData, d => d.value).value;
+    const minYear = minBy(fullData, d => d.year).year,
+          maxYear = maxBy(fullData, d => d.year).year,
+          maxValue = maxBy(fullData, d => d.value).value;
 
     // Building scales
     const x = linear()

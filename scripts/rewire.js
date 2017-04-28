@@ -144,8 +144,7 @@ async.waterfall([
         ]);
 
         doneItems.add(l.group);
-      })
-      .value();
+      });
 
     //-- 2) Correct rewires
     _(links)
@@ -166,8 +165,7 @@ async.waterfall([
         ]);
 
         doneItems.add(l.group);
-      })
-      .value();
+      });
 
     database.cypher({query: queries.allGroups, params: {id: REWIRE_ID}}, (err, classification) => {
       if (err) return next(err);
@@ -190,8 +188,7 @@ async.waterfall([
           ]);
 
           doneItems.add(row.item);
-        })
-        .value();
+        });
 
       //-- 4) New groups
       _(virtual)
@@ -212,8 +209,7 @@ async.waterfall([
           ]);
 
           doneItems.add(row.group);
-        })
-        .value();
+        });
 
       console.log('Processed items:', doneItems.size);
       console.log('Virtual size:', virtual.length);

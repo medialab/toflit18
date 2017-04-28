@@ -10,7 +10,7 @@ import {
   schemeCategory20
 } from 'd3-scale';
 
-import {max, uniq, forIn} from 'lodash';
+import {maxBy, uniq, forIn} from 'lodash';
 
 const scaleCategory20 = scaleOrdinal(schemeCategory20);
 
@@ -110,7 +110,7 @@ export function addChart(tree) {
     const colorScale = scaleCategory20
       .domain(uniq(data.result.nodes.map(node => node.community)));
 
-    const maxPosition = max(data.result.nodes, 'position').position;
+    const maxPosition = maxBy(data.result.nodes, 'position').position;
 
     const colorScalePosition = scaleLinear()
       .domain([0, maxPosition])

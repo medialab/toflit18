@@ -203,7 +203,7 @@ const ModelTerms = {
             const useful = _(communities)
                 .values()
                 .countBy()
-                .pairs()
+                .toPairs()
                 .sortBy(([, count]) => -count)
                 .take(20)
                 .map(([community]) => +community)
