@@ -155,9 +155,7 @@ const ModelTerms = {
         });
 
         // Detecting communities using Louvain's algorithm
-        console.time('Louvain');
         const communities = louvain(graph);
-        console.timeEnd('Louvain');
 
         const useful = _(communities)
           .values()
@@ -165,7 +163,7 @@ const ModelTerms = {
           .toPairs()
           .sortBy(([, count]) => -count)
           .take(20)
-          .map(([community]) => +community)
+          .map(([community]) => community)
           .value();
 
         const usefulSet = new Set(useful);

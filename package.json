@@ -52,7 +52,7 @@
     "express": "^4.13.3",
     "express-session": "^1.11.3",
     "graphology": "^0.7.1",
-    "graphology-communities-louvain": "^0.1.0",
+    "graphology-communities-louvain": "^0.1.1",
     "highland": "^2.5.1",
     "lodash": "^4.17.4",
     "morgan": "^1.6.1",
