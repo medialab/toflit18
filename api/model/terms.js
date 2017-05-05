@@ -6,8 +6,8 @@
 import decypher from 'decypher';
 import database from '../connection';
 import {UndirectedGraph} from 'graphology';
+import louvain from 'graphology-communities-louvain';
 import {tokenizeTerms} from '../../lib/tokenizer';
-import Louvain from '../../lib/louvain';
 import _ from 'lodash';
 
 const {Expression, Query} = decypher;
@@ -154,18 +154,10 @@ const ModelTerms = {
           });
         });
 
-        // Computing Louvain modularity
-        const modularity = Louvain()
-          .nodes(graph.nodes())
-          .edges(graph.edges().map(edge => {
-            return {
-              source: graph.source(edge),
-              target: graph.target(edge),
-              weight: graph.getEdgeAttribute(edge, 'weight')
-            };
-          }));
-
-        const communities = modularity();
+        // Detecting communities using Louvain's algorithm
+        console.time('Louvain');
+        const communities = louvain(graph);
+        console.timeEnd('Louvain');
 
         const useful = _(communities)
           .values()
