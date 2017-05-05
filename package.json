@@ -11,7 +11,7 @@
     "import": "kotatsu run --babel -s ./scripts/import.js",
     "indices": "kotatsu run --babel -s ./scripts/indices.js",
     "lint": "eslint --ext .js --ext .jsx ./api ./lib ./test ./scripts ./client/js",
-    "postinstall": "mkdir -p .output && cd client && npm install",
+    "postinstall": "mkdir -p .output",
     "rewire": "kotatsu --babel run --progress --source-maps ./scripts/rewire.js",
     "start": "kotatsu run --babel ./scripts/start.js",
     "test": "mocha -R spec --compilers js:babel-core/register ./test/endpoint.js"
