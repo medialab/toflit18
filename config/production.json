@@ -1,0 +1,18 @@
+{
+  "api": {
+    "allowedOrigins": ["http://localhost:3000"],
+    "limits": {
+      "groups": 200,
+      "minYear": 1716,
+      "maxYear": 1839
+    },
+    "port": 4000,
+    "secret": "merrain"
+  },
+  "db": {
+    "host": "localhost",
+    "port": 7687,
+    "user": "neo4j",
+    "password": "pwd"
+  }
+}

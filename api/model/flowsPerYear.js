@@ -3,12 +3,14 @@
  * ===================
  *
  */
+import config from 'config';
 import decypher from 'decypher';
 import database from '../connection';
-import config from '../../config.json';
 import _ from 'lodash';
 
 const {Expression, Query} = decypher;
+
+const limits = config.get('api.limits');
 
 const ModelFlowsPerYear = {
     /**
@@ -108,7 +110,7 @@ const ModelFlowsPerYear = {
       if (dataType === 'sourceType' || dataType === 'direction')
         where.and(`exists(f.${dataType})`);
 
-      where.and(`f.year >= ${config.api.limits.minYear}`);
+      where.and(`f.year >= ${limits.minYear}`);
 
       // manage special sourceType
       if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {

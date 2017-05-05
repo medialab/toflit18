@@ -5,10 +5,12 @@
  *
  * Connection to the project's Neo4j database.
  */
-import {db as config} from '../config.json';
+import CONFIG from 'config';
 import neo4j from 'neo4j-driver/lib/v1';
 import {Node} from 'neo4j-driver/lib/v1/graph-types';
 import Integer from 'neo4j-driver/lib/v1/integer';
+
+const config = CONFIG.get('db');
 
 // Authentication
 const auth = neo4j.auth.basic(config.user, config.password);

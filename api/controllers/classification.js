@@ -3,10 +3,10 @@
  * ===================================
  *
  */
+import config from 'config';
 import model from '../model/classification';
-import {api as apiConfig} from '../../config.json';
 
-const limits = apiConfig.limits;
+const limits = config.get('api.limits');
 
 const controller = [
   {

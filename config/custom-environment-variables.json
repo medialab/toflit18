@@ -1,0 +1,14 @@
+{
+  "api": {
+    "secret": "API_SECRET"
+  },
+  "db": {
+    "host": "NEO4J_HOST",
+    "port": {
+      "__name": "NEO4J_PORT",
+      "__format": "json"
+    },
+    "user": "NEO4J_USER",
+    "password": "NEO4J_PASSWORD"
+  }
+}

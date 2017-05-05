@@ -6,11 +6,11 @@
  * Script aiming at importing the project's sources into a neo4j database which
  * will be used by the datascape.
  */
+import config from 'config';
 import {argv} from 'yargs';
 import async from 'async';
 import {parse as parseCsv, stringify as stringifyCsv} from 'csv';
 import {default as h} from 'highland';
-import {api as apiConfig} from '../config.json';
 import {hash} from '../lib/crypto';
 import {normalizeYear} from '../lib/republican_calendar';
 import {cleanText, cleanNumber} from '../lib/clean';
@@ -185,7 +185,7 @@ function indexedNode(index, label, key, data) {
 // Creating the TOFLIT18 user
 const TOFLIT18_USER = BUILDER.save({
   name: 'toflit18',
-  password: hash(apiConfig.secret)
+  password: hash(config.get('api.secret'))
 }, 'User');
 
 // Indexes

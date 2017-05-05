@@ -6,15 +6,16 @@
  * Launching the API and starting routines.
  */
 import http from 'http';
-import {api as config} from '../config.json';
+import config from 'config';
 
 let app = require('../api/app.js').default;
 
-const server = http.createServer(app);
+const server = http.createServer(app),
+      port = config.get('api.port');
 
-server.listen(config.port);
+server.listen(port);
 
-console.log(`API started on port ${config.port}...\n`);
+console.log(`API started on port ${port}...\n`);
 
 // Server HMR
 if (module.hot) {

@@ -7,7 +7,7 @@
 import express from 'express';
 import wrap from 'dolman';
 import path from 'path';
-import {api as config} from '../config.json';
+import config from 'config';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -39,7 +39,7 @@ const app = express();
 app.use(cors({
   credentials: true,
   origin(origin, next) {
-    return next(null, !!~config.allowedOrigins.indexOf(origin));
+    return next(null, !!~config.get('api.allowedOrigins').indexOf(origin));
   }
 }));
 
@@ -49,7 +49,7 @@ app.use(morgan('dev'));
 // Session options
 const sessionOptions = {
   name: 'toflit18.sid',
-  secret: config.secret,
+  secret: config.get('api.secret'),
   trustProxy: false,
   resave: true,
   saveUninitialized: true
