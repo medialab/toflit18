@@ -5,7 +5,7 @@
  * Miscellaneous client helper functions.
  */
 import {chunk} from 'lodash';
-import config from '../../config.json';
+import specs from '../../specs.json';
 
 /**
  * Flatten a recursive classification tree.
@@ -49,25 +49,25 @@ export function buildDateMin(dateMin, dateMax) {
   }
 
   if (dateMin && dateMin.length > 0 && !dateMax) {
-    for (let i = dateMin; i < config.limits.maxYear; i++) {
+    for (let i = dateMin; i < specs.limits.maxYear; i++) {
       minArray.push({name: i, id: i});
     }
   }
 
   if (!dateMin && dateMax) {
-    for (let i = config.limits.minYear; i < dateMax; i++) {
+    for (let i = specs.limits.minYear; i < dateMax; i++) {
       minArray.push({name: i, id: i});
     }
   }
 
   if (!dateMax && dateMin) {
-    for (let i = dateMin; i < config.limits.maxYear; i++) {
+    for (let i = dateMin; i < specs.limits.maxYear; i++) {
       minArray.push({name: i, id: i});
     }
   }
 
   if (!dateMax && !dateMin) {
-    for (let i = config.limits.minYear; i < config.limits.maxYear; i++) {
+    for (let i = specs.limits.minYear; i < specs.limits.maxYear; i++) {
       minArray.push({name: i, id: i});
     }
   }

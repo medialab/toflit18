@@ -16,14 +16,14 @@ import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 import {Row, Col} from '../misc/Grid.jsx';
 import {prettyPrint} from '../../lib/helpers';
 
-import config from '../../../config.json';
+import specs from '../../../specs.json';
 
 import {select,
     updateSelector as update,
     addChart
   } from '../../actions/metadata';
 
-const metadataSelectors = (config.metadataSelectors || []).map(option => {
+const metadataSelectors = (specs.metadataSelectors || []).map(option => {
   return {
     ...option,
     special: true
@@ -85,7 +85,7 @@ export default class ExplorationMeta extends Component {
     const canDisplaySecondViz = (
       state.dataType &&
       (
-        state.dataType.groupsCount <= config.metadataGroupMax ||
+        state.dataType.groupsCount <= specs.metadataGroupMax ||
         state.dataType.special
       )
     );

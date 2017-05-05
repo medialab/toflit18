@@ -4,7 +4,7 @@
  *
  * Actions related to the indicators' view.
  */
-import config from '../../config.json';
+import specs from '../../specs.json';
 import _, {forIn} from 'lodash';
 
 const ROOT = ['states', 'exploration', 'metadata'];
@@ -128,7 +128,7 @@ export function addChart(tree) {
     cursor.set('perYear', perYear);
 
     // Don't ask for data we don't need
-    if (selected.id && selected.groupsCount > config.metadataGroupMax)
+    if (selected.id && selected.groupsCount > specs.metadataGroupMax)
       return;
 
     cursor.set('flowsPerYear', data.result);

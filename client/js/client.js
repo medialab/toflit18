@@ -4,14 +4,13 @@
  *
  * Simple abstraction used to query the datascape's API.
  */
-import {endpoint} from '../config.json';
 import Client from 'djax-client';
 
 const FORM = 'application/x-www-form-urlencoded';
 
 const client = new Client({
   settings: {
-    baseUrl: endpoint
+    baseUrl: CONFIG.endpoint
   },
 
   defaults: {
