@@ -1,5 +1,6 @@
 {
   "api": {
+    "port": "API_PORT",
     "secret": "API_SECRET"
   },
   "db": {
