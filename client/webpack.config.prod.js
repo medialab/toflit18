@@ -13,7 +13,6 @@ PRESETS.forEach(function(p, i) {
 });
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
   entry: './js/main.jsx',
   output: {
     path: path.join(__dirname, 'build'),
