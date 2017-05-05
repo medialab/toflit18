@@ -42,7 +42,7 @@
     "css-loader": "^0.28.0",
     "file-loader": "^0.11.1",
     "json-loader": "^0.5.2",
-    "kotatsu": "^0.15.1",
+    "kotatsu": "^0.15.2",
     "node-sass": "^4.5.2",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.16.1"
