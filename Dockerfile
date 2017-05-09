@@ -5,6 +5,8 @@ ARG API_ENDPOINT=/api
 ENV NODE_ENV production
 ENV API_ENDPOINT=${API_ENDPOINT}
 
+RUN apk add --no-cache su-exec
+
 RUN mkdir -p /toflit18/ /toflit18/client
 
 ADD ./package.json /toflit18/
@@ -20,10 +22,10 @@ RUN cd /toflit18/client/ && npm run build
 
 WORKDIR /toflit18
 
-USER node
-
 VOLUME /toflit18/client/
 
 EXPOSE 4000
 
-ENTRYPOINT ["/usr/local/bin/node", "./build/toflit18.js"]
+ENTRYPOINT ["su-exec", "node:node"] 
+
+CMD ["/usr/local/bin/node", "./build/toflit18.js"]
