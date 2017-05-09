@@ -116,7 +116,7 @@ class Builder {
     const outputDirectory = argv.output || argv.o || './.output';
 
     const nodesWriteStream = fs.createWriteStream(path.join(outputDirectory, 'nodes.csv'), 'utf-8'),
-          edgesWriteStream = fs.createWriteStream(path.join(outputDirectory, './.output/edges.csv'), 'utf-8');
+          edgesWriteStream = fs.createWriteStream(path.join(outputDirectory, 'edges.csv'), 'utf-8');
 
     // Properties
     this.nodesCount = 0;
