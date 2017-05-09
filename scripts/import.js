@@ -14,6 +14,7 @@ import {default as h} from 'highland';
 import {hash} from '../lib/crypto';
 import {normalizeYear} from '../lib/republican_calendar';
 import {cleanText, cleanNumber} from '../lib/clean';
+import path from 'path';
 import fs from 'fs';
 import _ from 'lodash';
 
@@ -112,8 +113,10 @@ console.log('Reading csv files from "' + DATA_PATH + '"');
 class Builder {
   constructor() {
 
-    const nodesWriteStream = fs.createWriteStream('./.output/nodes.csv', 'utf-8'),
-          edgesWriteStream = fs.createWriteStream('./.output/edges.csv', 'utf-8');
+    const outputDirectory = argv.output || argv.o || './.output';
+
+    const nodesWriteStream = fs.createWriteStream(path.join(outputDirectory, 'nodes.csv'), 'utf-8'),
+          edgesWriteStream = fs.createWriteStream(path.join(outputDirectory, './.output/edges.csv'), 'utf-8');
 
     // Properties
     this.nodesCount = 0;
