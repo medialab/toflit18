@@ -23,11 +23,11 @@ const LINKS = [
   },
   {
     label: 'Countries Network',
-    url: '/exploration/globals'
+    url: '/exploration/network'
   },
   {
     label: 'Product Terms',
-    url: '/exploration/globalsterms'
+    url: '/exploration/terms'
   }
 ];
 

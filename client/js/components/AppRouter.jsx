@@ -49,8 +49,8 @@ export default class AppRouter extends Component {
             <Route path="exploration" component={ExplorationPanel}>
               <Route path="meta" component={ExplorationMeta} />
               <Route path="indicators" component={ExplorationIndicators} />
-              <Route path="globals" component={ExplorationNetwork} />
-              <Route path="globalsterms" component={ExplorationTerms} />
+              <Route path="network" component={ExplorationNetwork} />
+              <Route path="terms" component={ExplorationTerms} />
             </Route>
           </Route>
         </Route>

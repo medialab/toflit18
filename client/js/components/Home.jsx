@@ -79,7 +79,7 @@ export default class Home extends Component {
         <div className="panel">
           <h5>
             4.&nbsp;
-            <Link to="exploration/globals">
+            <Link to="exploration/network">
               Countries networks
             </Link>
           </h5>
@@ -92,7 +92,7 @@ export default class Home extends Component {
         <div className="panel">
           <h5>
             5.&nbsp;
-            <Link to="exploration/globalsterms">
+            <Link to="exploration/terms">
               Product terms networks
             </Link>
           </h5>

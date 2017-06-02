@@ -5,6 +5,7 @@
  * Displaying a network of product terms' decomposition.
  */
 import React, {Component} from 'react';
+import {format} from 'd3-format';
 import {branch} from 'baobab-react/decorators';
 import cls from 'classnames';
 import Button, {ExportButton} from '../misc/Button.jsx';
@@ -19,6 +20,30 @@ import {
   addChart,
   updateDate
 } from '../../actions/terms';
+
+const NUMBER_FIXED_FORMAT = format(',.2f'),
+      NUMBER_FORMAT = format(',');
+
+function renderNodeDisplay(props) {
+  const {
+    label,
+    flows,
+    value,
+    degree
+  } = props;
+
+  return (
+    <div>
+      <strong>{label}</strong>
+      <br />
+      Flows: {NUMBER_FORMAT(flows)}
+      <br />
+      Value: {NUMBER_FIXED_FORMAT(value)}
+      <br />
+      Degree: {NUMBER_FORMAT(degree)}
+    </div>
+  );
+}
 
 export default class ExplorationGlobalsTerms extends Component {
   render() {
@@ -229,7 +254,8 @@ class TermsPanel extends Component {
             graph={graph}
             directed
             colorKey={'communityColor'}
-            sizeKey={nodeSize} />
+            sizeKey={nodeSize}
+            nodeDisplayRenderer={renderNodeDisplay} />
           <br />
           <div className="btn-group">
             <ExportButton

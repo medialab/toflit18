@@ -17,7 +17,7 @@ const SIGMA_SETTINGS = {
   labelSize: 'proportional',
   labelSizeRatio: 2,
   minNodeSize: 2,
-  maxNodeSize: 7,
+  maxNodeSize: 9,
   maxEdgeSize: 6,
   edgeColor: 'default',
   defaultEdgeType: 'arrow',
@@ -78,7 +78,8 @@ export default class Network extends Component {
     this.state = {
       labelThreshold: SIGMA_SETTINGS.labelThreshold,
       labelSizeRatio: SIGMA_SETTINGS.labelSizeRatio,
-      layoutRunning: true
+      layoutRunning: true,
+      selectedNode: null
     };
 
     this.toggleLayout = () => {
@@ -133,12 +134,20 @@ export default class Network extends Component {
         focusNode(this.sigma.cameras.main, this.sigma.graph.nodes(node.id));
       }
     };
+
+    this.selectNode = node => {
+      this.setState({selectedNode: node});
+    };
   }
 
   componentDidMount() {
     this.sigma.addRenderer({
       camera: 'main',
       container: this.refs.mount
+    });
+
+    this.sigma.bind('clickNode', e => {
+      this.selectNode(e.data.node);
     });
 
     document.addEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
@@ -157,6 +166,8 @@ export default class Network extends Component {
     if (nextProps.graph && nextProps.graph !== this.props.graph) {
       this.sigma.killForceAtlas2();
       g.clear();
+
+      this.selectNode(null);
 
       // Updating layout
       this.layoutSettings.barnesHutOptimize = nextProps.graph.nodes.length > 1000;
@@ -210,6 +221,10 @@ export default class Network extends Component {
     const graph = this.props.graph,
           isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length);
 
+    const nodeDisplayRenderer = this.props.nodeDisplayRenderer;
+
+    const selectedNode = this.state.selectedNode;
+
     return (
       <div id="sigma-graph" ref="mount">
         {isGraphEmpty && <Message text="No Data to display." />}
@@ -218,6 +233,9 @@ export default class Network extends Component {
           size={this.state.labelSizeRatio}
           updateThreshold={this.updateLabelThreshold}
           updateSizeRatio={this.updateLabelSizeRatio} />
+        {typeof nodeDisplayRenderer === 'function' && (
+          <NodeDisplay node={selectedNode} renderer={nodeDisplayRenderer} />
+        )}
         <ExplorationNodeSearcher
           nodes={graph ? graph.nodes : []}
           onChange={this.focusNode} />
@@ -341,6 +359,27 @@ class Filters extends Component {
           value={this.props.size}
           onChange={this.props.updateSizeRatio} />
         <label htmlFor="size">Label Size Ratio ({this.props.size})</label>
+      </div>
+    );
+  }
+}
+
+/**
+ * Node display.
+ */
+class NodeDisplay extends Component {
+  render() {
+    const {
+      renderer,
+      node
+    } = this.props;
+
+    return (
+      <div className="node-display">
+        {node ?
+          renderer(node) :
+          <em>Try clicking a node to get some information...</em>
+        }
       </div>
     );
   }
