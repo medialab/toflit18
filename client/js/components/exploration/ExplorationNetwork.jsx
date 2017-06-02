@@ -1,9 +1,8 @@
  /**
- * TOFLIT18 Client Global Viz Display
- * ===================================
+ * TOFLIT18 Client Network Viz Display
+ * ====================================
  *
- * Displaying a collection of visualizations dealing with the dataset as a
- * whole.
+ * Displaying a network of places linked by their trade.
  */
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
@@ -19,7 +18,7 @@ import {
   updateSelector as update,
   addNetwork,
   updateDate
-} from '../../actions/globalsNetwork';
+} from '../../actions/network';
 
 export default class ExplorationGlobals extends Component {
   render() {

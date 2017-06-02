@@ -18,10 +18,11 @@ import {prettyPrint} from '../../lib/helpers';
 
 import specs from '../../../specs.json';
 
-import {select,
-    updateSelector as update,
-    addChart
-  } from '../../actions/metadata';
+import {
+  select,
+  updateSelector as update,
+  addChart
+} from '../../actions/metadata';
 
 const metadataSelectors = (specs.metadataSelectors || []).map(option => {
   return {

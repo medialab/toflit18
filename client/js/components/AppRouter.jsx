@@ -16,8 +16,8 @@ import ClassificationBrowser from './classification/ClassificationBrowser.jsx';
 import ExplorationPanel from './exploration/ExplorationPanel.jsx';
 import ExplorationMeta from './exploration/ExplorationMeta.jsx';
 import ExplorationIndicators from './exploration/ExplorationIndicators.jsx';
-import ExplorationGlobals from './exploration/ExplorationGlobals.jsx';
-import ExplorationGlobalsTerms from './exploration/ExplorationGlobalsTerms.jsx';
+import ExplorationNetwork from './exploration/ExplorationNetwork.jsx';
+import ExplorationTerms from './exploration/ExplorationTerms.jsx';
 import history from '../history';
 
 export default class AppRouter extends Component {
@@ -49,8 +49,8 @@ export default class AppRouter extends Component {
             <Route path="exploration" component={ExplorationPanel}>
               <Route path="meta" component={ExplorationMeta} />
               <Route path="indicators" component={ExplorationIndicators} />
-              <Route path="globals" component={ExplorationGlobals} />
-              <Route path="globalsterms" component={ExplorationGlobalsTerms} />
+              <Route path="globals" component={ExplorationNetwork} />
+              <Route path="globalsterms" component={ExplorationTerms} />
             </Route>
           </Route>
         </Route>

@@ -1,9 +1,8 @@
 /**
- * TOFLIT18 Client Global Viz Display
- * ===================================
+ * TOFLIT18 Client Terms Network Display
+ * ======================================
  *
- * Displaying a collection of visualizations dealing with the dataset as a
- * whole.
+ * Displaying a network of product terms' decomposition.
  */
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
@@ -19,7 +18,7 @@ import {
   updateSelector as update,
   addChart,
   updateDate
-} from '../../actions/globals';
+} from '../../actions/terms';
 
 export default class ExplorationGlobalsTerms extends Component {
   render() {
