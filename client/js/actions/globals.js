@@ -6,11 +6,10 @@
  */
 import {
   scaleOrdinal,
-  scaleLinear,
   schemeCategory20
 } from 'd3-scale';
 
-import {maxBy, uniq, forIn} from 'lodash';
+import {uniq, forIn} from 'lodash';
 
 const scaleCategory20 = scaleOrdinal(schemeCategory20);
 
@@ -24,15 +23,6 @@ export function selectTerms(tree, classification) {
 
   cursor.set('classification', classification);
   cursor.set('graph', null);
-}
-
-/**
- * Selecting a colorization.
- */
-export function selectColorization(tree, colorization) {
-  const cursor = tree.select(ROOT);
-
-  cursor.set('colorization', colorization);
 }
 
 /**
@@ -110,21 +100,11 @@ export function addChart(tree) {
     const colorScale = scaleCategory20
       .domain(uniq(data.result.nodes.map(node => node.community)));
 
-    const maxPosition = maxBy(data.result.nodes, 'position').position;
-
-    const colorScalePosition = scaleLinear()
-      .domain([0, maxPosition])
-      .range(['red', 'blue']);
-
     data.result.nodes.forEach(node => {
-      node.size = 1;
+      node.size = node.flows;
       node.communityColor = node.community === -1 ? '#ACACAC' : colorScale(node.community);
-      node.positionColor = colorScalePosition(node.position);
       node.x = Math.random();
       node.y = Math.random();
-
-      // if (!~node.community)
-      //   node.hidden = true;
     });
 
     data.result.edges.forEach(edge => {
@@ -133,6 +113,10 @@ export function addChart(tree) {
 
     cursor.set('graph', data.result);
   });
+}
+
+export function selectNodeSize(tree, key) {
+  tree.set(ROOT.concat('nodeSize'), key);
 }
 
 export function updateDate(tree, dateChoosen) {

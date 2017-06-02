@@ -18,7 +18,7 @@ export function selectClassification(tree, classification) {
   cursor.set('classification', classification);
 }
 
-/**„„
+/**
  * Selecting a colorization.
  */
 export function selectPonderation(tree, ponderation) {

@@ -135,7 +135,7 @@ const defaultState = {
         graph: null,
         data: null,
         classification: null,
-        colorization: 'community',
+        nodeSize: 'flows',
         loading: false,
         selectors: {
           productClassification: null,

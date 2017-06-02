@@ -185,6 +185,9 @@ export default class Network extends Component {
     if (nextProps.colorKey)
       g.nodes().forEach(node => node.color = node[nextProps.colorKey]);
 
+    if (nextProps.sizeKey)
+      g.nodes().forEach(node => node.size = node[nextProps.sizeKey]);
+
     this.sigma.refresh();
   }
 

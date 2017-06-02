@@ -101,7 +101,7 @@ const ModelTerms = {
       if (!where.isEmpty())
         query.where(where);
 
-      query.return('pci.name as term');
+      query.return('pci.name AS term, count(f) AS flows, sum(f.value) AS value');
 
       // Querying the database
       database.cypher(query.build(), function(err, data) {
@@ -118,7 +118,6 @@ const ModelTerms = {
 
         // Iterating
         data.forEach(row => {
-
           const terms = tokenizeTerms(row.term);
 
           terms.forEach((term, i) => {
@@ -127,12 +126,14 @@ const ModelTerms = {
               graph.addNode(term, {
                 id: term,
                 label: term,
-                occurrences: 1,
+                flows: row.flows,
+                value: row.value,
                 position: i
               });
             }
             else {
-              graph.updateNodeAttribute(term, 'occurrences', x => x + 1);
+              graph.updateNodeAttribute(term, 'flows', x => x + row.flows);
+              graph.updateNodeAttribute(term, 'value', x => x + row.value);
               graph.updateNodeAttribute(term, 'position', x => Math.min(x, i));
             }
 
@@ -172,6 +173,9 @@ const ModelTerms = {
           const community = communities[node];
 
           graph.setNodeAttribute(node, 'community', usefulSet.has(community) ? community : -1);
+
+          // Degree
+          graph.setNodeAttribute(node, 'degree', graph.degree(node));
         });
 
         const exportData = graph.edges().map(edge => {

@@ -15,7 +15,7 @@ import {Row, Col} from '../misc/Grid.jsx';
 import {buildDateMin} from '../../lib/helpers';
 import {
   selectTerms,
-  selectColorization,
+  selectNodeSize,
   updateSelector as update,
   addChart,
   updateDate
@@ -34,7 +34,7 @@ export default class ExplorationGlobalsTerms extends Component {
 @branch({
   actions: {
     selectTerms,
-    selectColorization,
+    selectNodeSize,
     update,
     addChart,
     updateDate
@@ -57,7 +57,7 @@ class TermsPanel extends Component {
         graph,
         data,
         classification,
-        colorization,
+        nodeSize,
         loading,
         selectors,
         groups
@@ -70,12 +70,6 @@ class TermsPanel extends Component {
         dateMax
       }
     } = this.props;
-
-    const colorKey = colorization === 'community' ?
-      'communityColor' :
-      'positionColor';
-
-    const radioListener = e => actions.selectColorization(e.target.value);
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
@@ -101,6 +95,8 @@ class TermsPanel extends Component {
     else {
       dateMinOptions = dateMin ? dateMin : buildDateMin(dateMin, dateMax);
     }
+
+    const radioListener = e => actions.selectNodeSize(e.target.value);
 
     return (
       <div>
@@ -207,25 +203,34 @@ class TermsPanel extends Component {
             </Row>
         </div>
         <div className={cls('panel', !graph && 'hidden')}>
+          <span style={{marginRight: '10px'}}>Size of the nodes:</span>
           <input
             type="radio"
             name="optionsRadio"
-            value="community"
-            checked={colorization === 'community'}
+            value="flows"
+            checked={nodeSize === 'flows'}
             onChange={radioListener} />
-          <span style={{marginLeft: '10px', marginRight: '10px'}}>Community color</span>
+          <span style={{marginLeft: '10px', marginRight: '10px'}}>Nb of flows.</span>
           <input
             type="radio"
             name="optionsRadio"
-            value="position"
-            checked={colorization === 'position'}
+            value="value"
+            checked={nodeSize === 'value'}
             onChange={radioListener} />
-          <span style={{marginLeft: '10px', marginRight: '10px'}}>Position color</span>
+          <span style={{marginLeft: '10px', marginRight: '10px'}}>Value of flows.</span>
+          <input
+            type="radio"
+            name="optionsRadio"
+            value="degree"
+            checked={nodeSize === 'degree'}
+            onChange={radioListener} />
+          <span style={{marginLeft: '10px', marginRight: '10px'}}>Degree.</span>
           <Network
             ref={ref => this.networkComponent = ref}
             graph={graph}
             directed
-            colorKey={colorKey} />
+            colorKey={'communityColor'}
+            sizeKey={nodeSize} />
           <br />
           <div className="btn-group">
             <ExportButton
