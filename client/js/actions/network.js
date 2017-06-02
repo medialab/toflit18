@@ -19,64 +19,22 @@ export function selectClassification(tree, classification) {
 }
 
 /**
- * Selecting a colorization.
+ * Selecting a node size.
  */
-export function selectPonderation(tree, ponderation) {
-  const cursor = tree.select(ROOT);
-
-  cursor.set('ponderation', ponderation);
-
-  const data = cursor.get('data');
-  let edgeSize = null;
-
-  // Treating
-  const nodes = {},
-        edges = [];
-
-  data.forEach(function(row) {
-    if (ponderation === 'flows')
-      edgeSize = row.count;
-    else
-      edgeSize = row.value;
-
-    const directionId = '$d$' + row.direction,
-          countryId = '$c$' + row.country;
-
-    if (!nodes[directionId])
-      nodes[directionId] = {
-        id: directionId,
-        label: row.direction,
-        community: 'direction',
-        color: palette[0],
-        size: 1,
-        x: Math.random(),
-        y: Math.random(),
-      };
-
-    if (!nodes[countryId])
-      nodes[countryId] = {
-        id: countryId,
-        label: row.country,
-        community: 'country',
-        color: palette[1],
-        size: 1,
-        x: Math.random(),
-        y: Math.random(),
-      };
-
-    edges.push({
-      id: 'e' + edges.length,
-      size: edgeSize,
-      source: directionId,
-      target: countryId
-    });
-  });
-
-  const directed = cursor.get('graph', 'directed');
-
-  cursor.set('graph', {nodes: values(nodes), edges, directed});
+export function selectNodeSize(tree, key) {
+  tree.set(ROOT.concat('nodeSize'), key);
 }
 
+/**
+ * Selecting an edge size.
+ */
+export function selectEdgeSize(tree, key) {
+  tree.set(ROOT.concat('edgeSize'), key);
+}
+
+/**
+ * Adding a network.
+ */
 export function addNetwork(tree) {
   const cursor = tree.select(ROOT);
 
@@ -129,35 +87,53 @@ export function addNetwork(tree) {
       const directionId = '$d$' + row.direction,
             countryId = '$c$' + row.country;
 
-      if (!nodes[directionId])
+      if (!nodes[directionId]) {
         nodes[directionId] = {
           id: directionId,
           label: row.direction,
           community: 'direction',
           color: palette[0],
           size: row.count,
+          flows: row.count,
+          value: row.value,
+          degree: 1,
           x: Math.random(),
           y: Math.random(),
         };
-      else
+      }
+      else {
+        nodes[directionId].degree++;
         nodes[directionId].size += row.count;
+        nodes[directionId].flows += row.count;
+        nodes[directionId].value += row.value;
+      }
 
-      if (!nodes[countryId])
+      if (!nodes[countryId]) {
         nodes[countryId] = {
           id: countryId,
           label: row.country,
           community: 'country',
           color: palette[1],
           size: row.count,
+          flows: row.count,
+          value: row.value,
+          degree: 1,
           x: Math.random(),
           y: Math.random(),
         };
-      else
+      }
+      else {
+        nodes[countryId].degree++;
         nodes[countryId].size += row.count;
+        nodes[countryId].flows += row.count;
+        nodes[countryId].value += row.value;
+      }
 
       edges.push({
         id: 'e' + edges.length,
         size: row.count,
+        flows: row.count,
+        value: row.value,
         source: directionId,
         target: countryId
       });

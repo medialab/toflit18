@@ -114,7 +114,8 @@ const defaultState = {
         graph: null,
         data: null,
         classification: null,
-        ponderation: 'flows',
+        nodeSize: 'flows',
+        edgeSize: 'flows',
         loading: false,
         selectors: {
           dataType: null,

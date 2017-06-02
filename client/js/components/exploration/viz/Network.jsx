@@ -199,6 +199,9 @@ export default class Network extends Component {
     if (nextProps.sizeKey)
       g.nodes().forEach(node => node.size = node[nextProps.sizeKey]);
 
+    if (nextProps.edgeSizeKey)
+      g.edges().forEach(edge => edge.size = edge[nextProps.edgeSizeKey]);
+
     this.sigma.refresh();
   }
 

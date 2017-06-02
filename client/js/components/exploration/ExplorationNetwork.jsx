@@ -14,7 +14,8 @@ import {Row, Col} from '../misc/Grid.jsx';
 import {buildDateMin} from '../../lib/helpers';
 import {
   selectClassification,
-  selectPonderation,
+  selectNodeSize,
+  selectEdgeSize,
   updateSelector as update,
   addNetwork,
   updateDate
@@ -33,7 +34,8 @@ export default class ExplorationGlobals extends Component {
 @branch({
   actions: {
     selectClassification,
-    selectPonderation,
+    selectNodeSize,
+    selectEdgeSize,
     update,
     addNetwork,
     updateDate
@@ -53,7 +55,8 @@ class NetworkPanel extends Component {
         data,
         graph,
         classification,
-        ponderation,
+        nodeSize,
+        edgeSize,
         loading,
         selectors,
         groups
@@ -67,11 +70,8 @@ class NetworkPanel extends Component {
       }
     } = this.props;
 
-    const ponderationKey = ponderation === 'nbFlows' ?
-      'flowsPonderation' :
-      'valuePonderation';
-
-    const radioListener = e => actions.selectPonderation(e.target.value);
+    const nodeRadioListener = e => actions.selectNodeSize(e.target.value),
+          edgeRadioListener = e => actions.selectEdgeSize(e.target.value);
 
     let dateMaxOptions, dateMinOptions;
     dateMin = actions.updateDate('dateMin');
@@ -172,20 +172,44 @@ class NetworkPanel extends Component {
           </Row>
         </div>
         <div className={cls('panel', !graph && 'hidden')}>
+          <span style={{marginRight: '10px'}}>Node size:</span>
           <input
             type="radio"
-            name="optionsRadio"
+            name="nodesOptionsRadio"
             value="flows"
-            checked={ponderation === 'flows'}
-            onChange={radioListener} />
-          <span style={{marginLeft: '10px', marginRight: '10px'}}>Ponderation by number of flows</span>
+            checked={nodeSize === 'flows'}
+            onChange={nodeRadioListener} />
+          <span style={{marginLeft: '10px', marginRight: '10px'}}>Nb. of flows.</span>
           <input
             type="radio"
-            name="optionsRadio"
+            name="nodesOptionsRadio"
             value="value"
-            checked={ponderation === 'value'}
-            onChange={radioListener} />
-          <span style={{marginLeft: '10px', marginRight: '10px'}}>Ponderation by sum value of flows</span>
+            checked={nodeSize === 'value'}
+            onChange={nodeRadioListener} />
+          <span style={{marginLeft: '10px', marginRight: '10px'}}>Value of flows.</span>
+          <input
+            type="radio"
+            name="nodesOptionsRadio"
+            value="degree"
+            checked={nodeSize === 'degree'}
+            onChange={nodeRadioListener} />
+          <span style={{marginLeft: '10px', marginRight: '10px'}}>Degree.</span>
+          <hr />
+          <span style={{marginRight: '10px'}}>Edge thickness:</span>
+          <input
+            type="radio"
+            name="edgesOptionsRadio"
+            value="flows"
+            checked={edgeSize === 'flows'}
+            onChange={edgeRadioListener} />
+          <span style={{marginLeft: '10px', marginRight: '10px'}}>Nb. of flows.</span>
+          <input
+            type="radio"
+            name="edgesOptionsRadio"
+            value="value"
+            checked={edgeSize === 'value'}
+            onChange={edgeRadioListener} />
+          <span style={{marginLeft: '10px', marginRight: '10px'}}>Value of flows.</span>
           <hr />
           <Legend />
           <br />
@@ -193,7 +217,8 @@ class NetworkPanel extends Component {
             ref={ref => this.networkComponent = ref}
             directed={graph && graph.directed}
             graph={graph}
-            ponderationKey={ponderationKey} />
+            sizeKey={nodeSize}
+            edgeSizeKey={edgeSize} />
           <br />
           <div className="btn-group">
             <ExportButton
