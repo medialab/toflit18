@@ -165,7 +165,8 @@ export class ItemSelector extends Component {
       return <Select {...commonProps} options={this.compulsoryOptions.concat(data)} />;
 
     return (
-      <Select.Async {...commonProps}
+      <Select.Async
+        {...commonProps}
         loadOptions={debounce(this.search.bind(this), 300)}
         filterOptions={identity}
         ignoreAccents={false}

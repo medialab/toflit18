@@ -133,7 +133,8 @@ class TermsPanel extends Component {
               title="Product"
               addendum="You must choose the type of product being shipped." />
             <Col md={4}>
-              <ClassificationSelector type="product"
+              <ClassificationSelector
+                type="product"
                 loading={!classifications.product.length}
                 data={classifications.product}
                 onChange={actions.selectTerms}
@@ -146,7 +147,8 @@ class TermsPanel extends Component {
               title="Source Type"
               addendum="From which sources does the data comes from?" />
             <Col md={4}>
-              <ItemSelector type="sourceType"
+              <ItemSelector
+                type="sourceType"
                 data={sourceTypesOptions}
                 loading={!sourceTypesOptions.length}
                 onChange={actions.update.bind(null, 'sourceType')}
@@ -159,14 +161,16 @@ class TermsPanel extends Component {
               title="Country"
               addendum="The country whence we got the products or wither we are sending them." />
               <Col md={4}>
-                <ClassificationSelector type="country"
+                <ClassificationSelector
+                  type="country"
                   loading={!classifications.country.length}
                   data={classifications.country.filter(c => !c.source)}
                   onChange={actions.update.bind(null, 'countryClassification')}
                   selected={selectors.countryClassification} />
               </Col>
               <Col md={4}>
-                <ItemSelector type="country"
+                <ItemSelector
+                  type="country"
                   disabled={!selectors.countryClassification || !groups.country.length}
                   loading={selectors.countryClassification && !groups.country.length}
                   data={groups.country}
@@ -176,10 +180,12 @@ class TermsPanel extends Component {
             </Row>
             <hr />
             <Row>
-              <SectionTitle title="Direction"
+              <SectionTitle
+                title="Direction"
                 addendum="The French harbor where the transactions were recorded." />
               <Col md={4}>
-                <ItemSelector type="direction"
+                <ItemSelector
+                  type="direction"
                   loading={!directions}
                   data={directions || []}
                   onChange={actions.update.bind(null, 'direction')}
@@ -188,26 +194,31 @@ class TermsPanel extends Component {
             </Row>
             <hr />
             <Row>
-              <SectionTitle title="Kind"
+              <SectionTitle
+                title="Kind"
                 addendum="Should we look at import, export, or total?" />
               <Col md={4}>
-                <ItemSelector type="kind"
+                <ItemSelector
+                  type="kind"
                   onChange={actions.update.bind(null, 'kind')}
                   selected={selectors.kind} />
               </Col>
             </Row>
             <hr />
             <Row>
-              <SectionTitle title="Dates"
+              <SectionTitle
+                title="Dates"
                 addendum="Choose one date or a range date" />
               <Col md={2}>
-                <ItemSelector type="dateMin"
+                <ItemSelector
+                  type="dateMin"
                   data={dateMinOptions}
                   onChange={actions.update.bind(null, 'dateMin')}
                   selected={selectors.dateMin} />
               </Col>
               <Col md={2}>
-                <ItemSelector type="dateMax"
+                <ItemSelector
+                  type="dateMax"
                   data={dateMaxOptions}
                   onChange={actions.update.bind(null, 'dateMax')}
                   selected={selectors.dateMax} />

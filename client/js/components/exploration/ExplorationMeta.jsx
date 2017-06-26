@@ -107,10 +107,12 @@ export default class ExplorationMeta extends Component {
           </p>
           <h6 className="section-separator">What we want information about:</h6>
           <Row className="dataType">
-           <SectionTitle title="Data type"
+           <SectionTitle
+             title="Data type"
              addendum="You must select the type of data to control." />
             <Col md={6}>
-              <ItemSelector type="dataType"
+              <ItemSelector
+                type="dataType"
                 data={[...metadataSelectors, ...classificationsFiltered]}
                 loading={!classifications.product.length}
                 onChange={actions.select}
@@ -123,7 +125,8 @@ export default class ExplorationMeta extends Component {
               title="Source Type"
               addendum="From which sources does the data comes from?" />
             <Col md={4}>
-              <ItemSelector type="sourceType"
+              <ItemSelector
+                type="sourceType"
                 data={sourceTypesOptions}
                 loading={!sourceTypesOptions.length}
                 onChange={actions.update.bind(null, 'sourceType')}
@@ -132,17 +135,20 @@ export default class ExplorationMeta extends Component {
           </Row>
           <hr />
           <Row>
-            <SectionTitle title="Product"
+            <SectionTitle
+              title="Product"
               addendum="The type of product being shipped." />
             <Col md={4}>
-              <ClassificationSelector type="product"
+              <ClassificationSelector
+                type="product"
                 loading={!classifications.product.length}
                 data={classifications.product.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification} />
             </Col>
             <Col md={4}>
-              <ItemSelector type="product"
+              <ItemSelector
+                type="product"
                 disabled={!selectors.productClassification || !groups.product.length}
                 loading={selectors.productClassification && !groups.product.length}
                 data={groups.product}
@@ -152,17 +158,20 @@ export default class ExplorationMeta extends Component {
           </Row>
           <hr />
           <Row>
-            <SectionTitle title="Country"
+            <SectionTitle
+              title="Country"
               addendum="The country whence we got the products or wither we are sending them." />
             <Col md={4}>
-              <ClassificationSelector type="country"
+              <ClassificationSelector
+                type="country"
                 loading={!classifications.country.length}
                 data={classifications.country.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'countryClassification')}
                 selected={selectors.countryClassification} />
             </Col>
             <Col md={4}>
-              <ItemSelector type="country"
+              <ItemSelector
+                type="country"
                 disabled={!selectors.countryClassification || !groups.country.length}
                 loading={selectors.countryClassification && !groups.country.length}
                 data={groups.country}
@@ -172,10 +181,12 @@ export default class ExplorationMeta extends Component {
           </Row>
           <hr />
           <Row>
-            <SectionTitle title="Direction"
+            <SectionTitle
+              title="Direction"
               addendum="The French harbor where the transactions were recorded." />
             <Col md={4}>
-              <ItemSelector type="direction"
+              <ItemSelector
+                type="direction"
                 loading={!directions}
                 data={directions || []}
                 onChange={actions.update.bind(null, 'direction')}
@@ -184,10 +195,12 @@ export default class ExplorationMeta extends Component {
           </Row>
           <hr />
           <Row>
-            <SectionTitle title="Kind"
+            <SectionTitle
+              title="Kind"
               addendum="Should we look at import, export, or total?" />
             <Col md={4}>
-              <ItemSelector type="kind"
+              <ItemSelector
+                type="kind"
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind} />
             </Col>

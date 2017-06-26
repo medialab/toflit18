@@ -121,7 +121,8 @@ export default class LineChart extends Component {
           align={{offset: [3, 0]}}
           overlay={overlay}
           mouseLeaveDelay={0}>
-          <circle cx={x(point.year)}
+          <circle
+            cx={x(point.year)}
             cy={y(point.value)}
             r={2}
             fill="white"
@@ -132,11 +133,13 @@ export default class LineChart extends Component {
 
     return (
       <svg width="100%" height={fullHeight} className="line-chart">
-        <XAxis width={fullWidth}
+        <XAxis
+          width={fullWidth}
           height={fullHeight}
           margin={margin}
           scale={x} />
-        <YAxis width={fullWidth}
+        <YAxis
+          width={fullWidth}
           height={fullHeight}
           margin={margin}
           scale={y} />
@@ -175,7 +178,8 @@ class XAxis extends Component {
 
     return (
       <g className="x axis">
-        <line x1={margin.left}
+        <line
+          x1={margin.left}
           x2={width - margin.right}
           y1={bottom}
           y2={bottom} />
@@ -210,7 +214,8 @@ class YAxis extends Component {
 
     return (
       <g className="y axis">
-        <line x1={margin.left}
+        <line
+          x1={margin.left}
           x2={margin.left}
           y1={margin.top}
           y2={height - margin.bottom} />

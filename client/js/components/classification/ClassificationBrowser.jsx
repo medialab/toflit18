@@ -158,9 +158,10 @@ function ClassificationsList({items, selected}) {
   return (
     <ul className="classifications-list">
       {items.map(data =>
-        <Classification key={data.id}
+        (<Classification
+          key={data.id}
           data={data}
-          active={selected === data.id} />)}
+          active={selected === data.id} />))}
     </ul>
   );
 }
@@ -226,7 +227,8 @@ class Classification extends Component {
 
 
     return (
-      <li className={cls('item', {active})}
+      <li
+        className={cls('item', {active})}
         style={{marginLeft: offset}}
         onClick={() => !active && actions.select(id)}>
         <div>
@@ -280,7 +282,8 @@ class GroupQuery extends Component {
 
     return (
       <div className="input-group">
-        <input id="searchGroup"
+        <input
+          id="searchGroup"
           type="text"
           className="form-control"
           placeholder="Search group..."
@@ -304,7 +307,8 @@ class GroupQuery extends Component {
               onClick={() => this.submit()}>
               Filter
             </Button>
-            <Button kind="secondary"
+            <Button
+              kind="secondary"
               onClick={() => reset(current.id)}>
               Reset
             </Button>

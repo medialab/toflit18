@@ -69,7 +69,8 @@ class LoginForm extends Component {
       <div>
         <fieldset className="form-group">
           <label htmlFor="name">Name</label>
-          <input type="text"
+          <input
+            type="text"
             className="form-control"
             id="name"
             onChange={e => this.setState({name: e.target.value})}
@@ -80,7 +81,8 @@ class LoginForm extends Component {
         </fieldset>
         <fieldset className="form-group">
           <label htmlFor="password">Password</label>
-          <input type="password"
+          <input
+            type="password"
             className="form-control"
             id="password"
             onChange={e => this.setState({password: e.target.value})}
@@ -89,7 +91,8 @@ class LoginForm extends Component {
             onKeyPress={keySubmit} />
         </fieldset>
         {flags.failed && <div className="alert alert-danger">Unrecognized name/password combination.</div>}
-        <Button loading={flags.loading}
+        <Button
+          loading={flags.loading}
           kind="primary"
           disabled={!this.state.name || !this.state.password}
           onClick={() => this.submit()}>Connect</Button>

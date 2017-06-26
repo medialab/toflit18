@@ -127,7 +127,8 @@ class NetworkPanel extends Component {
               title="Country"
               addendum="The country whence we got the products or wither we are sending them." />
             <Col md={4}>
-              <ClassificationSelector type="country"
+              <ClassificationSelector
+                type="country"
                 loading={!classifications.country.length}
                 data={classifications.country}
                 onChange={actions.selectClassification}
@@ -159,26 +160,31 @@ class NetworkPanel extends Component {
           </Row>
           <hr />
           <Row>
-            <SectionTitle title="Kind"
+            <SectionTitle
+              title="Kind"
               addendum="Should we look at import, export, or total?" />
             <Col md={4}>
-              <ItemSelector type="kind"
+              <ItemSelector
+                type="kind"
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind} />
             </Col>
           </Row>
           <hr />
           <Row>
-            <SectionTitle title="Dates"
+            <SectionTitle
+              title="Dates"
               addendum="Choose one date or a range date" />
             <Col md={2}>
-              <ItemSelector type="dateMin"
+              <ItemSelector
+                type="dateMin"
                 data={dateMinOptions}
                 onChange={actions.update.bind(null, 'dateMin')}
                 selected={selectors.dateMin} />
             </Col>
             <Col md={2}>
-              <ItemSelector type="dateMax"
+              <ItemSelector
+                type="dateMax"
                 data={dateMaxOptions}
                 onChange={actions.update.bind(null, 'dateMax')}
                 selected={selectors.dateMax} />
@@ -187,7 +193,8 @@ class NetworkPanel extends Component {
           <hr />
           <Row>
             <Col md={2}>
-              <Button kind="primary"
+              <Button
+                kind="primary"
                 disabled={!classification}
                 onClick={actions.addNetwork}
                 loading={loading}>

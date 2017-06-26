@@ -154,7 +154,8 @@ export default class DataQualityBarChart extends Component {
                   align={{offset: [3, 0]}}
                   overlay={dataDisplayed + ` (${row.year})`}
                   mouseLeaveDelay={0}>
-                  <rect className="bar"
+                  <rect
+                    className="bar"
                     x={x(row.year)}
                     y={y(row.data) + topMargin}
                     width={6}

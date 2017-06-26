@@ -36,14 +36,16 @@ export default class ClassificationModal extends Component {
           <Col md={12} className="full-height">
             <div className="full-height">
               <div className="panel">
-                <ModalTitle name={target.name}
+                <ModalTitle
+                  name={target.name}
                   model={target.model}
                   action={modal.type} />
                 <Upload parser={actions.parse} reset={actions.reset} />
               </div>
               {hasInconsistencies && <ConsistencyReport report={modal.inconsistencies} />}
               {modal.step === 'review' &&
-                <Review get={actions.review.bind(null, target.id)}
+                <Review
+                  get={actions.review.bind(null, target.id)}
                   commit={actions.commit.bind(null, target.id)}
                   loading={modal.loading}
                   review={modal.review} />}
@@ -92,12 +94,14 @@ class Upload extends Component {
             <FileInput onFile={file => parser(file)} onReset={reset} />
           </Col>
           <Col md={3}>
-            <input type="text"
+            <input
+              type="text"
               className="form-control"
               placeholder="delimiter [ , ]" />
           </Col>
           <Col md={3}>
-            <input type="text"
+            <input
+              type="text"
               className="form-control"
               placeholder={'escape character [ " ]'} />
           </Col>
@@ -337,7 +341,8 @@ class Operations extends Component {
             <div>
               {Object.keys(OPERATION_TYPES).map(type => <OperationsTable key={type} operations={groups[type]} type={type} />)}
               <div style={{textAlign: 'center', marginBottom: '100px'}}>
-                <Button kind="primary"
+                <Button
+                  kind="primary"
                   onClick={() => this.fire()}
                   loading={this.state.loading}>
                   Commit
@@ -453,7 +458,8 @@ class OperationsTable extends Component {
           </div> :
           <div style={{textAlign: 'center'}}>
             <hr />
-            <Button kind="secondary"
+            <Button
+              kind="secondary"
               onClick={() => this.setState({opened: true})}>
               Show
             </Button>

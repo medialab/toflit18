@@ -58,7 +58,8 @@ export default class Button extends Component {
       optional['data-spinner-color'] = '#373a3c';
 
     return (
-      <button ref="button"
+      <button
+        ref="button"
         type="button"
         data-style="slide-left"
         className={cls}

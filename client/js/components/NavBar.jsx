@@ -27,7 +27,8 @@ export default class NavBar extends Component {
 
     const logoutButton = (
       <span className="nav-item">
-        <a className="nav-link logout"
+        <a
+          className="nav-link logout"
           onClick={() => this.props.actions.logout()}>
           Logout
         </a>

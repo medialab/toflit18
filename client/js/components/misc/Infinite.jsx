@@ -57,7 +57,8 @@ export default class Infinite extends Component {
     const scrollHandler = e => this.handleScroll(e);
 
     return (
-      <div className={className}
+      <div
+        className={className}
         onScroll={scrollHandler}>
         {this.props.children}
         {this.state.loading && <Waiter />}

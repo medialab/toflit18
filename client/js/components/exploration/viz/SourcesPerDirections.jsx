@@ -73,14 +73,15 @@ export default class SourcesPerDirections extends Component {
           className="local-bar" />
         <g>
           {data.map((direction, i) =>
-            <Direction key={direction.name}
+            (<Direction
+              key={direction.name}
               order={i}
               width={width}
               bar={barWidth}
               item={direction}
               x={x}
               y={y}
-              allYears={allYears} />)}
+              allYears={allYears} />))}
         </g>
       </svg>
     );
@@ -121,7 +122,8 @@ class Direction extends Component {
           overlay={tooltip}
           key={year}
           mouseLeaveDelay={0}>
-          <rect className={`${local ? 'local' : 'national'}-bar`}
+          <rect
+            className={`${local ? 'local' : 'national'}-bar`}
             width={bar}
             height={rectHeight}
             x={x(year)}
@@ -132,7 +134,8 @@ class Direction extends Component {
 
     function renderUnderline(year) {
       return (
-        <rect width={bar}
+        <rect
+          width={bar}
           key={year}
           height={1}
           x={x(year)}
@@ -148,7 +151,8 @@ class Direction extends Component {
           scale={x}
           years={allYears} />
 
-        <text x={0}
+        <text
+          x={0}
           y={yPos - SIZE / 3}
           fill="black">
           {item.name}
