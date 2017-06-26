@@ -121,6 +121,8 @@ const controller = [
         product: '?string',
         countryClassification: '?string',
         country: '?string',
+        childClassification: '?string',
+        child: '?string',
         direction: '?string',
         kind: '?string',
         dateMin: '?string',

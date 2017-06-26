@@ -20,9 +20,11 @@ const ModelTerms = {
         direction,
         kind,
         country,
+        child,
         dateMin,
         dateMax,
-        countryClassification
+        countryClassification,
+        childClassification
       } = params;
 
       const query = new Query(),
@@ -73,7 +75,15 @@ const ModelTerms = {
         where.and(whereCountry);
       }
 
-      //-- Do we need to match a source type
+      //-- Do we need to match a child classification item?
+      if (childClassification && child) {
+        match.push('(pci)<-[:AGGREGATES*1..]-(chci:ClassifiedItem)<-[:HAS]-(chc:Classification)');
+        where.and('id(chci) = {child}');
+        where.and('id(chc) = {childClassification}');
+        query.params({childClassification: database.int(childClassification), child: database.int(child)});
+      }
+
+      //-- Do we need to match a source type?
       if (sourceType) {
         match.push('(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)');
 

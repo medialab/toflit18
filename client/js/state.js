@@ -141,7 +141,9 @@ const defaultState = {
         selectors: {
           productClassification: null,
           countryClassification: null,
+          childClassification: null,
           country: null,
+          child: null,
           direction: null,
           kind: null,
           sourceType: null,
@@ -149,7 +151,8 @@ const defaultState = {
           dateMax: null
         },
         groups: {
-          country: []
+          country: [],
+          child: []
         }
       }
     }

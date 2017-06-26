@@ -21,6 +21,32 @@ import {
   updateDate
 } from '../../actions/terms';
 
+/**
+ * Helper used to get the child classifications of the given classification.
+ */
+function getChildClassifications(index, target) {
+  const children = [];
+
+  if (!target.children || !target.children.length)
+    return children;
+
+  const stack = target.children.slice();
+
+  while (stack.length) {
+    const child = stack.pop();
+
+    children.push(child);
+
+    if (child.children)
+      stack.push.apply(stack, child.children);
+  }
+
+  return children;
+}
+
+/**
+ * Helper rendering the node information display.
+ */
 const NUMBER_FIXED_FORMAT = format(',.2f'),
       NUMBER_FORMAT = format(',');
 
@@ -45,6 +71,9 @@ function renderNodeDisplay(props) {
   );
 }
 
+/**
+ * Main component.
+ */
 export default class ExplorationGlobalsTerms extends Component {
   render() {
     return (
@@ -65,6 +94,7 @@ export default class ExplorationGlobalsTerms extends Component {
   },
   cursors: {
     classifications: ['data', 'classifications', 'flat'],
+    classificationIndex: ['data', 'classifications', 'index'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
     state: ['states', 'exploration', 'terms']
@@ -75,6 +105,7 @@ class TermsPanel extends Component {
     const {
       actions,
       classifications,
+      classificationIndex,
       directions,
       sourceTypes,
       state: {
@@ -103,8 +134,8 @@ class TermsPanel extends Component {
     });
 
     let dateMaxOptions, dateMinOptions;
-    dateMin = actions.updateDate('dateMin');
 
+    dateMin = actions.updateDate('dateMin');
     if (dateMin) {
       dateMaxOptions = dateMax ? dateMax : buildDateMin(dateMin.id, dateMax);
     }
@@ -121,6 +152,11 @@ class TermsPanel extends Component {
     }
 
     const radioListener = e => actions.selectNodeSize(e.target.value);
+
+    let childClassifications = [];
+
+    if (classification)
+      childClassifications = getChildClassifications(classificationIndex, classification);
 
     return (
       <div>
@@ -176,6 +212,31 @@ class TermsPanel extends Component {
                   data={groups.country}
                   onChange={actions.update.bind(null, 'country')}
                   selected={selectors.country} />
+              </Col>
+            </Row>
+            <hr />
+            <Row>
+            <SectionTitle
+              title="Child Classification"
+              addendum="The value of a child classification for aggregation purposes." />
+              <Col md={4}>
+                <ClassificationSelector
+                  type="product"
+                  placeholder="Child classification..."
+                  disabled={!childClassifications.length}
+                  loading={!classifications.product.length}
+                  data={childClassifications}
+                  onChange={actions.update.bind(null, 'childClassification')}
+                  selected={selectors.childClassification} />
+              </Col>
+              <Col md={4}>
+                <ItemSelector
+                  type="product"
+                  disabled={!selectors.childClassification || !groups.child.length}
+                  loading={selectors.childClassification && !groups.child.length}
+                  data={groups.child}
+                  onChange={actions.update.bind(null, 'child')}
+                  selected={selectors.child} />
               </Col>
             </Row>
             <hr />

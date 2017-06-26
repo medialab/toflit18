@@ -22,6 +22,9 @@ export function selectTerms(tree, classification) {
   const cursor = tree.select(ROOT);
 
   cursor.set('classification', classification);
+  cursor.set(['selectors', 'childClassification'], null);
+  cursor.set(['selectors', 'child'], null);
+  cursor.set(['groups', 'child'], []);
   cursor.set('graph', null);
 }
 
@@ -48,11 +51,10 @@ export function updateSelector(tree, name, item) {
     const model = name.match(/(.*?)Classification/)[1];
 
     selectors.set(model, null);
-    groups.set('country', []);
+    groups.set(model, []);
 
-    if (item) {
-      fetchGroups(tree, groups.select('country'), item.id);
-    }
+    if (item)
+      fetchGroups(tree, groups.select(model), item.id);
   }
 }
 

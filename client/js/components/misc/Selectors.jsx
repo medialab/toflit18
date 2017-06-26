@@ -40,16 +40,19 @@ export class ClassificationSelector extends Component {
   render() {
     const classifications = this.props.data;
 
-    const placeholder = this.props.type === 'product' ?
-      'Product classification...' :
-      'Country classification...';
+    let placeholder = this.props.placeholder;
+
+    if (!placeholder)
+      placeholder = this.props.type === 'product' ?
+        'Product classification...' :
+        'Country classification...';
 
     return (
       <Select
         className="selector selector-classification"
         labelKey="name"
         isLoading={this.props.loading}
-        disabled={this.props.loading}
+        disabled={this.props.loading || this.props.disabled}
         placeholder={placeholder}
         options={classifications}
         optionRenderer={this.renderOption}
