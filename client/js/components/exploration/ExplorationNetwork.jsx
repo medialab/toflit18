@@ -5,6 +5,7 @@
  * Displaying a network of places linked by their trade.
  */
 import React, {Component} from 'react';
+import {format} from 'd3-format';
 import {branch} from 'baobab-react/decorators';
 import cls from 'classnames';
 import Button, {ExportButton} from '../misc/Button.jsx';
@@ -20,6 +21,30 @@ import {
   addNetwork,
   updateDate
 } from '../../actions/network';
+
+const NUMBER_FIXED_FORMAT = format(',.2f'),
+      NUMBER_FORMAT = format(',');
+
+function renderNodeDisplay(props) {
+  const {
+    label,
+    flows,
+    value,
+    degree
+  } = props;
+
+  return (
+    <div>
+      <strong>{label}</strong>
+      <br />
+      Flows: {NUMBER_FORMAT(flows)}
+      <br />
+      Value: {NUMBER_FIXED_FORMAT(value)}
+      <br />
+      Degree: {NUMBER_FORMAT(degree)}
+    </div>
+  );
+}
 
 export default class ExplorationGlobals extends Component {
   render() {
@@ -218,7 +243,8 @@ class NetworkPanel extends Component {
             directed={graph && graph.directed}
             graph={graph}
             sizeKey={nodeSize}
-            edgeSizeKey={edgeSize} />
+            edgeSizeKey={edgeSize}
+            nodeDisplayRenderer={renderNodeDisplay} />
           <br />
           <div className="btn-group">
             <ExportButton
