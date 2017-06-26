@@ -153,13 +153,15 @@ const ModelTerms = {
 
               if (!graph.hasEdge(lastTerm, term)) {
                 graph.addEdgeWithKey(edgeId, lastTerm, term, {
-                  weight: 1
+                  value: row.value,
+                  weight: row.flows
                 });
 
                 edgeId++;
               }
               else {
-                graph.updateEdgeAttribute(lastTerm, term, 'weight', x => x + 1);
+                graph.updateEdgeAttribute(lastTerm, term, 'value', x => x + row.value);
+                graph.updateEdgeAttribute(lastTerm, term, 'weight', x => x + row.flows);
               }
             }
           });
@@ -204,6 +206,7 @@ const ModelTerms = {
               id: edge,
               source: graph.source(edge),
               target: graph.target(edge),
+              value: graph.getEdgeAttribute(edge, 'value'),
               weight: graph.getEdgeAttribute(edge, 'weight')
             };
           })

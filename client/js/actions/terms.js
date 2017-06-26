@@ -121,6 +121,10 @@ export function selectNodeSize(tree, key) {
   tree.set(ROOT.concat('nodeSize'), key);
 }
 
+export function selectEdgeSize(tree, key) {
+  tree.set(ROOT.concat('edgeSize'), key);
+}
+
 export function updateDate(tree, dateChoosen) {
   const cursor = tree.select(ROOT),
         selectors = cursor.select('selectors');

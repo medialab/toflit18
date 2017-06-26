@@ -16,6 +16,7 @@ import {buildDateMin} from '../../lib/helpers';
 import {
   selectTerms,
   selectNodeSize,
+  selectEdgeSize,
   updateSelector as update,
   addChart,
   updateDate
@@ -88,6 +89,7 @@ export default class ExplorationGlobalsTerms extends Component {
   actions: {
     selectTerms,
     selectNodeSize,
+    selectEdgeSize,
     update,
     addChart,
     updateDate
@@ -113,6 +115,7 @@ class TermsPanel extends Component {
         data,
         classification,
         nodeSize,
+        edgeSize,
         loading,
         selectors,
         groups
@@ -151,7 +154,8 @@ class TermsPanel extends Component {
       dateMinOptions = dateMin ? dateMin : buildDateMin(dateMin, dateMax);
     }
 
-    const radioListener = e => actions.selectNodeSize(e.target.value);
+    const nodeRadioListener = e => actions.selectNodeSize(e.target.value),
+          edgeRadioListener = e => actions.selectEdgeSize(e.target.value);
 
     let childClassifications = [];
 
@@ -299,34 +303,51 @@ class TermsPanel extends Component {
             </Row>
         </div>
         <div className={cls('panel', !graph && 'hidden')}>
-          <span style={{marginRight: '10px'}}>Size of the nodes:</span>
+          <span style={{marginRight: '10px'}}>Node size:</span>
           <input
             type="radio"
-            name="optionsRadio"
+            name="nodesOptionsRadios"
             value="flows"
             checked={nodeSize === 'flows'}
-            onChange={radioListener} />
+            onChange={nodeRadioListener} />
           <span style={{marginLeft: '10px', marginRight: '10px'}}>Nb of flows.</span>
           <input
             type="radio"
-            name="optionsRadio"
+            name="nodesOptionsRadios"
             value="value"
             checked={nodeSize === 'value'}
-            onChange={radioListener} />
+            onChange={nodeRadioListener} />
           <span style={{marginLeft: '10px', marginRight: '10px'}}>Value of flows.</span>
           <input
             type="radio"
-            name="optionsRadio"
+            name="nodesOptionsRadios"
             value="degree"
             checked={nodeSize === 'degree'}
-            onChange={radioListener} />
+            onChange={nodeRadioListener} />
           <span style={{marginLeft: '10px', marginRight: '10px'}}>Degree.</span>
+          <hr />
+          <span style={{marginRight: '10px'}}>Edge thickness:</span>
+          <input
+            type="radio"
+            name="edgesOptionsRadio"
+            value="weight"
+            checked={edgeSize === 'weight'}
+            onChange={edgeRadioListener} />
+          <span style={{marginLeft: '10px', marginRight: '10px'}}>Nb of flows.</span>
+          <input
+            type="radio"
+            name="edgesOptionsRadio"
+            value="value"
+            checked={edgeSize === 'value'}
+            onChange={edgeRadioListener} />
+          <span style={{marginLeft: '10px', marginRight: '10px'}}>Value of flows.</span>
           <Network
             ref={ref => this.networkComponent = ref}
             graph={graph}
             directed
             colorKey={'communityColor'}
             sizeKey={nodeSize}
+            edgeSizeKey={edgeSize}
             nodeDisplayRenderer={renderNodeDisplay} />
           <br />
           <div className="btn-group">
