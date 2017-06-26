@@ -68,6 +68,7 @@ export default class ExplorationGlobals extends Component {
   cursors: {
     classifications: ['data', 'classifications', 'flat'],
     directions: ['data', 'directions'],
+    sourceTypes: ['data', 'sourceTypes'],
     state: ['states', 'exploration', 'network']
   }
 })
@@ -76,6 +77,7 @@ class NetworkPanel extends Component {
     const {
       actions,
       classifications,
+      sourceTypes,
       state: {
         data,
         graph,
@@ -116,6 +118,13 @@ class NetworkPanel extends Component {
       dateMinOptions = dateMin ? dateMin : buildDateMin(dateMin, dateMax);
     }
 
+    const sourceTypesOptions = (sourceTypes || []).map(type => {
+      return {
+        name: type,
+        value: type
+      };
+    });
+
     return (
       <div>
         <div className="panel">
@@ -136,6 +145,20 @@ class NetworkPanel extends Component {
               </Col>
           </Row>
           <h6 className="section-separator">Filters:</h6>
+          <Row>
+            <SectionTitle
+              title="Source Type"
+              addendum="From which sources does the data comes from?" />
+            <Col md={4}>
+              <ItemSelector
+                type="sourceType"
+                data={sourceTypesOptions}
+                loading={!sourceTypesOptions.length}
+                onChange={actions.update.bind(null, 'sourceType')}
+                selected={selectors.sourceType} />
+            </Col>
+          </Row>
+          <hr />
           <Row>
               <SectionTitle
                 title="Product"

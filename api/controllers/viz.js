@@ -80,7 +80,7 @@ const controller = [
     method: 'GET',
     validate: {
       query: {
-        dataType: '?string',
+        sourceType: '?string',
         productClassification: '?string',
         product: '?string',
         countryClassification: '?string',

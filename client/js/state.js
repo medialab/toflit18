@@ -118,11 +118,11 @@ const defaultState = {
         edgeSize: 'flows',
         loading: false,
         selectors: {
-          dataType: null,
           productClassification: null,
           product: null,
           countryClassification: null,
           kind: null,
+          sourceType: null,
           dateMin: null,
           dateMax: null
         },

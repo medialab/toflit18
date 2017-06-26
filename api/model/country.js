@@ -19,17 +19,17 @@ const ModelNetwork = {
   network(classification, params, callback) {
 
     const {
-          kind,
-          dateMin,
-          dateMax,
-          productClassification,
-          product
-        } = params;
+      sourceType,
+      kind,
+      dateMin,
+      dateMax,
+      productClassification,
+      product
+    } = params;
 
     const query = new Query(),
           where = new Expression(),
-          matchs = [];
-
+          match = [];
 
     // start query from country classification
     // define import export edge type filter
@@ -38,7 +38,7 @@ const ModelNetwork = {
       exportImportFilter = ':FROM';
     else if (kind === 'export')
       exportImportFilter = ':TO';
-    matchs.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
+    match.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
     const whereCountry = new Expression('id(cc) = {classification}');
     query.params({classification: database.int(classification)});
 
@@ -46,7 +46,7 @@ const ModelNetwork = {
 
     //-- Do we need to match a product?
     if (productClassification) {
-      matchs.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
+      match.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
       const whereProduct = new Expression('id(pc) = {productClassification}');
       query.params({productClassification: database.int(productClassification)});
 
@@ -57,8 +57,24 @@ const ModelNetwork = {
       where.and(whereProduct);
     }
 
-    if (matchs.length > 0)
-      query.match(matchs);
+    //-- Do we need to match a source type?
+    if (sourceType) {
+      match.push('(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)');
+
+      if (sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
+       where.and('s.type = {sourceType}');
+       query.params({sourceType});
+      }
+      else if (sourceType === 'National best guess') {
+       where.and('s.type IN ["Objet Général", "Résumé", "National par direction"]');
+      }
+      else if (sourceType === 'Local best guess') {
+       where.and('s.type IN ["Local","National par direction"] and f.year <> 1749 and f.year <> 1751');
+      }
+    }
+
+    if (match.length > 0)
+      query.match(match);
     //restrict flows to those which has direction
     where.and('exists(f.direction)');
 

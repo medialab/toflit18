@@ -53,7 +53,7 @@ export function addNetwork(tree) {
 
   // keep only params !== null for request
   forIn(params, (v, k) => {
-    if (k === 'dataType')
+    if (k === 'sourceType')
       paramsRequest[k] = v.value;
     else
       paramsRequest[k] = v.id;
