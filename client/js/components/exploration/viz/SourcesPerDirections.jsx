@@ -213,7 +213,7 @@ class Axis extends Component {
 
     return (
       <g className="axis" transform={`translate(0, ${height + 2})`}>
-        {ticks.slice(0, -1).map(renderTick)}
+        {ticks.map(renderTick)}
       </g>
     );
   }

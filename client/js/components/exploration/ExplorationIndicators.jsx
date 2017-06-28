@@ -395,7 +395,7 @@ class Charts extends Component {
         <hr />
         <div>Total number of directions per year</div>
         <hr />
-        <div style={{paddingLeft: '100px'}}>
+        <div style={{paddingLeft: '100px', paddingRight: '10px'}}>
           <DataQualityBarChart valueKey="nb_direction" data={lines} />
         </div>
         <hr />
