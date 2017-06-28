@@ -390,9 +390,11 @@ class Charts extends Component {
         <LineChart valueKey="count" data={lines} />
         <hr />
         <div>Total value of flows per year</div>
+        <hr />
         <LineChart data={lines} />
         <hr />
         <div>Total number of directions per year</div>
+        <hr />
         <DataQualityBarChart valueKey="nb_direction" data={lines} />
         <ExportButton
           name="Indicators_Number_of_directions_per_year"
