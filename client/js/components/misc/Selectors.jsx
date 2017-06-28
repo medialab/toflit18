@@ -31,7 +31,10 @@ export class ClassificationSelector extends Component {
           {prettyPrint(o.groupsCount)} groups.
         </div>
         <div className="addendum">
-          {classifiedItemsCount} / {prettyPrint(o.itemsCount)} classified items ({o.completion}%)
+          {!o.source ?
+            <span>{classifiedItemsCount} / {prettyPrint(o.itemsCount)} classified items ({o.completion}%)</span> :
+            <span>&nbsp;</span>
+          }
         </div>
       </div>
     );
