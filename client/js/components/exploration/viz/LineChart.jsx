@@ -13,7 +13,10 @@ import * as shape from 'd3-shape';
 import {flatten, minBy, maxBy} from 'lodash';
 import {prettyPrint} from '../../../lib/helpers';
 
-const axisFormat = format(',');
+/**
+ * Formats.
+ */
+const AXIS_FORMAT = format(',');
 
 /**
  * Main component.
@@ -205,7 +208,7 @@ class YAxis extends Component {
         <g key={i} className="tick" transform={`translate(${margin.left}, ${top})`}>
           <line x1={-5} x2={0} />
           <text x={-7} y="0.32em" textAnchor="end">
-            {axisFormat(t)}
+            {AXIS_FORMAT(t)}
           </text>
           <line className="dotted" x2={width - margin.right - margin.left} />
         </g>

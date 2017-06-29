@@ -33,7 +33,7 @@ export function prettyPrint(nb) {
     .map(s => s.reverse().join(''))
     .join(' ');
 
-  return pretty + (afterDecimal ? '.' + afterDecimal : '');
+  return pretty + (afterDecimal ? '.' + afterDecimal.slice(0, 2) : '');
 }
 
 /**
