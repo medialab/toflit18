@@ -7,6 +7,7 @@
  */
 import React, {Component} from 'react';
 import screenfull from 'screenfull';
+import {scaleLinear} from 'd3-scale';
 import ExplorationNodeSearcher from '../ExplorationNodeSearcher.jsx';
 
 /**
@@ -28,6 +29,7 @@ const SIGMA_SETTINGS = {
 };
 
 const LAYOUT_SETTINGS = {
+  edgeWeightInfluence: 0.01,
   strongGravityMode: true,
   gravity: 0.05,
   scalingRatio: 10,
@@ -199,8 +201,29 @@ export default class Network extends Component {
     if (nextProps.sizeKey)
       g.nodes().forEach(node => node.size = node[nextProps.sizeKey]);
 
-    if (nextProps.edgeSizeKey)
-      g.edges().forEach(edge => edge.size = edge[nextProps.edgeSizeKey]);
+    if (nextProps.edgeSizeKey) {
+
+      const edges = g.edges();
+
+      const weights = edges.map(e => e[nextProps.edgeSizeKey])
+
+      const max = Math.max.apply(Math, weights),
+            min = Math.min.apply(Math, weights);
+
+      const scale = scaleLinear()
+        .domain([min, max])
+        .range([0, 1]);
+
+      edges.forEach(edge => {
+        edge.size = edge[nextProps.edgeSizeKey];
+        edge.weight = scale(edge[nextProps.edgeSizeKey]);
+      });
+
+      if (this.sigma.isForceAtlas2Running()) {
+        this.sigma.killForceAtlas2();
+        this.sigma.startForceAtlas2(this.layoutSettings);
+      }
+    }
 
     this.sigma.refresh();
   }
