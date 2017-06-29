@@ -13,6 +13,7 @@ const {Expression, Query} = decypher;
 const limits = config.get('api.limits');
 
 const ModelFlowsPerYear = {
+
     /**
      * Flows per year per data type.
      */
@@ -48,9 +49,11 @@ const ModelFlowsPerYear = {
           productClassification = classificationId;
         else
           countryClassification = classificationId;
+
         dataType = classificationType;
       }
 
+      //-- Do we need to match a product?
       if (productClassification) {
         query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)');
 
@@ -64,12 +67,14 @@ const ModelFlowsPerYear = {
 
         withs.push('products');
         query.where(whereProduct);
+
         if (dataType === 'product') {
           withs.push('classificationGroupName');
           query.with('pg.name as classificationGroupName, collect(pi.name) AS products');
         }
-        else
+        else {
           query.with('collect(pi.name) AS products');
+        }
       }
 
       //-- Do we need to match a country?
@@ -84,6 +89,7 @@ const ModelFlowsPerYear = {
         }
 
         query.where(whereCountry);
+
         if (dataType === 'country')
           query.with(withs.concat('cg.name as classificationGroupName, collect(ci.name) AS countries').join(', '));
         else
