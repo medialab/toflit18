@@ -137,7 +137,7 @@ export default class DataQualityBarChart extends Component {
         <Legend
           x={10}
           y={10}
-          label="Number of element by year"
+          label="Number of elements by year"
           className="bar" />
         <g>
           {data.map(row => {

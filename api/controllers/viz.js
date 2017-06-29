@@ -25,13 +25,6 @@ const controller = [
         kind: '?string'
       }
     },
-    // cache: {
-    //   key: 'flowsPerYear',
-    //   hasher(req) {
-    //     console.log("hash req", req.params)
-    //     return req.params.type;
-    //   }
-    // },
     action(req, res) {
       const payloadFlows = mapValues(req.query, (v, k) => {
         if (v !== 'null') {
@@ -88,11 +81,6 @@ const controller = [
         dateMin: '?string',
         dateMax: '?string'
       }
-    // cache: {
-    //   key: 'network',
-    //   hasher(req) {
-    //     return req.params.id;
-    //   }
     },
     action(req, res) {
       const payloadNetwork = mapValues(req.query, (v, k) => {
@@ -129,12 +117,6 @@ const controller = [
         dateMax: '?string'
       }
     },
-    // cache: {
-    //   key: 'terms',
-    //   hasher(req) {
-    //     return req.params.id;
-    //   }
-    // },
     action(req, res) {
       const payloadTerms = mapValues(req.query, (v, k) => {
         if (v !== 'null') {
