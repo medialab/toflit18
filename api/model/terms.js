@@ -154,14 +154,14 @@ const ModelTerms = {
               if (!graph.hasEdge(lastTerm, term)) {
                 graph.addEdgeWithKey(edgeId, lastTerm, term, {
                   value: row.value,
-                  weight: row.flows
+                  flows: row.flows
                 });
 
                 edgeId++;
               }
               else {
                 graph.updateEdgeAttribute(lastTerm, term, 'value', x => x + row.value);
-                graph.updateEdgeAttribute(lastTerm, term, 'weight', x => x + row.flows);
+                graph.updateEdgeAttribute(lastTerm, term, 'flows', x => x + row.flows);
               }
             }
           });
@@ -194,7 +194,7 @@ const ModelTerms = {
           return {
             source: graph.source(edge),
             target: graph.target(edge),
-            weight: graph.getEdgeAttribute(edge, 'weight')
+            flows: graph.getEdgeAttribute(edge, 'flows')
           };
         });
 
@@ -207,7 +207,7 @@ const ModelTerms = {
               source: graph.source(edge),
               target: graph.target(edge),
               value: graph.getEdgeAttribute(edge, 'value'),
-              weight: graph.getEdgeAttribute(edge, 'weight')
+              flows: graph.getEdgeAttribute(edge, 'flows')
             };
           })
         });

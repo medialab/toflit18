@@ -110,7 +110,7 @@ export function addChart(tree) {
     });
 
     data.result.edges.forEach(edge => {
-      edge.size = edge.weight;
+      edge.size = edge.flows;
     });
 
     cursor.set('graph', data.result);

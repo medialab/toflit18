@@ -330,8 +330,8 @@ class TermsPanel extends Component {
           <input
             type="radio"
             name="edgesOptionsRadio"
-            value="weight"
-            checked={edgeSize === 'weight'}
+            value="flows"
+            checked={edgeSize === 'flows'}
             onChange={edgeRadioListener} />
           <span style={{marginLeft: '10px', marginRight: '10px'}}>Nb of flows.</span>
           <input

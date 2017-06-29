@@ -137,7 +137,7 @@ const defaultState = {
         data: null,
         classification: null,
         nodeSize: 'flows',
-        edgeSize: 'weight',
+        edgeSize: 'flows',
         loading: false,
         selectors: {
           productClassification: null,
