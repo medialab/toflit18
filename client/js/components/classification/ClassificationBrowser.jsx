@@ -382,32 +382,46 @@ class Group extends Component {
     // Addendum if there are items in the group
     if (count) {
 
-      // Potential ellipsis
-      const ellipsis = (
-        <span
-          className="ellipsis"
-          title="Click to expand"
-          onClick={() => this.toggle()}>[...]</span>
-      );
-
       const itemsToDisplay = !opened ?
         items.slice(0, MAX_NUMBER_OF_DISPLAYED_ITEMS) :
         items;
 
+      const remaining = items.length - MAX_NUMBER_OF_DISPLAYED_ITEMS
+
+      // Potential ellipsis
+      const ellipsis = (
+        <li
+          className="ellipsis"
+          title="Click to expand"
+          onClick={() => this.toggle()}>{(!opened && items.length > MAX_NUMBER_OF_DISPLAYED_ITEMS) ? `show ${remaining} more items` : 'collapse'}</li>
+      );
+
       addendum = (
         <ul className="addendum">
           {itemsToDisplay.map((item, i) => (<Item key={i} name={item} />))}
-          {(!opened && items.length > MAX_NUMBER_OF_DISPLAYED_ITEMS) && ellipsis}
+          {items.length > MAX_NUMBER_OF_DISPLAYED_ITEMS && ellipsis}
         </ul>
       );
     }
 
     return (
       <li className="item">
-        <div>
-          {name} {!source && <em>({count} items)</em>}
+        <div className="header">
+          <h3>{name}</h3> 
         </div>
-        {addendum}
+        {
+          items.length > 0 ?
+          <div className="body">
+            {
+              count && 
+              items.slice(0, MAX_NUMBER_OF_DISPLAYED_ITEMS).length ?
+              <p className="children-title"> 
+                <i>Related children items ({!source && (<em>{count}</em>)}) :</i>
+              </p> : null
+            }
+            {addendum}
+          </div>
+        : null}
       </li>
     );
   }
