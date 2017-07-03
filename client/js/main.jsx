@@ -20,17 +20,17 @@ import 'rc-tooltip/assets/bootstrap.css';
 import '../style/font-awesome.min.css';
 import '../style/toflit18.scss';
 
-const RootedApp = root(AppRouter, state);
-
-// Rendering the app
-render(<RootedApp />, document.getElementById('mount'));
-
 // Binding client
 let parrot = makeParrot(state, client);
 state.client = client;
 
 // Checking the user's session
-checkSession(state);
+checkSession(state, () => {
+  const RootedApp = root(AppRouter, state);
+
+  // Rendering the app
+  render(<RootedApp />, document.getElementById('mount'));
+});
 
 // Hot-reloading logic
 if (module.hot) {

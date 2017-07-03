@@ -9,12 +9,14 @@ import history from '../history';
 /**
  * Checking the user session
  */
-export function checkSession(tree) {
+export function checkSession(tree, callback) {
   tree.client.session(function(err, data) {
     if (data) {
       tree.set('user', data.result);
-      history.replace({pathname: '/'});
+      // history.replace({pathname: '/'});
     }
+
+    return callback();
   });
 }
 
