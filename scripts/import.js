@@ -359,6 +359,10 @@ const OUTSIDER_SOURCES_NODES = {
  */
 function importer(csvLine) {
 
+  // Handling double accounts
+  if (csvLine.doubleaccounts && +csvLine.doubleaccounts > 1)
+    return;
+
   //Patching directions names
   const originalDirection = csvLine.direction;
 
