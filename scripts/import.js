@@ -31,7 +31,7 @@ import _ from 'lodash';
 const ROOT_PATH = '/base',
       BDD_CENTRALE_PATH = ROOT_PATH + '/bdd_centrale.csv',
       BDD_OUTSIDERS = ROOT_PATH + '/marchandises_sourcees.csv',
-      BDD_UNITS = ROOT_PATH + '/Units_N1.csv',
+      BDD_UNITS = ROOT_PATH + '/Units_Normalisation_Métrique1.csv',
       BDD_DIRECTIONS = ROOT_PATH + '/bdd_directions.csv',
       ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
       SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
@@ -134,7 +134,7 @@ class Builder {
 
     // Writing headers
     this.nodesStream.write(NODE_PROPERTIES_TYPES.concat(':LABEL', ':ID'));
-    this.edgesStream.write([':START_ID', ':END_ID', ':TYPE', 'line:int', 'sheet:int']);
+    this.edgesStream.write([':START_ID', ':END_ID', ':TYPE', 'line:string', 'sheet:int']);
   }
 
   save(data, label) {
@@ -366,7 +366,7 @@ function importer(csvLine) {
 
   if (!!originalDirection && !direction) {
     direction = originalDirection;
-    console.log('  !! Could not find simplified direction for:', originalDirection);
+    console.log('  !! Could not find simplified direction for:', originalDirection, "In file:", csvLine.sourcepath);
   }
 
   // Import or Export
@@ -380,13 +380,19 @@ function importer(csvLine) {
 
   // Year
   if (csvLine.year) {
-    if (/semestre/.test(csvLine.year))
-       nodeData.year = csvLine.year.split('-')[0];
-    else
-      if (csvLine.year === '10 mars-31 décembre 1787')
-          nodeData.year = 1787;
-      else
-        nodeData.year = normalizeYear(csvLine.year);
+    if (/semestre/.test(csvLine.year)) {
+      nodeData.year = csvLine.year.split('-')[0];
+    }
+    else if (csvLine.year === '10 mars-31 décembre 1787') {
+      nodeData.year = 1787;
+    }
+    else if (/\-/.test(csvLine.year)) {
+      const [min, max] = csvLine.year.split('-');
+      nodeData.year = normalizeYear(min);
+    }
+    else {
+      nodeData.year = normalizeYear(csvLine.year);
+    }
   }
 
   // Unit
@@ -466,7 +472,7 @@ function importer(csvLine) {
     });
 
     BUILDER.relate(flowNode, 'TRANSCRIBED_FROM', sourceNode, {
-      line: +csvLine.numrodeligne,
+      line: '' + csvLine.numrodeligne,
       sheet: +csvLine.sheet
     });
   }
