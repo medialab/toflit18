@@ -31,7 +31,7 @@ import _ from 'lodash';
 const ROOT_PATH = '/base',
       BDD_CENTRALE_PATH = path.join(ROOT_PATH, '/bdd_centrale.csv'),
       BDD_OUTSIDERS = path.join(ROOT_PATH, '/marchandises_sourcees.csv'),
-      BDD_UNITS = path.join(ROOT_PATH, '/Units_Normalisation_Métrique1.csv'),
+      BDD_UNITS = path.join(ROOT_PATH, '/Units_Normalisation_Metrique1.csv'),
       BDD_DIRECTIONS = path.join(ROOT_PATH, '/bdd_directions.csv'),
       // Product classifications
       ORTHOGRAPHIC_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_normalisees_orthographique.csv'),
