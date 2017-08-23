@@ -29,28 +29,26 @@ import _ from 'lodash';
  * Paths
  */
 const ROOT_PATH = '/base',
-      BDD_CENTRALE_PATH = ROOT_PATH + '/bdd_centrale.csv',
-      BDD_OUTSIDERS = ROOT_PATH + '/marchandises_sourcees.csv',
-      BDD_UNITS = ROOT_PATH + '/Units_Normalisation_Métrique1.csv',
-      BDD_DIRECTIONS = ROOT_PATH + '/bdd_directions.csv',
-      ORTHOGRAPHIC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_normalisees_orthographique.csv',
-      SIMPLIFICATION = ROOT_PATH + '/bdd_marchandises_simplifiees.csv',
-      //SIMPLIFICATION_NEW = ROOT_PATH + '/bdd_marchandises_simplifiees_new.csv',
-      MEDICINAL_CLASSIFICATIONS = ROOT_PATH + '/bdd_marchandises_medicinales.csv',
-      HAMBURG_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_hamburg.csv',
-      AMERIQUEDUNORD_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_NorthAmerica.csv',
-      EDENTREATY_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_edentreaty.csv',
-      GRAIN_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_grains.csv',
-      SITC_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_sitc.csv',
-      SITC_EN_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_sitc_EN.csv',
-      SITC_FR_CLASSIFICATION = ROOT_PATH + '/bdd_marchandises_sitc_FR.csv',
+      BDD_CENTRALE_PATH = path.join(ROOT_PATH, '/bdd_centrale.csv'),
+      BDD_OUTSIDERS = path.join(ROOT_PATH, '/marchandises_sourcees.csv'),
+      BDD_UNITS = path.join(ROOT_PATH, '/Units_Normalisation_Métrique1.csv'),
+      BDD_DIRECTIONS = path.join(ROOT_PATH, '/bdd_directions.csv'),
+      // Product classifications
+      ORTHOGRAPHIC_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_normalisees_orthographique.csv'),
+      SIMPLIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_simplifiees.csv'),
+      MEDICINAL_CLASSIFICATIONS = path.join(ROOT_PATH, '/bdd_marchandises_medicinales.csv'),
+      HAMBURG_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_hamburg.csv'),
+      AMERIQUEDUNORD_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_NorthAmerica.csv'),
+      EDENTREATY_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_edentreaty.csv'),
+      GRAIN_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_grains.csv'),
+      SITC_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_sitc.csv'),
+      SITC_EN_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_sitc_EN.csv'),
+      SITC_FR_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_sitc_FR.csv'),
       // Country classifications
-      COUNTRY_ORTHOGRAPHIC = ROOT_PATH + '/classification_country_orthographic_normalization.csv',
-      COUNTRY_SIMPLIFICATION = ROOT_PATH + '/classification_country_simplification.csv',
-      COUNTRY_GROUPED = ROOT_PATH + '/classification_country_grouping.csv',
-      COUNTRY_OBRIEN = ROOT_PATH + '/classification_country_obrien.csv';
-
-// const COUNTRY_CLASSIFICATIONS = ROOT_PATH + '/bdd_pays.csv';
+      COUNTRY_ORTHOGRAPHIC = path.join(ROOT_PATH, '/classification_country_orthographic_normalization.csv'),
+      COUNTRY_SIMPLIFICATION = path.join(ROOT_PATH, '/classification_country_simplification.csv'),
+      COUNTRY_GROUPED = path.join(ROOT_PATH, '/classification_country_grouping.csv'),
+      COUNTRY_OBRIEN = path.join(ROOT_PATH, '/classification_country_obrien.csv');
 
 /**
  * Constants
