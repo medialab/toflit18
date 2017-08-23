@@ -370,7 +370,7 @@ function importer(csvLine) {
 
   if (!!originalDirection && !direction) {
     direction = originalDirection;
-    console.log('  !! Could not find simplified direction for:', originalDirection, "In file:", csvLine.sourcepath);
+    console.log('  !! Could not find simplified direction for:', originalDirection, 'In file:', csvLine.sourcepath);
   }
 
   // Import or Export
@@ -391,7 +391,7 @@ function importer(csvLine) {
       nodeData.year = 1787;
     }
     else if (/\-/.test(csvLine.year)) {
-      const [min, max] = csvLine.year.split('-');
+      const min = csvLine.year.split('-')[0];
       nodeData.year = normalizeYear(min);
     }
     else {
