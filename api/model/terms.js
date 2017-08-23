@@ -92,7 +92,7 @@ const ModelTerms = {
          query.params({sourceType});
         }
         else if (sourceType === 'National best guess') {
-         where.and('s.type IN ["Objet Général", "Résumé", "National par direction"]');
+         where.and('s.type IN ["Objet Général", "Résumé", "National par direction", "Tableau des quantités"]');
         }
         else if (sourceType === 'Local best guess') {
          where.and('s.type IN ["Local","National par direction"] and f.year <> 1749 and f.year <> 1751');
