@@ -452,6 +452,10 @@ function importer(csvLine) {
   if (csvLine.sourcetype)
     nodeData.sourceType = csvLine.sourcetype;
 
+  // Here, we filter some lines deemed irrelevant
+  if (!nodeData.value && !nodeData.quantity && !nodeData.unitPrice)
+    return;
+
   const flowNode = BUILDER.save(nodeData, 'Flow');
 
   // Operator
