@@ -178,7 +178,7 @@ const ModelFlowsPerYear = {
       }
 
       if (sourceType === 'National best guess') {
-        where.and('(f.sourceType IN ["Objet Général", "Résumé"] or (f.sourceType= "National par direction" and f.year <> 1749 and f.year <> 1751))');
+        where.and('(f.sourceType IN ["Objet Général", "Résumé", "Tableau des quantités"] or (f.sourceType= "National par direction" and f.year <> 1749 and f.year <> 1751))');
       }
 
       if (sourceType === 'Local best guess') {
