@@ -69,6 +69,7 @@
     "react-dom": "~15.4.2",
     "react-router": "^2.0.0",
     "react-select": "^1.0.0-beta6",
+    "recharts": "^1.0.0-alpha.4",
     "screenfull": "^3.0.2"
   }
 }
