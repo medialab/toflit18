@@ -32,6 +32,9 @@ const ModelFlowsPerYear = {
         countryClassification
       } = params;
 
+      let twofoldProduct = false,
+          twofoldCountry = false;
+
       const query = new Query(),
             where = new Expression(),
             withs = [];
@@ -45,16 +48,24 @@ const ModelFlowsPerYear = {
           classificationId
         ] = dataType.match(/(\w+)_(\d+)/) || [];
 
-        if (classificationType === 'product')
+        if (classificationType === 'product') {
           productClassification = classificationId;
-        else
+
+          if (params.productClassification)
+            twofoldProduct = true;
+        }
+        else {
           countryClassification = classificationId;
+
+          if (params.countryClassification)
+            twofoldCountry = true;
+        }
 
         dataType = classificationType;
       }
 
       //-- Do we need to match a product?
-      if (productClassification) {
+      if (productClassification && !twofoldProduct) {
         query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)');
 
         const whereProduct = new Expression('id(pc) = ' + productClassification);
@@ -77,14 +88,57 @@ const ModelFlowsPerYear = {
         }
       }
 
+      // NOTE: twofold classification
+      if (productClassification && twofoldProduct) {
+        query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi), (ppg)-[:AGGREGATES*0..]->(pg)');
+
+        const whereProduct = new Expression('id(pc) = ' + productClassification);
+        query.params({productClassification});
+
+        if (product) {
+          whereProduct.and('id(ppg) = ' + product);
+          query.params({product});
+        }
+
+        withs.push('products');
+        query.where(whereProduct);
+
+        if (dataType === 'product') {
+          withs.push('classificationGroupName');
+          query.with('pg.name as classificationGroupName, collect(pi.name) AS products');
+        }
+        else {
+          query.with('collect(pi.name) AS products');
+        }
+      }
+
       //-- Do we need to match a country?
-      if (countryClassification) {
+      if (countryClassification && !twofoldCountry) {
         query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)');
         const whereCountry = new Expression('id(cc) = ' + countryClassification);
         query.params({countryClassification});
 
         if (country) {
           whereCountry.and('id(cg) = ' + country);
+          query.params({country});
+        }
+
+        query.where(whereCountry);
+
+        if (dataType === 'country')
+          query.with(withs.concat('cg.name as classificationGroupName, collect(ci.name) AS countries').join(', '));
+        else
+          query.with(withs.concat('collect(ci.name) AS countries').join(', '));
+      }
+
+      // NOTE: twofold classification
+      if (countryClassification && twofoldCountry) {
+        query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci), (ccg)-[:AGGREGATES*0..]->(cg)');
+        const whereCountry = new Expression('id(cc) = ' + countryClassification);
+        query.params({countryClassification});
+
+        if (country) {
+          whereCountry.and('id(ccg) = ' + country);
           query.params({country});
         }
 
