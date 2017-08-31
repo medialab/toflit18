@@ -31,7 +31,9 @@ import _ from 'lodash';
 const ROOT_PATH = '/base',
       BDD_CENTRALE_PATH = path.join(ROOT_PATH, '/bdd_centrale.csv'),
       BDD_OUTSIDERS = path.join(ROOT_PATH, '/marchandises_sourcees.csv'),
-      BDD_UNITS = path.join(ROOT_PATH, '/Units_Normalisation_Metrique1.csv'),
+      BDD_UNITS_LEVEL1 = path.join(ROOT_PATH, '/Units_Normalisation_Orthographique.csv'),
+      BDD_UNITS_LEVEL2 = path.join(ROOT_PATH, '/Units_Normalisation_Metrique1.csv'),,
+      BDD_UNITS_LEVEL3 = path.join(ROOT_PATH, '/Units_Normalisation_Metrique2.csv'),
       BDD_DIRECTIONS = path.join(ROOT_PATH, '/bdd_directions.csv'),
       // Product classifications
       ORTHOGRAPHIC_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_normalisees_orthographique.csv'),
@@ -200,9 +202,11 @@ const INDEXES = {
   sources: {}
 };
 
-const UNITS_INDEX = {};
+const CONVERSION_TABLE_LEVEL1 = {},
+      CONVERSION_TABLE_LEVEL2 = {},
+      CONVERSION_TABLE_LEVEL3 = {};
+
 const DIRECTIONS_INDEX = {};
-const CONVERSION_TABLE = {};
 
 const OUTSIDER_INDEXES = {
   sund: {},
@@ -401,10 +405,11 @@ function importer(csvLine) {
   if (csvLine.quantity_unit) {
     nodeData.rawUnit = csvLine.quantity_unit;
 
-    const normalized = UNITS_INDEX[nodeData.rawUnit];
+    // TODO: fix lookup when needed
+    // const normalized = UNITS_INDEX[nodeData.rawUnit];
 
-    if (normalized)
-      nodeData.unit = normalized;
+    // if (normalized)
+    //   nodeData.unit = normalized;
   }
 
   // Value
@@ -819,48 +824,51 @@ async.series({
   units(next) {
     console.log('Processing units...');
 
-    const csvData = fs.readFileSync(DATA_PATH + BDD_UNITS, 'utf-8');
-    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+    return async.parallel({
+      level1: finalize => {
+        const csvData = fs.readFileSync(DATA_PATH + BDD_UNITS, 'utf-8');
 
-      data.forEach(row => {
-        const first = cleanText(row[1]),
-              second = cleanText(row[2]);
+        parseCsv(csvData, {delimiter: ','}, function(err, data) {
 
-        const bestGuess = second || first;
+          data.forEach(row => {
+            const first = cleanText(row[1]),
+                  second = cleanText(row[2]);
 
-        if (bestGuess) {
-          UNITS_INDEX[cleanText(row[0])] = bestGuess;
+            const bestGuess = second || first;
 
-          // Updating conversion table
-          const unit = cleanText(row[3]),
-                factor = cleanNumber(cleanText(row[4])),
-                note = cleanText(row[5]);
+            if (bestGuess) {
+              UNITS_INDEX[cleanText(row[0])] = bestGuess;
 
-          if (unit && factor) {
-            const hashedKey = `${bestGuess}[->]${unit}`,
-                  conversion = CONVERSION_TABLE[hashedKey];
+              // Updating conversion table
+              const unit = cleanText(row[3]),
+                    factor = cleanNumber(cleanText(row[4])),
+                    note = cleanText(row[5]);
 
-            if (!conversion) {
-              CONVERSION_TABLE[hashedKey] = {
-                from: bestGuess,
-                to: unit,
-                factor
-              };
+              if (unit && factor) {
+                const hashedKey = `${bestGuess}[->]${unit}`,
+                      conversion = CONVERSION_TABLE[hashedKey];
 
-              if (note)
-                CONVERSION_TABLE[hashedKey].note = note;
+                if (!conversion) {
+                  CONVERSION_TABLE[hashedKey] = {
+                    from: bestGuess,
+                    to: unit,
+                    factor
+                  };
+
+                  if (note)
+                    CONVERSION_TABLE[hashedKey].note = note;
+                }
+                else {
+                  if (conversion.factor !== factor ||
+                      (note && conversion.note !== note))
+                    console.log('  !! Weird conversion:', conversion, factor, note);
+                }
+              }
             }
-            else {
-              if (conversion.factor !== factor ||
-                  (note && conversion.note !== note))
-                console.log('  !! Weird conversion:', conversion, factor, note);
-            }
-          }
-        }
-      });
-
-      return next();
-    });
+          });
+        });
+      }
+    }, next);
   },
 
   flows(next) {

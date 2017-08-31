@@ -98,6 +98,27 @@ export default class ExplorationMeta extends Component {
       };
     });
 
+    // Computing bar chart's data
+    let barData = [];
+
+    if (state.perYear) {
+      const minYear = state.perYear[0].year;
+
+      const maxYear = state.perYear[state.perYear.length - 1].year;
+
+      barData = new Array(maxYear - minYear + 1);
+
+      const hash = year => year - minYear;
+
+      for (let i = 0, l = barData.length; i < l; i++)
+        barData[i] = {year: minYear + i};
+
+      state.perYear.forEach(line => {
+        const h = hash(line.year);
+        barData[h].data = line.data;
+      });
+    }
+
     return (
       <div>
         <div className="panel">
@@ -220,7 +241,7 @@ export default class ExplorationMeta extends Component {
         </div>
         {state.perYear && state.dataType && <div className="panel">
           {state.perYear ?
-            <DataQualityBarChart data={state.perYear} /> :
+            <DataQualityBarChart data={barData} /> :
             <Waiter />}
             <ExportButton
               name={`Toflit18_Meta_view ${state.dataType.name} - ${state.fileName} data_per_year`}

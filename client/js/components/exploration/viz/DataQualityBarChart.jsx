@@ -55,8 +55,7 @@ export default class DataQualityBarChart extends Component {
   render() {
     const {
       data,
-      syncId = 'data-quality-barchart',
-      margin = null
+      syncId = 'data-quality-barchart'
     } = this.props;
 
     if (!data || !data.length)
