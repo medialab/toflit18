@@ -110,7 +110,11 @@ export default class SourcesPerDirections extends Component {
                   <XAxis dataKey="year" />
                   <YAxis domain={[0, maxFlows]} hide />
                   <Tooltip isAnimationActive={false} content={renderTooltip(direction.name)} />
-                  <Bar dataKey="flows" fill="#4F7178" isAnimationActive={false} />
+                  <Bar
+                    dataKey="flows"
+                    fill="#4F7178"
+                    isAnimationActive={false}
+                    minPointSize={2} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
