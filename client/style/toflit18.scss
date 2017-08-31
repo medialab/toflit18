@@ -493,22 +493,9 @@ h1 {
 /**
  * Viz.
  */
-svg.quality-bar-chart {
-  line {
-    stroke: black;
-    shape-rendering: crispEdges;
-  }
-
+.quality-bar-chart svg {
   text {
     font-size: 10px;
-  }
-
-  rect {
-    cursor: pointer;
-  }
-
-  .bar {
-    fill: darken($poison-blusher, 20%);
   }
 
   .year {
@@ -516,34 +503,9 @@ svg.quality-bar-chart {
   }
 }
 
-svg.sources-per-directions {
-  line {
-    shape-rendering: crispEdges;
-  }
-
-  rect {
-    cursor: pointer;
-  }
-
-  .axis line{
-    shape-rendering: crispEdges;
-    stroke: black;
-  }
-
-  .axis text {
+.sources-per-directions svg {
+  text {
     font-size: 10px;
-  }
-
-  text.legend-label {
-    font-size: 10px;
-  }
-
-  .local-bar {
-    fill: $old-blue;
-  }
-
-  .national-bar {
-    fill: $dust-sun;
   }
 }
 

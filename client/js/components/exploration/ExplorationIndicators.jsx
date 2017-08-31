@@ -383,6 +383,36 @@ class Charts extends Component {
       });
     });
 
+    // Computing bar chart's data by keeping a count of distinct directions
+    let barData = [];
+
+    if (lines.length) {
+      const minYear = Math.min.apply(null, lines.map(line => line.data[0].year));
+
+      const maxYear = Math.max.apply(null, lines.map(line => line.data[line.data.length - 1].year));
+
+      barData = new Array(maxYear - minYear + 1);
+
+      const hash = year => year - minYear;
+
+      for (let i = 0, l = barData.length; i < l; i++)
+        barData[i] = {year: minYear + i};
+
+      lines.forEach(line => {
+        for (let j = 0, m = line.data.length; j < m; j++) {
+          const h = hash(line.data[j].year);
+          barData[h].data = barData[h].data || new Set();
+
+          for (let k = 0, n = line.data[j].nb_direction.length; k < n; k++)
+            barData[h].data.add(line.data[j].nb_direction[k]);
+        }
+      });
+
+      barData.forEach(item => {
+        item.data = item.data ? item.data.size : 0;
+      });
+    }
+
     return (
       <div>
         <div>Number of flows per year</div>
@@ -395,9 +425,9 @@ class Charts extends Component {
         <hr />
         <div>Total number of directions per year</div>
         <hr />
-        <div style={{paddingLeft: '100px', paddingRight: '10px'}}>
-          <DataQualityBarChart valueKey="nb_direction" data={lines} />
-        </div>
+        <DataQualityBarChart
+          data={barData}
+          syncId="indicators" />
         <hr />
         <ExportButton
           name="Indicators_Number_of_directions_per_year"
