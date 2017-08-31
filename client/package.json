@@ -48,7 +48,6 @@
     "style-loader": "^0.18.2"
   },
   "dependencies": {
-    "@yomguithereal/react-utilities": "^1.1.1",
     "baobab": "^2.3.0",
     "baobab-react": "^1.0.1",
     "bootstrap": "4.0.0-alpha.6",
@@ -57,14 +56,12 @@
     "config": "^1.26.1",
     "d3-format": "^1.0.2",
     "d3-scale": "^1.0.4",
-    "d3-shape": "^1.0.4",
     "djax-client": "^0.2.0",
     "gexf": "^0.2.5",
     "history": "^2.0.0",
     "ladda": "^1.0.0",
     "lodash": "^4.17.4",
     "papaparse": "^4.1.2",
-    "rc-tooltip": "^3.2.0",
     "react": "~15.4.2",
     "react-dom": "~15.4.2",
     "react-router": "^2.0.0",

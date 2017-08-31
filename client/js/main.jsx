@@ -16,7 +16,6 @@ import state from './state';
 // Stylesheet
 import 'ladda/dist/ladda-themeless.min.css';
 import 'react-select/scss/default.scss';
-import 'rc-tooltip/assets/bootstrap.css';
 import '../style/font-awesome.min.css';
 import '../style/toflit18.scss';
 
