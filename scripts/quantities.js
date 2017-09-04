@@ -10,10 +10,14 @@
 import {argv} from 'yargs';
 import async from 'async';
 import path from 'path';
+import fs from 'fs';
+import Index from 'mnemonist/index';
+import {parse as parseCSV} from 'csv';
 import database from '../api/connection';
+import {cleanText} from '../lib/clean';
 
 /**
- * Reading arguments
+ * Reading arguments.
  */
 const DATA_PATH = argv.path || argv.p;
 
@@ -29,6 +33,32 @@ const METRICS_FILE_LEVEL1 = path.join(DATA_PATH, 'base', 'Units_Normalisation_Or
       METRICS_FILE_LEVEL2 = path.join(DATA_PATH, 'base', 'Units_Normalisation_Metrique1.csv'),
       METRICS_FILE_LEVEL3 = path.join(DATA_PATH, 'base', 'Units_Normalisation_Metrique2.csv');
 
+const PARSING_OPTIONS = {
+  delimiter: ',',
+  columns: true
+};
+
+const HASH_LEVEL1 = data => `${data.ortho}`;
+
+const INDEX_LEVEL1 = new Map(),
+      INDEX_LEVEL2 = new Index(),
+      INDEX_LEVEL3 = new Index();
+
+/**
+ * Queries.
+ */
+const QUERY_GET_FLOWS = `
+  MATCH (f:Flow) WHERE exists(f.rawUnit)
+  RETURN f;
+`;
+
+const QUERY_UPDATE_FLOWS = `
+  UNWIND {batch} AS row
+  MATCH (f)
+  WHERE id(f) = row.id
+  SET f += row.properties;
+`;
+
 /**
  * Process outline.
  */
@@ -38,12 +68,41 @@ async.series({
 
       // First level: only normalize unit name
       level1: callback => {
-        return callback();
+
+        const csvString = fs.readFileSync(METRICS_FILE_LEVEL1, 'utf-8');
+
+        return parseCSV(csvString, PARSING_OPTIONS, (err, lines) => {
+          if (err)
+            return callback(err);
+
+          lines.forEach(line => {
+            const data = {
+              name: cleanText(line.quantity_unit),
+              ortho: cleanText(line.quantity_unit_ortho)
+            };
+
+            INDEX_LEVEL1.set(data.name, data);
+          });
+
+          return callback();
+        });
       },
 
       // Second level: unit name + product name
       level2: callback => {
-        return callback();
+
+        const csvString = fs.readFileSync(METRICS_FILE_LEVEL2, 'utf-8');
+
+        return parseCSV(csvString, PARSING_OPTIONS, (err, lines) => {
+          if (err)
+            return callback(err);
+
+          lines.forEach(line => {
+            console.log(line);
+          });
+
+          return callback();
+        });
       },
 
       // Third level: unit name + product name + location
@@ -53,6 +112,12 @@ async.series({
     }, next);
   },
   processNormalizedUnits: next => {
+
+    // 1 - Normalize unit
+    // 2 - Solve level 2
+    // 3 - Solve level 3
+    // 4 - Conversion
+
     return next();
   }
 }, err => {
