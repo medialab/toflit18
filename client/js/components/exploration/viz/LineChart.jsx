@@ -19,7 +19,13 @@ import {
 /**
  * Formats.
  */
-const Y_AXIS_FORMAT = formatPrefix(',.0s', 1.3e3);
+const SI_FORMAT = formatPrefix(',.0s', 1.3e3);
+const Y_AXIS_FORMAT = nb => {
+  if (nb < 1000)
+    return '' + (nb | 0);
+
+  return SI_FORMAT(nb);
+};
 const NUMBER_FORMAT = format(',');
 
 /**
