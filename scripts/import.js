@@ -31,9 +31,6 @@ import _ from 'lodash';
 const ROOT_PATH = '/base',
       BDD_CENTRALE_PATH = path.join(ROOT_PATH, '/bdd_centrale.csv'),
       BDD_OUTSIDERS = path.join(ROOT_PATH, '/marchandises_sourcees.csv'),
-      BDD_UNITS_LEVEL1 = path.join(ROOT_PATH, '/Units_Normalisation_Orthographique.csv'),
-      BDD_UNITS_LEVEL2 = path.join(ROOT_PATH, '/Units_Normalisation_Metrique1.csv'),,
-      BDD_UNITS_LEVEL3 = path.join(ROOT_PATH, '/Units_Normalisation_Metrique2.csv'),
       BDD_DIRECTIONS = path.join(ROOT_PATH, '/bdd_directions.csv'),
       // Product classifications
       ORTHOGRAPHIC_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_normalisees_orthographique.csv'),
@@ -201,10 +198,6 @@ const INDEXES = {
   products: {},
   sources: {}
 };
-
-const CONVERSION_TABLE_LEVEL1 = {},
-      CONVERSION_TABLE_LEVEL2 = {},
-      CONVERSION_TABLE_LEVEL3 = {};
 
 const DIRECTIONS_INDEX = {};
 
@@ -405,7 +398,7 @@ function importer(csvLine) {
   if (csvLine.quantity_unit) {
     nodeData.rawUnit = csvLine.quantity_unit;
 
-    // TODO: fix lookup when needed
+    // NOTE: this will now be processed by a separate script
     // const normalized = UNITS_INDEX[nodeData.rawUnit];
 
     // if (normalized)
@@ -819,56 +812,6 @@ async.series({
 
       return next();
     });
-  },
-
-  units(next) {
-    console.log('Processing units...');
-
-    return async.parallel({
-      level1: finalize => {
-        const csvData = fs.readFileSync(DATA_PATH + BDD_UNITS, 'utf-8');
-
-        parseCsv(csvData, {delimiter: ','}, function(err, data) {
-
-          data.forEach(row => {
-            const first = cleanText(row[1]),
-                  second = cleanText(row[2]);
-
-            const bestGuess = second || first;
-
-            if (bestGuess) {
-              UNITS_INDEX[cleanText(row[0])] = bestGuess;
-
-              // Updating conversion table
-              const unit = cleanText(row[3]),
-                    factor = cleanNumber(cleanText(row[4])),
-                    note = cleanText(row[5]);
-
-              if (unit && factor) {
-                const hashedKey = `${bestGuess}[->]${unit}`,
-                      conversion = CONVERSION_TABLE[hashedKey];
-
-                if (!conversion) {
-                  CONVERSION_TABLE[hashedKey] = {
-                    from: bestGuess,
-                    to: unit,
-                    factor
-                  };
-
-                  if (note)
-                    CONVERSION_TABLE[hashedKey].note = note;
-                }
-                else {
-                  if (conversion.factor !== factor ||
-                      (note && conversion.note !== note))
-                    console.log('  !! Weird conversion:', conversion, factor, note);
-                }
-              }
-            }
-          });
-        });
-      }
-    }, next);
   },
 
   flows(next) {
