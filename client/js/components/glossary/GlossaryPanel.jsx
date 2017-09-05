@@ -7,14 +7,7 @@
 import React, {Component} from 'react';
 import {escapeRegexp} from 'talisman/regexp';
 import {debounce} from 'lodash';
-import GLOSSARY_DATA from '../../../glossaire.json';
-
-const ENRICHED_DATA = GLOSSARY_DATA.map((entry, i) => {
-  return {
-    ...entry,
-    key: i
-  };
-});
+import GLOSSARY_DATA from '../../../glossary.json';
 
 /**
  * Component representing a single glossary entry.
@@ -41,7 +34,7 @@ export default class GlossaryPanel extends Component {
 
     this.state = {
       query: '',
-      entries: ENRICHED_DATA
+      entries: GLOSSARY_DATA
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -51,8 +44,8 @@ export default class GlossaryPanel extends Component {
   handleInput(e) {
     const query = e.target.value;
 
-    if (!query && this.state.entries.length !== ENRICHED_DATA) {
-      this.setState({query, entries: ENRICHED_DATA});
+    if (!query && this.state.entries.length !== GLOSSARY_DATA) {
+      this.setState({query, entries: GLOSSARY_DATA});
     }
     else {
       this.setState({query});
@@ -65,7 +58,7 @@ export default class GlossaryPanel extends Component {
   performSearch(query) {
     const pattern = new RegExp(escapeRegexp(query));
 
-    const filteredEntries = ENRICHED_DATA.filter(entry => {
+    const filteredEntries = GLOSSARY_DATA.filter(entry => {
       return (
         pattern.test(entry.name) ||
         pattern.test(entry.definition)
@@ -83,7 +76,7 @@ export default class GlossaryPanel extends Component {
       entries = this.state.entries.map(entry => {
         return (
           <GlossaryEntry
-            key={entry.key}
+            key={entry.name}
             name={entry.name}
             definition={entry.definition} />
         );
