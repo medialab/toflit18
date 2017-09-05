@@ -67,6 +67,7 @@
     "react-router": "^2.0.0",
     "react-select": "^1.0.0-beta6",
     "recharts": "^1.0.0-alpha.4",
-    "screenfull": "^3.0.2"
+    "screenfull": "^3.0.2",
+    "talisman": "^0.19.1"
   }
 }
