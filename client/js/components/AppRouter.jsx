@@ -18,6 +18,7 @@ import ExplorationMeta from './exploration/ExplorationMeta.jsx';
 import ExplorationIndicators from './exploration/ExplorationIndicators.jsx';
 import ExplorationNetwork from './exploration/ExplorationNetwork.jsx';
 import ExplorationTerms from './exploration/ExplorationTerms.jsx';
+import GlossaryPanel from './glossary/GlossaryPanel.jsx';
 import history from '../history';
 
 export default class AppRouter extends Component {
@@ -52,6 +53,7 @@ export default class AppRouter extends Component {
               <Route path="network" component={ExplorationNetwork} />
               <Route path="terms" component={ExplorationTerms} />
             </Route>
+            <Route path="glossary" component={GlossaryPanel} />
           </Route>
         </Route>
         <Redirect from="*" to="/" />

@@ -65,6 +65,20 @@ export default class Home extends Component {
         <div className="panel">
           <h5>
             3.&nbsp;
+            <Link to="glossary">
+              Glossary
+            </Link>
+          </h5>
+          <p>
+            <em>
+              Having trouble identifying a product's name in XVIIIth's century
+              terminology? This searchable glossary might be of some help.
+            </em>
+          </p>
+        </div>
+        <div className="panel">
+          <h5>
+            4.&nbsp;
             <Link to="exploration/indicators">
               Indicators
             </Link>
@@ -78,7 +92,7 @@ export default class Home extends Component {
         </div>
         <div className="panel">
           <h5>
-            4.&nbsp;
+            5.&nbsp;
             <Link to="exploration/network">
               Countries networks
             </Link>
@@ -91,7 +105,7 @@ export default class Home extends Component {
         </div>
         <div className="panel">
           <h5>
-            5.&nbsp;
+            6.&nbsp;
             <Link to="exploration/terms">
               Product terms networks
             </Link>

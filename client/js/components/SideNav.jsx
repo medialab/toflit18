@@ -18,6 +18,10 @@ const LINKS = [
     url: '/classification/browser'
   },
   {
+    label: 'Glossary',
+    url: '/glossary'
+  },
+  {
     label: 'Indicators',
     url: '/exploration/indicators'
   },

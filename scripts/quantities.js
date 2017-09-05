@@ -38,7 +38,7 @@ const PARSING_OPTIONS = {
   columns: true
 };
 
-const HASH_LEVEL1 = data => `${data.ortho}`;
+const HASH_LEVEL2 = data => `${data.ortho}`;
 
 const INDEX_LEVEL1 = new Map(),
       INDEX_LEVEL2 = new Index(),
@@ -98,7 +98,11 @@ async.series({
             return callback(err);
 
           lines.forEach(line => {
-            console.log(line);
+            const data = {
+              ortho: cleanText(line.quantity_unit_ortho)
+            };
+
+            // TODO: continue here
           });
 
           return callback();
