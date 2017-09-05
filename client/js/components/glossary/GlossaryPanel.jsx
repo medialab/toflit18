@@ -76,6 +76,23 @@ export default class GlossaryPanel extends Component {
   }
 
   render() {
+
+    let entries;
+
+    if (this.state.entries.length) {
+      entries = this.state.entries.map(entry => {
+        return (
+          <GlossaryEntry
+            key={entry.key}
+            name={entry.name}
+            definition={entry.definition} />
+        );
+      });
+    }
+    else {
+      entries = <div>No matching entries...</div>;
+    }
+
     return (
       <div id="glossary">
         <div className="panel">
@@ -88,14 +105,7 @@ export default class GlossaryPanel extends Component {
             onChange={this.handleInput}
             value={this.state.query} />
           <br />
-          {this.state.entries.map(entry => {
-            return (
-              <GlossaryEntry
-                key={entry.key}
-                name={entry.name}
-                definition={entry.definition} />
-            );
-          })}
+          {entries}
         </div>
       </div>
     );
