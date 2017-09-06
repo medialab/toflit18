@@ -1,3 +1,4 @@
+/* eslint react/no-danger: 0 */
 /**
  * TOFLIT18 Client Glossary View
  * ==============================
@@ -7,19 +8,38 @@
 import React, {Component} from 'react';
 import {escapeRegexp} from 'talisman/regexp';
 import {debounce} from 'lodash';
-import GLOSSARY_DATA from '../../../glossary.json';
+import RAW_GLOSSARY_DATA from '../../../glossary.json';
+
+/**
+ * Constants.
+ */
+const URL_REGEX = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
+
+const GLOSSARY_DATA = RAW_GLOSSARY_DATA.map(entry => {
+  return {
+    ...entry,
+    html: entry.definition.replace(URL_REGEX, match => {
+      let label = match;
+
+      if (match.length > 70)
+        label = match.slice(0, 67) + '...';
+
+      return `<a href="${match}">${label}</a>`;
+    })
+  };
+});
 
 /**
  * Component representing a single glossary entry.
  */
-function GlossaryEntry({name, definition}) {
+function GlossaryEntry({name, html}) {
   return (
     <div className="glossary-entry">
       <div className="glossary-name">
         {name}
       </div>
       <div className="glossary-definition">
-        <em>{definition}</em>
+        <div dangerouslySetInnerHTML={{__html: html}} />
       </div>
     </div>
   );
@@ -78,7 +98,7 @@ export default class GlossaryPanel extends Component {
           <GlossaryEntry
             key={entry.name}
             name={entry.name}
-            definition={entry.definition} />
+            html={entry.html} />
         );
       });
     }
