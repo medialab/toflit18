@@ -33,10 +33,11 @@ const QUERY_GET_FLOWS = `
   MATCH
     (:Classification {model: "product", slug: "simplification"})-[:HAS]->()-[:AGGREGATES*1..]->(p:Product)<-[:OF]-(f:Flow),
     (:Classification {model: "country", slug: "grouping"})-[:HAS]->()-[:AGGREGATES*1..]->(c:Country)<-[:FROM|:TO]-(f)
-  WHERE exists(f.rawUnit)
+  WHERE exists(f.rawUnit) AND exists(f.quantity)
   RETURN
     id(f) AS id,
     f.rawUnit AS rawUnit,
+    f.quantity AS quantity,
     f.direction AS direction,
     f.import AS import,
     p.name AS simplifiedProduct,
@@ -95,7 +96,8 @@ const IMPORT_REGEX = /imp/i;
 /**
  * State.
  */
-let LEVEL2_MATCHES = 0,
+let LEVEL1_MATCHES = 0,
+    LEVEL2_MATCHES = 0,
     LEVEL3_MATCHES = 0;
 
 /**
@@ -214,6 +216,7 @@ async.series({
         // 1) First we need to normalize the unit
         const level1Data = INDEX_LEVEL1.get(row.rawUnit);
         row.unit = level1Data ? level1Data.ortho : row.rawUnit;
+        row.normalizedUnit = row.unit;
 
         // 2) We try to solve level 3
         const level3Data = INDEX_LEVEL3.get(row);
@@ -221,21 +224,90 @@ async.series({
         if (level3Data) {
           LEVEL3_MATCHES++;
 
+          // Updating normalized unit
+          row.normalizedUnit = level3Data.normalized;
+
+          const update = {
+            id: database.int(row.id),
+            properties: {
+              unit: row.unit,
+              normalizedUnit: row.normalizedUnit
+            }
+          };
+
+          // Special values
+          if (row.normalizedUnit === 'kg') {
+            update.properties.quantity_kg = row.quantity * level3Data.factor;
+          }
+          else if (row.normalizedUnit === 'pièces') {
+            update.properties.quantity_nbr = row.quantity * level3Data.factor;
+          }
+          else if (row.normalizedUnit === 'litres') {
+            update.properties.quantity_litre = row.quantity * level3Data.factor;
+          }
+
+          UPDATE_BATCH.push(update);
+
           continue;
         }
 
         // 3) We try to solve level 2
-        const level2Data = INDEX_LEVEL2.get(row.rawUnit);
+        const level2Data = INDEX_LEVEL2.get(row.unit);
 
         if (level2Data) {
           LEVEL2_MATCHES++;
 
+          // Updating normalized unit
+          row.normalizedUnit = level2Data.normalized;
+
+          const update = {
+            id: database.int(row.id),
+            properties: {
+              unit: row.unit,
+              normalizedUnit: row.normalizedUnit
+            }
+          };
+
+          // Special values
+          if (row.normalizedUnit === 'kg') {
+            update.properties.quantity_kg = row.quantity * level2Data.factor;
+          }
+          else if (row.normalizedUnit === 'pièces') {
+            update.properties.quantity_nbr = row.quantity * level2Data.factor;
+          }
+          else if (row.normalizedUnit === 'litres') {
+            update.properties.quantity_litre = row.quantity * level2Data.factor;
+          }
+
+          UPDATE_BATCH.push(update);
+
           continue;
+        }
+
+        if (level1Data && !level2Data && !level3Data) {
+          LEVEL1_MATCHES++;
+
+          UPDATE_BATCH.push({
+            id: database.int(row.id),
+            properties: {
+              unit: row.unit,
+              normalizedUnit: row.normalizedUnit
+            }
+          });
         }
       }
 
       return next();
     });
+  },
+  updateDatabase: next => {
+    console.log('Updating the database...');
+
+    database.cypher(
+      {query: QUERY_UPDATE_FLOWS, params: {batch: UPDATE_BATCH}},
+      next,
+      'WRITE'
+    );
   }
 }, err => {
   database.close();
@@ -243,6 +315,7 @@ async.series({
   if (err)
     return console.error(err);
 
+  console.log(`${LEVEL1_MATCHES} level 1 matches.`);
   console.log(`${LEVEL2_MATCHES} level 2 matches.`);
   console.log(`${LEVEL3_MATCHES} level 3 matches.`);
   console.log('Done!');

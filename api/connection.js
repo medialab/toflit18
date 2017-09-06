@@ -52,7 +52,7 @@ const DB = {
   close() {
     return driver.close();
   },
-  cypher(body, callback) {
+  cypher(body, callback, sessionType) {
     let query,
         params = {};
 
@@ -64,7 +64,7 @@ const DB = {
       params = body.params;
     }
 
-    const session = driver.session('READ');
+    const session = driver.session(sessionType || 'READ');
 
     return session
       .run(query, params)

@@ -71,7 +71,7 @@ export default class Home extends Component {
           </h5>
           <p>
             <em>
-              Having trouble identifying a product's name in XVIIIth's century
+              Having trouble identifying a product's name in 18th century
               terminology? This searchable glossary might be of some help.
             </em>
           </p>
