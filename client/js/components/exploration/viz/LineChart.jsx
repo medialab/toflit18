@@ -33,7 +33,10 @@ const NUMBER_FORMAT = format(',');
  */
 const UNITS = {
   count: 'flows',
-  value: 'lt.'
+  value: 'lt.',
+  kg: 'kg',
+  litre: 'litres',
+  nbr: 'pieces'
 };
 
 const renderTooltip = valueKey => data => {
@@ -91,6 +94,11 @@ export default class LineChart extends Component {
 
     data.forEach((line, i) => {
       for (let j = 0, m = line.data.length; j < m; j++) {
+
+        // Dropping zeros
+        if (!line.data[j][valueKey])
+          continue;
+
         const h = hash(line.data[j].year);
         lineData[h][i] = line.data[j][valueKey];
       }

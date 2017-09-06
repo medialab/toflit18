@@ -415,6 +415,12 @@ class Charts extends Component {
 
     return (
       <div>
+        <div>Total number of directions per year</div>
+        <hr />
+        <DataQualityBarChart
+          data={barData}
+          syncId="indicators" />
+        <hr />
         <div>Number of flows per year</div>
         <hr />
         <LineChart valueKey="count" data={lines} />
@@ -423,11 +429,17 @@ class Charts extends Component {
         <hr />
         <LineChart data={lines} />
         <hr />
-        <div>Total number of directions per year</div>
+        <div>Kilograms of flows per year</div>
         <hr />
-        <DataQualityBarChart
-          data={barData}
-          syncId="indicators" />
+        <LineChart valueKey="kg" data={lines} />
+        <hr />
+        <div>Litres of flows per year</div>
+        <hr />
+        <LineChart valueKey="litre" data={lines} />
+        <hr />
+        <div>Pieces of flows per year</div>
+        <hr />
+        <LineChart valueKey="nbr" data={lines} />
         <hr />
         <ExportButton
           name="Indicators_Number_of_directions_per_year"

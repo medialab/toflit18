@@ -110,23 +110,23 @@ const ModelCreateLine = {
     //-- Returning data
 
     if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
-      query.return('count(f) AS count, sum(toFloat(f.value)) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType');
+      query.return('count(f) AS count, sum(toFloat(f.value)) AS value, sum(toFloat(f.quantity_kg)) AS kg, sum(toFloat(f.quantity_nbr)) AS nbr, sum(toFloat(f.quantity_litre)) AS litre, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType');
       query.orderBy('f.year');
     }
     else if (sourceType === 'National best guess') {
       query.with('f.year AS year, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
       query.with('year, CASE  WHEN size(source_types)>1 and "Objet Général" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Objet Général") WHEN size(source_types)>1 and "Tableau des quantités" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Tableau des quantités") WHEN size(source_types)>1 and "Résumé" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Résumé") WHEN size(source_types)>1 and "National par direction" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National par direction") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
-      query.return('year, fs.sourceType, count(fs) as count, sum(toFloat(fs.value)) as value, collect(distinct(fs.direction)) as nb_direction');
+      query.return('year, fs.sourceType, count(fs) as count, sum(toFloat(fs.value)) as value, sum(toFloat(fs.quantity_kg)) AS kg, sum(toFloat(fs.quantity_nbr)) AS nbr, sum(toFloat(fs.quantity_litre)) AS litre, collect(distinct(fs.direction)) as nb_direction');
       query.orderBy('year');
     }
     else if (sourceType === 'Local best guess') {
       query.with(' f.year AS year, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
       query.with(' year, CASE  WHEN size(source_types)>1 and "Local" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Local") WHEN size(source_types)>1 and "National par direction" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National par direction") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
-      query.return('year, fs.sourceType, count(fs) as count, sum(toFloat(fs.value)) as value, collect(distinct(fs.direction)) as nb_direction');
+      query.return('year, fs.sourceType, count(fs) as count, sum(toFloat(fs.value)) as value, sum(toFloat(fs.quantity_kg)) AS kg, sum(toFloat(fs.quantity_nbr)) AS nbr, sum(toFloat(fs.quantity_litre)) AS litre, collect(distinct(fs.direction)) as nb_direction');
       query.orderBy('year');
     }
     else {
-      query.return('count(f) AS count, sum(toFloat(f.value)) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction');
+      query.return('count(f) AS count, sum(toFloat(f.value)) AS value, sum(toFloat(f.quantity_kg)) AS kg, sum(toFloat(f.quantity_nbr)) AS nbr, sum(toFloat(f.quantity_litre)) AS litre, f.year AS year,  collect(distinct(f.direction)) as nb_direction');
       query.orderBy('f.year');
     }
 
