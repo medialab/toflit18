@@ -86,7 +86,7 @@ export default class ExplorationMeta extends Component {
     const canDisplaySecondViz = (
       state.dataType &&
       (
-        state.dataType.groupsCount <= specs.metadataGroupMax ||
+        (state.flowsPerYear && state.flowsPerYear.length < specs.metadataGroupMax) ||
         state.dataType.special
       )
     );

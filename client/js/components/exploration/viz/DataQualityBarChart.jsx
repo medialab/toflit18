@@ -6,6 +6,7 @@
  * data is actually existing.
  */
 import React, {Component} from 'react';
+import {format} from 'd3-format';
 import {
   ResponsiveContainer,
   BarChart,
@@ -15,6 +16,11 @@ import {
   Tooltip,
   Bar
 } from 'recharts';
+
+/**
+ * Formats.
+ */
+const NUMBER_FORMAT = format(',');
 
 /**
  * Custom tooltip.
@@ -39,7 +45,7 @@ const renderTooltip = data => {
         {payload.map(item => {
           return (
             <li key={item.name}>
-              <span style={{color: item.color}}>{item.value}</span>
+              <span style={{color: item.color}}>{NUMBER_FORMAT(item.value)}</span>
             </li>
           );
         })}

@@ -130,7 +130,7 @@ export function addChart(tree) {
     cursor.set('perYear', perYear);
 
     // Don't ask for data we don't need
-    if (selected.id && selected.groupsCount > specs.metadataGroupMax)
+    if (selected.id && data.result.length > specs.metadataGroupMax)
       return;
 
     cursor.set('flowsPerYear', data.result);
