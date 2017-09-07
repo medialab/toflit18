@@ -30,10 +30,14 @@ console.log('Reading csv files from "' + DATA_PATH + '"');
  * Queries.
  */
 const QUERY_GET_FLOWS = `
-  MATCH
-    (:Classification {model: "product", slug: "simplification"})-[:HAS]->()-[:AGGREGATES*1..]->(p:Product)<-[:OF]-(f:Flow),
-    (:Classification {model: "country", slug: "grouping"})-[:HAS]->()-[:AGGREGATES*1..]->(c:Country)<-[:FROM|:TO]-(f)
+  MATCH (f:Flow)
   WHERE exists(f.rawUnit) AND exists(f.quantity)
+  WITH f
+  MATCH
+    (pc:Classification {model: "product", slug: "simplification"}),
+    (cc:Classification {model: "country", slug: "grouping"}),
+    (f)-[:OF]->(p:Product)<-[:AGGREGATES*2]-()<-[:HAS]-(pc),
+    (f)-[:FROM|:TO]->(c:Country)<-[:AGGREGATES*3]-()<-[:HAS]-(cc)
   RETURN
     id(f) AS id,
     f.rawUnit AS rawUnit,
