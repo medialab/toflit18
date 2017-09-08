@@ -61,7 +61,8 @@ export default class DataQualityBarChart extends Component {
   render() {
     const {
       data,
-      syncId = 'data-quality-barchart'
+      syncId = 'data-quality-barchart',
+      yAxis = false
     } = this.props;
 
     if (!data || !data.length)
@@ -76,7 +77,7 @@ export default class DataQualityBarChart extends Component {
             margin={{top: 5, right: 30, left: 20, bottom: 5}}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
-            <YAxis />
+            {yAxis && <YAxis />}
             <Tooltip content={renderTooltip} isAnimationActive={false} />
             <Bar dataKey="data" fill="#8d4d42" isAnimationActive={false} />
           </BarChart>

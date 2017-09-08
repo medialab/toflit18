@@ -419,7 +419,8 @@ class Charts extends Component {
         <hr />
         <DataQualityBarChart
           data={barData}
-          syncId="indicators" />
+          syncId="indicators"
+          yAxis />
         <hr />
         <div>Number of flows per year</div>
         <hr />
