@@ -29,6 +29,8 @@ console.log('Reading csv files from "' + DATA_PATH + '"');
 /**
  * Queries.
  */
+
+// TODO: remove quantity condition
 const QUERY_GET_FLOWS = `
   MATCH (f:Flow)
   WHERE exists(f.rawUnit) AND exists(f.quantity)
@@ -85,7 +87,7 @@ const HASH_LEVEL3_GET = data => {
     data.unit,
     data.countryGrouping,
     data.simplifiedProduct,
-    data.direction
+    data.direction || NONE
   ].join('§|§').toLowerCase();
 };
 

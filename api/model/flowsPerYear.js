@@ -178,11 +178,11 @@ const ModelFlowsPerYear = {
       }
 
       if (sourceType === 'National best guess') {
-        where.and('(f.sourceType IN ["Objet Général", "Résumé", "Tableau des quantités"] or (f.sourceType= "National par direction" and f.year <> 1749 and f.year <> 1751))');
+        where.and('(f.sourceType IN ["Objet Général", "Résumé", "Tableau des quantités"] or (f.sourceType= "National toutes directions tous partenaires" and f.year <> 1749 and f.year <> 1751))');
       }
 
       if (sourceType === 'Local best guess') {
-        where.and('f.sourceType IN ["Local","National par direction"] ');
+        where.and('f.sourceType IN ["Local","National toutes directions tous partenaires"] ');
       }
 
       //-- Should we match a precise direction?
@@ -211,13 +211,13 @@ const ModelFlowsPerYear = {
       }
       else if (sourceType === 'National best guess') {
         query.with('f.year AS year, ' + dataTypeField + ' AS dataType, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
-        query.with('year, dataType, CASE  WHEN size(source_types)>1 and "Objet Général" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Objet Général") WHEN size(source_types)>1 and "Tableau des quantités" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Tableau des quantités") WHEN size(source_types)>1 and "Résumé" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Résumé") WHEN size(source_types)>1 and "National par direction" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National par direction") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
+        query.with('year, dataType, CASE  WHEN size(source_types)>1 and "Objet Général" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Objet Général") WHEN size(source_types)>1 and "Tableau des quantités" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Tableau des quantités") WHEN size(source_types)>1 and "Résumé" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Résumé") WHEN size(source_types)>1 and "National toutes directions tous partenaires" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National toutes directions tous partenaires") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
         query.return('dataType, year, count(fs) AS flows');
         query.orderBy('year, dataType');
       }
       else if (sourceType === 'Local best guess') {
         query.with(' f.year AS year, ' + dataTypeField + ' as dataType, collect(f) as flows_by_year, collect(distinct(f.sourceType)) as source_types');
-        query.with(' year, dataType, CASE  WHEN size(source_types)>1 and "Local" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Local") WHEN size(source_types)>1 and "National par direction" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National par direction") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
+        query.with(' year, dataType, CASE  WHEN size(source_types)>1 and "Local" in source_types THEN filter(fb in flows_by_year where fb.sourceType="Local") WHEN size(source_types)>1 and "National toutes directions tous partenaires" in source_types THEN filter(fb in flows_by_year where fb.sourceType="National toutes directions tous partenaires") ELSE flows_by_year END as flowsbyyear UNWIND flowsbyyear as fs');
         query.return('dataType, year, count(fs) AS flows');
         query.orderBy('year, dataType');
       }
