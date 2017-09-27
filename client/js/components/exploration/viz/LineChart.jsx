@@ -1,3 +1,4 @@
+/* eslint no-confusing-arrow: 0 */
 /**
  * TOFLIT18 Data Line Chart Component
  * ===================================
@@ -32,11 +33,11 @@ const NUMBER_FORMAT = format(',');
  * Custom tooltip.
  */
 const UNITS = {
-  count: 'flows',
-  value: 'lt.',
-  kg: 'kg',
-  litre: 'litres',
-  nbr: 'pieces'
+  count: () => 'flows',
+  value: payload => payload.year < 1797 ? 'lt.' : 'Fr.',
+  kg: () => 'kg',
+  litre: () => 'litres',
+  nbr: () => 'pieces'
 };
 
 const renderTooltip = valueKey => data => {
@@ -57,9 +58,10 @@ const renderTooltip = valueKey => data => {
       <em className="recharts-tooltip-label">{data.label}</em>
       <ul style={{listStyleType: 'none', padding: '0px', margin: '0px'}}>
         {payload.map(item => {
+
           return (
             <li key={item.name}>
-              <span style={{color: item.color}}>{NUMBER_FORMAT(item.value | 0)} {UNITS[valueKey]}</span>
+              <span style={{color: item.color}}>{NUMBER_FORMAT(item.value | 0)} {UNITS[valueKey](item.payload)}</span>
             </li>
           );
         })}

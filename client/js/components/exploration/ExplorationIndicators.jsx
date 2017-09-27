@@ -450,15 +450,15 @@ class Charts extends Component {
         <LineChart data={lines} />
         <div style={{display: quantitiesOpened ? 'block' : 'none'}}>
           <hr />
-          <div>Kilograms of flows per year</div>
+          <div>Quantities of flows per year (kilograms)</div>
           <hr />
           <LineChart valueKey="kg" data={lines} />
           <hr />
-          <div>Litres of flows per year</div>
+          <div>Quantities of flows per year (litres)</div>
           <hr />
           <LineChart valueKey="litre" data={lines} />
           <hr />
-          <div>Pieces of flows per year</div>
+          <div>Quantities of flows per year (pieces)</div>
           <hr />
           <LineChart valueKey="nbr" data={lines} />
         </div>
