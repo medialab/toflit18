@@ -344,9 +344,12 @@ class Charts extends Component {
         for (let i = 0, len = l.data.length; i < len; i++) {
           //console.log("l", l);
           const elemCopy = {};
+          elemCopy.year = l.data[i].year;
           elemCopy.count = l.data[i].count;
           elemCopy.value = l.data[i].value;
-          elemCopy.year = l.data[i].year;
+          elemCopy.kg = l.data[i].kg;
+          elemCopy.litre = l.data[i].litre;
+          elemCopy.nbr = l.data[i].nbr;
 
           if (l.params.sourceType)
             elemCopy.sourceType = l.params.sourceType.name;
