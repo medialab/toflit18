@@ -21,7 +21,7 @@ $NEO4J_PATH/bin/neo4j-admin import --database toflit.graph.db --nodes ./.output/
 
 # Restarting the database
 $NEO4J_PATH/bin/neo4j start &&
-sleep 5 &&
+sleep 10 &&
 
 # Building indices
 npm run indices &&
