@@ -24,6 +24,29 @@ import {
   addChart
 } from '../../actions/metadata';
 
+/**
+ * Helper used to get the child classifications of the given classification.
+ */
+// function getChildClassifications(index, target) {
+//   const children = [];
+
+//   if (!target.children || !target.children.length)
+//     return children;
+
+//   const stack = target.children.slice();
+
+//   while (stack.length) {
+//     const child = stack.pop();
+
+//     children.push(child);
+
+//     if (child.children)
+//       stack.push.apply(stack, child.children);
+//   }
+
+//   return children;
+// }
+
 const metadataSelectors = (specs.metadataSelectors || []).map(option => {
   return {
     ...option,
@@ -55,6 +78,7 @@ function formatArrayToCSV(data) {
   },
   cursors: {
     classifications: ['data', 'classifications', 'flat'],
+    classificationIndex: ['data', 'classifications', 'index'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
     state: ['states', 'exploration', 'metadata']
