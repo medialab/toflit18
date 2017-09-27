@@ -313,8 +313,24 @@ class LinesSummary extends Component {
  * Charts.
  */
 class Charts extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      quantitiesOpened: false
+    };
+
+    this.toggleQuantities = this.toggleQuantities.bind(this);
+  }
+
+  toggleQuantities() {
+    this.setState({quantitiesOpened: !this.state.quantitiesOpened});
+  }
+
   render() {
     const lines = this.props.lines;
+
+    const quantitiesOpened = this.state.quantitiesOpened;
 
     // create an array with all lines, add a column with name of country selected
     // create csv only with indicators selected
@@ -429,18 +445,26 @@ class Charts extends Component {
         <div>Total value of flows per year</div>
         <hr />
         <LineChart data={lines} />
+        <div style={{display: quantitiesOpened ? 'block' : 'none'}}>
+          <hr />
+          <div>Kilograms of flows per year</div>
+          <hr />
+          <LineChart valueKey="kg" data={lines} />
+          <hr />
+          <div>Litres of flows per year</div>
+          <hr />
+          <LineChart valueKey="litre" data={lines} />
+          <hr />
+          <div>Pieces of flows per year</div>
+          <hr />
+          <LineChart valueKey="nbr" data={lines} />
+        </div>
         <hr />
-        <div>Kilograms of flows per year</div>
-        <hr />
-        <LineChart valueKey="kg" data={lines} />
-        <hr />
-        <div>Litres of flows per year</div>
-        <hr />
-        <LineChart valueKey="litre" data={lines} />
-        <hr />
-        <div>Pieces of flows per year</div>
-        <hr />
-        <LineChart valueKey="nbr" data={lines} />
+        <Button
+          kind="secondary"
+          onClick={this.toggleQuantities}>
+          {!quantitiesOpened ? 'Display quantities' : 'Hide quantities'}
+        </Button>
         <hr />
         <ExportButton
           name="Indicators_Number_of_directions_per_year"
