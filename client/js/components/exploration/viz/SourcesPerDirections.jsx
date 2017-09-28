@@ -61,7 +61,34 @@ export default class SourcesPerDirections extends Component {
     if (!unsorted)
       return null;
 
-    const data = sortBy(unsorted, d => d.data.length).reverse();
+    // Sorting using the mean share heuristic from RICARDO
+    const sums = {};
+
+    unsorted.forEach(d => d.data.forEach(item => {
+      if (!sums[item.year])
+        sums[item.year] = 0;
+      sums[item.year] += item.flows;
+    }));
+
+    const means = new Array(unsorted.length);
+
+    unsorted.forEach((d, i) => {
+      means[i] = 0;
+      d.data.forEach(item => {
+        means[i] += item.flows / sums[item.year];
+      });
+    });
+
+    means.forEach((d, i) => (means[i] = d / unsorted[i].data.length));
+
+    const directionIndex = {};
+
+    unsorted.forEach((d, i) => directionIndex[d.name] = i);
+
+    const data = sortBy(unsorted, d => -means[directionIndex[d.name]]);
+
+    // DEBUG
+    // console.log(data.map((d, i) => [d.name, means[directionIndex[d.name]]]));
 
     // Computing max values
     // NOTE: clearly not the optimal way to do it...
