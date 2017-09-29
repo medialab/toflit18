@@ -143,6 +143,13 @@ export default class ExplorationMeta extends Component {
       });
     }
 
+    let unit = 'classified items';
+
+    if (state.dataType && state.dataType.value === 'sourceType')
+      unit = 'source types';
+    if (state.dataType && state.dataType.value === 'direction')
+      unit = 'directions';
+
     return (
       <div>
         <div className="panel">
@@ -265,7 +272,11 @@ export default class ExplorationMeta extends Component {
         </div>
         {state.perYear && state.dataType && <div className="panel">
           {state.perYear ?
-            <DataQualityBarChart yAxis data={barData} syncId="sources-per-directions" /> :
+            <DataQualityBarChart
+              yAxis
+              data={barData}
+              unit={unit}
+              syncId="sources-per-directions" /> :
             <Waiter />}
             <ExportButton
               name={`Toflit18_Meta_view ${state.dataType.name} - ${state.fileName} data_per_year`}

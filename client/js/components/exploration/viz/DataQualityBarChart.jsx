@@ -25,7 +25,7 @@ const NUMBER_FORMAT = format(',');
 /**
  * Custom tooltip.
  */
-const renderTooltip = data => {
+const renderTooltip = unit => data => {
   const payload = data.payload.slice().sort((a, b) => {
     return b.value - a.value;
   });
@@ -45,7 +45,7 @@ const renderTooltip = data => {
         {payload.map(item => {
           return (
             <li key={item.name}>
-              <span style={{color: item.color}}>{NUMBER_FORMAT(item.value)}</span>
+              <span style={{color: item.color}}>{NUMBER_FORMAT(item.value)} {unit}</span>
             </li>
           );
         })}
@@ -60,6 +60,7 @@ const renderTooltip = data => {
 export default class DataQualityBarChart extends Component {
   render() {
     const {
+      unit = 'directions',
       data,
       syncId = 'data-quality-barchart',
       yAxis = false
@@ -78,7 +79,7 @@ export default class DataQualityBarChart extends Component {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
             {yAxis && <YAxis />}
-            <Tooltip content={renderTooltip} isAnimationActive={false} />
+            <Tooltip content={renderTooltip(unit)} isAnimationActive={false} />
             <Bar dataKey="data" fill="#8d4d42" isAnimationActive={false} />
           </BarChart>
         </ResponsiveContainer>
