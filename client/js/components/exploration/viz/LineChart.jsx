@@ -20,8 +20,6 @@ import {
 /**
  * Formats.
  */
-const SHARE_THRESHOLD = 0.9;
-
 const SI_FORMAT = formatPrefix(',.0s', 1.3e3);
 const Y_AXIS_FORMAT = nb => {
   if (nb < 1000)
