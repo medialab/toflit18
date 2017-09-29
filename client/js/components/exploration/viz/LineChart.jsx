@@ -20,8 +20,6 @@ import {
 /**
  * Formats.
  */
-const SHARE_THRESHOLD = 0.9;
-
 const SI_FORMAT = formatPrefix(',.0s', 1.3e3);
 const Y_AXIS_FORMAT = nb => {
   if (nb < 1000)
@@ -66,9 +64,9 @@ const renderTooltip = valueKey => data => {
 
           if (!item.value)
             return null;
-          // console.log(item.payload)
+
           return (
-            <li key={item.name}>
+            <li key={line}>
               <span style={{color: item.color}}>
                 {NUMBER_FORMAT(Math.trunc(item.value))}
                 &nbsp;
@@ -79,6 +77,38 @@ const renderTooltip = valueKey => data => {
         })}
       </ul>
     </div>
+  );
+};
+
+const renderDot = (color, line) => data => {
+
+  if (!data.value)
+    return null;
+
+  const row = data.payload[line];
+
+  return (
+    <g key={data.key}>
+      <circle
+        cx={data.cx}
+        cy={data.cy}
+        r={2}
+        style={{
+          strokeWidth: 0.3,
+          stroke: '#fff',
+          fill: '#fff'
+        }} />
+      <circle
+        cx={data.cx}
+        cy={data.cy}
+        r={2}
+        style={{
+          fillOpacity: 'share' in row ? row.share : 1,
+          strokeWidth: 0.3,
+          stroke: color,
+          fill: color
+        }} />
+    </g>
   );
 };
 
@@ -147,7 +177,7 @@ export default class LineChart extends Component {
                   dataKey={row => row[i] && row[i].value}
                   stroke={line.color}
                   isAnimationActive={false}
-                  dot={{r: 2, stroke: line.color, strokeWidth: 1}}
+                  dot={renderDot(line.color, i)}
                   activeDot={{r: 4, stroke: 'white', strokeWidth: 2, fill: line.color}} />
               );
             })}
