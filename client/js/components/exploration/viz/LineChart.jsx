@@ -20,6 +20,8 @@ import {
 /**
  * Formats.
  */
+const SHARE_THRESHOLD = 0.9;
+
 const SI_FORMAT = formatPrefix(',.0s', 1.3e3);
 const Y_AXIS_FORMAT = nb => {
   if (nb < 1000)
@@ -28,6 +30,7 @@ const Y_AXIS_FORMAT = nb => {
   return SI_FORMAT(nb);
 };
 const NUMBER_FORMAT = format(',');
+const PERCENTAGE_FORMAT = format('.0%');
 
 /**
  * Custom tooltip.
@@ -41,9 +44,11 @@ const UNITS = {
 };
 
 const renderTooltip = valueKey => data => {
-  const payload = data.payload.slice().sort((a, b) => {
-    return b.value - a.value;
-  });
+  const payload = data.payload.slice()
+    .filter(item => item.value)
+    .sort((a, b) => {
+      return b.value - a.value;
+    });
 
   const style = {
     margin: 0,
@@ -57,11 +62,18 @@ const renderTooltip = valueKey => data => {
     <div style={style}>
       <em className="recharts-tooltip-label">{data.label}</em>
       <ul style={{listStyleType: 'none', padding: '0px', margin: '0px'}}>
-        {payload.map(item => {
+        {payload.map((item, line) => {
 
+          if (!item.value)
+            return null;
+          // console.log(item.payload)
           return (
             <li key={item.name}>
-              <span style={{color: item.color}}>{NUMBER_FORMAT(Math.trunc(item.value))} {UNITS[valueKey](item.payload)}</span>
+              <span style={{color: item.color}}>
+                {NUMBER_FORMAT(Math.trunc(item.value))}
+                &nbsp;
+                {UNITS[valueKey](item.payload)}
+                {item.payload[line].share && ` (${PERCENTAGE_FORMAT(item.payload[line].share)})`}</span>
             </li>
           );
         })}
@@ -76,6 +88,7 @@ const renderTooltip = valueKey => data => {
 export default class LineChart extends Component {
   render() {
     const {
+      shareKey = null,
       data,
       valueKey = 'value'
     } = this.props;
@@ -102,7 +115,12 @@ export default class LineChart extends Component {
           continue;
 
         const h = hash(line.data[j].year);
-        lineData[h][i] = line.data[j][valueKey];
+        lineData[h][i] = {
+          value: line.data[j][valueKey]
+        };
+
+        if (shareKey)
+          lineData[h][i].share = line.data[j][shareKey] / line.data[j].count;
       }
     });
 
@@ -121,12 +139,12 @@ export default class LineChart extends Component {
             <YAxis tickFormatter={Y_AXIS_FORMAT} />
             <Tooltip
               isAnimationActive={false}
-              content={renderTooltip(valueKey)} />
+              content={renderTooltip(valueKey, shareKey)} />
             {data.map((line, i) => {
               return (
                 <Line
                   key={i}
-                  dataKey={i}
+                  dataKey={row => row[i] && row[i].value}
                   stroke={line.color}
                   isAnimationActive={false}
                   dot={{r: 2, stroke: line.color, strokeWidth: 1}}

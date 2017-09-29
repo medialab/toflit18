@@ -447,20 +447,20 @@ class Charts extends Component {
         <hr />
         <div>Total value of flows per year</div>
         <hr />
-        <LineChart data={lines} />
+        <LineChart shareKey="value_share" data={lines} />
         <div style={{display: quantitiesOpened ? 'block' : 'none'}}>
           <hr />
           <div>Quantities of flows per year (kilograms)</div>
           <hr />
-          <LineChart valueKey="kg" data={lines} />
+          <LineChart shareKey="kg_share" valueKey="kg" data={lines} />
           <hr />
           <div>Quantities of flows per year (litres)</div>
           <hr />
-          <LineChart valueKey="litre" data={lines} />
+          <LineChart shareKey="litre_share" valueKey="litre" data={lines} />
           <hr />
           <div>Quantities of flows per year (pieces)</div>
           <hr />
-          <LineChart valueKey="nbr" data={lines} />
+          <LineChart shareKey="nbr_share" valueKey="nbr" data={lines} />
         </div>
         <hr />
         <Button
