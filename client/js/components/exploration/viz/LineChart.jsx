@@ -66,9 +66,9 @@ const renderTooltip = valueKey => data => {
 
           if (!item.value)
             return null;
-          // console.log(item.payload)
+
           return (
-            <li key={item.name}>
+            <li key={line}>
               <span style={{color: item.color}}>
                 {NUMBER_FORMAT(Math.trunc(item.value))}
                 &nbsp;
