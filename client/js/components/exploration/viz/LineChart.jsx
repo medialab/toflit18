@@ -61,7 +61,7 @@ const renderTooltip = valueKey => data => {
 
           return (
             <li key={item.name}>
-              <span style={{color: item.color}}>{NUMBER_FORMAT(item.value | 0)} {UNITS[valueKey](item.payload)}</span>
+              <span style={{color: item.color}}>{NUMBER_FORMAT(Math.trunc(item.value))} {UNITS[valueKey](item.payload)}</span>
             </li>
           );
         })}
