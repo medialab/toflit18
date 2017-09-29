@@ -272,11 +272,14 @@ export default class ExplorationMeta extends Component {
         </div>
         {state.perYear && state.dataType && <div className="panel">
           {state.perYear ?
-            <DataQualityBarChart
-              yAxis
-              data={barData}
-              unit={unit}
-              syncId="sources-per-directions" /> :
+            <div>
+              <p>Total number of {unit} per year</p>
+              <DataQualityBarChart
+                yAxis
+                data={barData}
+                unit={unit}
+                syncId="sources-per-directions" />
+            </div> :
             <Waiter />}
             <ExportButton
               name={`Toflit18_Meta_view ${state.dataType.name} - ${state.fileName} data_per_year`}
