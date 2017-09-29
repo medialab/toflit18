@@ -29,10 +29,10 @@ export function select(tree, selected) {
         groups = tree.select([...ROOT, 'groups']);
 
   if (selected && selected.value !== 'direction' && selected.value !== 'sourceType') {
-    const classification = tree.get('data', 'classifications', 'index', selected.id);
+    // const classification = tree.get('data', 'classifications', 'index', selected.id);
 
     if (selected.model === 'country') {
-      selectors.set('countryClassification', classification);
+      selectors.set('countryClassification', null);
       selectors.set('country', null);
       groups.set('country', []);
 
@@ -40,7 +40,7 @@ export function select(tree, selected) {
         fetchGroups(tree, groups.select('country'), selected.id);
     }
     else {
-      selectors.set('productClassification', classification);
+      selectors.set('productClassification', null);
       selectors.set('product', null);
       groups.set('product', []);
 

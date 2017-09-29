@@ -27,25 +27,25 @@ import {
 /**
  * Helper used to get the child classifications of the given classification.
  */
-// function getChildClassifications(index, target) {
-//   const children = [];
+function getChildClassifications(index, target) {
+  const children = [];
 
-//   if (!target.children || !target.children.length)
-//     return children;
+  if (!target.children || !target.children.length)
+    return children;
 
-//   const stack = target.children.slice();
+  const stack = target.children.slice();
 
-//   while (stack.length) {
-//     const child = stack.pop();
+  while (stack.length) {
+    const child = stack.pop();
 
-//     children.push(child);
+    children.push(child);
 
-//     if (child.children)
-//       stack.push.apply(stack, child.children);
-//   }
+    if (child.children)
+      stack.push.apply(stack, child.children);
+  }
 
-//   return children;
-// }
+  return children;
+}
 
 const metadataSelectors = (specs.metadataSelectors || []).map(option => {
   return {
@@ -89,6 +89,7 @@ export default class ExplorationMeta extends Component {
     const {
       actions,
       classifications,
+      classificationIndex,
       directions,
       sourceTypes,
       state
@@ -150,6 +151,11 @@ export default class ExplorationMeta extends Component {
     if (state.dataType && state.dataType.value === 'direction')
       unit = 'directions';
 
+    let childClassifications;
+
+    if (state.dataType && !!state.dataType.model)
+      childClassifications = getChildClassifications(classificationIndex, state.dataType);
+
     return (
       <div>
         <div className="panel">
@@ -188,13 +194,13 @@ export default class ExplorationMeta extends Component {
           <hr />
           <Row>
             <SectionTitle
-              title="Product"
+              title={(state.dataType && state.dataType.model === 'product') ? 'Child product' : 'Product'}
               addendum="The type of product being shipped." />
             <Col md={4}>
               <ClassificationSelector
                 type="product"
                 loading={!classifications.product.length}
-                data={classifications.product.filter(c => !c.source)}
+                data={childClassifications || classifications.product.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification} />
             </Col>
@@ -211,13 +217,13 @@ export default class ExplorationMeta extends Component {
           <hr />
           <Row>
             <SectionTitle
-              title="Country"
+              title={(state.dataType && state.dataType.model === 'country') ? 'Child country' : 'Country'}
               addendum="The country whence we got the products or wither we are sending them." />
             <Col md={4}>
               <ClassificationSelector
                 type="country"
                 loading={!classifications.country.length}
-                data={classifications.country.filter(c => !c.source)}
+                data={childClassifications || classifications.country.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'countryClassification')}
                 selected={selectors.countryClassification} />
             </Col>
