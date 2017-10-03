@@ -27,6 +27,13 @@ export default class Home extends Component {
               TOFLIT18 logo just above.
             </em>
           </p>
+          <br />
+          <p>
+            <em>
+              Also, a documentation of the datascape is available&nbsp;
+              <a className="red" href="./How_to_use_the_Datascape.pdf">here</a>.
+            </em>
+          </p>
         </div>
         <div className="panel">
           <h5>
