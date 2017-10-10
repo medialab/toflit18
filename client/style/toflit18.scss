@@ -79,7 +79,7 @@ input {
  * Semantic colouring.
  */
 .red {
-  color: $poison-blusher;
+  color: $poison-blusher !important;
 }
 
 .green {
