@@ -1,0 +1,39 @@
+//
+// MIXIN NO-PADDING
+// --------------------------------------------------
+
+@mixin no-padding($side) {
+    @if $side == "all" {
+        .no-padding {
+            padding: 0;
+        }
+    }
+    @else {
+        .no-padding-#{$side} {
+            padding-#{$side}: 0;
+        }
+    }
+}
+
+@include no-padding("left");
+
+@include no-padding("right");
+
+@include no-padding("top");
+
+@include no-padding("bottom");
+
+@include no-padding("all");
+
+//
+// Responsive
+// --------------------------------------------------
+@media (max-width: $screen-xs-max) {
+    .no-padding,
+    .no-padding-left,
+    .no-padding-right,
+    .no-padding-top,
+    .no-padding-bottom {
+        padding: 0 15px;
+    }
+}
