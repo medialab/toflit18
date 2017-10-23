@@ -1,0 +1,11 @@
+//
+// MIXIN POSITION
+// --------------------------------------------------
+@mixin position($position, $top: null, $right: null, $bottom: null, $left: null, $index: null) {
+    position: $position;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+    z-index: $index;
+}
