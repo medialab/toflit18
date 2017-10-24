@@ -1,0 +1,42 @@
+//
+// TOFLIT18 COMPONENTS MOLECULS DROPDOWN-CARET
+// --------------------------------------------------
+.nav > li {
+    > a {
+        &.dropdown-caret {
+            @include flexbox;
+            @include align-items(center);
+
+            svg {
+                width: 0.8em;
+                margin: 0.2em 0 0 0.2em;
+                color: $dove-gray-darken;
+            }
+        }
+
+        // Over / Focus
+        // --------------------------------------------------
+        &:hover,
+        &:focus {
+            &.dropdown-caret {
+                svg {
+                    color: $sandal;
+                }
+            }
+        }
+    }
+
+    // Open
+    // --------------------------------------------------
+    &.open {
+        > a {
+            &.dropdown-caret {
+                svg {
+                    color: $sandal;
+
+                    @include rotate(180deg);
+                }
+            }
+        }
+    }
+}

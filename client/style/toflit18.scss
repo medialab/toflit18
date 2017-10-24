@@ -2,9 +2,10 @@
 // TOFLIT18 FRONT
 // --------------------------------------------------
 
-// TOFLIT18 Brand | Colors Variables
+// STYLES
 // --------------------------------------------------
-$white: #fff;
+@import "components/00-styles/colors";
+@import "components/00-styles/fonts";
 
 // Import Bootstrap
 // --------------------------------------------------
