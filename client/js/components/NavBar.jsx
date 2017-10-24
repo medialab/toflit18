@@ -4,36 +4,14 @@
  *
  */
 import React, {Component} from 'react';
-import {branch} from 'baobab-react/decorators';
 import cls from 'classnames';
-import {logout} from '../actions/session';
 
-@branch({
-  actions: {logout},
-  cursors: {
-    logged: ['flags', 'logged']
-  }
-})
 export default class NavBar extends Component {
   render() {
     const {
-      logged,
       onMenu,
       sidenavOpened
     } = this.props;
-
-    if (!logged)
-      return null;
-
-    const logoutButton = (
-      <span className="nav-item">
-        <a
-          className="nav-link logout"
-          onClick={() => this.props.actions.logout()}>
-          Logout
-        </a>
-      </span>
-    );
 
     return (
       <div>
@@ -50,7 +28,6 @@ export default class NavBar extends Component {
                   <a className="navbar-brand" href="#">TOFLIT18</a>
                 </li>
               </ul>
-              {logged && logoutButton}
             </div>
           </div>
         </nav>
