@@ -91,7 +91,7 @@ export default class LineChart extends Component {
       valueKey = 'value'
     } = this.props;
 
-    if (!data || !data.length)
+    if (!data || !data.some(line => !!line.data.length))
       return null;
 
     const minYear = Math.min.apply(null, data.map(line => line.data[0].year));

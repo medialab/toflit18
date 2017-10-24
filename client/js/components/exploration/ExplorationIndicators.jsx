@@ -405,7 +405,7 @@ class Charts extends Component {
     // Computing bar chart's data by keeping a count of distinct directions
     let barData = [];
 
-    if (lines.length) {
+    if (lines.some(line => !!line.data.length)) {
       const minYear = Math.min.apply(null, lines.map(line => line.data[0].year));
 
       const maxYear = Math.max.apply(null, lines.map(line => line.data[line.data.length - 1].year));
