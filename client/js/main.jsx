@@ -8,7 +8,6 @@ import React from 'react';
 import {root} from 'baobab-react/higher-order';
 import {render} from 'react-dom';
 import AppRouter from './components/AppRouter.jsx';
-import {checkSession} from './actions/session';
 import makeParrot from './parrot';
 import client from './client';
 import state from './state';
@@ -22,14 +21,6 @@ import '../style/toflit18.scss';
 // Binding client
 let parrot = makeParrot(state, client);
 state.client = client;
-
-// Checking the user's session
-checkSession(state, () => {
-  const RootedApp = root(AppRouter, state);
-
-  // Rendering the app
-  render(<RootedApp />, document.getElementById('mount'));
-});
 
 // Hot-reloading logic
 if (module.hot) {
@@ -46,5 +37,9 @@ if (module.hot) {
     parrot = require('./parrot').default(state, state.client);
   });
 }
+
+// Initialize the app
+const RootedApp = root(AppRouter, state);
+render(<RootedApp />, document.getElementById('mount'));
 
 module.exports = state;

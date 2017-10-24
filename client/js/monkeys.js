@@ -20,7 +20,3 @@ export function flatClassifications(data) {
     country: flattenTree(country || {})
   };
 }
-
-export function isLogged(user) {
-  return !!user;
-}

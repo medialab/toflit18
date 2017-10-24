@@ -23,19 +23,6 @@ const client = new Client({
 
   services: {
 
-    // Login related
-    session: '/session',
-
-    login: {
-      method: 'POST',
-      url: '/login'
-    },
-
-    logout: {
-      method: 'POST',
-      url: '/logout'
-    },
-
     // Data related
     classifications: '/classification',
 

@@ -15,11 +15,9 @@ import compress from 'compression';
 import morgan from 'morgan';
 import session from 'express-session';
 import createFileStore from 'session-file-store';
-import {authenticate} from './middlewares';
 
 import classificationController from './controllers/classification';
 import dataController from './controllers/data';
-import loginController from './controllers/login';
 import vizController from './controllers/viz';
 
 const FileStore = createFileStore(session),
@@ -75,17 +73,15 @@ app.use(compress());
  */
 
 // Creating routers from controllers
-const loginRouter = dolman.router(loginController),
-      dataRouter = dolman.router(dataController),
+const dataRouter = dolman.router(dataController),
       classificationRouter = dolman.router(classificationController),
       vizRouter = dolman.router(vizController);
 
 // Mounting
 app.get('/api.json', (req, res) => res.json(dolman.specs(app)));
-app.use(loginRouter);
-app.use(authenticate, dataRouter);
-app.use('/classification', authenticate, classificationRouter);
-app.use('/viz', authenticate, vizRouter);
+app.use(dataRouter);
+app.use('/classification', classificationRouter);
+app.use('/viz', vizRouter);
 app.use((_, res) => res.notFound());
 
 /**

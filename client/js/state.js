@@ -8,7 +8,6 @@ import Baobab, {monkey} from 'baobab';
 import {
   classificationsIndex,
   flatClassifications,
-  isLogged
 } from './monkeys';
 
 const defaultState = {
@@ -26,11 +25,6 @@ const defaultState = {
 
   // Some generic UI flags
   flags: {
-    logged: monkey(['user'], isLogged),
-    login: {
-      failed: false,
-      loading: false
-    },
     downloading: false
   },
 
