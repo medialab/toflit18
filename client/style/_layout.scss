@@ -3,13 +3,22 @@
 // --------------------------------------------------
 
 html {
-    height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
     overflow: hidden;
     width: 100%;
     min-height: 100%;
+    margin-bottom: 4em;
     background: $white;
     -webkit-font-smoothing: antialiased;
+}
+
+main {
+    &.container-global {
+        min-height: 100%;
+        padding: 0 0 4em 0;
+    }
 }
