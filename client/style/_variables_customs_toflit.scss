@@ -47,7 +47,7 @@ $text-color: $gray-dark !default;
 $link-color: $brand-primary !default;
 
 //** Link hover color set via `darken()` function.
-$link-hover-color: darken($link-color, 15%) !default;
+$link-hover-color: $sandal !default;
 
 //** Link hover decoration.
 $link-hover-decoration: underline !default;
@@ -58,6 +58,7 @@ $link-hover-decoration: underline !default;
 
 $font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $font-family-serif: "Merriweather", Georgia, "Times New Roman", Times, serif;
+$font-family-heading: "Bitter", Georgia, "Times New Roman", Times, serif;
 
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 $font-family-monospace: Menlo, Monaco, Consolas, "Courier New", monospace !default;
@@ -98,7 +99,7 @@ $line-height-computed: floor($font-size-base * $line-height-base) !default;
 // ~20px
 
 //** By default, this inherits from the `<body>`.
-$headings-font-family: inherit !default;
+$headings-font-family: $font-family-heading !default;
 $headings-font-weight: 500 !default;
 $headings-line-height: 1.1 !default;
 $headings-color: inherit !default;
@@ -141,7 +142,7 @@ $line-height-large: 1.3333333 !default;
 $line-height-small: 1.5 !default;
 
 $border-radius-base: 4px !default;
-$border-radius-large: 6px !default;
+$border-radius-large: 5px !default;
 $border-radius-small: 3px !default;
 
 //** Global color for active items (e.g., navs or dropdowns).
