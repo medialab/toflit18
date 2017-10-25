@@ -9,5 +9,11 @@
             color: $squirrel;
             margin-bottom: 0.5em;
         }
+
+        .search-result {
+            strong {
+                font-size: 1.4em;
+            }
+        }
     }
 }
