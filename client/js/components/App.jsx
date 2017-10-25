@@ -13,9 +13,7 @@ export default class App extends Component {
     return (
       <div id="main">
         <Header />
-        <main className="container">
-          {this.props.children}
-        </main>
+        {this.props.children}
         <Footer />
       </div>
     );
