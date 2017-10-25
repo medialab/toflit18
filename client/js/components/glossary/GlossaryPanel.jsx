@@ -7,7 +7,8 @@
  */
 import React, {Component} from 'react';
 import {escapeRegexp} from 'talisman/regexp';
-import {debounce} from 'lodash';
+import cls from 'classnames';
+import Icon from '../misc/Icon.jsx';
 import RAW_GLOSSARY_DATA from '../../../glossary.json';
 
 /**
@@ -34,13 +35,9 @@ const GLOSSARY_DATA = RAW_GLOSSARY_DATA.map(entry => {
  */
 function GlossaryEntry({name, html}) {
   return (
-    <div className="glossary-entry">
-      <div className="glossary-name">
-        {name}
-      </div>
-      <div className="glossary-definition">
-        <div dangerouslySetInnerHTML={{__html: html}} />
-      </div>
+    <div className="well">
+      <dt>{name}</dt>
+      <dd dangerouslySetInnerHTML={{__html: html}} />
     </div>
   );
 }
@@ -58,7 +55,6 @@ export default class GlossaryPanel extends Component {
     };
 
     this.handleInput = this.handleInput.bind(this);
-    this.debouncedSearch = debounce(this.performSearch.bind(this), 300);
   }
 
   handleInput(e) {
@@ -71,56 +67,89 @@ export default class GlossaryPanel extends Component {
       this.setState({query});
 
       if (query.length > 2)
-        this.debouncedSearch(query);
+        this.performSearch(query);
+      else
+        this.performSearch('');
     }
   }
 
   performSearch(query) {
-    const pattern = new RegExp(escapeRegexp(query));
+    if (!query) {
+      this.setState({entries: GLOSSARY_DATA.slice(0)});
+    }
+    else {
+      const pattern = new RegExp(escapeRegexp(query));
 
-    const filteredEntries = GLOSSARY_DATA.filter(entry => {
-      return (
-        pattern.test(entry.name) ||
-        pattern.test(entry.definition)
-      );
-    });
+      const filteredEntries = GLOSSARY_DATA.filter(entry => {
+        return (
+          pattern.test(entry.name) ||
+          pattern.test(entry.definition)
+        );
+      });
 
-    this.setState({entries: filteredEntries});
+      this.setState({entries: filteredEntries});
+    }
   }
 
   render() {
-
-    let entries;
-
-    if (this.state.entries.length) {
-      entries = this.state.entries.map(entry => {
-        return (
-          <GlossaryEntry
-            key={entry.name}
-            name={entry.name}
-            html={entry.html} />
-        );
-      });
-    }
-    else {
-      entries = <div>No matching entries...</div>;
-    }
+    const {query} = this.state;
+    const entries = this.state.entries.map(entry => {
+      return (
+        <GlossaryEntry
+          key={entry.name}
+          name={entry.name}
+          html={entry.html} />
+      );
+    });
 
     return (
-      <div id="glossary">
-        <div className="panel">
-          <h3>Glossary</h3>
-          <hr />
-          <input
-            className="form-control"
-            placeholder="Search..."
-            type="text"
-            onChange={this.handleInput}
-            value={this.state.query} />
-          <br />
-          {entries}
+      <main className="container-fluid container-global no-padding">
+        <div className="section-search">
+          <form>
+            <div className="form-group-search">
+              <div className="container">
+                <div className="row">
+                  <div className="col-sm-8 col-sm-offset-2">
+                    <div className="form-group">
+                      <Icon name="icon-search-lg" />
+                      <label
+                        className="sr-only"
+                        htmlFor="searchGlossary" >
+                        Search
+                      </label>
+                      <input
+                        id="searchGlossary"
+                        className="form-control input-lg"
+                        type="search"
+                        placeholder="Search..."
+                        onChange={this.handleInput}
+                        value={query} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-10 col-sm-offset-1">
+                <div className="search-result">
+                  <h1>Glossary</h1>
+                  <p className={cls((!entries.length || query.length <= 2) && 'hidden')}>
+                    We found <strong>{entries.length}</strong> results found for "{query}"
+                  </p>
+                  <p className={cls(entries.length && 'hidden')}>
+                    We're sorry. We cannot find any matches for your search.
+                  </p>
+                  <dl>
+                    {entries}
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
     );
   }
 }
