@@ -87,9 +87,6 @@ export default class SourcesPerDirections extends Component {
 
     const data = sortBy(unsorted, d => -means[directionIndex[d.name]]);
 
-    // DEBUG
-    // console.log(data.map((d, i) => [d.name, means[directionIndex[d.name]]]));
-
     // Computing max values
     // NOTE: clearly not the optimal way to do it...
     let allYears = new Set(),

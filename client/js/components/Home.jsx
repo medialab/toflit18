@@ -7,123 +7,146 @@
  */
 import React, {Component} from 'react';
 import {Link} from 'react-router';
+import Icon from './misc/Icon.jsx';
 
 export default class Home extends Component {
   render() {
     return (
-      <div id="home">
-        <div className="panel">
-          <h3>Welcome to the TOFLIT18 Datascape!</h3>
-          <hr />
-          <p>
-            <em>
-              Here is a brief description of the various features of the
-              datascape you might want to use.
-            </em>
-            <br />
-            <em>
-              If you happen to lose yourself, don't hesitate to open the menu using the
-              top-left button or to come back to this page by clicking on the
-              TOFLIT18 logo just above.
-            </em>
-          </p>
-          <br />
-          <p>
-            <em>
-              Also, a documentation of the datascape is available&nbsp;
-              <a className="red" href="./How_to_use_the_Datascape.pdf">here</a>.
-            </em>
-          </p>
+      <main className="container-fluid container-global no-padding">
+        <div className="section section-home-top">
+          <span className="background-color" />
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-10">
+                <h1>Transformations of the French Economy through the Lens of International Trade</h1>
+                <p className="lead">1716-1821</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper. Vivamus varius diam enim, ac semper nisl venenatis eget.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="panel">
-          <h5>
-            1.&nbsp;
-            <Link to="exploration/meta">
-              Metadata about the collected data
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Learn about the database's structure to understand how the data
-              was collected and which traps one should avoid when interpreting
-              them.
-            </em>
-          </p>
+        <div className="section-home-navigation">
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-12"><h2>Data</h2></div>
+              <div className="col-sm-4">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper. Vivamus varius diam enim, ac semper nisl venenatis eget.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex.</p>
+              </div>
+              <div className="col-sm-4">
+                <Link
+                  to="/exploration/meta"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/metadata.png"
+                      alt="Metadata"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <Icon name="icon-stack" />
+                      <span>Metadata</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+              </div>
+              <div className="col-sm-4">
+                <Link
+                  to="/classification/browser"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/classification.png"
+                      alt="Classifications"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <Icon name="icon-classification" />
+                      <span>Classifications</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12"><h2>Explorer</h2></div>
+              <div className="col-sm-4">
+                <Link
+                  to="/exploration/indicators"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/indicators.png"
+                      alt="Indicators"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <Icon name="icon-curve" />
+                      <span>Indicators</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+              </div>
+              <div className="col-sm-4">
+                <Link
+                  to="/exploration/terms"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/products.png"
+                      alt="Products"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <Icon name="icon-network" />
+                      <span>Products</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+              </div>
+              <div className="col-sm-4">
+                <Link
+                  to="/exploration/network"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/countries.png"
+                      alt="Countries"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <Icon name="icon-network" />
+                      <span>Countries</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="panel">
-          <h5>
-            2.&nbsp;
-            <Link to="classification/browser">
-              Classifications browser
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Source products & target countries were classified using different
-              strategies for different analysis purposes.
-            </em>
-          </p>
-          <p>
-            <em>
-              Learn about them and explore them using the classification browser.
-            </em>
-          </p>
+        <div className="section-bottom">
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-6">
+                <h2>How to cite</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. </p>
+              </div>
+              <div className="col-sm-6">
+                <h2>How to science</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="panel">
-          <h5>
-            3.&nbsp;
-            <Link to="glossary">
-              Glossary
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Having trouble identifying a product's name in 18th century
-              terminology? This searchable glossary might be of some help.
-            </em>
-          </p>
-        </div>
-        <div className="panel">
-          <h5>
-            4.&nbsp;
-            <Link to="exploration/indicators">
-              Indicators
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Build & explore time series showing the evolution of trade flows in values
-              & quantities using.
-            </em>
-          </p>
-        </div>
-        <div className="panel">
-          <h5>
-            5.&nbsp;
-            <Link to="exploration/network">
-              Countries networks
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Explore networks of countries whither France exported or whence France imported.
-            </em>
-          </p>
-        </div>
-        <div className="panel">
-          <h5>
-            6.&nbsp;
-            <Link to="exploration/terms">
-              Product terms networks
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Explore networks of product terms traded by & with France.
-            </em>
-          </p>
-        </div>
-      </div>
+      </main>
     );
   }
 }

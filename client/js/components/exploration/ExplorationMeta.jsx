@@ -126,7 +126,7 @@ export default class ExplorationMeta extends Component {
     // Computing bar chart's data
     let barData = [];
 
-    if (state.perYear) {
+    if (state.perYear && state.perYear.length) {
       const minYear = state.perYear[0].year;
 
       const maxYear = state.perYear[state.perYear.length - 1].year;

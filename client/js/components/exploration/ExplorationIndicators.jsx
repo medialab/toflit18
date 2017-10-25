@@ -13,7 +13,7 @@ import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
-import {capitalize, isEqual, mapValues} from 'lodash';
+import {capitalize, isEqual, mapValues, pick} from 'lodash';
 import {
   updateSelector as update,
   addLine,
@@ -342,55 +342,29 @@ class Charts extends Component {
       const dataLines = [];
 
         for (let i = 0, len = l.data.length; i < len; i++) {
-          //console.log("l", l);
-          const elemCopy = {};
-          elemCopy.year = l.data[i].year;
-          elemCopy.count = l.data[i].count;
-          elemCopy.value = l.data[i].value;
-          elemCopy.kg = l.data[i].kg;
-          elemCopy.litre = l.data[i].litre;
-          elemCopy.nbr = l.data[i].nbr;
+          const elemCopy = pick(
+            l.data[i],
+            ['year', 'count', 'value', 'kg', 'litre', 'nbr']
+          );
 
-          if (l.params.sourceType)
-            elemCopy.sourceType = l.params.sourceType.name;
-          else
-            elemCopy.sourceType = null;
-
-          if (l.params.productClassification)
-            elemCopy.productClassification = l.params.productClassification.name;
-          else
-            elemCopy.productClassification = null;
-
-          if (l.params.countryClassification)
-            elemCopy.countryClassification = l.params.countryClassification.name;
-          else
-            elemCopy.countryClassification = null;
-
-          if (l.params.country)
-            elemCopy.country = l.params.country.name;
-          else
-            elemCopy.country = null;
-
-          if (l.params.product)
-            elemCopy.product = l.params.product.name;
-          else
-            elemCopy.product = null;
-
-          if (l.params.kind)
-            elemCopy.kind = l.params.kind.name;
-          else
-            elemCopy.kind = null;
-
-          if (l.params.direction)
-            elemCopy.direction = l.params.direction.name;
-          else
-            elemCopy.direction = null;
+          [
+            'sourceType',
+            'productClassification',
+            'countryClassification',
+            'country',
+            'product',
+            'kind',
+            'direction',
+          ].forEach(param => {
+            elemCopy[param] = l.params[param] ?
+              l.params[param].name :
+              null;
+          });
 
           if (l.data[i].value !== null && l.data[i].count !== 0) {
-            if (l.data[i].nb_direction.length)
-              elemCopy.nb_direction = l.data[i].nb_direction;
-            else
-              elemCopy.nb_direction = null;
+            elemCopy.nb_direction = l.data[i].nb_direction.length ?
+              l.data[i].nb_direction :
+              null;
           }
 
           dataLines.push(elemCopy);
@@ -405,7 +379,7 @@ class Charts extends Component {
     // Computing bar chart's data by keeping a count of distinct directions
     let barData = [];
 
-    if (lines.length) {
+    if (lines.some(line => !!line.data.length)) {
       const minYear = Math.min.apply(null, lines.map(line => line.data[0].year));
 
       const maxYear = Math.max.apply(null, lines.map(line => line.data[line.data.length - 1].year));
