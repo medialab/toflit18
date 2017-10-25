@@ -1,0 +1,14 @@
+//
+// TOFLIT18 ORGANISM WELL GLOSSARY
+// --------------------------------------------------
+.well {
+    @include box-shadow(none);
+
+    dt {
+        color: $sandal-darken;
+    }
+
+    dd {
+        color: $olive-haze-darken;
+    }
+}

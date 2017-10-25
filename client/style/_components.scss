@@ -10,11 +10,13 @@
 // MOLECULS
 // --------------------------------------------------
 @import "components/02-moleculs/dropdown-caret";
+@import "components/02-moleculs/form-group-search";
 
 // ORGANISMS
 // --------------------------------------------------
 @import "components/03-organisms/navbar-header";
 @import "components/03-organisms/footer";
+@import "components/03-organisms/well-glossary";
 
 // TEMPLATES
 // --------------------------------------------------
@@ -22,3 +24,4 @@
 // PAGES
 // --------------------------------------------------
 @import "components/05-pages/home";
+@import "components/05-pages/glossary";
