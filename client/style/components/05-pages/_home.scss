@@ -82,6 +82,7 @@
         .btn {
             padding: 0;
             overflow: hidden;
+            margin-bottom: 1em;
             border-radius: $border-radius-large;
 
             span {
@@ -97,7 +98,7 @@
             }
 
             + p {
-                margin-top: 2em;
+                margin-top: 1em;
             }
         }
 

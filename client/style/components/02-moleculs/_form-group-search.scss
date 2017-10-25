@@ -11,6 +11,13 @@
     margin-bottom: 4em;
     background-color: $mine-shaft;
 
+    //
+    // Responsive
+    // --------------------------------------------------
+    @media (max-width: $screen-sm-max) {
+        display: block;
+    }
+
     .icon-search-lg {
         @include square(2.5em);
         @include position(absolute, 0.35em, null, null, 2.5em, 1);
@@ -23,26 +30,25 @@
         background-color: rgba(#606060, 0.5);
         color: $olive-haze;
         border-color: rgba(#606060, 0.5);
-        text-transform: uppercase;
     }
 
     input::-webkit-input-placeholder {
-        /* Chrome/Opera/Safari */
         color: $mine-shaft-darken;
     }
 
     input::-moz-placeholder {
-        /* Firefox 19+ */
         color: $mine-shaft-darken;
     }
 
     input:-ms-input-placeholder {
-        /* IE 10+ */
         color: $mine-shaft-darken;
     }
 
     input:-moz-placeholder {
-        /* Firefox 18- */
+        color: $mine-shaft-darken;
+    }
+
+    input::placeholder {
         color: $mine-shaft-darken;
     }
 
@@ -52,6 +58,13 @@
         @include align-items(center);
 
         margin-bottom: 0;
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-sm-max) {
+            display: block;
+        }
 
         li {
             padding: 0;
