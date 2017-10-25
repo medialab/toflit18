@@ -1,0 +1,23 @@
+//
+// TOFLIT18 COMPONENTS ATOM ASIDE BTN
+// --------------------------------------------------
+.aside-btn-left,
+.aside-btn-right {
+    @extend .btn;
+
+    @extend .btn-default;
+
+    @extend .btn-xs;
+
+    @extend .visible-xs;
+
+    @include position(absolute, 1em, null, null, null, 10);
+}
+
+.aside-btn-left {
+    left: 110%;
+}
+
+.aside-btn-right {
+    right: 110%;
+}

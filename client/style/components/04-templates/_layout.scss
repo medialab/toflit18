@@ -1,5 +1,5 @@
 //
-// TOFLIT18 LAYOUT
+// TOFLIT18 TEMPLATE LAYOUT
 // --------------------------------------------------
 
 html {
@@ -15,11 +15,18 @@ body {
     min-height: 100%;
     background: $white;
     -webkit-font-smoothing: antialiased;
+
+    //
+    // Responsive
+    // --------------------------------------------------
+    @media (max-width: $screen-xs-max) {
+        margin-bottom: 0;
+    }
 }
 
 main {
     &.container-global {
         min-height: 100%;
-        padding: 0 0 4em 0;
+        padding: 0 0 3em 0;
     }
 }

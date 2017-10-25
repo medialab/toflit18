@@ -1,0 +1,22 @@
+//
+// TOFLIT18 COMPONENTS PAGE VIEW
+// --------------------------------------------------
+.section {
+    &-heading {
+        position: relative;
+        top: 3.2em;
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (min-width: $screen-xs-max) {
+            @include flexbox;
+            @include flex-direction(column);
+            @include justify-content(center);
+            @include align-items(center);
+        }
+
+        padding: 1em 1em;
+        background-color: $mine-shaft;
+    }
+}

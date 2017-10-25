@@ -1,0 +1,36 @@
+//
+// TOFLIT18 TEMPLATE OFFCANVAS
+// --------------------------------------------------
+@media screen and (max-width: 768px) {
+    .row-offcanvas {
+        position: relative;
+        overflow: hidden;
+
+        @include transition(all 0.4s ease-out);
+    }
+
+    .row-offcanvas-left
+    #sidebarLeft {
+        left: -60%;
+    }
+
+    .row-offcanvas-left.active {
+        left: 60%;
+    }
+
+    .row-offcanvas-right
+    #sidebarRight {
+        right: -60%;
+    }
+
+    .row-offcanvas-right.active {
+        right: 60%;
+    }
+
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 60%;
+    }
+}

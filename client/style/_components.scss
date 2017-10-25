@@ -2,26 +2,35 @@
 // TOFLIT18 COMPONENTS
 // --------------------------------------------------
 
+// TEMPLATES
+// --------------------------------------------------
+@import "components/04-templates/layout";
+@import "components/04-templates/section-viz";
+@import "components/04-templates/offcanvas";
+
 // ATOMS
 // --------------------------------------------------
 @import "components/01-atoms/icons";
 @import "components/01-atoms/logotype";
+@import "components/01-atoms/aside-btn";
 
 // MOLECULS
 // --------------------------------------------------
 @import "components/02-moleculs/dropdown-caret";
+@import "components/02-moleculs/form-group";
 @import "components/02-moleculs/form-group-search";
+@import "components/02-moleculs/text-heading";
 
 // ORGANISMS
 // --------------------------------------------------
 @import "components/03-organisms/navbar-header";
 @import "components/03-organisms/footer";
 @import "components/03-organisms/well-glossary";
-
-// TEMPLATES
-// --------------------------------------------------
+@import "components/03-organisms/box-selection";
+@import "components/03-organisms/aside-filters";
 
 // PAGES
 // --------------------------------------------------
 @import "components/05-pages/home";
 @import "components/05-pages/glossary";
+@import "components/05-pages/view";

@@ -1,0 +1,23 @@
+//
+// TOFLIT18 COMPONENTS MOLECULS FORM GROUP
+// --------------------------------------------------
+.form-group {}
+
+.control-label {
+    color: $olive-haze;
+    margin-bottom: 0;
+}
+
+.help-block {
+    font-style: italic;
+    margin-top: 0;
+    margin-bottom: 0.2em;
+}
+
+select {
+    width: 100%;
+
+    + select {
+        margin-top: 0.5em;
+    }
+}

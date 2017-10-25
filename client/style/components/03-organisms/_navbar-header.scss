@@ -5,4 +5,14 @@ header {
     .navbar {
         margin-bottom: 0;
     }
+
+    .navbar-brand {
+        margin-right: 5.5em;
+    }
+
+    .navbar-nav {
+        > li {
+            font-size: 1.2em;
+        }
+    }
 }

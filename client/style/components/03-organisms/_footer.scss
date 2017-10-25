@@ -2,14 +2,19 @@
 // TOFLIT18 ORGANISM FOOTER
 // --------------------------------------------------
 footer {
-    position: absolute;
-    bottom: 0;
+    //
+    // Responsive
+    // --------------------------------------------------
+    @media (min-width: $screen-sm-min) {
+        position: absolute;
+        bottom: 0;
 
-    @include flexbox;
-    @include align-items(center);
+        @include flexbox;
+        @include align-items(center);
+    }
 
     width: 100%;
-    height: 4em;
+    height: 3em;
     background-color: $white;
 
     ul {

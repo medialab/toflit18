@@ -1,0 +1,28 @@
+//
+// TOFLIT18 COMPONENTS MOLECUL TEXT HEADING
+// --------------------------------------------------
+.text-heading {
+    @include flexbox;
+    @include justify-content(end);
+    @include align-items(end);
+
+    h1 {
+        margin: 0 3em 0 0;
+        font-size: 2.2em;
+        color: $olive-haze;
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            font-size: 1.6em;
+        }
+    }
+
+    p {
+        @include flex-basis(45em);
+
+        color: rgba(255, 255, 255, 0.6);
+        margin: 0;
+    }
+}

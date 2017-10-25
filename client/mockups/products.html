@@ -90,7 +90,7 @@
                         remove class 'open'
                         change aria-expanded="false"
                   -->
-                  <li class="dropdown">
+                  <li class="dropdown active">
                     <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                       <span>View</span>
                       <svg class="icon icon-arrow-down" aria-hidden="true">
@@ -99,82 +99,88 @@
                     </a>
                     <ul class="dropdown-menu">
                       <li><a href="#">Indicators</a></li>
-                      <li><a href="#">Products</a></li>
+                      <li class="active"><a href="#">Products</a></li>
                       <li><a href="#">Countries</a></li>
                     </ul>
                   </li>
-                  <li class="active"><a href="#">Glossary</a></li>
+                  <li><a href="#">Glossary</a></li>
                   <li><a href="#">About</a></li>
                 </ul>
               </div><!-- /.navbar-collapse -->
             </div><!-- /.container -->
           </nav>
         </header>
-        <main class="container-fluid container-global no-padding">
-          <div class="section-search">
-            <form>
-              <div class="form-group-search">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
+        <main class="container-fluid no-padding"><!-- !! REMOVE class container-global -->
+          <div class="section-heading">
+            <div class="text-heading">
+              <h1>Products</h1>
+              <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper. Vivamus varius diam enim, ac semper nisl venenatis eget.</p>
+            </div>
+          </div>
+          <div class="section-viz">
+            <div class="box-selection">
+              <h2 class="hidden-xs">Product classification</h2>
+              <select id="productClassificationHead">
+                <option value="valeur1">Valeur 1</option>
+                <option value="valeur2" selected>Valeur 2</option>
+                <option value="valeur3">Valeur 3</option>
+              </select>
+            </div>
+            <div class="container-fluid">
+              <div class="row row-offcanvas row-offcanvas-left"><!-- add and remove class active for toogle button aside-btn-left -->
+                <div class="row-offcanvas row-offcanvas-right"><!-- add and remove class active for toogle button aside-btn-left -->
+                  <aside class="col-xs-6 col-sm-3 sidebar-offcanvas aside-left" id="sidebarLeft" role="navigation">
+                    <button class="aside-btn-left" type="button" data-toggle="offcanvas">Filtres</button>
+                    <div class="aside-filters">
+                      <h3>Filters</h3>
                       <div class="form-group">
-                        <svg class="icon icon-search-lg" aria-hidden="true">
-                          <use xlink:href="../assets/svg/icons/icons.svg#icon-search-lg"></use>
-                        </svg>
-                        <label class="sr-only" for="searchGlossary">Search</label>
-                        <input id="searchGlossary" class="form-control input-lg" type="search" value="aba" placeholder="search">
+                        <label for="sourceType" class="control-label">Source Type</label>
+                        <small id="helpSourceType" class="help-block">From wich sources does the data comes from ?</small>
+                        <select id="sourceType" aria-describedby="helpSourceType">
+                          <option value="valeur1">Valeur 1</option>
+                          <option value="valeur2" selected>Valeur 2</option>
+                          <option value="valeur3">Valeur 3</option>
+                        </select>
                       </div>
-                      <ul class="list-inline list-unstyled list-letters">
-                        <li><button type="button" class="btn btn-link">A</button></li>
-                        <li><button type="button" class="btn btn-link">B</button></li>
-                        <li><button type="button" class="btn btn-link">C</button></li>
-                        <li><button type="button" class="btn btn-link">D</button></li>
-                        <li><button type="button" class="btn btn-link">E</button></li>
-                        <li><button type="button" class="btn btn-link">F</button></li>
-                        <li><button type="button" class="btn btn-link">G</button></li>
-                        <li><button type="button" class="btn btn-link">H</button></li>
-                        <li><button type="button" class="btn btn-link">I</button></li>
-                        <li><button type="button" class="btn btn-link">J</button></li>
-                        <li><button type="button" class="btn btn-link">K</button></li>
-                        <li><button type="button" class="btn btn-link">L</button></li>
-                        <li><button type="button" class="btn btn-link">M</button></li>
-                        <li><button type="button" class="btn btn-link">N</button></li>
-                        <li><button type="button" class="btn btn-link">O</button></li>
-                        <li><button type="button" class="btn btn-link">P</button></li>
-                        <li><button type="button" class="btn btn-link">Q</button></li>
-                        <li><button type="button" class="btn btn-link">R</button></li>
-                        <li><button type="button" class="btn btn-link">S</button></li>
-                        <li><button type="button" class="btn btn-link">T</button></li>
-                        <li><button type="button" class="btn btn-link">U</button></li>
-                        <li><button type="button" class="btn btn-link">V</button></li>
-                        <li><button type="button" class="btn btn-link">W</button></li>
-                        <li><button type="button" class="btn btn-link">X</button></li>
-                        <li><button type="button" class="btn btn-link">Y</button></li>
-                        <li><button type="button" class="btn btn-link">Z</button></li>
-                      </ul>
+                      <div class="form-group">
+                        <label for="product" class="control-label">Product</label>
+                        <small id="helpProduct" class="help-block">The type of product being shipped.</small>
+                        <select id="productClassification" aria-describedby="helpProductClassification">
+                          <option value="valeur1">Valeur 1</option>
+                          <option value="valeur2" selected>Valeur 2</option>
+                          <option value="valeur3">Valeur 3</option>
+                        </select>
+                        <select id="product" aria-describedby="helpProduct">
+                          <option value="valeur1">Valeur 1</option>
+                          <option value="valeur2" selected>Valeur 2</option>
+                          <option value="valeur3">Valeur 3</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="country" class="control-label">Country</label>
+                        <small id="helpCountry" class="help-block">The country whence we got the products or wither we are sending them.</small>
+                        <select id="countryClassification" aria-describedby="helpCountryClassification">
+                          <option value="valeur1">Valeur 1</option>
+                          <option value="valeur2" selected>Valeur 2</option>
+                          <option value="valeur3">Valeur 3</option>
+                        </select>
+                        <select id="country" aria-describedby="helpProduct">
+                          <option value="valeur1">Valeur 1</option>
+                          <option value="valeur2" selected>Valeur 2</option>
+                          <option value="valeur3">Valeur 3</option>
+                        </select>
+                      </div>
+                    </div>
+                  </aside>
+                  <div class="content-viz">
+                    <div class="col-xs-12 col-sm-6">
+                      Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.
                     </div>
                   </div>
-                </div>
-              </div>
-            </form>
-            <div class="container">
-              <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                  <div class="search-result">
-                    <h1>Glossary</h1>
-                    <p>We found <strong>2</strong> results found for "aba"</p><!-- if no results add class hidden -->
-                    <p class="hidden">We're sorry. We cannot find any matches for your search.</p><!-- if no results remove class hidden -->
-                    <dl>
-                      <div class="well">
-                        <dt>abafine</dt>
-                        <dd>erreur, = "abassis"</dd>
-                      </div>
-                      <div class="well">
-                        <dt>abassi, abassis, abaci</dt>
-                        <dd>Abagi ou Abassi, "monnoie qui a cours en Perse", article "Abagi", Jacques Savary des Brûlons, Dictionnaire universel de commerce, vol. 1, Paris, Vve Estienne, 1741, p. 559 [ci-après Savary, Dictionnaire 1], article "Abagi".</dd>
-                      </div>
-                    </dl>
-                  </div>
+                  <aside class="col-xs-6 col-sm-3 sidebar-offcanvas aside-right" id="sidebarRight" role="navigation">
+                    <button class="aside-btn-right" type="button" data-toggle="offcanvas">Légende</button>
+                    Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.
+                  </aside>
                 </div>
               </div>
             </div>
