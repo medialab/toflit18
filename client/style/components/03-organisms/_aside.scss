@@ -26,12 +26,12 @@
 
         @media (min-width: $screen-xs-max) {
             margin-top: 5.5em;
-            height: calc(100vh - 22.2em);
+            height: calc(100vh - 19em);
             overflow-y: auto;
         }
 
         @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-            height: calc(100vh - 23.5em);
+            height: calc(100vh - 20.5em);
         }
     }
 
@@ -47,7 +47,7 @@
         }
 
         @media (min-width: $screen-xs-max) {
-            height: calc(100vh - 16.6em);
+            height: calc(100vh - 13.5em);
             overflow-y: auto;
         }
 
@@ -56,7 +56,7 @@
         }
 
         @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-            height: calc(100vh - 18.1em);
+            height: calc(100vh - 15em);
         }
     }
 }

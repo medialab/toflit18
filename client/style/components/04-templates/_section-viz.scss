@@ -7,17 +7,7 @@
         top: 3.2em;
         border-bottom: 1px solid #eeeeee;
 
-        //
-        // Responsive
-        // --------------------------------------------------
-        @media (min-width: $screen-xs-max) {
-            height: calc(100vh - (150px + 3em));
-
-            //overflow: hidden;
-        }
-
         @media (max-width: $screen-xs-max) {
-            // overflow: hidden;
             margin-bottom: 5em;
         }
     }
@@ -29,13 +19,13 @@
     &-viz {
         .col-xs-12 {
             position: relative;
-            height: calc(100vh - (150px + 3em));
+            height: calc(100vh - 150px);
 
             //
             // Responsive
             // --------------------------------------------------
             @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-                height: calc(100vh - (172px + 3em));
+                height: calc(100vh - 172px);
             }
         }
 

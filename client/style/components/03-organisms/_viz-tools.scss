@@ -3,19 +3,22 @@
 // --------------------------------------------------
 .viz {
     &-tools {
-        @include position(absolute, null, 1em, 1em, null, 10);
+        @include position(absolute, 1em, 1em, null, null, 10);
 
         width: 20em;
 
         @include flexbox;
-        @include align-items(flex-end);
+        @include align-items(end);
 
         //
         // Responsive
         // --------------------------------------------------
         @media (max-width: $screen-xs-max) {
             right: 0;
-            bottom: 1em;
+            top: inherit;
+            bottom: 5em;
+
+            @include align-items(flex-end);
 
             .form-control {
                 max-width: 10em;
@@ -44,6 +47,8 @@
         @include flexbox;
         @include align-items(center);
 
+        margin-right: 2em;
+
         > * {
             margin-left: 0.5em;
         }
@@ -51,7 +56,15 @@
 
     &-nav {
         > * {
-            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (max-width: $screen-xs-max) {
+                margin-bottom: 0;
+                margin-top: 0.5em;
+            }
 
             &:last-child {
                 margin-top: 2em;
