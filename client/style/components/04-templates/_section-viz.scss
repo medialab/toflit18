@@ -27,12 +27,16 @@
 // --------------------------------------------------
 .content {
     &-viz {
+        .col-xs-12 {
+            position: relative;
+            height: calc(100vh - (150px + 3em));
+        }
+
         //
         // Responsive
         // --------------------------------------------------
         @media (max-width: $screen-xs-max) {
             overflow: hidden;
-            position: relative;
             padding-top: 2.5em;
             padding-bottom: 3em;
         }

@@ -1,0 +1,48 @@
+//
+// TOFLIT18 COMPONENTS ORGANISM VIZ TOOLS
+// --------------------------------------------------
+.viz {
+    &-tools {
+        @include position(absolute, null, 1em, 1em, null, 10);
+
+        width: 20em;
+
+        @include flexbox;
+        @include align-items(flex-end);
+
+        > * {
+            margin-right: 0.5em;
+        }
+
+        form,
+        .form-group {
+            margin: 0;
+        }
+
+        .btn {
+            @include flexbox;
+            @include align-items(center);
+            @include justify-content(center);
+            @include square(2em);
+        }
+    }
+
+    &-actions {
+        @include flexbox;
+        @include align-items(center);
+
+        > * {
+            margin-left: 0.5em;
+        }
+    }
+
+    &-nav {
+        > * {
+            margin-top: 0.5em;
+
+            &:last-child {
+                margin-top: 2em;
+            }
+        }
+    }
+}
