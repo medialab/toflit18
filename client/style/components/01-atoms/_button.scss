@@ -1,0 +1,12 @@
+//
+// TOFLIT18 COMPONENTS ATOM BUTTON
+// --------------------------------------------------
+.btn-default {
+    &:hover,
+    &:focus,
+    &.focus {
+        color: $white;
+        background-color: $dove-gray-darken;
+        border-color: $dove-gray-darken;
+    }
+}

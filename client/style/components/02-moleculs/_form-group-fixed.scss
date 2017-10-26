@@ -1,5 +1,5 @@
 //
-// TOFLIT18 MOLECUL FORM GROUP FIXED
+// TOFLIT18 COMPONENTS MOLECUL FORM GROUP FIXED
 // --------------------------------------------------
 .form-group-fixed {
     position: fixed;
@@ -16,5 +16,10 @@
 
     @media (min-width: $screen-md-min) {
         width: 16.66667%;
+    }
+
+    &-right {
+        left: inherit;
+        right: 0;
     }
 }

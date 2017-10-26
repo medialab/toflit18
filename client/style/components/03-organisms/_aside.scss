@@ -29,6 +29,10 @@
             height: calc(100vh - 22.2em);
             overflow-y: auto;
         }
+
+        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+            height: calc(100vh - 23.5em);
+        }
     }
 
     &-right {
@@ -38,16 +42,21 @@
         //
         // Responsive
         // --------------------------------------------------
-        @media (min-width: $screen-xs-max) and (max-width: $screen-sm-max) {
-            height: calc(100vh - 13.8em);
-        }
-
         @media (max-width: $screen-xs-max) {
             display: none;
         }
 
         @media (min-width: $screen-xs-max) {
+            height: calc(100vh - 16.6em);
             overflow-y: auto;
+        }
+
+        @media (min-width: $screen-xs-max) and (max-width: $screen-sm-max) {
+            height: calc(100vh - 13.8em);
+        }
+
+        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+            height: calc(100vh - 18.1em);
         }
     }
 }
