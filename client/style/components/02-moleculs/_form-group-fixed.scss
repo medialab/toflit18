@@ -13,4 +13,8 @@
     border-top: 1px solid $gray-lighter;
 
     @include box-shadow(0 2px 20px 0 rgba(137, 128, 113, 0.2));
+
+    @media (min-width: $screen-md-min) {
+        width: 16.66667%;
+    }
 }

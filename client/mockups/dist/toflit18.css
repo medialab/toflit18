@@ -4167,6 +4167,9 @@ select {
   border-top: 1px solid #eeeeee;
   -webkit-box-shadow: 0 2px 20px 0 rgba(137, 128, 113, 0.2);
   box-shadow: 0 2px 20px 0 rgba(137, 128, 113, 0.2); }
+  @media (min-width: 992px) {
+    .form-group-fixed {
+      width: 16.66667%; } }
 
 .text-heading {
   display: -webkit-box;
@@ -4255,6 +4258,9 @@ footer {
       right: 0;
       left: 0;
       z-index: 100; } }
+  @media (min-width: 992px) {
+    .box-selection {
+      width: 16.66667%; } }
   @media (max-width: 767px) {
     .box-selection {
       width: 100%; } }
