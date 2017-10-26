@@ -1,0 +1,54 @@
+//
+// TOFLIT18 ORGANISM ASIDE
+// --------------------------------------------------
+.aside {
+    &-left,
+    &-right {
+        background-color: $white;
+        overflow: auto;
+        max-height: calc(100vh - 10.5em);
+    }
+
+    &-left {
+        box-shadow: 0 2px 20px 0 rgba($olive-haze-darken, 0.2);
+        border-left: 1px solid lighten($olive-haze-darken, 40%);
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            display: none;
+        }
+
+        @media (min-width: $screen-xs-max) {
+            margin-top: 5.5em;
+
+            // height = header + section-heading + box-selection + footer
+            height: calc(100vh - (150px + 3em + 5.5em + 70px));
+            overflow-y: auto;
+        }
+
+        @media (min-width: $screen-xs-max) and (max-width: $screen-sm-max) {
+            // height = header + section-heading + box-selection + footer
+            height: calc(100vh - (150px + 5.7em + 5.5em + 70px));
+        }
+    }
+
+    &-right {
+        box-shadow: 0 -2px 20px 0 rgba($olive-haze-darken, 0.2);
+        border-right: 1px solid lighten($olive-haze-darken, 40%);
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            display: none;
+        }
+
+        @media (min-width: $screen-xs-max) {
+            // height = header + footer
+            height: calc(100vh - (150px + 3em));
+            overflow-y: auto;
+        }
+    }
+}

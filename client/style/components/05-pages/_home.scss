@@ -49,6 +49,8 @@
         }
 
         @media (max-width: $screen-xs-max) {
+            padding-top: 10em;
+
             @include cover-background("../assets/images/home-bg_375x667.jpg");
         }
 
@@ -127,7 +129,13 @@
         img {
             @include transition(all 0.35s ease-out);
 
-            min-width: 360px;
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (min-width: $screen-xs-max) {
+                min-width: 360px;
+            }
+
             height: 210px;
         }
 

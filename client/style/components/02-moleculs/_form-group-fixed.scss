@@ -1,0 +1,16 @@
+//
+// TOFLIT18 MOLECUL FORM GROUP FIXED
+// --------------------------------------------------
+.form-group-fixed {
+    position: fixed;
+    bottom: calc(3em + 1px);
+    left: 0;
+    width: 25%;
+    padding: 1em;
+    background-color: $white;
+    text-align: center;
+    border-bottom: 1px solid $gray-lighter;
+    border-top: 1px solid $gray-lighter;
+
+    @include box-shadow(0 2px 20px 0 rgba(137, 128, 113, 0.2));
+}

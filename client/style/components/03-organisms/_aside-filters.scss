@@ -3,7 +3,10 @@
 // --------------------------------------------------
 .aside {
     &-filters {
+        padding: 1em 0;
+
         h3 {
+            margin-top: 0;
             color: $olive-haze-darken;
             font-size: 1.2em;
         }

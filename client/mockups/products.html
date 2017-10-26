@@ -12,10 +12,11 @@
     <title>TOFLIT18</title>
 
     <!-- TOFLIT18 WebFonts -->
-    <link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700|Source+Sans+Pro:400,400i,600,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700|Source+Sans+Pro:400,400i,600,600i,700,700i" rel="stylesheet">
 
     <!-- TOFLIT18 core CSS -->
     <link rel="stylesheet" href="dist/toflit18.css">
+    <link rel="stylesheet" href="../node_modules/react-select/dist/react-select.min.css">
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
@@ -119,7 +120,7 @@
           </div>
           <div class="section-viz">
             <div class="box-selection">
-              <h2 class="hidden-xs">Product classification</h2>
+              <h2 class="hidden-xs"><span class="hidden-sm hidden-md">Product</span> classification</h2>
               <select id="productClassificationHead">
                 <option value="valeur1">Valeur 1</option>
                 <option value="valeur2" selected>Valeur 2</option>
@@ -127,59 +128,158 @@
               </select>
             </div>
             <div class="container-fluid">
-              <div class="row row-offcanvas row-offcanvas-left"><!-- add and remove class active for toogle button aside-btn-left -->
-                <div class="row-offcanvas row-offcanvas-right"><!-- add and remove class active for toogle button aside-btn-left -->
-                  <aside class="col-xs-6 col-sm-3 sidebar-offcanvas aside-left" id="sidebarLeft" role="navigation">
-                    <button class="aside-btn-left" type="button" data-toggle="offcanvas">Filtres</button>
+              <div class="row row-offcanvas row-offcanvas-left"><!-- add and remove .active for toggle button aside-btn-left -->
+                <div class="row-offcanvas row-offcanvas-right"><!-- add and remove .active for toggle button aside-btn-right -->
+                  <aside class="col-xs-6 col-sm-3 sidebar-offcanvas aside-left" id="sidebarLeft">
                     <div class="aside-filters">
                       <h3>Filters</h3>
-                      <div class="form-group">
-                        <label for="sourceType" class="control-label">Source Type</label>
-                        <small id="helpSourceType" class="help-block">From wich sources does the data comes from ?</small>
-                        <select id="sourceType" aria-describedby="helpSourceType">
-                          <option value="valeur1">Valeur 1</option>
-                          <option value="valeur2" selected>Valeur 2</option>
-                          <option value="valeur3">Valeur 3</option>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="product" class="control-label">Product</label>
-                        <small id="helpProduct" class="help-block">The type of product being shipped.</small>
-                        <select id="productClassification" aria-describedby="helpProductClassification">
-                          <option value="valeur1">Valeur 1</option>
-                          <option value="valeur2" selected>Valeur 2</option>
-                          <option value="valeur3">Valeur 3</option>
-                        </select>
-                        <select id="product" aria-describedby="helpProduct">
-                          <option value="valeur1">Valeur 1</option>
-                          <option value="valeur2" selected>Valeur 2</option>
-                          <option value="valeur3">Valeur 3</option>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="country" class="control-label">Country</label>
-                        <small id="helpCountry" class="help-block">The country whence we got the products or wither we are sending them.</small>
-                        <select id="countryClassification" aria-describedby="helpCountryClassification">
-                          <option value="valeur1">Valeur 1</option>
-                          <option value="valeur2" selected>Valeur 2</option>
-                          <option value="valeur3">Valeur 3</option>
-                        </select>
-                        <select id="country" aria-describedby="helpProduct">
-                          <option value="valeur1">Valeur 1</option>
-                          <option value="valeur2" selected>Valeur 2</option>
-                          <option value="valeur3">Valeur 3</option>
-                        </select>
-                      </div>
+                      <form>
+                        <div class="form-group">
+                          <label for="sourceType" class="control-label">Source Type</label>
+                          <small class="help-block">From wich sources does the data comes from ?</small>
+                          <select id="sourceType">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="product" class="control-label">Product</label>
+                          <small class="help-block">The type of product being shipped.</small>
+                          <select id="product">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                          <select>
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="country" class="control-label">Country</label>
+                          <small class="help-block">The country whence we got the products or wither we are sending them.</small>
+                          <select id="country">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                          <select>
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="direction" class="control-label">Direction</label>
+                          <small class="help-block">The French harbor where the transactions were recorded.</small>
+                          <select id="direction">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="kind" class="control-label">Kind</label>
+                          <small class="help-block">Should we look at import, export, or total?</small>
+                          <select id="kind">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="dates" class="control-label">Dates</label>
+                          <small class="help-block">Choose one date or a range data</small>
+                          <div class="row">
+                            <div class="col-xs-6">
+                              <select id="dates">
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                            <div class="col-xs-6">
+                              <select>
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group-fixed">
+                          <button type="submit" class="btn btn-default">Update</button>
+                        </div>
+                      </form>
                     </div>
                   </aside>
                   <div class="content-viz">
+                    <button class="aside-btn-left" type="button">
+                      <span>Filtres</span>
+                      <svg class="icon icon-close" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-close"></use>
+                      </svg>
+                    </button>
+                    <button class="aside-btn-right" type="button">
+                      <span>Légende</span>
+                      <svg class="icon icon-close" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-close"></use>
+                      </svg>
+                    </button>
                     <div class="col-xs-12 col-sm-6">
                       Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.
                     </div>
                   </div>
-                  <aside class="col-xs-6 col-sm-3 sidebar-offcanvas aside-right" id="sidebarRight" role="navigation">
-                    <button class="aside-btn-right" type="button" data-toggle="offcanvas">Légende</button>
-                    Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.
+                  <aside class="col-xs-6 col-sm-3 sidebar-offcanvas aside-right" id="sidebarRight">
+                    <div class="aside-legend">
+                      <form>
+                        <div class="form-group">
+                          <label for="edge" class="control-label">Edge</label>
+                          <small class="help-block">Thickness</small>
+                          <select id="edge">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="edge" class="control-label">Node</label>
+                          <small class="help-block">Size</small>
+                          <select id="edge">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label">Color</label>
+                          <small class="help-block">Community Louvain</small>
+                        </div>
+                        <div class="form-group">
+                          <label for="label" class="control-label">Label</label>
+                          <div class="row">
+                            <div class="col-xs-6">
+                              <small class="help-block">Size</small>
+                              <select id="label">
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                            <div class="col-xs-6">
+                              <small class="help-block">Threshold</small>
+                              <select>
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
                   </aside>
                 </div>
               </div>
