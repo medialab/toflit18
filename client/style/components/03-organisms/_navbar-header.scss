@@ -6,8 +6,13 @@ header {
         margin-bottom: 0;
     }
 
-    .navbar-brand {
-        margin-right: 5.5em;
+    //
+    // Responsive
+    // --------------------------------------------------
+    @media (min-width: $screen-xs-max) {
+        .navbar-brand {
+            margin-right: 5.5em;
+        }
     }
 
     .navbar-nav {

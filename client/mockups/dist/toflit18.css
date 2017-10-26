@@ -3958,6 +3958,9 @@ main.container-global {
 .content-viz .col-xs-12 {
   position: relative;
   height: calc(100vh - (150px + 3em)); }
+  @media (min-width: 768px) and (max-width: 991px) {
+    .content-viz .col-xs-12 {
+      height: calc(100vh - (172px + 3em)); } }
 
 @media (max-width: 767px) {
   .content-viz {
@@ -4199,8 +4202,9 @@ select {
 header .navbar {
   margin-bottom: 0; }
 
-header .navbar-brand {
-  margin-right: 5.5em; }
+@media (min-width: 767px) {
+  header .navbar-brand {
+    margin-right: 5.5em; } }
 
 header .navbar-nav > li {
   font-size: 1.2em; }
@@ -4262,7 +4266,10 @@ footer {
 .aside-left, .aside-right {
   background-color: #ffffff;
   overflow: auto;
-  max-height: calc(100vh - 10.5em); }
+  height: calc(100vh - 12.5em); }
+  @media (min-width: 767px) and (max-width: 991px) {
+    .aside-left, .aside-right {
+      height: calc(100vh - 14.8em); } }
 
 .aside-left {
   box-shadow: 0 2px 20px 0 rgba(137, 128, 113, 0.2);
@@ -4273,21 +4280,20 @@ footer {
   @media (min-width: 767px) {
     .aside-left {
       margin-top: 5.5em;
-      height: calc(100vh - (150px + 3em + 5.5em + 70px));
+      height: calc(100vh - 22.2em);
       overflow-y: auto; } }
-  @media (min-width: 767px) and (max-width: 991px) {
-    .aside-left {
-      height: calc(100vh - (150px + 5.7em + 5.5em + 70px)); } }
 
 .aside-right {
   box-shadow: 0 -2px 20px 0 rgba(137, 128, 113, 0.2);
   border-right: 1px solid #e6e4e0; }
+  @media (min-width: 767px) and (max-width: 991px) {
+    .aside-right {
+      height: calc(100vh - 13.8em); } }
   @media (max-width: 767px) {
     .aside-right {
       display: none; } }
   @media (min-width: 767px) {
     .aside-right {
-      height: calc(100vh - (150px + 3em));
       overflow-y: auto; } }
 
 .aside-filters {
@@ -4316,6 +4322,13 @@ footer {
   -webkit-align-items: flex-end;
   -moz-align-items: flex-end;
   align-items: flex-end; }
+  @media (max-width: 767px) {
+    .viz-tools {
+      right: 0;
+      bottom: 1em; }
+      .viz-tools .form-control {
+        max-width: 10em;
+        float: right; } }
   .viz-tools > * {
     margin-right: 0.5em; }
   .viz-tools form,

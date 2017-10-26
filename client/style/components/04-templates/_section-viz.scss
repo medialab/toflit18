@@ -30,6 +30,13 @@
         .col-xs-12 {
             position: relative;
             height: calc(100vh - (150px + 3em));
+
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+                height: calc(100vh - (172px + 3em));
+            }
         }
 
         //

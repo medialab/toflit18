@@ -10,6 +10,19 @@
         @include flexbox;
         @include align-items(flex-end);
 
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            right: 0;
+            bottom: 1em;
+
+            .form-control {
+                max-width: 10em;
+                float: right;
+            }
+        }
+
         > * {
             margin-right: 0.5em;
         }
