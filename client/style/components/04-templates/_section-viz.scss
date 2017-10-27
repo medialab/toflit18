@@ -5,7 +5,6 @@
     &-viz {
         position: relative;
         top: 3.2em;
-        border-bottom: 1px solid #eeeeee;
 
         @media (max-width: $screen-xs-max) {
             overflow: hidden;
@@ -21,13 +20,21 @@
     &-viz {
         .col-xs-12 {
             position: relative;
-            height: calc(100vh - 150px);
+            overflow: hidden;
 
             //
             // Responsive
             // --------------------------------------------------
             @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
                 height: calc(100vh - 172px);
+            }
+
+            @media (min-width: $screen-md-min) and (max-width: $screen-xlg-max) {
+                height: calc(100vh - 192px);
+            }
+
+            @media (min-width: $screen-xlg-max) {
+                height: calc(100vh - 152px);
             }
         }
 

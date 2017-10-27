@@ -12,7 +12,7 @@
 @import "bootstrap/normalize";
 @import "bootstrap/print";
 
-// @import "bootstrap/glyphicons";
+@import "bootstrap/glyphicons";
 
 // Core CSS
 @import "bootstrap/scaffolding";
@@ -37,7 +37,7 @@
 //@import "bootstrap/pagination";
 //@import "bootstrap/pager";
 //@import "bootstrap/labels";
-//@import "bootstrap/badges";
+@import "bootstrap/badges";
 
 //@import "bootstrap/jumbotron";
 //@import "bootstrap/thumbnails";
@@ -45,8 +45,8 @@
 
 //@import "bootstrap/progress-bars";
 //@import "bootstrap/media";
-//@import "bootstrap/list-group";
-//@import "bootstrap/panels";
+@import "bootstrap/list-group";
+@import "bootstrap/panels";
 @import "bootstrap/responsive-embed";
 
 @import "bootstrap/wells";

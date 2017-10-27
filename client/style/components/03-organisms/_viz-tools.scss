@@ -34,13 +34,6 @@
         .form-group {
             margin: 0;
         }
-
-        .btn {
-            @include flexbox;
-            @include align-items(center);
-            @include justify-content(center);
-            @include square(2em);
-        }
     }
 
     // Actions

@@ -1,0 +1,21 @@
+//
+// TOFLIT18 COMPONENTS ATOM BUTTON ICON
+// --------------------------------------------------
+.btn-icon {
+    @include flexbox;
+    @include align-items(center);
+    @include justify-content(center);
+    @include square(2em);
+}
+
+// + for list
+// --------------------------------------------------
+.no-bullet {
+    .btn-icon {
+        @extend .btn-link;
+
+        padding: 0;
+
+        @include square(1.5em);
+    }
+}

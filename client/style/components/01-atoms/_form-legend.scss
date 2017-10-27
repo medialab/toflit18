@@ -1,0 +1,11 @@
+//
+// TOFLIT18 COMPONENTS ATOM FORM LEGEND
+// --------------------------------------------------
+legend {
+    @extend h2;
+
+    padding-top: 1em;
+    color: $olive-haze-darken;
+    font-family: $font-family-heading;
+    font-size: 1.3em;
+}
