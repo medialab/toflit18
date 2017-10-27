@@ -6,7 +6,6 @@
  */
 import React, {Component} from 'react';
 import Header from './Header.jsx';
-import Footer from './Footer.jsx';
 
 export default class App extends Component {
   render() {
@@ -14,7 +13,6 @@ export default class App extends Component {
       <div id="main">
         <Header />
         {this.props.children}
-        <Footer />
       </div>
     );
   }

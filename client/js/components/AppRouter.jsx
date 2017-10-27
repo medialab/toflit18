@@ -10,6 +10,7 @@ import PropTypes from 'baobab-react/prop-types';
 import App from './App.jsx';
 import Home from './Home.jsx';
 import About from './About.jsx';
+import Legal from './Legal.jsx';
 import ClassificationPanel from './classification/ClassificationPanel.jsx';
 import ClassificationModal from './classification/ClassificationModal.jsx';
 import ClassificationBrowser from './classification/ClassificationBrowser.jsx';
@@ -48,6 +49,7 @@ export default class AppRouter extends Component {
           </Route>
           <Route path="glossary" component={GlossaryPanel} />
           <Route path="about" component={About} />
+          <Route path="legal" component={Legal} />
         </Route>
         <Redirect from="*" to="/" />
       </Router>

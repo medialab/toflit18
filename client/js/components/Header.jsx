@@ -70,7 +70,7 @@ export default class Header extends Component {
     return (
       <header>
         <nav className="navbar navbar-default navbar-fixed-top">
-          <div className="container">
+          <div className="container-fluid">
             <div className="navbar-header">
               <button
                 type="button"
@@ -153,6 +153,11 @@ export default class Header extends Component {
                 </li>
                 <li>
                   <Link to="/about">About</Link>
+                </li>
+              </ul>
+              <ul className="nav navbar-nav navbar-right">
+                <li>
+                  <Link to="/legal">Legal notice</Link>
                 </li>
               </ul>
             </div>
