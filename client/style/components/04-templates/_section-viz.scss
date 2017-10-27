@@ -8,6 +8,8 @@
         border-bottom: 1px solid #eeeeee;
 
         @media (max-width: $screen-xs-max) {
+            overflow: hidden;
+            min-height: calc(100vh - 7em);
             margin-bottom: 5em;
         }
     }
