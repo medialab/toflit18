@@ -3997,6 +3997,11 @@ body {
   stroke: currentColor;
   fill: currentColor; }
 
+@media (min-width: 767px) {
+  .navbar-brand {
+    position: absolute;
+    left: 15px; } }
+
 .icon-logotype {
   width: 5.876953125em; }
 
@@ -4189,7 +4194,7 @@ select {
   -moz-align-items: end;
   align-items: end; }
   .text-heading h1 {
-    margin: 0 3em 0 0;
+    margin: 0;
     font-size: 2.2em;
     color: #B8AE9D; }
     @media (max-width: 767px) {
@@ -4205,10 +4210,12 @@ select {
 
 header .navbar {
   margin-bottom: 0; }
-
-@media (min-width: 767px) {
-  header .navbar-nav {
-    margin-left: 9%; } }
+  @media (min-width: 768px) and (max-width: 991px) {
+    header .navbar .container-fluid {
+      padding-left: 33.33333%; } }
+  @media (min-width: 992px) {
+    header .navbar .container-fluid {
+      padding-left: 25%; } }
 
 header .navbar-nav > li {
   font-size: 1.2em; }
