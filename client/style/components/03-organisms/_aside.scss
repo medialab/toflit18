@@ -33,6 +33,18 @@
         @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
             height: calc(100vh - 20.5em);
         }
+
+        @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+            height: calc(100vh - 21.6em);
+        }
+
+        @media (min-width: $screen-lg-min) and (max-width: $screen-xlg-max) {
+            height: calc(100vh - 20.5em);
+        }
+
+        @media (min-width: $screen-xlg-max) {
+            height: calc(100vh - 19em);
+        }
     }
 
     &-right {
@@ -51,12 +63,20 @@
             overflow-y: auto;
         }
 
-        @media (min-width: $screen-xs-max) and (max-width: $screen-sm-max) {
-            height: calc(100vh - 13.8em);
+        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+            height: calc(100vh - 14.8em);
         }
 
-        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-            height: calc(100vh - 15em);
+        @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+            height: calc(100vh - 16.2em);
+        }
+
+        @media (min-width: $screen-lg-min) and (max-width: $screen-xlg-max) {
+            height: calc(100vh - 14.8em);
+        }
+
+        @media (min-width: $screen-xlg-max) {
+            height: calc(100vh - 13.6em);
         }
     }
 }
