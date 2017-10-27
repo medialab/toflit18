@@ -1,0 +1,33 @@
+//
+// TOFLIT18 ORGANISM ASIDE CLASSIFCATIONS
+// --------------------------------------------------
+.sections-viz-classifications {
+    .aside {
+        &-left {
+            //
+            // Responsive
+            // --------------------------------------------------
+
+            @media (min-width: $screen-xs-max) {
+                margin-top: 0;
+                height: calc(100vh - (19em - 5.5em);
+            }
+
+            @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+                height: calc(100vh - (20.5em - 5.5em);
+            }
+
+            @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+                height: calc(100vh - (21.6em - 5.5em);
+            }
+
+            @media (min-width: $screen-lg-min) and (max-width: $screen-xlg-max) {
+                height: calc(100vh - (20.5em - 5.5em);
+            }
+
+            @media (min-width: $screen-xlg-max) {
+                height: calc(100vh - (19em - 5.5em);
+            }
+        }
+    }
+}

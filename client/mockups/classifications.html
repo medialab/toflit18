@@ -127,21 +127,32 @@
               </div>
             </div>
           </div>
-          <div class="section-viz">
-            <div class="box-selection">
-              <h2 class="hidden-xs"><span class="hidden-sm hidden-md">Product</span> classification</h2>
-              <select id="productClassificationHead">
-                <option value="valeur1">Valeur 1</option>
-                <option value="valeur2" selected>Valeur 2</option>
-                <option value="valeur3">Valeur 3</option>
-              </select>
-            </div>
+          <div class="section-viz sections-viz-classifications">
             <div class="container-fluid">
               <div class="row row-offcanvas row-offcanvas-left"><!-- add and remove .active for toggle button aside-btn-left -->
                 <div class="row-offcanvas row-offcanvas-right"><!-- add and remove .active for toggle button aside-btn-right -->
                   <aside class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-left" id="sidebarLeft">
                     <div class="aside-filters">
+                      <h3>What do I want to see ?</h3>
                       <form>
+                        <div class="form-group">
+                          <label for="itemsType" class="sr-only control-label">Items type</label>
+                          <small class="help-block">Choose beetween the product or the country.</small>
+                          <select id="itemsType">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="classifications" class="control-label">Classifications</label>
+                          <small class="help-block">Lorem ipsum....</small>
+                          <select id="classifications">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
                         <div class="form-group-fixed">
                           <button type="submit" class="btn btn-default">Update</button>
                         </div>
@@ -190,41 +201,18 @@
                                     <div class="list-group-item well">
                                       <span class="badge">6 items</span>
                                       <h4 class="list-group-item-heading">agrès de navire</h4>
-                                      <ul class="addendum list-customs">
-                                        <li><em>Agrais ; de navires</em></li>
-                                        <li><em>Agrais de navire</em></li>
-                                        <li><em>Agrès ; de navire</em></li>
-                                        <li><em>Agrès de navire</em></li>
-                                        <li><em>Agrès de navires</em></li>
-                                        <li class="no-bullet">
-                                          <button class="btn btn-default btn-xs btn-icon" type="submit">
-                                            <svg class="icon icon-zoom-in" aria-hidden="true">
-                                              <use xlink:href="../assets/svg/icons/icons.svg#icon-zoom-in"></use>
-                                            </svg>
-                                          </button>
-                                        </li>
-                                      </ul>
                                     </div>
                                     <div class="list-group-item well">
                                       <span class="badge">1 item</span>
                                       <h4 class="list-group-item-heading">agrès de navire en voile</h4>
-                                      <ul class="addendum list-customs">
-                                        <li><em>Agrès ; de navire ; en voiles</em></li>
-                                      </ul>
                                     </div>
                                     <div class="list-group-item well">
                                       <span class="badge">1 item</span>
                                       <h4 class="list-group-item-heading">agrès de navire en voile</h4>
-                                      <ul class="addendum list-customs">
-                                        <li><em>Agrès ; de navire ; en voiles</em></li>
-                                      </ul>
                                     </div>
                                     <div class="list-group-item well">
                                       <span class="badge">1 item</span>
                                       <h4 class="list-group-item-heading">agrès de navire en voile</h4>
-                                      <ul class="addendum list-customs">
-                                        <li><em>Agrès ; de navire ; en voiles</em></li>
-                                      </ul>
                                     </div>
                                   </div>
                                 </div>
@@ -234,7 +222,7 @@
                         </div>
                         <div class="col-sm-6">
                           <form>
-                            <legend class="text-center">Source</legend>
+                            <legend class="text-center">Source <small>(Orthographic Normalization)</small></legend>
                             <div class="row">
                               <div class="col-sm-12 col-lg-8 col-lg-offset-2">
                                 <div class="form-group">
@@ -254,7 +242,45 @@
                             </div>
                             <div class="row">
                               <div class="col-sm-12">
-
+                                <div class="form-group form-group-list">
+                                  <div class="list-group">
+                                    <div class="list-group-item well">
+                                      <span class="badge">6 items</span>
+                                      <ul class="addendum list-customs">
+                                        <li><em>Agrais ; de navires</em></li>
+                                        <li><em>Agrais de navire</em></li>
+                                        <li><em>Agrès ; de navire</em></li>
+                                        <li><em>Agrès de navire</em></li>
+                                        <li><em>Agrès de navires</em></li>
+                                        <li class="no-bullet">
+                                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                                            <svg class="icon icon-zoom-in" aria-hidden="true">
+                                              <use xlink:href="../assets/svg/icons/icons.svg#icon-zoom-in"></use>
+                                            </svg>
+                                          </button>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <div class="list-group-item well">
+                                      <span class="badge">1 item</span>
+                                      <ul class="addendum list-customs">
+                                        <li><em>Agrès ; de navire ; en voiles</em></li>
+                                      </ul>
+                                    </div>
+                                    <div class="list-group-item well">
+                                      <span class="badge">1 item</span>
+                                      <ul class="addendum list-customs">
+                                        <li><em>Agrès ; de navire ; en voiles</em></li>
+                                      </ul>
+                                    </div>
+                                    <div class="list-group-item well">
+                                      <span class="badge">1 item</span>
+                                      <ul class="addendum list-customs">
+                                        <li><em>Agrès ; de navire ; en voiles</em></li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </form>
