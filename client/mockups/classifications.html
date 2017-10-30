@@ -139,9 +139,8 @@
                           <label for="itemsType" class="sr-only control-label">Items type</label>
                           <small class="help-block">Choose beetween the product or the country.</small>
                           <select id="itemsType">
-                            <option value="valeur1">Valeur 1</option>
-                            <option value="valeur2" selected>Valeur 2</option>
-                            <option value="valeur3">Valeur 3</option>
+                            <option value="valeur1" selected>Product</option>
+                            <option value="valeur2">Country</option>
                           </select>
                         </div>
                         <div class="form-group">
@@ -152,6 +151,23 @@
                             <option value="valeur2" selected>Valeur 2</option>
                             <option value="valeur3">Valeur 3</option>
                           </select>
+                        </div>
+                        <div class="well">
+                          <p><strong>24 groups for 25 items.</strong></p>
+                          <p><small>24 /  25 (-1) classified items  (96 %)</small></p>
+                        </div>
+                        <div class="form-group">
+                          <label for="classifications" class="control-label">Classifications parent</label>
+                          <small class="help-block">Lorem ipsum....</small>
+                          <select id="classifications">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="well">
+                          <p><strong>25 groups for 20 041 items.</strong></p>
+                          <p><small>20 041 /  20 041 classified items  (100 %)</small></p>
                         </div>
                         <div class="form-group-fixed">
                           <button type="submit" class="btn btn-default">Update</button>
@@ -176,43 +192,19 @@
                       <div class="row">
                         <div class="col-sm-6">
                           <form>
-                            <legend class="text-center">Classification</legend>
+                            <legend class="text-center">Simplification</legend>
                             <div class="row">
                               <div class="col-sm-12 col-lg-8 col-lg-offset-2">
                                 <div class="form-group">
-                                  <label class="sr-only" for="search">Search item</label>
+                                  <label class="sr-only" for="search">Search</label>
                                   <div class="input-group">
-                                    <input type="text" class="form-control" id="search" placeholder="Search item">
+                                    <input type="text" class="form-control" id="search" placeholder="Search">
                                     <div class="input-group-btn">
-                                      <button class="btn btn-default" type="submit">
+                                      <button class="btn btn-default btn-search" type="submit">
                                         <svg class="icon icon-search-lg" aria-hidden="true">
                                           <use xlink:href="../assets/svg/icons/icons.svg#icon-search-lg"></use>
                                         </svg>
                                       </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-sm-12">
-                                <div class="form-group form-group-list">
-                                  <div class="list-group">
-                                    <div class="list-group-item well">
-                                      <span class="badge">6 items</span>
-                                      <h4 class="list-group-item-heading">agrès de navire</h4>
-                                    </div>
-                                    <div class="list-group-item well">
-                                      <span class="badge">1 item</span>
-                                      <h4 class="list-group-item-heading">agrès de navire en voile</h4>
-                                    </div>
-                                    <div class="list-group-item well">
-                                      <span class="badge">1 item</span>
-                                      <h4 class="list-group-item-heading">agrès de navire en voile</h4>
-                                    </div>
-                                    <div class="list-group-item well">
-                                      <span class="badge">1 item</span>
-                                      <h4 class="list-group-item-heading">agrès de navire en voile</h4>
                                     </div>
                                   </div>
                                 </div>
@@ -222,15 +214,15 @@
                         </div>
                         <div class="col-sm-6">
                           <form>
-                            <legend class="text-center">Source <small>(Orthographic Normalization)</small></legend>
+                            <legend class="text-center">Source / <small>Orthographic Normalization</small></legend>
                             <div class="row">
                               <div class="col-sm-12 col-lg-8 col-lg-offset-2">
                                 <div class="form-group">
-                                  <label class="sr-only" for="search">Search group</label>
+                                  <label class="sr-only" for="search">Search</label>
                                   <div class="input-group">
-                                    <input type="text" class="form-control" id="search" placeholder="Search group">
+                                    <input type="text" class="form-control" id="search" placeholder="Search">
                                     <div class="input-group-btn">
-                                      <button class="btn btn-default" type="submit">
+                                      <button class="btn btn-default btn-search" type="submit">
                                         <svg class="icon icon-search-lg" aria-hidden="true">
                                           <use xlink:href="../assets/svg/icons/icons.svg#icon-search-lg"></use>
                                         </svg>
@@ -240,51 +232,103 @@
                                 </div>
                               </div>
                             </div>
+                          </form>
+                        </div>
+                        <div class="group-list-container">
+                          <div class="col-sm-12">
                             <div class="row">
-                              <div class="col-sm-12">
-                                <div class="form-group form-group-list">
-                                  <div class="list-group">
-                                    <div class="list-group-item well">
-                                      <span class="badge">6 items</span>
-                                      <ul class="addendum list-customs">
-                                        <li><em>Agrais ; de navires</em></li>
-                                        <li><em>Agrais de navire</em></li>
-                                        <li><em>Agrès ; de navire</em></li>
-                                        <li><em>Agrès de navire</em></li>
-                                        <li><em>Agrès de navires</em></li>
-                                        <li class="no-bullet">
-                                          <button class="btn btn-default btn-xs btn-icon" type="submit">
-                                            <svg class="icon icon-zoom-in" aria-hidden="true">
-                                              <use xlink:href="../assets/svg/icons/icons.svg#icon-zoom-in"></use>
-                                            </svg>
-                                          </button>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <div class="list-group-item well">
-                                      <span class="badge">1 item</span>
-                                      <ul class="addendum list-customs">
-                                        <li><em>Agrès ; de navire ; en voiles</em></li>
-                                      </ul>
-                                    </div>
-                                    <div class="list-group-item well">
-                                      <span class="badge">1 item</span>
-                                      <ul class="addendum list-customs">
-                                        <li><em>Agrès ; de navire ; en voiles</em></li>
-                                      </ul>
-                                    </div>
-                                    <div class="list-group-item well">
-                                      <span class="badge">1 item</span>
-                                      <ul class="addendum list-customs">
-                                        <li><em>Agrès ; de navire ; en voiles</em></li>
-                                      </ul>
-                                    </div>
+                              <div class="group-list">
+                                <div class="col-sm-6">
+                                  <div class="group-list-title well">
+                                    <h4>abassis</h4>
+                                  </div>
+                                </div>
+                                <div class="col-sm-6">
+                                  <div class="group-list-items well">
+                                    <ul class="list-customs">
+                                      <li><em>Abacir</em></li>
+                                      <li><em>Abafine</em></li>
+                                      <li><em>Abassis</em></li>
+                                      <li><em>abassis</em></li>
+                                    </ul>
                                   </div>
                                 </div>
                               </div>
+                              <!-- /.group-list -->
+                              <div class="group-list">
+                                <div class="col-sm-6">
+                                  <div class="group-list-title well">
+                                    <h4>abats</h4>
+                                  </div>
+                                </div>
+                                <div class="col-sm-6">
+                                  <div class="group-list-items well">
+                                    <ul class="list-customs">
+                                      <li><em>abats</em></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- /.group-list -->
+                              <div class="group-list">
+                                <div class="col-sm-6">
+                                  <div class="group-list-title well">
+                                    <h4>abattis de morue</h4>
+                                  </div>
+                                </div>
+                                <div class="col-sm-6">
+                                  <div class="group-list-items well">
+                                    <ul class="list-customs">
+                                      <li><em>Abbatis de morue</em></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- /.group-list -->
+                              <div class="group-list">
+                                <div class="col-sm-6">
+                                  <div class="group-list-title well">
+                                    <h4>abricots confits</h4>
+                                  </div>
+                                </div>
+                                <div class="col-sm-6">
+                                  <div class="group-list-items well">
+                                    <ul class="list-customs">
+                                      <li><em>Abricots confits</em></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- /.group-list -->
+                              <div class="group-list">
+                                <div class="col-sm-6">
+                                  <div class="group-list-title well">
+                                    <h4>acacia</h4>
+                                  </div>
+                                </div>
+                                <div class="col-sm-6">
+                                  <div class="group-list-items well">
+                                    <ul class="list-customs">
+                                      <li><em>Acacia</em></li>
+                                      <li><em>Accacia</em></li>
+                                      <li><em>Agacia</em></li>
+                                      <li><em>acacia</em></li>
+                                      <li class="no-bullet">
+                                        <button class="btn btn-default btn-xs btn-icon" type="submit">
+                                          <svg class="icon icon-zoom-in" aria-hidden="true">
+                                            <use xlink:href="../assets/svg/icons/icons.svg#icon-zoom-in"></use>
+                                          </svg>
+                                        </button>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- /.group-list -->
                             </div>
-                          </form>
+                          </div>
                         </div>
+                        <!-- /.group-list-container -->
                       </div>
                     </div>
                   </div>

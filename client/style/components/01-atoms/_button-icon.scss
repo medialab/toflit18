@@ -8,6 +8,14 @@
     @include square(2em);
 }
 
+.btn-search {
+    max-height: 36px;
+
+    svg {
+        font-size: 1.3em;
+    }
+}
+
 // + for list
 // --------------------------------------------------
 .no-bullet {
