@@ -7,7 +7,8 @@
  */
 import React, {Component} from 'react';
 import screenfull from 'screenfull';
-import ExplorationNodeSearcher from '../ExplorationNodeSearcher.jsx';
+
+import Icon from '../../misc/Icon.jsx';
 
 /**
  * Settings.
@@ -76,8 +77,6 @@ export default class Network extends Component {
     this.layoutSettings = LAYOUT_SETTINGS;
 
     this.state = {
-      labelThreshold: SIGMA_SETTINGS.labelThreshold,
-      labelSizeRatio: SIGMA_SETTINGS.labelSizeRatio,
       layoutRunning: true,
       selectedNode: null
     };
@@ -114,16 +113,6 @@ export default class Network extends Component {
       }
 
       this.sigma.refresh();
-    };
-
-    this.updateLabelThreshold = e => {
-      this.setState({labelThreshold: +e.target.value});
-      this.sigma.settings({labelThreshold: +e.target.value});
-    };
-
-    this.updateLabelSizeRatio = e => {
-      this.setState({labelSizeRatio: +e.target.value});
-      this.sigma.settings({labelSizeRatio: +e.target.value});
     };
 
     this.focusNode = node => {
@@ -202,6 +191,12 @@ export default class Network extends Component {
     if (nextProps.edgeSizeKey)
       g.edges().forEach(edge => edge.size = edge[nextProps.edgeSizeKey]);
 
+    if (nextProps.labelThreshold)
+      this.sigma.settings({labelThreshold: +nextProps.labelThreshold});
+
+    if (nextProps.labelSizeRatio)
+      this.sigma.settings({labelSizeRatio: +nextProps.labelSizeRatio});
+
     this.sigma.refresh();
   }
 
@@ -224,24 +219,12 @@ export default class Network extends Component {
     const graph = this.props.graph,
           isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length);
 
-    const nodeDisplayRenderer = this.props.nodeDisplayRenderer;
-
-    const selectedNode = this.state.selectedNode;
-
     return (
-      <div id="sigma-graph" ref="mount">
+      <div
+        id="sigma-graph"
+        ref="mount"
+        className={this.props.className} >
         {isGraphEmpty && <Message text="No Data to display." />}
-        <Filters
-          threshold={this.state.labelThreshold}
-          size={this.state.labelSizeRatio}
-          updateThreshold={this.updateLabelThreshold}
-          updateSizeRatio={this.updateLabelSizeRatio} />
-        {typeof nodeDisplayRenderer === 'function' && (
-          <NodeDisplay node={selectedNode} renderer={nodeDisplayRenderer} />
-        )}
-        <ExplorationNodeSearcher
-          nodes={graph ? graph.nodes : []}
-          onChange={this.focusNode} />
         <Controls
           camera={this.sigma.cameras.main}
           toggleFullScreen={this.toggleFullScreen}
@@ -262,18 +245,6 @@ class Message extends Component {
         {this.props.text}
       </div>
     );
-  }
-}
-
-/**
- * Glyph.
- */
-class Glyph extends Component {
-  render() {
-    const name = this.props.name,
-          className = `fa fa-${name}`;
-
-    return <i className={className} />;
   }
 }
 
@@ -313,76 +284,58 @@ class Controls extends Component {
 
   render() {
     const toggleFullScreen = this.props.toggleFullScreen,
-          toggleLayout = this.props.toggleLayout,
-          icon = this.props.layoutRunning ? 'pause' : 'play';
+          toggleLayout = this.props.toggleLayout;
 
     return (
-      <div className="controls">
-        <div className="control" onClick={toggleFullScreen}>
-          <button><Glyph name="arrows-alt" /></button>
+      <div className="viz-tools">
+        <div className="viz-actions">
+          <form>
+            <div className="form-group form-group-xs">
+              <label className="sr-only" htmlFor="search">Search</label>
+              <div className="input-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="search"
+                  placeholder="Search" />
+                <div className="input-group-btn">
+                  <button
+                    type="submit"
+                    className="btn btn-default btn-xs">
+                    <Icon name="icon-search" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <button
+            className="btn btn-default btn-xs"
+            onClick={toggleLayout}>
+            <Icon name="icon-stop" />
+          </button>
         </div>
-        <div className="control" onClick={() => this.zoom()}>
-          <button><Glyph name="plus" /></button>
+        <div className="viz-nav">
+          <button
+            className="btn btn-default btn-xs"
+            onClick={() => this.rescale()}>
+            <Icon name="icon-localisation" />
+          </button>
+          <button
+            className="btn btn-default btn-xs"
+            onClick={() => this.zoom()}>
+            <Icon name="icon-zoom-in" />
+          </button>
+          <button
+            className="btn btn-default btn-xs"
+            onClick={() => this.unzoom()}>
+            <Icon name="icon-zoom-out" />
+          </button>
+          <button
+            className="btn btn-default btn-xs"
+            onClick={toggleFullScreen}>
+            <Icon name="icon-full-screen" />
+          </button>
         </div>
-        <div className="control" onClick={() => this.unzoom()}>
-          <button><Glyph name="minus" /></button>
-        </div>
-        <div className="control" onClick={() => this.rescale()}>
-          <button><Glyph name="dot-circle-o" /></button>
-        </div>
-        <div className="control" onClick={toggleLayout}>
-          <button><Glyph name={icon} /></button>
-        </div>
-      </div>
-    );
-  }
-}
-
-/**
- * Filters.
- */
-class Filters extends Component {
-  render() {
-    return (
-      <div className="filters">
-        <input
-          name="threshold"
-          type="range"
-          min="0"
-          max="20"
-          value={this.props.threshold}
-          onChange={this.props.updateThreshold} />
-        <label htmlFor="threshold">Label Threshold ({this.props.threshold})</label>
-        <br />
-        <input
-          name="size"
-          type="range"
-          min="1"
-          max="10"
-          value={this.props.size}
-          onChange={this.props.updateSizeRatio} />
-        <label htmlFor="size">Label Size Ratio ({this.props.size})</label>
-      </div>
-    );
-  }
-}
-
-/**
- * Node display.
- */
-class NodeDisplay extends Component {
-  render() {
-    const {
-      renderer,
-      node
-    } = this.props;
-
-    return (
-      <div className="node-display">
-        {node ?
-          renderer(node) :
-          <em>Try clicking a node to get some information...</em>
-        }
       </div>
     );
   }

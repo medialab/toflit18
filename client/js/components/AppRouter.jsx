@@ -14,7 +14,6 @@ import Legal from './Legal.jsx';
 import ClassificationPanel from './classification/ClassificationPanel.jsx';
 import ClassificationModal from './classification/ClassificationModal.jsx';
 import ClassificationBrowser from './classification/ClassificationBrowser.jsx';
-import ExplorationPanel from './exploration/ExplorationPanel.jsx';
 import ExplorationMeta from './exploration/ExplorationMeta.jsx';
 import ExplorationIndicators from './exploration/ExplorationIndicators.jsx';
 import ExplorationNetwork from './exploration/ExplorationNetwork.jsx';
@@ -41,7 +40,7 @@ export default class AppRouter extends Component {
             <Route path="browser" component={ClassificationBrowser} />
             <Route path="modal" component={ClassificationModal} />
           </Route>
-          <Route path="exploration" component={ExplorationPanel}>
+          <Route path="exploration">
             <Route path="meta" component={ExplorationMeta} />
             <Route path="indicators" component={ExplorationIndicators} />
             <Route path="network" component={ExplorationNetwork} />
