@@ -1,0 +1,12 @@
+//
+// TOFLIT18 COMPONENTS ATOM LIST LEGEND
+// --------------------------------------------------
+.list-legend {
+    span {
+        display: inline-block;
+
+        @include size(5px, 12px);
+
+        margin-right: 0.5em;
+    }
+}

@@ -5295,11 +5295,19 @@ body {
     .content-viz .col-xs-12 {
       height: calc(100vh - 148px); } }
 
+.content-viz.content-viz-metadata {
+  position: relative; }
+  .content-viz.content-viz-metadata .col-xs-12 {
+    overflow-y: auto; }
+
 @media (max-width: 767px) {
   .content-viz {
     overflow: hidden;
     padding-top: 2.5em;
     padding-bottom: 3em; } }
+
+.viz-metadata {
+  margin-top: 3.3em; }
 
 @media (max-width: 767px) {
   .row-offcanvas {
@@ -5428,6 +5436,19 @@ legend {
       margin: 0.2em 0 0 0.1em; }
       .list-customs li.no-bullet:before {
         content: none; }
+
+.list-legend span {
+  display: inline-block;
+  width: 5px;
+  height: 12px;
+  margin-right: 0.5em; }
+
+.title {
+  display: block;
+  margin-bottom: 1em;
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  color: #847257; }
 
 .nav > li > a.dropdown-caret {
   display: -webkit-box;
@@ -5724,6 +5745,11 @@ select {
   100% {
     transform: translateX(-20px); } }
 
+.box-viz {
+  padding: 1em;
+  border: 1px solid #eeeeee;
+  margin-bottom: 1em; }
+
 header .navbar {
   margin-bottom: 0; }
   @media (min-width: 768px) and (max-width: 991px) {
@@ -5795,6 +5821,9 @@ footer {
     color: #898071;
     font-size: 1.3em;
     margin: 0 0 0.5em; }
+  @media (min-width: 768px) {
+    .box-selection-lg {
+      height: 9.5em; } }
 
 .aside-left, .aside-right {
   background-color: #ffffff;
@@ -5827,6 +5856,22 @@ footer {
   @media (min-width: 1441px) {
     .aside-left {
       height: calc(100vh - 19em); } }
+  @media (min-width: 767px) {
+    .aside-left.aside-left-metadata {
+      margin-top: 9.5em;
+      height: calc(100vh - 23em); } }
+  @media (min-width: 768px) and (max-width: 991px) {
+    .aside-left.aside-left-metadata {
+      height: calc(100vh - 24.4em); } }
+  @media (min-width: 992px) and (max-width: 1199px) {
+    .aside-left.aside-left-metadata {
+      height: calc(100vh - 25.8em); } }
+  @media (min-width: 1200px) and (max-width: 1441px) {
+    .aside-left.aside-left-metadata {
+      height: calc(100vh - 23em); } }
+  @media (min-width: 1441px) {
+    .aside-left.aside-left-metadata {
+      height: calc(100vh - 23em); } }
 
 .aside-right {
   box-shadow: 0 -2px 20px 0 rgba(137, 128, 113, 0.2);
@@ -5916,6 +5961,8 @@ footer {
   .viz-tools form,
   .viz-tools .form-group {
     margin: 0; }
+  .viz-tools.viz-zoom {
+    width: 1.3em; }
 
 .viz-actions {
   display: -webkit-box;

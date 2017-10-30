@@ -45,6 +45,32 @@
         @media (min-width: $screen-xlg-max) {
             height: calc(100vh - 19em);
         }
+
+        &.aside-left-metadata {
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (min-width: $screen-xs-max) {
+                margin-top: 9.5em;
+                height: calc(100vh - 23em);
+            }
+
+            @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+                height: calc(100vh - 24.4em);
+            }
+
+            @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+                height: calc(100vh - 25.8em);
+            }
+
+            @media (min-width: $screen-lg-min) and (max-width: $screen-xlg-max) {
+                height: calc(100vh - 23em);
+            }
+
+            @media (min-width: $screen-xlg-max) {
+                height: calc(100vh - 23em);
+            }
+        }
     }
 
     &-right {
