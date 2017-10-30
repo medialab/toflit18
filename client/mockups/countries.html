@@ -100,8 +100,8 @@
                     </a>
                     <ul class="dropdown-menu">
                       <li><a href="#">Indicators</a></li>
-                      <li class="active"><a href="#">Products</a></li>
-                      <li><a href="#">Countries</a></li>
+                      <li><a href="#">Products</a></li>
+                      <li class="active"><a href="#">Countries</a></li>
                     </ul>
                   </li>
                   <li><a href="#">Glossary</a></li>
@@ -119,7 +119,7 @@
             <div class="text-heading">
               <div class="row">
                 <div class="col-sm-4 col-md-3">
-                  <h1>Products</h1>
+                  <h1>Countries</h1>
                 </div>
                 <div class="col-sm-8 col-md-5">
                   <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper.</p>
@@ -129,7 +129,7 @@
           </div>
           <div class="section-viz">
             <div class="box-selection">
-              <h2 class="hidden-xs"><span class="hidden-sm hidden-md">Product</span> classification</h2>
+              <h2 class="hidden-xs"><span class="hidden-sm hidden-md">Countries</span> classification</h2>
               <select id="productClassificationHead">
                 <option value="valeur1">Valeur 1</option>
                 <option value="valeur2" selected>Valeur 2</option>
@@ -161,29 +161,6 @@
                             <option value="valeur3">Valeur 3</option>
                           </select>
                           <select>
-                            <option value="valeur1">Valeur 1</option>
-                            <option value="valeur2" selected>Valeur 2</option>
-                            <option value="valeur3">Valeur 3</option>
-                          </select>
-                        </div>
-                        <div class="form-group">
-                          <label for="country" class="control-label">Country</label>
-                          <small class="help-block">The country whence we got the products or wither we are sending them.</small>
-                          <select id="country">
-                            <option value="valeur1">Valeur 1</option>
-                            <option value="valeur2" selected>Valeur 2</option>
-                            <option value="valeur3">Valeur 3</option>
-                          </select>
-                          <select>
-                            <option value="valeur1">Valeur 1</option>
-                            <option value="valeur2" selected>Valeur 2</option>
-                            <option value="valeur3">Valeur 3</option>
-                          </select>
-                        </div>
-                        <div class="form-group">
-                          <label for="direction" class="control-label">Direction</label>
-                          <small class="help-block">The French harbor where the transactions were recorded.</small>
-                          <select id="direction">
                             <option value="valeur1">Valeur 1</option>
                             <option value="valeur2" selected>Valeur 2</option>
                             <option value="valeur3">Valeur 3</option>
@@ -312,7 +289,11 @@
                         </div>
                         <div class="form-group">
                           <span class="control-label">Color</span>
-                          <small class="help-block">Community Louvain</small>
+                          <ul class="list-unstyled list-legend list-legend-circle">
+                            <!-- !!! add Color Legend -->
+                            <li><span style="background-color: #E6830E"></span><span>Direction</span></li>
+                            <li><span style="background-color: #049B9A"></span><span>Country</span></li>
+                          </ul>
                         </div>
                         <div class="form-group">
                           <label for="label" class="control-label">Label</label>

@@ -5437,11 +5437,28 @@ legend {
       .list-customs li.no-bullet:before {
         content: none; }
 
-.list-legend span {
+.list-legend > li {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center; }
+
+.list-legend li > span:first-child {
   display: inline-block;
   width: 5px;
   height: 12px;
   margin-right: 0.5em; }
+
+.list-legend.list-legend-circle li > span:first-child {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; }
 
 .title {
   display: block;
@@ -5449,6 +5466,9 @@ legend {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   color: #847257; }
+
+span.control-label {
+  font-weight: bold; }
 
 .nav > li > a.dropdown-caret {
   display: -webkit-box;
@@ -5748,8 +5768,12 @@ select {
 .box-viz {
   position: relative;
   padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 3px;
   border: 1px solid #eeeeee;
-  margin-bottom: 1em; }
+  min-height: 185px; }
+  .box-viz .loader-container {
+    border-radius: 3px; }
 
 header .navbar {
   margin-bottom: 0; }

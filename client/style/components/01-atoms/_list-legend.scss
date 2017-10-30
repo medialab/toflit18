@@ -2,11 +2,32 @@
 // TOFLIT18 COMPONENTS ATOM LIST LEGEND
 // --------------------------------------------------
 .list-legend {
-    span {
-        display: inline-block;
+    > li {
+        @include flexbox;
+        @include align-items(center);
+    }
 
-        @include size(5px, 12px);
+    li {
+        > span {
+            &:first-child {
+                display: inline-block;
 
-        margin-right: 0.5em;
+                @include size(5px, 12px);
+
+                margin-right: 0.5em;
+            }
+        }
+    }
+
+    &.list-legend-circle {
+        li {
+            > span {
+                &:first-child {
+                    @include square(10px);
+
+                    border-radius: 50%;
+                }
+            }
+        }
     }
 }
