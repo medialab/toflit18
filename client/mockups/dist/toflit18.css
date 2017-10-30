@@ -5262,6 +5262,14 @@ body {
     body {
       margin-bottom: 0; } }
 
+@media (max-width: 767px) {
+  .content {
+    margin-top: 5em; } }
+
+@media (min-width: 767px) {
+  .content {
+    margin-top: 8em; } }
+
 .section-viz {
   position: relative;
   top: 3.2em; }
