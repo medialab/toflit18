@@ -8,6 +8,7 @@
 import React, {Component} from 'react';
 import screenfull from 'screenfull';
 import Select from 'react-select';
+import cls from 'classnames';
 
 import Icon from '../../misc/Icon.jsx';
 
@@ -327,7 +328,7 @@ class Controls extends Component {
         <div className="viz-actions">
           <form>
             <div className="form-group form-group-xs">
-              <label className="sr-only" htmlFor="search">Search</label>
+              <label className="sr-only">Search</label>
               <div className="input-group">
                 <Select
                   options={nodes}
@@ -339,29 +340,30 @@ class Controls extends Component {
             </div>
           </form>
           <button
-            className="btn btn-default btn-xs"
+            className="btn btn-default btn-xs btn-icon"
             onClick={toggleLayout}>
-            <Icon name={layoutRunning ? 'icon-stop' : 'icon-play'} />
+            <Icon name="icon-stop" className={cls(!layoutRunning && 'hidden')} />
+            <Icon name="icon-play" className={cls(layoutRunning && 'hidden')} />
           </button>
         </div>
         <div className="viz-nav">
           <button
-            className="btn btn-default btn-xs"
+            className="btn btn-default btn-xs btn-icon"
             onClick={this.rescale}>
             <Icon name="icon-localisation" />
           </button>
           <button
-            className="btn btn-default btn-xs"
+            className="btn btn-default btn-xs btn-icon"
             onClick={this.zoom}>
             <Icon name="icon-zoom-in" />
           </button>
           <button
-            className="btn btn-default btn-xs"
+            className="btn btn-default btn-xs btn-icon"
             onClick={this.unzoom}>
             <Icon name="icon-zoom-out" />
           </button>
           <button
-            className="btn btn-default btn-xs"
+            className="btn btn-default btn-xs btn-icon"
             onClick={toggleFullScreen}>
             <Icon name="icon-full-screen" />
           </button>
