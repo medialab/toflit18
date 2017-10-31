@@ -85,12 +85,12 @@ export default class Header extends Component {
                 <span className="icon-bar" />
                 <span className="icon-bar" />
               </button>
-              <a className="navbar-brand" href="#">
+              <Link className="navbar-brand" to="/home">
                 <span className="sr-only">TOFLIT18</span>
                 <Icon
                   source="logotype"
                   name="icon-logotype" />
-              </a>
+              </Link>
             </div>
             <div
               className={cls('navbar-collapse', deployedBurger ? 'in' : 'collapse')}
