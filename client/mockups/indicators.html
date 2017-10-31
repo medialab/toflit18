@@ -196,7 +196,7 @@
                       </form>
                     </div>
                   </aside>
-                  <div class="content-viz content-viz-metadata">
+                  <div class="content-viz content-viz-data">
                     <button class="aside-btn-left" type="button">
                       <span>Filters</span>
                       <svg class="icon icon-close" aria-hidden="true">
@@ -210,28 +210,67 @@
                       </svg>
                     </button>
                     <div class="col-xs-12 col-sm-6 col-md-8">
-                      <div class="viz-metadata">
+                      <div class="viz-tools">
+                        <div class="viz-actions viz-actions-min">
+                          <form>
+                            <div class="form-group form-group-xs">
+                              <label class="sr-only" for="search">Search</label>
+                              <select id="search" disabled>
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      <div class="viz-data">
                         <div class="box-viz">
-                          <span class="title">Total number of classified items per year</span>
+                          <span class="title">Total number of directions per year</span>
                           <p>viz...</p>
                         </div>
                         <div class="box-viz">
-                          <span class="title">Not a medical product</span>
+                          <span class="title">Number of flows per year</span>
                           <p>viz...</p>
-                          <span class="title">Narrow medical product</span>
+                        </div>
+                        <div class="box-viz">
+                          <span class="title">Total value of flows per year</span>
                           <p>viz...</p>
+                        </div>
+                        <div class="viz-data-expand">
+                          <button type="submit" class="btn btn-default">Expand collapse quantities</button>
                         </div>
                       </div>
                     </div>
                   </div>
                   <aside class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-right" id="sidebarRight">
                     <div class="aside-legend">
-                      <ul class="list-unstyled list-legend">
-                        <!-- !!! add Color Legend -->
-                        <li><span style="background-color: #000000"></span>Number direction</li>
-                        <li><span style="background-color: #000000"></span>Number of flows</li>
+                      <ul class="list-unstyled list-labels">
+                        <li style="color: white; background-color: rgb(193, 79, 76);">
+                          <span><strong>Total flows </strong>(source type: Local best guess)</span>
+                          <button type="button" class="btn btn-link btn-xs btn-icon">
+                            <svg class="icon icon-close" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-close"></use>
+                            </svg>
+                          </button>
+                        </li>
+                        <li style="color: white; background-color: rgb(80, 67, 66);">
+                          <span><strong>Total flows of 3 (SITC) </strong>(source type: Local best guess)</span>
+                          <button type="button" class="btn btn-link btn-xs btn-icon">
+                            <svg class="icon icon-close" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-close"></use>
+                            </svg>
+                          </button>
+                        </li>
+                        <li style="color: white; background-color: rgb(165, 99, 183);"">
+                          <span><strong>Total flows of 3 (SITC) </strong>(source type: Local best guess)</span>
+                          <button type="button" class="btn btn-link btn-xs btn-icon">
+                            <svg class="icon icon-close" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-close"></use>
+                            </svg>
+                          </button>
+                        </li>
                       </ul>
-                      <p>Barcharts are sorted by average number of flows per year.</p>
                       <div class="form-group-fixed form-group-fixed-right">
                         <button type="submit" class="btn btn-default">Export</button>
                       </div>
