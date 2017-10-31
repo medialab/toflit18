@@ -18,7 +18,7 @@
     p {
         @include flex-basis(45em);
 
-        color: rgba(255, 255, 255, 0.6);
         margin: 0;
+        color: rgba(255, 255, 255, 0.6);
     }
 }

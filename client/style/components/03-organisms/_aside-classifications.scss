@@ -9,8 +9,9 @@
             // --------------------------------------------------
 
             @media (min-width: $screen-xs-max) {
-                margin-top: 0;
+
                 height: calc(100vh - (19em - 5.5em);
+                    margin-top: 0;
             }
 
             @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {

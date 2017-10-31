@@ -19,7 +19,7 @@
     transform: translate3d(0, 0, 0);
 
     &:before {
-        content: "";
+        content: '';
 
         @include position(absolute, 15px, 0, null, 0, null);
         @include square(10px);
@@ -31,6 +31,8 @@
     }
 }
 
+// Animations
+// --------------------------------------------------
 @keyframes paddles {
     0% {
         @include box-shadow((-25px) -10px 0px $sandal, 25px 10px 0px $sandal);

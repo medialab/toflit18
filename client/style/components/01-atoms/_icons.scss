@@ -3,8 +3,9 @@
 // --------------------------------------------------
 .icon {
     display: inline-block;
-    width: 1em;
-    height: 1em;
+
+    @include square(1em);
+
     stroke-width: 0;
     stroke: currentColor;
     fill: currentColor;
