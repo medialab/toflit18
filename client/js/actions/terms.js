@@ -125,6 +125,14 @@ export function selectEdgeSize(tree, key) {
   tree.set(ROOT.concat('edgeSize'), key);
 }
 
+export function selectLabelSizeRatio(tree, key) {
+  tree.set(ROOT.concat('labelSizeRatio'), key);
+}
+
+export function selectLabelThreshold(tree, key) {
+  tree.set(ROOT.concat('labelThreshold'), key);
+}
+
 export function updateDate(tree, dateChoosen) {
   const cursor = tree.select(ROOT),
         selectors = cursor.select('selectors');

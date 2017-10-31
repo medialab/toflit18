@@ -17,7 +17,7 @@ export default class Home extends Component {
           <span className="background-color" />
           <div className="container">
             <div className="row">
-              <div className="col-sm-10">
+              <div className="col-sm-10 col-sm-offset-1">
                 <h1>Transformations of the French Economy through the Lens of International Trade</h1>
                 <p className="lead">1716-1821</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper. Vivamus varius diam enim, ac semper nisl venenatis eget.</p>

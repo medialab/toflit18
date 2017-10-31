@@ -5,11 +5,12 @@
  * Simple pure component to deal with icons in the app
  */
 import React from 'react';
+import cls from 'classnames';
 
-export default ({name, source = 'icons'}) => (
+export default ({name, className, source = 'icons'}) => (
   <svg
     aria-hidden="true"
-    className={'icon ' + name} >
+    className={cls('icon ' + name, className)} >
     <use xlinkHref={`./assets/svg/${source}/${source}.svg#${name}`} />
   </svg>
 );
