@@ -238,61 +238,59 @@
                       </svg>
                     </button>
                     <div class="col-xs-12 col-sm-6 col-md-8">
+                      <div class="loader-container loader-container-viz">
+                        <div class="alert alert-danger hidden" role="alert"><!-- REMOVE .hidden for switch with loader -->
+                          Oh snap! Change a few things up and try submitting again.
+                        </div>
+                        <div class="loader loader-viz"><!-- ADD .hidden for switch with message error -->
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
                       <div class="viz-tools">
                         <div class="viz-actions">
                           <form>
                             <div class="form-group form-group-xs">
                               <label class="sr-only" for="search">Search</label>
-                              <select id="search">
-                                <option value="valeur1">Valeur 1</option>
-                                <option value="valeur2" selected>Valeur 2</option>
-                                <option value="valeur3">Valeur 3</option>
-                              </select>
+                              <div class="input-group">
+                                <input type="text" class="form-control" id="search" placeholder="Search">
+                                <div class="input-group-btn">
+                                  <button class="btn btn-default btn-xs" type="submit">
+                                    <svg class="icon icon-search" aria-hidden="true">
+                                      <use xlink:href="../assets/svg/icons/icons.svg#icon-search"></use>
+                                    </svg>
+                                  </button>
+                                </div>
+                              </div>
                             </div>
                           </form>
-                          <button class="btn btn-default btn-xs btn-icon" type="submit">
-                            <!-- Switch svg stop/play add and remove class .hidden -->
-                            <svg class="icon icon-stop hidden" aria-hidden="true">
+                          <button class="btn btn-default btn-xs" type="submit">
+                            <svg class="icon icon-stop" aria-hidden="true">
                               <use xlink:href="../assets/svg/icons/icons.svg#icon-stop"></use>
-                            </svg>
-                            <svg class="icon icon-play" aria-hidden="true">
-                              <use xlink:href="../assets/svg/icons/icons.svg#icon-play"></use>
                             </svg>
                           </button>
                         </div>
                         <div class="viz-nav">
-                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                          <button class="btn btn-default btn-xs" type="submit">
                             <svg class="icon icon-localisation" aria-hidden="true">
                               <use xlink:href="../assets/svg/icons/icons.svg#icon-localisation"></use>
                             </svg>
                           </button>
-                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                          <button class="btn btn-default btn-xs" type="submit">
                             <svg class="icon icon-zoom-in" aria-hidden="true">
                               <use xlink:href="../assets/svg/icons/icons.svg#icon-zoom-in"></use>
                             </svg>
                           </button>
-                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                          <button class="btn btn-default btn-xs" type="submit">
                             <svg class="icon icon-zoom-out" aria-hidden="true">
                               <use xlink:href="../assets/svg/icons/icons.svg#icon-zoom-out"></use>
                             </svg>
                           </button>
-                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                          <button class="btn btn-default btn-xs" type="submit">
                             <svg class="icon icon-full-screen" aria-hidden="true">
                               <use xlink:href="../assets/svg/icons/icons.svg#icon-full-screen"></use>
                             </svg>
                           </button>
                         </div>
-                      </div>
-                      <div class="viz">
-                        <!-- VIZ -->
-                      </div>
-                      <div class="node-display">
-                        <ul class="list-unstyled">
-                          <li><span class="title">Hollande</span></li>
-                          <li>Flows: <strong>48,265</strong></li>
-                          <li>Value: <strong>1,419,257,056.89</strong></li>
-                          <li>Degree: <strong>22</strong></li>
-                        </ul>
                       </div>
                     </div>
                   </div>
@@ -318,7 +316,7 @@
                           </select>
                         </div>
                         <div class="form-group">
-                          <span class="control-label">Color</span>
+                          <label class="control-label">Color</label>
                           <small class="help-block">Community Louvain</small>
                         </div>
                         <div class="form-group">

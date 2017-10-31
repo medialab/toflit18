@@ -20,3 +20,16 @@ body {
         margin-bottom: 0;
     }
 }
+
+.content {
+    //
+    // Responsive
+    // --------------------------------------------------
+    @media (max-width: $screen-xs-max) {
+        margin-top: 5em;
+    }
+
+    @media (min-width: $screen-xs-max) {
+        margin-top: 8em;
+    }
+}

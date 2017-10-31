@@ -1,0 +1,15 @@
+//
+// TOFLIT18 MOLECULS BOX VIZ
+// --------------------------------------------------
+.box-viz {
+    position: relative;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-radius: $border-radius-base;
+    border: 1px solid $gray-lighter;
+    min-height: 185px;
+
+    .loader-container {
+        border-radius: $border-radius-base;
+    }
+}

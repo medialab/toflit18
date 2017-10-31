@@ -1,0 +1,28 @@
+//
+// TOFLIT18 ATOM LIST CUSTOMS
+// --------------------------------------------------
+.list-customs {
+    padding: 0;
+    margin-bottom: 0;
+    margin-left: 1em;
+
+    li {
+        display: block;
+
+        &:before {
+            content: "\203A";
+            float: left;
+            margin-left: -1em;
+        }
+
+        // No bullet
+        // --------------------------------------------------
+        &.no-bullet {
+            margin: 0.2em 0 0 0.1em;
+
+            &:before {
+                content: none;
+            }
+        }
+    }
+}

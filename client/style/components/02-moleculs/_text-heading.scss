@@ -2,10 +2,6 @@
 // TOFLIT18 COMPONENTS MOLECUL TEXT HEADING
 // --------------------------------------------------
 .text-heading {
-    @include flexbox;
-    @include justify-content(end);
-    @include align-items(end);
-
     h1 {
         margin: 0;
         font-size: 2.2em;

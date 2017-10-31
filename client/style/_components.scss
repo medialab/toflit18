@@ -15,6 +15,12 @@
 @import "components/01-atoms/aside-btn";
 @import "components/01-atoms/input";
 @import "components/01-atoms/button";
+@import "components/01-atoms/button-icon";
+@import "components/01-atoms/form-legend";
+@import "components/01-atoms/list-customs";
+@import "components/01-atoms/list-legend";
+@import "components/01-atoms/title";
+@import "components/01-atoms/control-label";
 
 // MOLECULS
 // --------------------------------------------------
@@ -22,18 +28,24 @@
 @import "components/02-moleculs/form-group";
 @import "components/02-moleculs/form-group-search";
 @import "components/02-moleculs/form-group-fixed";
+@import "components/02-moleculs/group-list";
 @import "components/02-moleculs/text-heading";
+@import "components/02-moleculs/loader";
+@import "components/02-moleculs/box-viz";
+@import "components/02-moleculs/node-display";
 
 // ORGANISMS
 // --------------------------------------------------
 @import "components/03-organisms/navbar-header";
 @import "components/03-organisms/footer";
-@import "components/03-organisms/well-glossary";
+@import "components/03-organisms/well";
 @import "components/03-organisms/box-selection";
 @import "components/03-organisms/aside";
 @import "components/03-organisms/aside-filters";
 @import "components/03-organisms/aside-legend";
+@import "components/03-organisms/aside-classifications";
 @import "components/03-organisms/viz-tools";
+@import "components/03-organisms/list-group";
 
 // PAGES
 // --------------------------------------------------
