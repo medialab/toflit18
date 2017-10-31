@@ -220,21 +220,20 @@
                           <form>
                             <div class="form-group form-group-xs">
                               <label class="sr-only" for="search">Search</label>
-                              <div class="input-group">
-                                <input type="text" class="form-control" id="search" placeholder="Search">
-                                <div class="input-group-btn">
-                                  <button class="btn btn-default btn-xs btn-icon" type="submit">
-                                    <svg class="icon icon-search " aria-hidden="true">
-                                      <use xlink:href="../assets/svg/icons/icons.svg#icon-search"></use>
-                                    </svg>
-                                  </button>
-                                </div>
-                              </div>
+                              <select id="search">
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
                             </div>
                           </form>
                           <button class="btn btn-default btn-xs btn-icon" type="submit">
-                            <svg class="icon icon-stop" aria-hidden="true">
+                            <!-- Switch svg stop/play add and remove class .hidden -->
+                            <svg class="icon icon-stop hidden" aria-hidden="true">
                               <use xlink:href="../assets/svg/icons/icons.svg#icon-stop"></use>
+                            </svg>
+                            <svg class="icon icon-play" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-play"></use>
                             </svg>
                           </button>
                         </div>
@@ -262,7 +261,15 @@
                         </div>
                       </div>
                       <div class="viz">
-
+                        <!-- VIZ -->
+                      </div>
+                      <div class="node-display">
+                        <ul class="list-unstyled">
+                          <li><span class="title">Medical</span></li>
+                          <li>Flows: <strong>507,229</strong></li>
+                          <li>Value: <strong>52,697,597,257.64</strong></li>
+                          <li>Degree: <strong>3</strong></li>
+                        </ul>
                       </div>
                     </div>
                   </div>
