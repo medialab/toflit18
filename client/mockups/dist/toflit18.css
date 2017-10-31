@@ -5783,8 +5783,9 @@ select {
   padding: 0.5em 1em;
   display: inline-block;
   background-color: #ffffff;
-  border: 1px solid #616161;
-  border-radius: 3px; }
+  border: 1px solid rgba(97, 97, 97, 0.2);
+  border-radius: 3px;
+  box-shadow: 0 6px 12px rgba(97, 97, 97, 0.2); }
   .node-display ul {
     margin-bottom: 0; }
   .node-display li {
