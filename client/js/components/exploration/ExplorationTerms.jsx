@@ -106,6 +106,10 @@ export default class ExplorationGlobalsTerms extends Component {
   }
 })
 class TermsPanel extends Component {
+  export() {
+    // TODO
+  }
+
   render() {
     const {
       actions,
@@ -392,8 +396,8 @@ class TermsPanel extends Component {
           </form>
           <div className="form-group-fixed form-group-fixed-right">
             <button
-              type="submit"
-              className="btn btn-default">
+              className="btn btn-default"
+              onClick={() => this.export}>
               Export
             </button>
           </div>

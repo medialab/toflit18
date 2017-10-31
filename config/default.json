@@ -7,7 +7,7 @@
       "maxYear": 1839
     },
     "port": 4000,
-    "secret": "merrain"
+    "secret": "douelle"
   },
   "db": {
     "host": "localhost",

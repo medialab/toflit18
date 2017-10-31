@@ -7,6 +7,7 @@
  */
 import React, {Component} from 'react';
 import screenfull from 'screenfull';
+import Select from 'react-select';
 
 import Icon from '../../misc/Icon.jsx';
 
@@ -217,7 +218,9 @@ export default class Network extends Component {
 
   render() {
     const graph = this.props.graph,
-          isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length);
+          isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length),
+          nodeDisplayRenderer = this.props.nodeDisplayRenderer,
+          selectedNode = this.state.selectedNode;
 
     return (
       <div
@@ -226,10 +229,20 @@ export default class Network extends Component {
         className={this.props.className} >
         {isGraphEmpty && <Message text="No Data to display." />}
         <Controls
+          nodes={graph ? graph.nodes : []}
           camera={this.sigma.cameras.main}
           toggleFullScreen={this.toggleFullScreen}
           toggleLayout={this.toggleLayout}
-          layoutRunning={this.state.layoutRunning} />
+          layoutRunning={this.state.layoutRunning}
+          onChangeQuery={this.focusNode} />
+        {typeof nodeDisplayRenderer === 'function' && (
+          <div className="node-display">
+            {selectedNode ?
+              nodeDisplayRenderer(selectedNode) :
+              <em>Try clicking a node to get some information...</em>
+            }
+          </div>
+        )}
       </div>
     );
   }
@@ -252,6 +265,19 @@ class Message extends Component {
  * Controls.
  */
 class Controls extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      value: null
+    };
+
+    this.handleSelection = this.handleSelection.bind(this);
+    this.rescale = this.rescale.bind(this);
+    this.zoom = this.zoom.bind(this);
+    this.unzoom = this.unzoom.bind(this);
+  }
+
   componentDidMount() {
     this.forceUpdate();
   }
@@ -282,9 +308,19 @@ class Controls extends Component {
     );
   }
 
+  handleSelection(value) {
+    if (typeof this.props.onChangeQuery === 'function')
+      this.props.onChangeQuery(value);
+    this.setState({value});
+  }
+
   render() {
-    const toggleFullScreen = this.props.toggleFullScreen,
-          toggleLayout = this.props.toggleLayout;
+    const {
+      nodes,
+      toggleLayout,
+      toggleFullScreen,
+      layoutRunning,
+    } = this.props;
 
     return (
       <div className="viz-tools">
@@ -293,41 +329,35 @@ class Controls extends Component {
             <div className="form-group form-group-xs">
               <label className="sr-only" htmlFor="search">Search</label>
               <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="search"
-                  placeholder="Search" />
-                <div className="input-group-btn">
-                  <button
-                    type="submit"
-                    className="btn btn-default btn-xs">
-                    <Icon name="icon-search" />
-                  </button>
-                </div>
+                <Select
+                  options={nodes}
+                  labelKey="label"
+                  placeholder="Search a node in the graph..."
+                  onChange={this.handleSelection}
+                  value={this.state.value} />
               </div>
             </div>
           </form>
           <button
             className="btn btn-default btn-xs"
             onClick={toggleLayout}>
-            <Icon name="icon-stop" />
+            <Icon name={layoutRunning ? 'icon-stop' : 'icon-play'} />
           </button>
         </div>
         <div className="viz-nav">
           <button
             className="btn btn-default btn-xs"
-            onClick={() => this.rescale()}>
+            onClick={this.rescale}>
             <Icon name="icon-localisation" />
           </button>
           <button
             className="btn btn-default btn-xs"
-            onClick={() => this.zoom()}>
+            onClick={this.zoom}>
             <Icon name="icon-zoom-in" />
           </button>
           <button
             className="btn btn-default btn-xs"
-            onClick={() => this.unzoom()}>
+            onClick={this.unzoom}>
             <Icon name="icon-zoom-out" />
           </button>
           <button
