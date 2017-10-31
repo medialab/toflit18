@@ -5951,24 +5951,24 @@ footer {
   padding: 1em 0; }
 
 @media (min-width: 767px) {
-  .sections-viz-classifications .aside-left {
+  .sections-viz-no-box-selection .aside-left {
     margin-top: 0;
     height: calc(100vh - (19em - 5.5em)); } }
 
 @media (min-width: 768px) and (max-width: 991px) {
-  .sections-viz-classifications .aside-left {
+  .sections-viz-no-box-selection .aside-left {
     height: calc(100vh - (20.5em - 5.5em)); } }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-  .sections-viz-classifications .aside-left {
+  .sections-viz-no-box-selection .aside-left {
     height: calc(100vh - (21.6em - 5.5em)); } }
 
 @media (min-width: 1200px) and (max-width: 1441px) {
-  .sections-viz-classifications .aside-left {
+  .sections-viz-no-box-selection .aside-left {
     height: calc(100vh - (20.5em - 5.5em)); } }
 
 @media (min-width: 1441px) {
-  .sections-viz-classifications .aside-left {
+  .sections-viz-no-box-selection .aside-left {
     height: calc(100vh - (19em - 5.5em)); } }
 
 .viz-tools {
