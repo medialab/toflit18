@@ -190,7 +190,7 @@ class TermsPanel extends Component {
         { /* Left panel */ }
         <div className="aside-filters">
           <h3>Filters</h3>
-          <form>
+          <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="sourceType" className="control-label">Source Type</label>
               <small className="help-block">From wich sources does the data comes from ?</small>
@@ -277,7 +277,6 @@ class TermsPanel extends Component {
             </div>
             <div className="form-group-fixed">
               <button
-                type="submit"
                 className="btn btn-default"
                 data-loading={loading}
                 disabled={!classification}
@@ -303,7 +302,7 @@ class TermsPanel extends Component {
 
         { /* Right panel */ }
         <div className="aside-legend">
-          <form>
+          <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="edgeSize" className="control-label">Edge</label>
               <small className="help-block">Thickness</small>
