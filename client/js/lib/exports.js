@@ -12,7 +12,7 @@ export function exportGEXF({data, meta, model, name, params}) {
     ...params
   };
 
-  const writer = gexf.create(gexfParams):
+  const writer = gexf.create(gexfParams);
   const blob = new Blob(
     [writer.serialize()],
     {type: 'text/gexf+xml;charset=utf-8'}
@@ -29,8 +29,4 @@ export function exportCSV({data, name}) {
   );
 
   return saveAs(blob, name);
-}
-
-export function export({ type }) {
-
 }

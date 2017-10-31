@@ -11,6 +11,7 @@ import {branch} from 'baobab-react/decorators';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
+import {exportCSV} from '../../lib/exports';
 import {buildDateMin} from '../../lib/helpers';
 import {
   selectTerms,
@@ -61,15 +62,12 @@ function renderNodeDisplay(props) {
   } = props;
 
   return (
-    <div>
-      <strong>{label}</strong>
-      <br />
-      Flows: {NUMBER_FORMAT(flows)}
-      <br />
-      Value: {NUMBER_FIXED_FORMAT(value)}
-      <br />
-      Degree: {NUMBER_FORMAT(degree)}
-    </div>
+    <ul className="list-unstyled">
+      <li><span className="title">{label}</span></li>
+      <li>Flows: <strong>{NUMBER_FORMAT(flows)}</strong></li>
+      <li>Value: <strong>{NUMBER_FIXED_FORMAT(value)}</strong></li>
+      <li>Degree: <strong>{NUMBER_FORMAT(degree)}</strong></li>
+    </ul>
   );
 }
 
@@ -107,7 +105,10 @@ export default class ExplorationGlobalsTerms extends Component {
 })
 class TermsPanel extends Component {
   export() {
-    // TODO
+    exportCSV({
+      data: this.props.state.data,
+      name: 'Toflit18_Global_Trade_Countries_Network_view.csv',
+    });
   }
 
   render() {
@@ -397,7 +398,7 @@ class TermsPanel extends Component {
           <div className="form-group-fixed form-group-fixed-right">
             <button
               className="btn btn-default"
-              onClick={() => this.export}>
+              onClick={() => this.export()}>
               Export
             </button>
           </div>
