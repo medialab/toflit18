@@ -44,7 +44,7 @@
 
         // Responsive
         // --------------------------------------------------
-        &.content-viz-metadata {
+        &.content-viz-data {
             position: relative;
 
             .col-xs-12 {
@@ -63,6 +63,10 @@
     }
 }
 
-.viz-metadata {
+.viz-data {
     margin-top: 3.3em;
+
+    &-expand {
+        margin-bottom: 3.3em;
+    }
 }

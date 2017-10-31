@@ -50,6 +50,8 @@
         width: 100%;
     }
 
+    // Title & Items
+    // --------------------------------------------------
     &-title,
     &-items {
         @include flexbox;
@@ -80,6 +82,4 @@
             color: $sandal-darken;
         }
     }
-
-    &-items {}
 }
