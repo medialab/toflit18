@@ -5775,6 +5775,24 @@ select {
   .box-viz .loader-container {
     border-radius: 3px; }
 
+.node-display {
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  z-index: 10;
+  padding: 0.5em 1em;
+  display: inline-block;
+  background-color: #ffffff;
+  border: 1px solid #616161;
+  border-radius: 3px; }
+  .node-display ul {
+    margin-bottom: 0; }
+  .node-display li {
+    font-size: 0.9em; }
+  .node-display .title {
+    font-size: 1.1em;
+    margin-bottom: 0.2em; }
+
 header .navbar {
   margin-bottom: 0; }
   @media (min-width: 768px) and (max-width: 991px) {
@@ -5957,7 +5975,6 @@ footer {
   top: 1em;
   right: 1em;
   z-index: 10;
-  width: 20em;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-flex;
@@ -5981,8 +5998,6 @@ footer {
       .viz-tools .form-control {
         max-width: 10em;
         float: right; } }
-  .viz-tools > * {
-    margin-right: 0.5em; }
   .viz-tools form,
   .viz-tools .form-group {
     margin: 0; }

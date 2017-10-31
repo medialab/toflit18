@@ -1,0 +1,25 @@
+//
+// TOFLIT18 COMPONENTS MOLECULS NODE DISPLAY
+// --------------------------------------------------
+.node-display {
+    @include position(absolute, null, 1em, 1em, null, 10);
+
+    padding: 0.5em 1em;
+    display: inline-block;
+    background-color: $white;
+    border: 1px solid $dove-gray;
+    border-radius: $border-radius-base;
+
+    ul {
+        margin-bottom: 0;
+    }
+
+    li {
+        font-size: 0.9em;
+    }
+
+    .title {
+        font-size: 1.1em;
+        margin-bottom: 0.2em;
+    }
+}
