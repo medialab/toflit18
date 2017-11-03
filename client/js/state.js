@@ -110,6 +110,8 @@ const defaultState = {
         classification: null,
         nodeSize: 'flows',
         edgeSize: 'flows',
+        labelThreshold: 7,
+        labelSizeRatio: 2,
         loading: false,
         selectors: {
           productClassification: null,
