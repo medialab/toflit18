@@ -5704,7 +5704,7 @@ select {
   margin: 0;
   color: rgba(255, 255, 255, 0.6); }
 
-.loader-container {
+.progress-container {
   position: absolute;
   top: 0;
   right: 0;
@@ -5729,47 +5729,44 @@ select {
   height: 100%;
   background-color: rgba(255, 255, 255, 0.8); }
 
-.loader {
-  height: 40px;
-  width: 6px;
-  background-color: transparent;
-  animation: paddles 0.75s ease-out infinite;
-  transform: translate3d(0, 0, 0); }
-  .loader:before {
-    content: '';
-    position: absolute;
-    top: 15px;
-    right: 0;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    margin: 0 auto;
+.progress-line,
+.progress-line:before {
+  height: 3px;
+  width: 50%; }
+
+.progress-line {
+  background-color: #ddd4c6;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .progress-line:before {
     background-color: #A38D67;
-    border-radius: 50%;
-    animation: ballbounce 0.6s ease-out infinite; }
+    content: '';
+    animation: running-progress 1000ms cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
 
-@keyframes paddles {
+@-webkit-keyframes running-progress {
   0% {
-    -webkit-box-shadow: -25px -10px 0px #A38D67, 25px 10px 0px #A38D67;
-    box-shadow: -25px -10px 0px #A38D67, 25px 10px 0px #A38D67; }
+    margin-left: 0px;
+    margin-right: 100%; }
   50% {
-    -webkit-box-shadow: -25px 8px 0px #A38D67, 25px -10px 0px #A38D67;
-    box-shadow: -25px 8px 0px #A38D67, 25px -10px 0px #A38D67; }
+    margin-left: 50%;
+    margin-right: 0%; }
   100% {
-    -webkit-box-shadow: -25px -10px 0px #A38D67, 25px 10px 0px #A38D67;
-    box-shadow: -25px -10px 0px #A38D67, 25px 10px 0px #A38D67; } }
+    margin-left: 100%;
+    margin-right: 0; } }
 
-@keyframes ballbounce {
+@keyframes running-progress {
   0% {
-    transform: translateX(-20px) scale(1, 1.2); }
-  25% {
-    transform: scale(1.2, 1); }
+    margin-left: 0px;
+    margin-right: 100%; }
   50% {
-    transform: translateX(15px) scale(1, 1.2); }
-  75% {
-    transform: scale(1.2, 1); }
+    margin-left: 50%;
+    margin-right: 0%; }
   100% {
-    transform: translateX(-20px); } }
+    margin-left: 100%;
+    margin-right: 0; } }
 
 .box-viz {
   position: relative;
