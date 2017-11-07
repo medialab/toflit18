@@ -6171,6 +6171,8 @@ button.list-group-item .list-group-item-heading {
         font-size: 1.4em; }
       .section-home-top .lead {
         font-size: 2.5em; } }
+    .section-home-top-404 {
+      height: 100vh; }
   .section-home-navigation h2, .section-home-navigation legend, .section-bottom h2, .section-bottom legend {
     padding: 1em 0; }
   .section-home-navigation {
