@@ -12,8 +12,8 @@
         // Responsive
         // --------------------------------------------------
         @media (max-width: $screen-xs-max) {
-            right: 0;
             top: inherit;
+            right: 0;
             bottom: 5em;
 
             @include align-items(flex-end);
