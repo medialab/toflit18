@@ -230,7 +230,6 @@ class NetworkPanel extends Component {
           ref={ref => this.networkComponent = ref}
           graph={graph}
           directed
-          colorKey={'communityColor'}
           sizeKey={nodeSize}
           edgeSizeKey={edgeSize}
           labelThreshold={labelThreshold}

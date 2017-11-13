@@ -12,3 +12,8 @@ export const six = [
   '#94B8B7',
   '#B89648'
 ];
+
+export const two = [
+  '#E6830E',
+  '#049B9A'
+];

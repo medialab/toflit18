@@ -4,7 +4,7 @@
  *
  * Actions related to the globals' view.
  */
-import {six as palette} from '../lib/palettes';
+import {two as palette} from '../lib/palettes';
 import {values, forIn} from 'lodash';
 
 const ROOT = ['states', 'exploration', 'network'];
