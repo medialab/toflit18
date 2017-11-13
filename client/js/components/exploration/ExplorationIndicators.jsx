@@ -13,6 +13,7 @@ import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import {capitalize, isEqual, mapValues, pick} from 'lodash';
 import Icon from '../misc/Icon.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
+import {exportCSV} from '../../lib/exports';
 import {
   updateSelector as update,
   addLine,
@@ -89,6 +90,55 @@ function buildDescription(params, data) {
   }
 })
 export default class ExplorationIndicators extends Component {
+  export() {
+    // create an array with all lines, add a column with name of country selected
+    // create csv only with indicators selected
+    let arrayDataLines = [];
+    this.props.state.lines.forEach(l => {
+      // add info about classification, product, country, direction, kind
+      // add all column even if the info is not selected for the line
+      // copy element to add info keys
+      const dataLines = [];
+
+      for (let i = 0, len = l.data.length; i < len; i++) {
+        const elemCopy = pick(
+          l.data[i],
+          ['year', 'count', 'value', 'kg', 'litre', 'nbr']
+        );
+
+        [
+          'sourceType',
+          'productClassification',
+          'countryClassification',
+          'country',
+          'product',
+          'kind',
+          'direction',
+        ].forEach(param => {
+          elemCopy[param] = l.params[param] ?
+            l.params[param].name :
+            null;
+        });
+
+        if (l.data[i].value !== null && l.data[i].count !== 0) {
+          elemCopy.nb_direction = l.data[i].nb_direction.length ?
+            l.data[i].nb_direction :
+            null;
+        }
+
+        dataLines.push(elemCopy);
+      }
+
+      // add all lines values in an array to export data in one csv
+      arrayDataLines = arrayDataLines.concat(dataLines);
+    });
+
+    exportCSV({
+      data: arrayDataLines,
+      name: 'Indicators_Number_of_directions_per_year.csv',
+    });
+  }
+
   render() {
     const {
       actions,
@@ -269,50 +319,6 @@ class Charts extends Component {
       return <div className="col-xs-12 col-sm-6 col-md-8" />;
 
     const quantitiesOpened = this.state.quantitiesOpened;
-
-    // create an array with all lines, add a column with name of country selected
-    // create csv only with indicators selected
-    const arrayDataLines = [];
-    lines.forEach(function (l) {
-      // add info about classification, product, country, direction, kind
-      // add all column even if the info is not selected for the line
-      // copy element to add info keys
-      const dataLines = [];
-
-        for (let i = 0, len = l.data.length; i < len; i++) {
-          const elemCopy = pick(
-            l.data[i],
-            ['year', 'count', 'value', 'kg', 'litre', 'nbr']
-          );
-
-          [
-            'sourceType',
-            'productClassification',
-            'countryClassification',
-            'country',
-            'product',
-            'kind',
-            'direction',
-          ].forEach(param => {
-            elemCopy[param] = l.params[param] ?
-              l.params[param].name :
-              null;
-          });
-
-          if (l.data[i].value !== null && l.data[i].count !== 0) {
-            elemCopy.nb_direction = l.data[i].nb_direction.length ?
-              l.data[i].nb_direction :
-              null;
-          }
-
-          dataLines.push(elemCopy);
-        }
-
-      // add all lines values in an array to export data in one csv
-      dataLines.forEach(function (d) {
-        arrayDataLines.push(d);
-      });
-    });
 
     // Computing bar chart's data by keeping a count of distinct directions
     let barData = [];
