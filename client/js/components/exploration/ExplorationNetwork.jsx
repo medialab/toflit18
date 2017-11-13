@@ -11,6 +11,7 @@ import {branch} from 'baobab-react/decorators';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
+import {exportCSV} from '../../lib/exports';
 import {buildDateMin} from '../../lib/helpers';
 import {
   selectClassification,
@@ -76,6 +77,13 @@ export default class ExplorationGlobals extends Component {
   }
 })
 class NetworkPanel extends Component {
+  export() {
+    exportCSV({
+      data: this.props.state.data,
+      name: 'Toflit18_Global_Trade_Countries_Network_view.csv',
+    });
+  }
+
   render() {
     const {
       actions,
@@ -222,7 +230,6 @@ class NetworkPanel extends Component {
           ref={ref => this.networkComponent = ref}
           graph={graph}
           directed
-          colorKey={'communityColor'}
           sizeKey={nodeSize}
           edgeSizeKey={edgeSize}
           labelThreshold={labelThreshold}
