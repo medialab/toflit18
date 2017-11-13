@@ -6,14 +6,13 @@
  */
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
-import {Row, Col} from '../misc/Grid.jsx';
-import Button from '../misc/Button.jsx';
-import {ExportButton} from '../misc/Button.jsx';
 import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import {capitalize, isEqual, mapValues, pick} from 'lodash';
+import Icon from '../misc/Icon.jsx';
+import VizLayout from '../misc/VizLayout.jsx';
 import {
   updateSelector as update,
   addLine,
@@ -22,6 +21,56 @@ import {
 
 // TODO: move branching to sub component for optimized rendering logic
 // TODO: better use pure rendering logic
+
+/**
+ * Lines summary.
+ */
+function buildDescription(params, data) {
+  const selectors = mapValues(params, 'name');
+  let content = [
+    <strong key="flows">{capitalize(selectors.kind || 'total') + ' flows'}</strong>,
+  ];
+
+  if (selectors.product) {
+    if (data.length)
+      content.push('of ');
+    else
+      content = ['No data for '];
+
+    content = content.concat([
+      <strong key="product">{selectors.product}</strong>,
+      ' (',
+      <em key="product-classes">{selectors.productClassification}</em>,
+      ')',
+    ]);
+  }
+
+  if (selectors.direction && selectors.direction !== '$all')
+    content = content.concat([
+      'from ',
+      <strong key="direction">{selectors.direction}</strong>
+    ]);
+
+  if (selectors.country)
+    content = content.concat([
+      'to ',
+      <strong key="country">{selectors.country}</strong>,
+      ' (',
+      <em key="country-classes">{selectors.countryClassification}</em>,
+      ')',
+    ]);
+
+  if (selectors.sourceType)
+    content = content.concat([
+      `- (source type: ${selectors.sourceType})`,
+    ]);
+
+  return (
+    <span>{
+      content
+    }</span>
+  );
+}
 
 /**
  * Main component.
@@ -41,21 +90,6 @@ import {
 })
 export default class ExplorationIndicators extends Component {
   render() {
-
-    return (
-      <div className="indicators-wrapper">
-        <LineForm {...this.props} />
-        {!!this.props.state.lines.length && <GraphPanel {...this.props} />}
-      </div>
-    );
-  }
-}
-
-/**
- * Line form.
- */
-class LineForm extends Component {
-  render() {
     const {
       actions,
       classifications,
@@ -69,7 +103,9 @@ class LineForm extends Component {
       }
     } = this.props;
 
-    const lineAlreadyExisting = lines.some(line => isEqual(line.params, selectors));
+    const lineAlreadyExisting = lines.some(
+      line => isEqual(line.params, selectors)
+    );
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
@@ -78,233 +114,132 @@ class LineForm extends Component {
       };
     });
 
-    /*
-     * Display only product with data
-     */
-
-
     return (
-      <div className="panel">
-        <h5>1. Creating a new line</h5>
-        <em className="explanation">
-          By selecting the following criteria, you'll be able to add the
-          line you need on the graph that will be created for you below.
-        </em>
-        <hr />
-        <Row>
-          <SectionTitle
-            title="Source Type"
-            addendum="From which sources does the flows come from?" />
-          <Col md={4}>
-            <ItemSelector
-              type="sourceType"
-              data={sourceTypesOptions}
-              loading={!sourceTypesOptions.length}
-              onChange={actions.update.bind(null, 'sourceType')}
-              selected={selectors.sourceType} />
-          </Col>
-        </Row>
-        <hr />
-        <Row>
-          <SectionTitle
-            title="Product"
-            addendum="The type of product being shipped." />
-          <Col md={4}>
-            <ClassificationSelector
-              type="product"
-              loading={!classifications.product.length}
-              data={classifications.product.filter(c => !c.source)}
-              onChange={actions.update.bind(null, 'productClassification')}
-              selected={selectors.productClassification} />
-          </Col>
-          <Col md={6}>
-            <ItemSelector
-              type="product"
-              disabled={!selectors.productClassification || !groups.product.length}
-              loading={selectors.productClassification && !groups.product.length}
-              data={groups.product}
-              onChange={actions.update.bind(null, 'product')}
-              selected={selectors.product} />
-          </Col>
-        </Row>
-        <hr />
-        <Row>
-          <SectionTitle
-            title="Country"
-            addendum="The country whence we got the products or wither we are sending them." />
-          <Col md={4}>
-            <ClassificationSelector
-              type="country"
-              loading={!classifications.country.length}
-              data={classifications.country.filter(c => !c.source)}
-              onChange={actions.update.bind(null, 'countryClassification')}
-              selected={selectors.countryClassification} />
-          </Col>
-          <Col md={6}>
-            <ItemSelector
-              type="country"
-              disabled={!selectors.countryClassification || !groups.country.length}
-              loading={selectors.countryClassification && !groups.country.length}
-              data={groups.country}
-              onChange={actions.update.bind(null, 'country')}
-              selected={selectors.country} />
-          </Col>
-        </Row>
-        <hr />
-        <Row>
-          <SectionTitle
-            title="Direction"
-            addendum="The French harbor where the transactions were recorded." />
-          <Col md={4}>
-            <ItemSelector
-              type="direction"
-              loading={!directions}
-              data={directions || []}
-              onChange={actions.update.bind(null, 'direction')}
-              selected={selectors.direction} />
-          </Col>
-        </Row>
-        <hr />
-        <Row>
-          <SectionTitle
-            title="Kind"
-            addendum="Should we look at import, export, or total?" />
-          <Col md={4}>
-            <ItemSelector
-              type="kind"
-              onChange={actions.update.bind(null, 'kind')}
-              selected={selectors.kind} />
-          </Col>
-        </Row>
-        <hr />
-        <Row>
-          <Col md={2}>
-            <Button
-              kind="primary"
-              disabled={lineAlreadyExisting}
-              loading={creating}
-              onClick={() => {
-                      actions.addLine();
-                    }}>
-              {lineAlreadyExisting && !creating ? 'Already drawn' : 'Add the line'}
-            </Button>
-          </Col>
-        </Row>
-      </div>
-    );
-  }
-}
-
-/**
- * Section title.
- */
-class SectionTitle extends Component {
-  render() {
-    const {title, addendum} = this.props;
-
-    return (
-      <Col md={2}>
-        <div className="section-title">{title}</div>
-        <div className="section-explanation">
-          <em>{addendum}</em>
+      <VizLayout
+        title="Indicators"
+        description="By selecting the following criteria, you'll be able to add the line you need on the graph that will be created for you below."
+        leftPanelName="Filters"
+        rightPanelName="Curves" >
+        { /* Left panel */ }
+        <div className="aside-filters">
+          <h3>Filters</h3>
+          <form onSubmit={e => e.preventDefault()}>
+            <div className="form-group">
+              <label htmlFor="sourceType" className="control-label">Source Type</label>
+              <small className="help-block">From wich sources does the data comes from ?</small>
+              <ItemSelector
+                type="sourceType"
+                data={sourceTypesOptions}
+                loading={!sourceTypesOptions.length}
+                onChange={actions.update.bind(null, 'sourceType')}
+                selected={selectors.sourceType} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="product" className="control-label">Product</label>
+              <small className="help-block">The type of product being shipped.</small>
+              <ClassificationSelector
+                type="product"
+                loading={!classifications.product.length}
+                data={classifications.product.filter(c => !c.source)}
+                onChange={actions.update.bind(null, 'productClassification')}
+                selected={selectors.productClassification} />
+              <ItemSelector
+                type="product"
+                disabled={!selectors.productClassification || !groups.product.length}
+                loading={selectors.productClassification && !groups.product.length}
+                data={groups.product}
+                onChange={actions.update.bind(null, 'product')}
+                selected={selectors.product} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="country" className="control-label">Country</label>
+              <small className="help-block">The country whence we got the products or wither we are sending them.</small>
+              <ClassificationSelector
+                type="country"
+                loading={!classifications.country.length}
+                data={classifications.country.filter(c => !c.source)}
+                onChange={actions.update.bind(null, 'countryClassification')}
+                selected={selectors.countryClassification} />
+              <ItemSelector
+                type="country"
+                disabled={!selectors.countryClassification || !groups.country.length}
+                loading={selectors.countryClassification && !groups.country.length}
+                data={groups.country}
+                onChange={actions.update.bind(null, 'country')}
+                selected={selectors.country} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="direction" className="control-label">Direction</label>
+              <small className="help-block">The French harbor where the transactions were recorded.</small>
+              <ItemSelector
+                type="direction"
+                loading={!directions}
+                data={directions || []}
+                onChange={actions.update.bind(null, 'direction')}
+                selected={selectors.direction} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="kind" className="control-label">Kind</label>
+              <small className="help-block">Should we look at import, export, or total?</small>
+              <ItemSelector
+                type="kind"
+                onChange={actions.update.bind(null, 'kind')}
+                selected={selectors.kind} />
+            </div>
+            <div className="form-group-fixed">
+              <button
+                type="submit"
+                className="btn btn-default"
+                disabled={lineAlreadyExisting}
+                onClick={() => actions.addLine()}
+                data-loading={creating}>
+                Add line
+              </button>
+            </div>
+          </form>
         </div>
-      </Col>
-    );
-  }
-}
 
-/**
- * Graph panel.
- */
-class GraphPanel extends Component {
-  render() {
-    const {
-      actions,
-      state: {
-        lines
-      }
-    } = this.props;
+        { /* Content panel */ }
+        <Charts lines={lines.filter(line => !!line.data)} />
 
-    const linesToRender = lines
-      .filter(line => !!line.data);
+        { /* Right panel */ }
+        <div className="aside-legend">
+          <ul className="list-unstyled list-labels">
+            {lines.map(function(line, i) {
+              const style = {
+                color: 'white',
+                backgroundColor: line.color
+              };
 
-    return (
-      <div className="panel">
-        <h5>2. Exploring the results</h5>
-        <em className="explanation">
-          You can now see the created lines on the graph below.
-        </em>
-        <hr />
-        <LinesSummary
-          lines={lines}
-          drop={actions.dropLine} />
-        <hr />
-        <Charts lines={linesToRender} />
-      </div>
-    );
-  }
-}
+              if (!line.data)
+                return <li key={i}><Waiter align="left" /></li>;
 
-/**
- * Lines summary.
- */
-function buildDescription(params, data) {
-  const selectors = mapValues(params, 'name');
-  let description = [];
+              return (
+                <li
+                  key={i}
+                  style={style}>
+                  {buildDescription(line.params, line.data)}
+                  <button
+                    type="button"
+                    className="btn btn-link btn-xs btn-icon"
+                    onClick={actions.dropLine.bind(null, i)}>
+                    <Icon name="icon-close" />
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="form-group-fixed form-group-fixed-right">
+            <button
+              type="submit"
+              className="btn btn-default"
+              onClick={() => this.export()}>
+              Export
+            </button>
+          </div>
+        </div>
 
-  description.push(<span key="kind">{capitalize(selectors.kind || 'total') + ' flows'}</span>);
-
-  if (selectors.product && data.length)
-    description.push(<span key="product"> of <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
-
-  if (selectors.direction && selectors.direction !== '$all')
-    description.push(<span key="direction"> from <strong>{selectors.direction}</strong></span>);
-
-  if (selectors.country)
-    description.push(<span key="country"> to <strong>{selectors.country}</strong> (<em>{selectors.countryClassification}</em>)</span>);
-
-  if (selectors.sourceType)
-    description.push(<span key="type"> - (source type: {selectors.sourceType})</span>);
-
-  if (selectors.product && data.length === 0) {
-    description = [];
-    description.push(<span key="kind">{'No data '}</span>);
-    description.push(<span key="product"> for <strong>{selectors.product}</strong> (<em>{selectors.productClassification}</em>)</span>);
-  }
-
-  return description;
-}
-
-class LinesSummary extends Component {
-  render() {
-    const {drop, lines} = this.props;
-
-    return (
-      <ul className="summary">
-        {lines.map(function(line, i) {
-          const style = {
-            color: 'white',
-            backgroundColor: line.color
-          };
-
-          if (!line.data)
-            return <li key={i}><Waiter align="left" /></li>;
-
-          return (
-            <li key={i}>
-              <span className="insert" style={style}>
-                {buildDescription(line.params, line.data)}
-              </span>
-              <span
-                className="insert drop"
-                onClick={drop.bind(null, i)}
-                style={style}>
-                ✕
-              </span>
-            </li>
-          );
-        })}
-      </ul>
+      </VizLayout>
     );
   }
 }
@@ -329,6 +264,9 @@ class Charts extends Component {
 
   render() {
     const lines = this.props.lines;
+
+    if (!lines.length)
+      return <div className="col-xs-12 col-sm-6 col-md-8" />;
 
     const quantitiesOpened = this.state.quantitiesOpened;
 
@@ -407,47 +345,44 @@ class Charts extends Component {
     }
 
     return (
-      <div>
-        <div>Total number of directions per year</div>
-        <hr />
-        <DataQualityBarChart
-          data={barData}
-          syncId="indicators"
-          yAxis />
-        <hr />
-        <div>Number of flows per year</div>
-        <hr />
-        <LineChart valueKey="count" data={lines} />
-        <hr />
-        <div>Total value of flows per year</div>
-        <hr />
-        <LineChart shareKey="value_share" data={lines} />
-        <div style={{display: quantitiesOpened ? 'block' : 'none'}}>
-          <hr />
-          <div>Quantities of flows per year (kilograms)</div>
-          <hr />
-          <LineChart shareKey="kg_share" valueKey="kg" data={lines} />
-          <hr />
-          <div>Quantities of flows per year (litres)</div>
-          <hr />
-          <LineChart shareKey="litre_share" valueKey="litre" data={lines} />
-          <hr />
-          <div>Quantities of flows per year (pieces)</div>
-          <hr />
-          <LineChart shareKey="nbr_share" valueKey="nbr" data={lines} />
+      <div className="col-xs-12 col-sm-6 col-md-8">
+        <div className="viz-data">
+          <div className="box-viz">
+            <span className="title">Total number of directions per year</span>
+            <DataQualityBarChart
+              data={barData}
+              syncId="indicators"
+              yAxis />
+          </div>
+          <div className="box-viz">
+            <span className="title">Number of flows per year</span>
+            <LineChart valueKey="count" data={lines} />
+          </div>
+          <div className="box-viz">
+            <span className="title">Total value of flows per year</span>
+            <LineChart shareKey="value_share" data={lines} />
+          </div>
+          {quantitiesOpened && <div className="box-viz">
+            <span className="title">Quantities of flows per year (kilograms)</span>
+            <LineChart shareKey="kg_share" valueKey="kg" data={lines} />
+          </div>}
+          {quantitiesOpened && <div className="box-viz">
+            <span className="title">Quantities of flows per year (litres)</span>
+            <LineChart shareKey="litre_share" valueKey="litre" data={lines} />
+          </div>}
+          {quantitiesOpened && <div className="box-viz">
+            <span className="title">Quantities of flows per year (pieces)</span>
+            <LineChart shareKey="nbr_share" valueKey="nbr" data={lines} />
+          </div>}
+          <div className="viz-data-expand">
+            <button
+              type="submit"
+              onClick={this.toggleQuantities}
+              className="btn btn-default">
+              Expand collapse quantities
+            </button>
+          </div>
         </div>
-        <hr />
-        <Button
-          kind="secondary"
-          onClick={this.toggleQuantities}>
-          {!quantitiesOpened ? 'Display quantities' : 'Hide quantities'}
-        </Button>
-        <hr />
-        <ExportButton
-          name="Indicators_Number_of_directions_per_year"
-          data={arrayDataLines}>
-          Export data
-        </ExportButton>
       </div>
     );
   }

@@ -35,6 +35,23 @@ export default class Header extends Component {
       deployedPanel
     } = this.state;
 
+    let boxSelection;
+    let sidebarLeft;
+    let contentViz;
+    let sidebarRight;
+
+    if (children.length === 4) {
+      boxSelection = children[0];
+      sidebarLeft = children[1];
+      contentViz = children[2];
+      sidebarRight = children[3];
+    }
+    else {
+      sidebarLeft = children[0];
+      contentViz = children[1];
+      sidebarRight = children[2];
+    }
+
     return (
       <main className="container-fluid no-padding">
         <div className="section-heading">
@@ -49,8 +66,14 @@ export default class Header extends Component {
             </div>
           </div>
         </div>
-        <div className="section-viz">
-          {children[0]}
+        <div
+          className={
+            cls(
+              'section-viz',
+              !boxSelection && 'sections-viz-no-box-selection'
+            )
+          }>
+          {boxSelection}
           <div className="container-fluid">
             <div
               className={
@@ -71,8 +94,8 @@ export default class Header extends Component {
                 }>
                 <aside
                   className="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-left"
-                  id="sidebarLeft" >
-                  {children[1]}
+                  id="sidebarLeft">
+                  {sidebarLeft}
                 </aside>
                 <div className="content-viz">
                   <button
@@ -89,12 +112,12 @@ export default class Header extends Component {
                     <span>{rightPanelName}</span>
                     <Icon name="icon-close" />
                   </button>
-                  {children[2]}
+                  {contentViz}
                 </div>
                 <aside
                   className="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-right"
                   id="sidebarRight" >
-                  {children[3]}
+                  {sidebarRight}
                 </aside>
               </div>
             </div>
