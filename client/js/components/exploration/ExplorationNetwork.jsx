@@ -130,8 +130,8 @@ class NetworkPanel extends Component {
       <VizLayout
         title="Countries"
         description="Choose a country classification and display a graph showing relations between countries & directions."
-        leftPanelName="Left panel name"
-        rightPanelName="Right panel name" >
+        leftPanelName="Filters"
+        rightPanelName="Caption" >
         { /* Top of the left panel */ }
         <div className="box-selection">
           <h2 className="hidden-xs">

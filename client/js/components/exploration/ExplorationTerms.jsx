@@ -172,8 +172,8 @@ class TermsPanel extends Component {
       <VizLayout
         title="Products"
         description="Choose a product classification and display a graph showing relations between terms of the aforementioned classification"
-        leftPanelName="Left panel name"
-        rightPanelName="Right panel name" >
+        leftPanelName="Filters"
+        rightPanelName="Caption" >
         { /* Top of the left panel */ }
         <div className="box-selection">
           <h2 className="hidden-xs">
