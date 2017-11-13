@@ -3,10 +3,25 @@
  * =================================
  *
  */
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
 import cls from 'classnames';
 import Icon from './misc/Icon.jsx';
+
+const LINKS = {
+  data: [
+    '/exploration/meta',
+    '/classification/browser',
+  ],
+  view: [
+    '/exploration/indicators',
+    '/exploration/network',
+    '/exploration/terms',
+  ],
+  glossary: '/glossary',
+  about: '/about',
+  legal: '/legal',
+};
 
 export default class Header extends Component {
   constructor(props, context) {
@@ -66,6 +81,11 @@ export default class Header extends Component {
       deployedMenu,
       deployedBurger
     } = this.state;
+    const router = this.context.router;
+
+    function isActive(urls) {
+      return (Array.isArray(urls) ? urls : [urls]).some(url => router.isActive(url));
+    }
 
     return (
       <header>
@@ -97,7 +117,12 @@ export default class Header extends Component {
               aria-expanded={deployedBurger ? 'true' : 'false'}
               id="bs-example-navbar-collapse-1" >
               <ul className="nav navbar-nav">
-                <li className={cls('dropdown', deployedMenu === 'data' && 'open')}>
+                <li
+                  className={cls(
+                    'dropdown',
+                    deployedMenu === 'data' && 'open',
+                    isActive(LINKS.data) && 'active',
+                  )}>
                   <a
                     href="#"
                     ref={ref => this.menus.push(ref)}
@@ -121,7 +146,12 @@ export default class Header extends Component {
                     </li>
                   </ul>
                 </li>
-                <li className={cls('dropdown', deployedMenu === 'view' && 'open')}>
+                <li
+                  className={cls(
+                    'dropdown',
+                    deployedMenu === 'view' && 'open',
+                    isActive(LINKS.view) && 'active',
+                  )}>
                   <a
                     href="#"
                     ref={ref => this.menus.push(ref)}
@@ -148,15 +178,15 @@ export default class Header extends Component {
                     </li>
                   </ul>
                 </li>
-                <li>
+                <li className={cls(isActive(LINKS.glossary) && 'active')}>
                   <Link to="/glossary">Glossary</Link>
                 </li>
-                <li>
+                <li className={cls(isActive(LINKS.about) && 'active')}>
                   <Link to="/about">About</Link>
                 </li>
               </ul>
               <ul className="nav navbar-nav navbar-right">
-                <li>
+                <li className={cls(isActive(LINKS.legal) && 'active')}>
                   <Link to="/legal">Legal notice</Link>
                 </li>
               </ul>
@@ -167,3 +197,7 @@ export default class Header extends Component {
     );
   }
 }
+
+Header.contextTypes = {
+  router: PropTypes.object
+};
