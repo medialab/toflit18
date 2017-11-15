@@ -6207,11 +6207,17 @@ button.list-group-item .list-group-item-heading {
     .section-home-navigation img {
       -webkit-transition: all 0.35s ease-out;
       -o-transition: all 0.35s ease-out;
-      transition: all 0.35s ease-out;
-      height: 210px; }
-      @media (min-width: 767px) {
+      transition: all 0.35s ease-out; }
+      @media (min-width: 1200px) {
         .section-home-navigation img {
-          min-width: 360px; } }
+          min-width: 360px;
+          height: 210px; } }
+      @media (min-width: 992px) and (max-width: 1199px) {
+        .section-home-navigation img {
+          height: 210px; } }
+      @media (min-width: 768px) and (max-width: 991px) {
+        .section-home-navigation img {
+          height: 150px; } }
     .section-home-navigation svg {
       margin-right: 1.5em;
       font-size: 1.5em;

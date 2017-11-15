@@ -140,11 +140,18 @@
             //
             // Responsive
             // --------------------------------------------------
-            @media (min-width: $screen-xs-max) {
+            @media (min-width: $screen-lg-min) {
                 min-width: 360px;
+                height: 210px;
             }
 
-            height: 210px;
+            @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+                height: 210px;
+            }
+
+            @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+                height: 150px;
+            }
         }
 
         svg {

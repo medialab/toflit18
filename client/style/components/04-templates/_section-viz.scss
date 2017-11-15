@@ -20,25 +20,22 @@
     &-viz {
         .col-xs-12 {
             position: relative;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
 
             //
             // Responsive
             // --------------------------------------------------
             @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-                height: calc(100vh - 170px);
+                height: calc(100vh - 125px);
             }
 
-            @media (min-width: $screen-md-min) and (max-width: $screen-xlg-max) {
-                height: calc(100vh - 192px);
-            }
-
-            @media (min-width: $screen-lg-min) and (max-width: $screen-xlg-max) {
-                height: calc(100vh - 170px);
-            }
-
-            @media (min-width: $screen-xlg-max) {
+            @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
                 height: calc(100vh - 148px);
+            }
+
+            @media (min-width: $screen-lg-min) {
+                height: calc(100vh - 125px);
             }
         }
 

@@ -40,12 +40,15 @@
     // --------------------------------------------------
     &-actions {
         @include flexbox;
-        @include align-items(center);
 
         margin-right: 2em;
 
         > * {
             margin-left: 0.5em;
+        }
+
+        .input-group {
+            min-width: 15em;
         }
 
         // Actions Min

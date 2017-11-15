@@ -27,23 +27,19 @@
         @media (min-width: $screen-xs-max) {
             overflow-y: auto;
             height: calc(100vh - 19em);
-            margin-top: 5.5em;
+            margin-top: 6.5em;
         }
 
         @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-            height: calc(100vh - 20.5em);
+            height: calc(100vh - 18.6em);
         }
 
         @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
             height: calc(100vh - 21.6em);
         }
 
-        @media (min-width: $screen-lg-min) and (max-width: $screen-xlg-max) {
-            height: calc(100vh - 20.5em);
-        }
-
-        @media (min-width: $screen-xlg-max) {
-            height: calc(100vh - 19em);
+        @media (min-width: $screen-lg-min) {
+            height: calc(100vh - 18.6em);
         }
 
         &.aside-left-metadata {
@@ -90,19 +86,15 @@
         }
 
         @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-            height: calc(100vh - 14.8em);
+            height: calc(100vh - 12.2em);
         }
 
         @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-            height: calc(100vh - 16.2em);
+            height: calc(100vh - 13.5em);
         }
 
-        @media (min-width: $screen-lg-min) and (max-width: $screen-xlg-max) {
-            height: calc(100vh - 14.8em);
-        }
-
-        @media (min-width: $screen-xlg-max) {
-            height: calc(100vh - 13.6em);
+        @media (min-width: $screen-lg-min) {
+            height: calc(100vh - 11.8em);
         }
     }
 }
