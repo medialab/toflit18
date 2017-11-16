@@ -9,7 +9,8 @@
         @media (max-width: $screen-xs-max) {
             overflow: hidden;
             min-height: calc(100vh - 7em);
-            margin-bottom: 5em;
+
+            //margin-bottom: 5em;
         }
     }
 }
@@ -18,6 +19,19 @@
 // --------------------------------------------------
 .content {
     &-viz {
+        #sigma-graph {
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (min-width: $screen-sm-min) {
+                padding: 0;
+            }
+
+            @media (max-width: $screen-xs-max) {
+                height: 100vh;
+            }
+        }
+
         .col-xs-12 {
             position: relative;
             overflow-y: auto;
@@ -39,7 +53,7 @@
             }
         }
 
-        // Responsive
+        // Content Viz Data
         // --------------------------------------------------
         &.content-viz-data {
             position: relative;
@@ -55,7 +69,6 @@
         @media (max-width: $screen-xs-max) {
             overflow: hidden;
             padding-top: 2.5em;
-            padding-bottom: 3em;
         }
     }
 }

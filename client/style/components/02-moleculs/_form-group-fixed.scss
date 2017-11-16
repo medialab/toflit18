@@ -13,6 +13,13 @@
 
     @include box-shadow(0 2px 20px 0 rgba(137, 128, 113, 0.2));
 
+    //
+    // Responsive
+    // --------------------------------------------------
+    @media (max-width: $screen-xs-max) {
+        width: 60%;
+    }
+
     @media (min-width: $screen-md-min) {
         width: 16.66667%;
     }

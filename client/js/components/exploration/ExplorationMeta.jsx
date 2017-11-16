@@ -190,7 +190,7 @@ export default class ExplorationMeta extends Component {
               selected={state.dataType} />
           </div>
           <div className="form-group">
-            <label htmlFor="classifications" className="control-label">Source Type</label>
+            <label htmlFor="classifications" className="control-label sr-only">Source Type</label>
             <ItemSelector
               type="sourceType"
               data={sourceTypesOptions}

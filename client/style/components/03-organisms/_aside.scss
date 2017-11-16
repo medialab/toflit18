@@ -5,7 +5,7 @@
     &-left,
     &-right {
         overflow: auto;
-        height: calc(100vh - 12.5em);
+        height: calc(100vh - 15.6em);
         background-color: $white;
 
         @media (min-width: $screen-xs-max) and (max-width: $screen-sm-max) {
@@ -22,6 +22,7 @@
         // --------------------------------------------------
         @media (max-width: $screen-xs-max) {
             display: none;
+            height: auto;
         }
 
         @media (min-width: $screen-xs-max) {
@@ -30,42 +31,8 @@
             margin-top: 6.5em;
         }
 
-        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+        @media (min-width: $screen-sm-min) {
             height: calc(100vh - 18.6em);
-        }
-
-        @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-            height: calc(100vh - 21.6em);
-        }
-
-        @media (min-width: $screen-lg-min) {
-            height: calc(100vh - 18.6em);
-        }
-
-        &.aside-left-metadata {
-            //
-            // Responsive
-            // --------------------------------------------------
-            @media (min-width: $screen-xs-max) {
-                height: calc(100vh - 23em);
-                margin-top: 9.5em;
-            }
-
-            @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-                height: calc(100vh - 24.4em);
-            }
-
-            @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-                height: calc(100vh - 25.8em);
-            }
-
-            @media (min-width: $screen-lg-min) and (max-width: $screen-xlg-max) {
-                height: calc(100vh - 23em);
-            }
-
-            @media (min-width: $screen-xlg-max) {
-                height: calc(100vh - 23em);
-            }
         }
     }
 
@@ -78,6 +45,7 @@
         // --------------------------------------------------
         @media (max-width: $screen-xs-max) {
             display: none;
+            height: auto;
         }
 
         @media (min-width: $screen-xs-max) {
@@ -94,7 +62,27 @@
         }
 
         @media (min-width: $screen-lg-min) {
-            height: calc(100vh - 11.8em);
+            height: calc(100vh - 12em);
+        }
+    }
+}
+
+// Aside Left For MetaData
+// --------------------------------------------------
+.box-selection-lg {
+    + .container-fluid {
+        .aside-left {
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (min-width: $screen-xs-max) {
+                height: calc(100vh - 23em);
+                margin-top: 9.5em;
+            }
+
+            @media (min-width: $screen-sm-min) {
+                height: calc(100vh - 21.6em);
+            }
         }
     }
 }
