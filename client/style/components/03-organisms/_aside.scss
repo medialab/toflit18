@@ -22,7 +22,7 @@
         // --------------------------------------------------
         @media (max-width: $screen-xs-max) {
             display: none;
-            height: auto;
+            height: calc(100vh - 11.2em);
         }
 
         @media (min-width: $screen-xs-max) {
@@ -45,7 +45,7 @@
         // --------------------------------------------------
         @media (max-width: $screen-xs-max) {
             display: none;
-            height: auto;
+            height: calc(100vh - 11.2em);
         }
 
         @media (min-width: $screen-xs-max) {
@@ -67,7 +67,22 @@
     }
 }
 
-// Aside Left For MetaData
+// Aside with .box-selection
+// --------------------------------------------------
+.box-selection {
+    + .container-fluid {
+        aside {
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (max-width: $screen-xs-max) {
+                height: calc(100vh - 15.6em);
+            }
+        }
+    }
+}
+
+// Aside Left with .box-selection-lg
 // --------------------------------------------------
 .box-selection-lg {
     + .container-fluid {
@@ -82,6 +97,34 @@
 
             @media (min-width: $screen-sm-min) {
                 height: calc(100vh - 21.6em);
+            }
+        }
+    }
+}
+
+// Aside Left with .box-selection-lg
+// --------------------------------------------------
+.box-selection {
+    &.box-selection-lg {
+        + .container-fluid {
+            .aside {
+                &.left {
+                    //
+                    // Responsive
+                    // --------------------------------------------------
+                    @media (max-width: $screen-xs-max) {
+                        height: calc(100vh - 19.8em);
+                    }
+                }
+
+                &.right {
+                    //
+                    // Responsive
+                    // --------------------------------------------------
+                    @media (max-width: $screen-xs-max) {
+                        height: calc(100vh - 15.4em);
+                    }
+                }
             }
         }
     }

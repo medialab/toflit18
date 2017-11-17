@@ -12,11 +12,7 @@
         // Responsive
         // --------------------------------------------------
         @media (max-width: $screen-xs-max) {
-            top: inherit;
-            right: 0;
-            bottom: 5em;
-
-            @include align-items(flex-end);
+            top: 0;
 
             .form-control {
                 max-width: 10em;
@@ -49,6 +45,13 @@
 
         .input-group {
             min-width: 15em;
+
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (max-width: $screen-xs-max) {
+                min-width: 12em;
+            }
         }
 
         // Actions Min
@@ -71,6 +74,15 @@
             @media (max-width: $screen-xs-max) {
                 margin-bottom: 0;
                 margin-top: 0.5em;
+            }
+
+            &:first-child {
+                //
+                // Responsive
+                // --------------------------------------------------
+                @media (max-width: $screen-xs-max) {
+                    margin-top: 0;
+                }
             }
 
             &:last-child {
