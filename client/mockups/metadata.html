@@ -146,7 +146,7 @@
                   <h1>Metadata</h1>
                 </div>
                 <div class="col-sm-8 col-md-5">
-                  <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper.</p>
+                  <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex.</p>
                 </div>
               </div>
             </div>
@@ -279,6 +279,30 @@
                       <p>Barcharts are sorted by average number of flows per year.</p>
                       <div class="form-group-fixed form-group-fixed-right">
                         <button type="submit" class="btn btn-default">Export</button>
+                      </div>
+                      <div class="form-group-fixed form-group-fixed-right">
+                        <!--
+                          DROPDOWN ACTIONS
+                            CLICK on 'dropdown-toggle'
+                              add class 'open'
+                              change aria-expanded="true"
+                                CLICK on 'dropdown-toggle'
+                                  remove class 'open'
+                                  change aria-expanded="false"
+                            CLICK outside anywhere
+                              remove class 'open'
+                              change aria-expanded="false"
+                        -->
+                        <div class="dropup open">
+                          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span>Exports</span>
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a href="#">Export Direction by Years</a></li>
+                            <li><a href="#">Export Metadata</a></li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </aside>

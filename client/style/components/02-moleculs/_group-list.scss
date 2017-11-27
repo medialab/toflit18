@@ -25,19 +25,19 @@
             }
 
             @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-                height: calc(100vh - 23.2em);
+                height: calc(100vh - 22em);
             }
 
             @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-                height: calc(100vh - 21em);
+                height: calc(100vh - 18.4em);
             }
 
             @media (min-width: $screen-lg-min) and (max-width: $screen-xlg-max) {
-                height: calc(100vh - 19.6em);
+                height: calc(100vh - 17em);
             }
 
             @media (min-width: $screen-xlg-max) {
-                height: calc(100vh - 18.4em);
+                height: calc(100vh - 16.9em);
             }
         }
     }
