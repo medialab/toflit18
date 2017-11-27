@@ -21,6 +21,17 @@ body {
     }
 }
 
+.container {
+    &.no-padding {
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            padding: 15px;
+        }
+    }
+}
+
 .content {
     //
     // Responsive
