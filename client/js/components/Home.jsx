@@ -28,50 +28,7 @@ export default class Home extends Component {
         <div className="section-home-navigation">
           <div className="container">
             <div className="row">
-              <div className="col-sm-12"><h2>Data</h2></div>
-              <div className="col-sm-4">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper. Vivamus varius diam enim, ac semper nisl venenatis eget.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex.</p>
-              </div>
-              <div className="col-sm-4">
-                <Link
-                  to="/exploration/meta"
-                  className="btn btn-link" >
-                  <figure>
-                    <img
-                      className="img-responsive"
-                      src="./assets/images/metadata.png"
-                      alt="Metadata"
-                      width="300"
-                      height="180" />
-                    <figcaption>
-                      <Icon name="icon-stack" />
-                      <span>Metadata</span>
-                    </figcaption>
-                  </figure>
-                </Link>
-              </div>
-              <div className="col-sm-4">
-                <Link
-                  to="/classification/browser"
-                  className="btn btn-link" >
-                  <figure>
-                    <img
-                      className="img-responsive"
-                      src="./assets/images/classification.png"
-                      alt="Classifications"
-                      width="300"
-                      height="180" />
-                    <figcaption>
-                      <Icon name="icon-classification" />
-                      <span>Classifications</span>
-                    </figcaption>
-                  </figure>
-                </Link>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-12"><h2>Explorer</h2></div>
+              <div className="col-sm-12"><h2>Explore Trade</h2></div>
               <div className="col-sm-4">
                 <Link
                   to="/exploration/indicators"
@@ -130,6 +87,66 @@ export default class Home extends Component {
                 <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
               </div>
             </div>
+            <div className="row">
+              <div className="col-sm-12"><h2>Data</h2></div>
+              <div className="col-sm-4">
+                <Link
+                  to="/sources"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/sources.png"
+                      alt="Sources"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <Icon name="icon-curve" />
+                      <span>Sources</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+              </div>
+              <div className="col-sm-4">
+                <Link
+                  to="/exploration/meta"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/metadata.png"
+                      alt="Metadata"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <Icon name="icon-stack" />
+                      <span>Metadata</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+              </div>
+              <div className="col-sm-4">
+                <Link
+                  to="/classification/browser"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/classification.png"
+                      alt="Classifications"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <Icon name="icon-classification" />
+                      <span>Classifications</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+              </div>
+            </div>
           </div>
         </div>
         <div className="section-bottom">
@@ -140,7 +157,7 @@ export default class Home extends Component {
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. </p>
               </div>
               <div className="col-sm-6">
-                <h2>How to science</h2>
+                <h2>How to Use</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. </p>
               </div>
             </div>

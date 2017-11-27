@@ -11,6 +11,7 @@ import App from './App.jsx';
 import Home from './Home.jsx';
 import About from './About.jsx';
 import Legal from './Legal.jsx';
+import Sources from './Sources.jsx';
 import ClassificationPanel from './classification/ClassificationPanel.jsx';
 import ClassificationModal from './classification/ClassificationModal.jsx';
 import ClassificationBrowser from './classification/ClassificationBrowser.jsx';
