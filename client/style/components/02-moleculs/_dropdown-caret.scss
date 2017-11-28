@@ -12,6 +12,11 @@
                 margin: 0.2em 0 0 0.2em;
                 color: $dove-gray-darken;
             }
+
+            + .dropdown-menu {
+                padding-top: 0;
+                border-top-color: $white;
+            }
         }
 
         // Hover / Focus

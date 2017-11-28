@@ -21,26 +21,19 @@ body {
     }
 }
 
-.container {
-    &.no-padding {
-        //
-        // Responsive
-        // --------------------------------------------------
-        @media (max-width: $screen-xs-max) {
-            padding: 15px;
-        }
-    }
-}
+.container.content {
+    margin-bottom: 2em;
 
-.content {
     //
     // Responsive
     // --------------------------------------------------
     @media (max-width: $screen-xs-max) {
         margin-top: 5em;
+        padding: 0 15px;
     }
 
     @media (min-width: $screen-xs-max) {
         margin-top: 8em;
+        padding: 0 30px;
     }
 }
