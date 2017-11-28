@@ -5753,6 +5753,12 @@ select {
   display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-align: center;
   -ms-flex-align: center;
   -webkit-align-items: center;
@@ -5877,6 +5883,9 @@ select {
   color: #ffffff; }
   .list-labels .btn-icon:hover, .list-labels .btn-icon:focus {
     color: rgba(255, 255, 255, 0.5); }
+
+.alert p + button {
+  margin-top: 1em; }
 
 header .navbar {
   margin-bottom: 0; }
