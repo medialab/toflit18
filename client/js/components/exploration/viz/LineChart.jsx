@@ -94,9 +94,9 @@ export default class LineChart extends Component {
     if (!data || !data.some(line => !!line.data.length))
       return null;
 
-    const minYear = Math.min.apply(null, data.map(line => line.data[0].year));
+    const minYear = Math.min.apply(null, data.map(line => line.data[0] ? line.data[0].year : 9999));
 
-    const maxYear = Math.max.apply(null, data.map(line => line.data[line.data.length - 1].year));
+    const maxYear = Math.max.apply(null, data.map(line => line.data[line.data.length - 1] ? line.data[line.data.length - 1].year : 0));
 
     const lineData = new Array(maxYear - minYear + 1);
 
