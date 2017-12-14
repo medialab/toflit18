@@ -67,16 +67,17 @@
                         remove class 'open'
                         change aria-expanded="false"
                   -->
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                      <span>Data</span>
+                  <li class="dropdown open">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                      <span>Explore trade</span>
                       <svg class="icon icon-arrow-down" aria-hidden="true">
                         <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
                       </svg>
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">Metadata</a></li>
-                      <li><a href="#">Classifications</a></li>
+                      <li><a href="/time-series.html">Time series</a></li>
+                      <li class="active"><a href="/product-terms.html">Product terms network</a></li>
+                      <li><a href="/locations.html">Locations network</a></li>
                     </ul>
                   </li>
                   <!--
@@ -91,20 +92,43 @@
                         remove class 'open'
                         change aria-expanded="false"
                   -->
-                  <li class="dropdown active">
+                  <li class="dropdown">
                     <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                      <span>View</span>
+                      <span>Data</span>
                       <svg class="icon icon-arrow-down" aria-hidden="true">
                         <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
                       </svg>
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">Indicators</a></li>
-                      <li class="active"><a href="#">Products</a></li>
-                      <li><a href="#">Countries</a></li>
+                      <li><a href="/sources.html">Sources</a></li>
+                      <li><a href="/metadata.html">Metadata</a></li>
+                      <li><a href="/classifications">Classifications</a></li>
                     </ul>
                   </li>
-                  <li><a href="#">Glossary</a></li>
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <span>Glossary</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/glossary.html">Products</a></li>
+                      <li><a href="/concepts-glossary.html">Concepts</a></li>
+                    </ul>
+                  </li>
                   <li><a href="#">About</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -119,10 +143,10 @@
             <div class="text-heading">
               <div class="row">
                 <div class="col-sm-4 col-md-3">
-                  <h1>Products</h1>
+                  <h1>Product terms</h1>
                 </div>
                 <div class="col-sm-8 col-md-5">
-                  <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper.</p>
+                  <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex.</p>
                 </div>
               </div>
             </div>
@@ -286,14 +310,6 @@
                       <div class="viz">
                         <!-- VIZ -->
                       </div>
-                      <div class="node-display">
-                        <ul class="list-unstyled">
-                          <li><span class="title">Hollande</span></li>
-                          <li>Flows: <strong>48,265</strong></li>
-                          <li>Value: <strong>1,419,257,056.89</strong></li>
-                          <li>Degree: <strong>22</strong></li>
-                        </ul>
-                      </div>
                     </div>
                   </div>
                   <aside class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-right" id="sidebarRight">
@@ -341,6 +357,15 @@
                               </select>
                             </div>
                           </div>
+                        </div>
+                        <hr>
+                        <div class="node-display">
+                          <ul class="list-unstyled">
+                            <li><span class="title">Hollande</span></li>
+                            <li>Flows: <strong>48,265</strong></li>
+                            <li>Value: <strong>1,419,257,056.89</strong></li>
+                            <li>Degree: <strong>22</strong></li>
+                          </ul>
                         </div>
                       </form>
                       <div class="form-group-fixed form-group-fixed-right">

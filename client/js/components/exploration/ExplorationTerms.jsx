@@ -170,7 +170,7 @@ class TermsPanel extends Component {
 
     return (
       <VizLayout
-        title="Products"
+        title="Product terms"
         description="Choose a product classification and display a graph showing relations between terms of the aforementioned classification"
         leftPanelName="Filters"
         rightPanelName="Caption" >

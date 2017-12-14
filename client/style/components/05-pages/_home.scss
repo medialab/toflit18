@@ -108,9 +108,7 @@
 
         .btn {
             padding: 0;
-            overflow: hidden;
             margin-bottom: 1em;
-            border-radius: $border-radius-large;
 
             span {
                 font-size: 1.2em;
@@ -130,8 +128,10 @@
         }
 
         figure {
+            overflow: hidden;
             position: relative;
             padding: 0;
+            border-radius: $border-radius-large;
         }
 
         img {

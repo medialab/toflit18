@@ -92,15 +92,15 @@
                         remove class 'open'
                         change aria-expanded="false"
                   -->
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <li class="dropdown open">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
                       <span>Data</span>
                       <svg class="icon icon-arrow-down" aria-hidden="true">
                         <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
                       </svg>
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a href="/sources.html">Sources</a></li>
+                      <li class="active"><a href="/sources.html">Sources</a></li>
                       <li><a href="/metadata.html">Metadata</a></li>
                       <li><a href="/classifications">Classifications</a></li>
                     </ul>
@@ -117,15 +117,15 @@
                         remove class 'open'
                         change aria-expanded="false"
                   -->
-                  <li class="dropdown open">
-                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                       <span>Glossary</span>
                       <svg class="icon icon-arrow-down" aria-hidden="true">
                         <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
                       </svg>
                     </a>
                     <ul class="dropdown-menu">
-                      <li class="active"><a href="/glossary.html">Products</a></li>
+                      <li><a href="/glossary.html">Products</a></li>
                       <li><a href="/concepts-glossary.html">Concepts</a></li>
                     </ul>
                   </li>
@@ -138,72 +138,30 @@
             </div><!-- /.container -->
           </nav>
         </header>
-        <main class="container-fluid container-global no-padding">
-          <div class="section-search">
-            <form>
-              <div class="form-group-search">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
-                      <div class="form-group">
-                        <svg class="icon icon-search-lg" aria-hidden="true">
-                          <use xlink:href="../assets/svg/icons/icons.svg#icon-search-lg"></use>
-                        </svg>
-                        <label class="sr-only" for="searchGlossary">Search</label>
-                        <input id="searchGlossary" class="form-control input-lg" type="search" value="aba" placeholder="search">
-                      </div>
-                      <ul class="list-inline list-unstyled list-letters">
-                        <li><button type="button" class="btn btn-link">A</button></li>
-                        <li><button type="button" class="btn btn-link">B</button></li>
-                        <li><button type="button" class="btn btn-link">C</button></li>
-                        <li><button type="button" class="btn btn-link">D</button></li>
-                        <li><button type="button" class="btn btn-link">E</button></li>
-                        <li><button type="button" class="btn btn-link">F</button></li>
-                        <li><button type="button" class="btn btn-link">G</button></li>
-                        <li><button type="button" class="btn btn-link">H</button></li>
-                        <li><button type="button" class="btn btn-link">I</button></li>
-                        <li><button type="button" class="btn btn-link">J</button></li>
-                        <li><button type="button" class="btn btn-link">K</button></li>
-                        <li><button type="button" class="btn btn-link">L</button></li>
-                        <li><button type="button" class="btn btn-link">M</button></li>
-                        <li><button type="button" class="btn btn-link">N</button></li>
-                        <li><button type="button" class="btn btn-link">O</button></li>
-                        <li><button type="button" class="btn btn-link">P</button></li>
-                        <li><button type="button" class="btn btn-link">Q</button></li>
-                        <li><button type="button" class="btn btn-link">R</button></li>
-                        <li><button type="button" class="btn btn-link">S</button></li>
-                        <li><button type="button" class="btn btn-link">T</button></li>
-                        <li><button type="button" class="btn btn-link">U</button></li>
-                        <li><button type="button" class="btn btn-link">V</button></li>
-                        <li><button type="button" class="btn btn-link">W</button></li>
-                        <li><button type="button" class="btn btn-link">X</button></li>
-                        <li><button type="button" class="btn btn-link">Y</button></li>
-                        <li><button type="button" class="btn btn-link">Z</button></li>
-                      </ul>
-                    </div>
-                  </div>
+        <main class="container-fluid no-padding"><!-- !! REMOVE class container-global -->
+          <div class="section-heading">
+            <div class="text-heading">
+              <div class="row">
+                <div class="col-sm-4 col-md-3">
+                  <h1>Sources</h1>
+                </div>
+                <div class="col-sm-8 col-md-5">
+                  <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex.</p>
                 </div>
               </div>
-            </form>
-            <div class="container content">
-              <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                  <div class="search-result">
-                    <h1>Glossary</h1>
-                    <p>We found <strong>2</strong> results found for "aba"</p><!-- if no results add class hidden -->
-                    <p class="hidden">We're sorry. We cannot find any matches for your search.</p><!-- if no results remove class hidden -->
-                    <dl>
-                      <div class="well">
-                        <dt>abafine</dt>
-                        <dd>erreur, = "abassis"</dd>
-                      </div>
-                      <div class="well">
-                        <dt>abassi, abassis, abaci</dt>
-                        <dd>Abagi ou Abassi, "monnoie qui a cours en Perse", article "Abagi", Jacques Savary des Brûlons, Dictionnaire universel de commerce, vol. 1, Paris, Vve Estienne, 1741, p. 559 [ci-après Savary, Dictionnaire 1], article "Abagi".</dd>
-                      </div>
-                    </dl>
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="container content">
+            <div class="row">
+              <div class="col-sm-10 col-sm-offset-1">
+                <h2>Title</h2>
+                <p class="lead">Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte.</p>
+                <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.</p>
+              </div>
+              <div class="col-sm-10 col-sm-offset-1">
+                <h2>Title</h2>
+                <p class="lead">Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte.</p>
+                <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.</p>
               </div>
             </div>
           </div>

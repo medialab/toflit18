@@ -18,6 +18,19 @@
         display: block;
     }
 
+    > .container {
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            padding: 15px;
+        }
+
+        @media (min-width: $screen-xs-max) {
+            padding: 30px;
+        }
+    }
+
     .icon-search-lg {
         @include square(2.5em);
         @include position(absolute, 0.35em, null, null, 2.5em, 1);

@@ -67,8 +67,8 @@
                         remove class 'open'
                         change aria-expanded="false"
                   -->
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <li class="dropdown open">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
                       <span>Explore trade</span>
                       <svg class="icon icon-arrow-down" aria-hidden="true">
                         <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
@@ -77,7 +77,7 @@
                     <ul class="dropdown-menu">
                       <li><a href="/time-series.html">Time series</a></li>
                       <li><a href="/product-terms.html">Product terms network</a></li>
-                      <li><a href="/locations.html">Locations network</a></li>
+                      <li class="active"><a href="/locations.html">Locations network</a></li>
                     </ul>
                   </li>
                   <!--
@@ -143,7 +143,7 @@
             <div class="text-heading">
               <div class="row">
                 <div class="col-sm-4 col-md-3">
-                  <h1>Metadata</h1>
+                  <h1>Locations</h1>
                 </div>
                 <div class="col-sm-8 col-md-5">
                   <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex.</p>
@@ -152,31 +152,18 @@
             </div>
           </div>
           <div class="section-viz">
-            <div class="box-selection box-selection-lg">
-              <h2 class="hidden-xs"><span class="hidden-sm hidden-md">The type of </span><span>data</span></h2>
-              <div class="form-group">
-                <label for="classifications" class="control-label sr-only">Type of data</label>
-                <select id="productClassificationHead">
-                  <option value="valeur1">source type</option>
-                  <option value="valeur2">direction</option>
-                  <option value="valeur2" selected>products</option>
-                  <option value="valeur3">countries</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="classifications" class="control-label">Source Type</label>
-                <select id="classifications">
-                  <option value="valeur1">source type</option>
-                  <option value="valeur2">direction</option>
-                  <option value="valeur2" selected>products</option>
-                  <option value="valeur3">countries</option>
-                </select>
-              </div>
+            <div class="box-selection">
+              <h2 class="hidden-xs"><span class="hidden-sm hidden-md">Countries</span> classification</h2>
+              <select id="productClassificationHead">
+                <option value="valeur1">Valeur 1</option>
+                <option value="valeur2" selected>Valeur 2</option>
+                <option value="valeur3">Valeur 3</option>
+              </select>
             </div>
             <div class="container-fluid">
               <div class="row row-offcanvas row-offcanvas-left"><!-- add and remove .active for toggle button aside-btn-left -->
                 <div class="row-offcanvas row-offcanvas-right"><!-- add and remove .active for toggle button aside-btn-right -->
-                  <aside class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-left aside-left-metadata" id="sidebarLeft">
+                  <aside class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-left" id="sidebarLeft">
                     <div class="aside-filters">
                       <h3>Filters</h3>
                       <form>
@@ -204,29 +191,6 @@
                           </select>
                         </div>
                         <div class="form-group">
-                          <label for="country" class="control-label">Country</label>
-                          <small class="help-block">The country whence we got the products or wither we are sending them.</small>
-                          <select id="country">
-                            <option value="valeur1">Valeur 1</option>
-                            <option value="valeur2" selected>Valeur 2</option>
-                            <option value="valeur3">Valeur 3</option>
-                          </select>
-                          <select>
-                            <option value="valeur1">Valeur 1</option>
-                            <option value="valeur2" selected>Valeur 2</option>
-                            <option value="valeur3">Valeur 3</option>
-                          </select>
-                        </div>
-                        <div class="form-group">
-                          <label for="direction" class="control-label">Direction</label>
-                          <small class="help-block">The French harbor where the transactions were recorded.</small>
-                          <select id="direction">
-                            <option value="valeur1">Valeur 1</option>
-                            <option value="valeur2" selected>Valeur 2</option>
-                            <option value="valeur3">Valeur 3</option>
-                          </select>
-                        </div>
-                        <div class="form-group">
                           <label for="kind" class="control-label">Kind</label>
                           <small class="help-block">Should we look at import, export, or total?</small>
                           <select id="kind">
@@ -235,13 +199,33 @@
                             <option value="valeur3">Valeur 3</option>
                           </select>
                         </div>
+                        <div class="form-group">
+                          <label for="dates" class="control-label">Dates</label>
+                          <small class="help-block">Choose one date or a range data</small>
+                          <div class="row">
+                            <div class="col-xs-6">
+                              <select id="dates">
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                            <div class="col-xs-6">
+                              <select>
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
                         <div class="form-group-fixed">
                           <button type="submit" class="btn btn-default">Update</button>
                         </div>
                       </form>
                     </div>
                   </aside>
-                  <div class="content-viz content-viz-data">
+                  <div class="content-viz">
                     <button class="aside-btn-left" type="button">
                       <span>Filters</span>
                       <svg class="icon icon-close" aria-hidden="true">
@@ -255,60 +239,118 @@
                       </svg>
                     </button>
                     <div class="col-xs-12 col-sm-6 col-md-8">
-                      <div class="viz-data">
-                        <div class="box-viz">
-                          <span class="title">Total number of classified items per year</span>
-                          <p>viz...</p>
-                        </div>
-                        <div class="box-viz">
-                          <div class="progress-container progress-container-viz">
-                            <div class="alert alert-danger text-center" role="alert"><!-- REMOVE .hidden for switch with loader -->
-                              <p>Oh snap! Change a few things up and try submitting again.</p>
-                              <button type="submit" class="btn btn-default">Refresh !</button>
+                      <div class="viz-tools">
+                        <div class="viz-actions">
+                          <form>
+                            <div class="form-group form-group-xs">
+                              <label class="sr-only" for="search">Search</label>
+                              <select id="search">
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
                             </div>
-                            <div class="progress-line progress-line-viz"><!-- ADD .hidden for switch with message error -->
-                              <span class="sr-only">Loading...</span>
-                            </div>
-                          </div>
-                          <span class="title">Not a medical product</span>
-                          <p>viz...</p>
-                          <span class="title">Narrow medical product</span>
-                          <p>viz...</p>
+                          </form>
+                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                            <!-- Switch svg stop/play add and remove class .hidden -->
+                            <svg class="icon icon-stop hidden" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-stop"></use>
+                            </svg>
+                            <svg class="icon icon-play" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-play"></use>
+                            </svg>
+                          </button>
                         </div>
+                        <div class="viz-nav">
+                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                            <svg class="icon icon-localisation" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-localisation"></use>
+                            </svg>
+                          </button>
+                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                            <svg class="icon icon-zoom-in" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-zoom-in"></use>
+                            </svg>
+                          </button>
+                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                            <svg class="icon icon-zoom-out" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-zoom-out"></use>
+                            </svg>
+                          </button>
+                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                            <svg class="icon icon-full-screen" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-full-screen"></use>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="viz">
+                        <!-- VIZ -->
                       </div>
                     </div>
                   </div>
                   <aside class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-right" id="sidebarRight">
                     <div class="aside-legend">
-                      <ul class="list-unstyled list-legend">
-                        <!-- !!! add Color Legend -->
-                        <li><span style="background-color: #000000"></span>Number direction</li>
-                        <li><span style="background-color: #000000"></span>Number of flows</li>
-                      </ul>
-                      <p>Barcharts are sorted by average number of flows per year.</p>
-                      <div class="form-group-fixed form-group-fixed-right">
-                        <!--
-                          DROPDOWN ACTIONS
-                            CLICK on 'dropdown-toggle'
-                              add class 'open'
-                              change aria-expanded="true"
-                                CLICK on 'dropdown-toggle'
-                                  remove class 'open'
-                                  change aria-expanded="false"
-                            CLICK outside anywhere
-                              remove class 'open'
-                              change aria-expanded="false"
-                        -->
-                        <div class="dropup open">
-                          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <span>Exports</span>
-                            <span class="caret"></span>
-                          </button>
-                          <ul class="dropdown-menu">
-                            <li><a href="#">Export Direction by Years</a></li>
-                            <li><a href="#">Export Metadata</a></li>
+                      <form>
+                        <div class="form-group">
+                          <label for="edge" class="control-label">Edge</label>
+                          <small class="help-block">Thickness</small>
+                          <select id="edge">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="edge" class="control-label">Node</label>
+                          <small class="help-block">Size</small>
+                          <select id="edge">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <span class="control-label">Color</span>
+                          <ul class="list-unstyled list-legend list-legend-circle">
+                            <!-- !!! add Color Legend -->
+                            <li><span style="background-color: #E6830E"></span><span>Direction</span></li>
+                            <li><span style="background-color: #049B9A"></span><span>Country</span></li>
                           </ul>
                         </div>
+                        <div class="form-group">
+                          <label for="label" class="control-label">Label</label>
+                          <div class="row">
+                            <div class="col-xs-6">
+                              <small class="help-block">Size</small>
+                              <select id="label">
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                            <div class="col-xs-6">
+                              <small class="help-block">Threshold</small>
+                              <select>
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="node-display">
+                          <ul class="list-unstyled">
+                            <li><span class="title">Medical</span></li>
+                            <li>Flows: <strong>507,229</strong></li>
+                            <li>Value: <strong>52,697,597,257.64</strong></li>
+                            <li>Degree: <strong>3</strong></li>
+                          </ul>
+                        </div>
+                      </form>
+                      <div class="form-group-fixed form-group-fixed-right">
+                        <button type="submit" class="btn btn-default">Export</button>
                       </div>
                     </div>
                   </aside>

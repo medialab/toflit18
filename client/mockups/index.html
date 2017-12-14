@@ -69,14 +69,15 @@
                   -->
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                      <span>Data</span>
+                      <span>Explore trade</span>
                       <svg class="icon icon-arrow-down" aria-hidden="true">
                         <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
                       </svg>
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">Metadata</a></li>
-                      <li><a href="#">Classifications</a></li>
+                      <li><a href="/time-series.html">Time series</a></li>
+                      <li><a href="/product-terms.html">Product terms network</a></li>
+                      <li><a href="/locations.html">Locations network</a></li>
                     </ul>
                   </li>
                   <!--
@@ -91,20 +92,43 @@
                         remove class 'open'
                         change aria-expanded="false"
                   -->
-                  <li class="dropdown open">
-                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-                      <span>View</span>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <span>Data</span>
                       <svg class="icon icon-arrow-down" aria-hidden="true">
                         <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
                       </svg>
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">Indicators</a></li>
-                      <li><a href="#">Products</a></li>
-                      <li><a href="#">Countries</a></li>
+                      <li><a href="/sources.html">Sources</a></li>
+                      <li><a href="/metadata.html">Metadata</a></li>
+                      <li><a href="/classifications">Classifications</a></li>
                     </ul>
                   </li>
-                  <li><a href="#">Glossary</a></li>
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <span>Glossary</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/glossary.html">Products</a></li>
+                      <li><a href="/concepts-glossary.html">Concepts</a></li>
+                    </ul>
+                  </li>
                   <li><a href="#">About</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -130,41 +154,8 @@
           <div class="section-home-navigation">
             <div class="container">
               <div class="row">
-                <div class="col-sm-12"><h2>Data</h2></div>
-                <div class="col-sm-12 col-md-4">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper. Vivamus varius diam enim, ac semper nisl venenatis eget.</p>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex.</p>
-                </div>
-                <div class="col-sm-4">
-                  <a href="" class="btn btn-link">
-                    <figure>
-                      <img class="img-responsive" src="../assets/images/metadata.png" alt="Metadata" width="300" height="180">
-                      <figcaption>
-                        <svg class="icon icon-stack" aria-hidden="true">
-                          <use xlink:href="../assets/svg/icons/icons.svg#icon-stack"></use>
-                        </svg>
-                        <span>Metadata</span>
-                      </figcaption>
-                    </figure>
-                  </a>
-                </div>
-                <div class="col-sm-4">
-                  <a href="" class="btn btn-link">
-                    <figure>
-                      <img class="img-responsive" src="../assets/images/classification.png" alt="Metadata" width="300" height="180">
-                      <figcaption>
-                        <svg class="icon icon-classification" aria-hidden="true">
-                          <use xlink:href="../assets/svg/icons/icons.svg#icon-classification"></use>
-                        </svg>
-                        <span>Classifications</span>
-                      </figcaption>
-                    </figure>
-                  </a>
-                </div>
-              </div>
-              <div class="row">
                 <div class="col-sm-12">
-                  <h2>Explorer</h2>
+                  <h2>Explore Trade</h2>
                 </div>
                 <div class="col-sm-4">
                   <a href="" class="btn btn-link">
@@ -174,7 +165,7 @@
                         <svg class="icon icon-curve" aria-hidden="true">
                           <use xlink:href="../assets/svg/icons/icons.svg#icon-curve"></use>
                         </svg>
-                        <span>Indicators</span>
+                        <span>Time series</span>
                       </figcaption>
                     </figure>
                   </a>
@@ -188,7 +179,7 @@
                         <svg class="icon icon-network" aria-hidden="true">
                           <use xlink:href="../assets/svg/icons/icons.svg#icon-network"></use>
                         </svg>
-                        <span>Products</span>
+                        <span>Product terms</span>
                       </figcaption>
                     </figure>
                   </a>
@@ -202,7 +193,54 @@
                         <svg class="icon icon-network" aria-hidden="true">
                           <use xlink:href="../assets/svg/icons/icons.svg#icon-network"></use>
                         </svg>
-                        <span>Countries</span>
+                        <span>Locations network</span>
+                      </figcaption>
+                    </figure>
+                  </a>
+                  <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2>Data</h2>
+                </div>
+                <div class="col-sm-4">
+                  <a href="" class="btn btn-link">
+                    <figure>
+                      <img class="img-responsive" src="../assets/images/sources.png" alt="Indicators" width="300" height="180">
+                      <figcaption>
+                        <svg class="icon icon-curve" aria-hidden="true">
+                          <use xlink:href="../assets/svg/icons/icons.svg#icon-curve"></use>
+                        </svg>
+                        <span>Sources</span>
+                      </figcaption>
+                    </figure>
+                  </a>
+                  <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+                </div>
+                <div class="col-sm-4">
+                  <a href="" class="btn btn-link">
+                    <figure>
+                      <img class="img-responsive" src="../assets/images/metadata.png" alt="Metadata" width="300" height="180">
+                      <figcaption>
+                        <svg class="icon icon-stack" aria-hidden="true">
+                          <use xlink:href="../assets/svg/icons/icons.svg#icon-stack"></use>
+                        </svg>
+                        <span>Metadata</span>
+                      </figcaption>
+                    </figure>
+                  </a>
+                  <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+                </div>
+                <div class="col-sm-4">
+                  <a href="" class="btn btn-link">
+                    <figure>
+                      <img class="img-responsive" src="../assets/images/classification.png" alt="Metadata" width="300" height="180">
+                      <figcaption>
+                        <svg class="icon icon-classification" aria-hidden="true">
+                          <use xlink:href="../assets/svg/icons/icons.svg#icon-classification"></use>
+                        </svg>
+                        <span>Classifications</span>
                       </figcaption>
                     </figure>
                   </a>
@@ -219,7 +257,7 @@
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. </p>
                 </div>
                 <div class="col-sm-6">
-                  <h2>How to science</h2>
+                  <h2>How to Use</h2>
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. </p>
                 </div>
               </div>

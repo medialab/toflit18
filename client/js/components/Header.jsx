@@ -12,6 +12,7 @@ const LINKS = {
   data: [
     '/exploration/meta',
     '/classification/browser',
+    '/sources',
   ],
   view: [
     '/exploration/indicators',
@@ -120,6 +121,38 @@ export default class Header extends Component {
                 <li
                   className={cls(
                     'dropdown',
+                    deployedMenu === 'view' && 'open',
+                    isActive(LINKS.view) && 'active',
+                  )}>
+                  <a
+                    href="#"
+                    ref={ref => this.menus.push(ref)}
+                    className="dropdown-toggle dropdown-caret"
+                    role="button"
+                    aria-haspopup="true"
+                    aria-expanded={deployedMenu === 'view' ? 'true' : 'false'}
+                    onClick={e => {
+                      e.preventDefault();
+                      this.toggleMenu('view');
+                    }} >
+                    <span>Explore trade</span>
+                    <Icon name="icon-arrow-down" />
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link to="/exploration/indicators">Time Series</Link>
+                    </li>
+                    <li>
+                      <Link to="/exploration/network">Locations Network</Link>
+                    </li>
+                    <li>
+                      <Link to="/exploration/terms">Product Terms Network</Link>
+                    </li>
+                  </ul>
+                </li>
+                <li
+                  className={cls(
+                    'dropdown',
                     deployedMenu === 'data' && 'open',
                     isActive(LINKS.data) && 'active',
                   )}>
@@ -144,37 +177,8 @@ export default class Header extends Component {
                     <li>
                       <Link to="/classification/browser">Classifications</Link>
                     </li>
-                  </ul>
-                </li>
-                <li
-                  className={cls(
-                    'dropdown',
-                    deployedMenu === 'view' && 'open',
-                    isActive(LINKS.view) && 'active',
-                  )}>
-                  <a
-                    href="#"
-                    ref={ref => this.menus.push(ref)}
-                    className="dropdown-toggle dropdown-caret"
-                    role="button"
-                    aria-haspopup="true"
-                    aria-expanded={deployedMenu === 'view' ? 'true' : 'false'}
-                    onClick={e => {
-                      e.preventDefault();
-                      this.toggleMenu('view');
-                    }} >
-                    <span>View</span>
-                    <Icon name="icon-arrow-down" />
-                  </a>
-                  <ul className="dropdown-menu">
                     <li>
-                      <Link to="/exploration/indicators">Indicators</Link>
-                    </li>
-                    <li>
-                      <Link to="/exploration/network">Countries Network</Link>
-                    </li>
-                    <li>
-                      <Link to="/exploration/terms">Product Terms</Link>
+                      <Link to="/sources">Sources</Link>
                     </li>
                   </ul>
                 </li>

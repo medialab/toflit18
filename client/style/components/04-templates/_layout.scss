@@ -21,15 +21,19 @@ body {
     }
 }
 
-.content {
+.container.content {
+    margin-bottom: 2em;
+
     //
     // Responsive
     // --------------------------------------------------
     @media (max-width: $screen-xs-max) {
         margin-top: 5em;
+        padding: 0 15px;
     }
 
     @media (min-width: $screen-xs-max) {
         margin-top: 8em;
+        padding: 0 30px;
     }
 }

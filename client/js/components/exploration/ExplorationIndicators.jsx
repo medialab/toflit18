@@ -166,7 +166,7 @@ export default class ExplorationIndicators extends Component {
 
     return (
       <VizLayout
-        title="Indicators"
+        title="Time series"
         description="By selecting the following criteria, you'll be able to add the line you need on the graph that will be created for you below."
         leftPanelName="Filters"
         rightPanelName="Curves" >

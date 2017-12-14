@@ -69,14 +69,15 @@
                   -->
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                      <span>Data</span>
+                      <span>Explore trade</span>
                       <svg class="icon icon-arrow-down" aria-hidden="true">
                         <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
                       </svg>
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">Metadata</a></li>
-                      <li><a href="#">Classifications</a></li>
+                      <li><a href="/time-series.html">Time series</a></li>
+                      <li><a href="/product-terms.html">Product terms network</a></li>
+                      <li><a href="/locations.html">Locations network</a></li>
                     </ul>
                   </li>
                   <!--
@@ -91,20 +92,43 @@
                         remove class 'open'
                         change aria-expanded="false"
                   -->
-                  <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                      <span>View</span>
+                  <li class="dropdown open">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                      <span>Data</span>
                       <svg class="icon icon-arrow-down" aria-hidden="true">
                         <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
                       </svg>
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">Indicators</a></li>
-                      <li class="active"><a href="#">Products</a></li>
-                      <li><a href="#">Countries</a></li>
+                      <li><a href="/sources.html">Sources</a></li>
+                      <li><a href="/metadata.html">Metadata</a></li>
+                      <li class="active"><a href="/classifications">Classifications</a></li>
                     </ul>
                   </li>
-                  <li><a href="#">Glossary</a></li>
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <span>Glossary</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/glossary.html">Products</a></li>
+                      <li><a href="/concepts-glossary.html">Concepts</a></li>
+                    </ul>
+                  </li>
                   <li><a href="#">About</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -122,27 +146,24 @@
                   <h1>Classifications</h1>
                 </div>
                 <div class="col-sm-8 col-md-5">
-                  <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper.</p>
+                  <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex.</p>
                 </div>
               </div>
             </div>
           </div>
-          <div class="section-viz sections-viz-no-box-selection">
+          <div class="section-viz">
+            <div class="box-selection">
+              <select id="productClassificationHead">
+                <option value="valeur1">Product</option>
+                <option value="valeur2" selected>Country</option>
+              </select>
+            </div>
             <div class="container-fluid">
               <div class="row row-offcanvas row-offcanvas-left"><!-- add and remove .active for toggle button aside-btn-left -->
                 <div class="row-offcanvas row-offcanvas-right"><!-- add and remove .active for toggle button aside-btn-right -->
                   <aside class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-left" id="sidebarLeft">
                     <div class="aside-filters">
-                      <h3>What do I want to see ?</h3>
                       <form>
-                        <div class="form-group">
-                          <label for="itemsType" class="sr-only control-label">Items type</label>
-                          <small class="help-block">Choose beetween the product or the country.</small>
-                          <select id="itemsType">
-                            <option value="valeur1" selected>Product</option>
-                            <option value="valeur2">Country</option>
-                          </select>
-                        </div>
                         <div class="form-group">
                           <label for="classifications" class="control-label">Classifications</label>
                           <small class="help-block">Lorem ipsum....</small>

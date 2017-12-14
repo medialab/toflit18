@@ -136,7 +136,7 @@ class NetworkPanel extends Component {
 
     return (
       <VizLayout
-        title="Countries"
+        title="Locations"
         description="Choose a country classification and display a graph showing relations between countries & directions."
         leftPanelName="Filters"
         rightPanelName="Caption" >

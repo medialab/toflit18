@@ -305,7 +305,7 @@ $dropdown-link-hover-bg: transparent !default;
 $dropdown-link-active-color: $component-active-color !default;
 
 //** Active dropdown menu item background color.
-$dropdown-link-active-bg: $component-active-bg !default;
+$dropdown-link-active-bg: $sandal !default;
 
 //** Disabled dropdown menu item background color.
 $dropdown-link-disabled-color: $gray-light !default;
@@ -386,7 +386,7 @@ $grid-gutter-width: 30px !default;
 
 // Navbar collapse
 //** Point at which the navbar becomes uncollapsed.
-$grid-float-breakpoint: $screen-sm-min !default;
+$grid-float-breakpoint: $screen-sm-max !default;
 
 //** Point at which the navbar begins collapsing.
 $grid-float-breakpoint-max: $grid-float-breakpoint - 1 !default;
