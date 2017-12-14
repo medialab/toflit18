@@ -324,9 +324,9 @@ class Charts extends Component {
     let barData = [];
 
     if (lines.some(line => !!line.data.length)) {
-      const minYear = Math.min.apply(null, lines.map(line => line.data[0].year));
+      const minYear = Math.min.apply(null, lines.map(line => line.data[0] ? line.data[0].year : 9999));
 
-      const maxYear = Math.max.apply(null, lines.map(line => line.data[line.data.length - 1].year));
+      const maxYear = Math.max.apply(null, lines.map(line => line.data[line.data.length - 1] ? line.data[line.data.length - 1].year : 0));
 
       barData = new Array(maxYear - minYear + 1);
 
