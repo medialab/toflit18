@@ -12,6 +12,7 @@ import Home from './Home.jsx';
 import About from './About.jsx';
 import Legal from './Legal.jsx';
 import Sources from './Sources.jsx';
+import Concepts from './Concepts.jsx';
 import ClassificationPanel from './classification/ClassificationPanel.jsx';
 import ClassificationModal from './classification/ClassificationModal.jsx';
 import ClassificationBrowser from './classification/ClassificationBrowser.jsx';
@@ -46,8 +47,12 @@ export default class AppRouter extends Component {
             <Route path="indicators" component={ExplorationIndicators} />
             <Route path="network" component={ExplorationNetwork} />
             <Route path="terms" component={ExplorationTerms} />
+            <Route path="sources" component={Sources} />
           </Route>
-          <Route path="glossary" component={GlossaryPanel} />
+          <Route path="glossary">
+            <Route path="products" component={GlossaryPanel} />
+            <Route path="concepts" component={Concepts} />
+          </Route>
           <Route path="about" component={About} />
           <Route path="legal" component={Legal} />
         </Route>
