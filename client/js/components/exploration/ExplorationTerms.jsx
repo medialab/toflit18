@@ -7,6 +7,7 @@
 import React, {Component} from 'react';
 import {format} from 'd3-format';
 import {range} from 'lodash';
+import Select from 'react-select';
 import {branch} from 'baobab-react/decorators';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
@@ -306,53 +307,43 @@ class TermsPanel extends Component {
             <div className="form-group">
               <label htmlFor="edgeSize" className="control-label">Edge</label>
               <small className="help-block">Thickness</small>
-              <select
-                id="edgeSize"
-                value={edgeSize}
-                onChange={e => actions.selectEdgeSize(e.target.value)} >{
-                [
+              <Select
+                name="edgeSize"
+                clearable={false}
+                searchable={false}
+                options={[
                   {
-                    id: 'flows',
+                    value: 'flows',
                     label: 'Nb of flows.',
                   }, {
-                    id: 'value',
+                    value: 'value',
                     label: 'Value of flows.',
                   }
-                ].map(({id, label}) => (
-                  <option
-                    key={id}
-                    value={id} >{
-                      label
-                  }</option>
-                ))
-              }</select>
+                ]}
+                value={edgeSize}
+                onChange={({value}) => actions.selectEdgeSize(value)} />
             </div>
             <div className="form-group">
               <label htmlFor="nodeSize" className="control-label">Node</label>
               <small className="help-block">Size</small>
-              <select
-                id="nodeSize"
-                value={nodeSize}
-                onChange={e => actions.selectNodeSize(e.target.value)} >{
-                [
+              <Select
+                name="nodeSize"
+                clearable={false}
+                searchable={false}
+                options={[
                   {
-                    id: 'flows',
+                    value: 'flows',
                     label: 'Nb of flows.',
                   }, {
-                    id: 'value',
+                    value: 'value',
                     label: 'Value of flows.',
                   }, {
-                    id: 'degree',
+                    value: 'degree',
                     label: 'Degree.',
                   }
-                ].map(({id, label}) => (
-                  <option
-                    key={id}
-                    value={id} >{
-                      label
-                  }</option>
-                ))
-              }</select>
+                ]}
+                value={nodeSize}
+                onChange={({value}) => actions.selectNodeSize(value)} />
             </div>
             <div className="form-group">
               <label className="control-label">Color</label>
@@ -363,33 +354,29 @@ class TermsPanel extends Component {
               <div className="row">
                 <div className="col-xs-6">
                   <small className="help-block">Size</small>
-                  <select
-                    id="labelSize"
-                    value={labelSizeRatio}
-                    onChange={e => actions.selectLabelSizeRatio(+e.target.value)} >{
-                    range(1, 10).map(num => (
-                      <option
-                        key={num}
-                        value={num} >{
-                          num
-                      }</option>
-                    ))
-                  }</select>
+                  <Select
+                    name="labelSize"
+                    clearable={false}
+                    searchable={false}
+                    options={range(1, 10).map(num => ({
+                      value: num + '',
+                      label: num + '',
+                    }))}
+                    value={labelSizeRatio + ''}
+                    onChange={({value}) => actions.selectLabelSizeRatio(+value)} />
                 </div>
                 <div className="col-xs-6">
                   <small className="help-block">Threshold</small>
-                  <select
-                    id="labelThreshold"
-                    value={labelThreshold}
-                    onChange={e => actions.selectLabelThreshold(+e.target.value)} >{
-                    range(0, 20).map(num => (
-                      <option
-                        key={num}
-                        value={num} >{
-                          num
-                      }</option>
-                    ))
-                  }</select>
+                  <Select
+                    name="labelThreshold"
+                    clearable={false}
+                    searchable={false}
+                    options={range(0, 20).map(num => ({
+                      value: num + '',
+                      label: num + '',
+                    }))}
+                    value={labelThreshold + ''}
+                    onChange={({value}) => actions.selectLabelThreshold(+value)} />
                 </div>
               </div>
             </div>
