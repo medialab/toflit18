@@ -138,6 +138,10 @@ class TermsPanel extends Component {
       }
     } = this.props;
 
+    // TODO:
+    // Store in "alert" any error / warning message:
+    const alert = null;
+
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
         name: type,
@@ -298,6 +302,8 @@ class TermsPanel extends Component {
           labelThreshold={labelThreshold}
           labelSizeRatio={labelSizeRatio}
           nodeDisplayRenderer={renderNodeDisplay}
+          alert={alert}
+          loading={loading}
           className="col-xs-12 col-sm-6 col-md-8" />
 
         { /* Right panel */ }

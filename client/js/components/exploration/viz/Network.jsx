@@ -218,17 +218,38 @@ export default class Network extends Component {
   }
 
   render() {
-    const graph = this.props.graph,
-          isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length),
-          nodeDisplayRenderer = this.props.nodeDisplayRenderer,
-          selectedNode = this.state.selectedNode;
+    const {
+      graph,
+      alert,
+      loading,
+      className,
+      nodeDisplayRenderer,
+    } = this.props;
+    const {selectedNode} = this.state;
+    const isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length);
 
     return (
       <div
         id="sigma-graph"
         ref="mount"
-        className={this.props.className} >
+        className={className} >
         {isGraphEmpty && <Message text="No Data to display." />}
+
+        {
+          (alert || loading) && (
+            <div className="progress-container progress-container-viz">
+              {alert && <div className="alert alert-danger hidden" role="alert">{alert}</div>}
+              {
+                loading && (
+                  <div className="progress-line progress-line-viz">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                )
+              }
+            </div>
+          )
+        }
+
         <Controls
           nodes={graph ? graph.nodes : []}
           camera={this.sigma.cameras.main}

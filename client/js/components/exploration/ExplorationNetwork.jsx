@@ -109,6 +109,10 @@ class NetworkPanel extends Component {
       }
     } = this.props;
 
+    // TODO:
+    // Store in "alert" any error / warning message:
+    const alert = null;
+
     let dateMaxOptions, dateMinOptions;
     dateMin = actions.updateDate('dateMin');
 
@@ -235,6 +239,8 @@ class NetworkPanel extends Component {
           labelThreshold={labelThreshold}
           labelSizeRatio={labelSizeRatio}
           nodeDisplayRenderer={renderNodeDisplay}
+          alert={alert}
+          loading={loading}
           className="col-xs-12 col-sm-6 col-md-8" />
 
         { /* Right panel */ }

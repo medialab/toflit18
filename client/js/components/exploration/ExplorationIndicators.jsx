@@ -157,6 +157,10 @@ export default class ExplorationIndicators extends Component {
       line => isEqual(line.params, selectors)
     );
 
+    // TODO:
+    // Store in "alert" any error / warning message:
+    const alert = null;
+
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
         name: type,
@@ -250,7 +254,10 @@ export default class ExplorationIndicators extends Component {
         </div>
 
         { /* Content panel */ }
-        <Charts lines={lines.filter(line => !!line.data)} />
+        <Charts
+          alert={alert}
+          loading={creating}
+          lines={lines.filter(line => !!line.data)} />
 
         { /* Right panel */ }
         <div className="aside-legend">
@@ -313,10 +320,7 @@ class Charts extends Component {
   }
 
   render() {
-    const lines = this.props.lines;
-
-    if (!lines.length)
-      return <div className="col-xs-12 col-sm-6 col-md-8" />;
+    const {lines, alert, loading} = this.props;
 
     const quantitiesOpened = this.state.quantitiesOpened;
 
@@ -352,43 +356,62 @@ class Charts extends Component {
 
     return (
       <div className="col-xs-12 col-sm-6 col-md-8">
-        <div className="viz-data">
-          <div className="box-viz">
-            <span className="title">Total number of directions per year</span>
-            <DataQualityBarChart
-              data={barData}
-              syncId="indicators"
-              yAxis />
-          </div>
-          <div className="box-viz">
-            <span className="title">Number of flows per year</span>
-            <LineChart valueKey="count" data={lines} />
-          </div>
-          <div className="box-viz">
-            <span className="title">Total value of flows per year</span>
-            <LineChart shareKey="value_share" data={lines} />
-          </div>
-          {quantitiesOpened && <div className="box-viz">
-            <span className="title">Quantities of flows per year (kilograms)</span>
-            <LineChart shareKey="kg_share" valueKey="kg" data={lines} />
-          </div>}
-          {quantitiesOpened && <div className="box-viz">
-            <span className="title">Quantities of flows per year (litres)</span>
-            <LineChart shareKey="litre_share" valueKey="litre" data={lines} />
-          </div>}
-          {quantitiesOpened && <div className="box-viz">
-            <span className="title">Quantities of flows per year (pieces)</span>
-            <LineChart shareKey="nbr_share" valueKey="nbr" data={lines} />
-          </div>}
-          <div className="viz-data-expand">
-            <button
-              type="submit"
-              onClick={this.toggleQuantities}
-              className="btn btn-default">
-              Expand collapse quantities
-            </button>
-          </div>
-        </div>
+        {
+          (alert || loading) && (
+            <div className="progress-container progress-container-viz">
+              {alert && <div className="alert alert-danger hidden" role="alert">{alert}</div>}
+              {
+                loading && (
+                  <div className="progress-line progress-line-viz">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                )
+              }
+            </div>
+          )
+        }
+
+        {
+          lines.length && (
+            <div className="viz-data">
+              <div className="box-viz">
+                <span className="title">Total number of directions per year</span>
+                <DataQualityBarChart
+                  data={barData}
+                  syncId="indicators"
+                  yAxis />
+              </div>
+              <div className="box-viz">
+                <span className="title">Number of flows per year</span>
+                <LineChart valueKey="count" data={lines} />
+              </div>
+              <div className="box-viz">
+                <span className="title">Total value of flows per year</span>
+                <LineChart shareKey="value_share" data={lines} />
+              </div>
+              {quantitiesOpened && <div className="box-viz">
+                <span className="title">Quantities of flows per year (kilograms)</span>
+                <LineChart shareKey="kg_share" valueKey="kg" data={lines} />
+              </div>}
+              {quantitiesOpened && <div className="box-viz">
+                <span className="title">Quantities of flows per year (litres)</span>
+                <LineChart shareKey="litre_share" valueKey="litre" data={lines} />
+              </div>}
+              {quantitiesOpened && <div className="box-viz">
+                <span className="title">Quantities of flows per year (pieces)</span>
+                <LineChart shareKey="nbr_share" valueKey="nbr" data={lines} />
+              </div>}
+              <div className="viz-data-expand">
+                <button
+                  type="submit"
+                  onClick={this.toggleQuantities}
+                  className="btn btn-default">
+                  Expand collapse quantities
+                </button>
+              </div>
+            </div>
+          )
+        }
       </div>
     );
   }

@@ -112,8 +112,13 @@ export default class ExplorationMeta extends Component {
 
     const {
       groups,
+      loading,
       selectors
     } = state;
+
+    // TODO:
+    // Store in "alert" any error / warning message:
+    const alert = null;
 
     const classificationsFiltered = classifications.product
       .concat(classifications.country)
@@ -264,7 +269,7 @@ export default class ExplorationMeta extends Component {
               <button
                 type="submit"
                 className="btn btn-default"
-                data-loading={state.loading}
+                data-loading={loading}
                 disabled={!state.dataType}
                 onClick={actions.addChart}>
                 Update
@@ -275,6 +280,21 @@ export default class ExplorationMeta extends Component {
 
         { /* Content panel */ }
         <div className="col-xs-12 col-sm-6 col-md-8">
+          {
+            (alert || loading) && (
+              <div className="progress-container progress-container-viz">
+                {alert && <div className="alert alert-danger hidden" role="alert">{alert}</div>}
+                {
+                  loading && (
+                    <div className="progress-line progress-line-viz">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  )
+                }
+              </div>
+            )
+          }
+
           <div className="viz-data">
             {state.perYear && state.dataType && (
               <div className="box-viz">
