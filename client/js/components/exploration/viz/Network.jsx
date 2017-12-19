@@ -128,6 +128,9 @@ export default class Network extends Component {
 
     this.selectNode = node => {
       this.setState({selectedNode: node});
+      if (typeof this.props.setSelectedNode === 'function') {
+        this.props.setSelectedNode(node);
+      }
     };
   }
 
@@ -223,9 +226,7 @@ export default class Network extends Component {
       alert,
       loading,
       className,
-      nodeDisplayRenderer,
     } = this.props;
-    const {selectedNode} = this.state;
     const isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length);
 
     return (
@@ -257,14 +258,6 @@ export default class Network extends Component {
           toggleLayout={this.toggleLayout}
           layoutRunning={this.state.layoutRunning}
           onChangeQuery={this.focusNode} />
-        {typeof nodeDisplayRenderer === 'function' && (
-          <div className="node-display">
-            {selectedNode ?
-              nodeDisplayRenderer(selectedNode) :
-              <em>Try clicking a node to get some information...</em>
-            }
-          </div>
-        )}
       </div>
     );
   }

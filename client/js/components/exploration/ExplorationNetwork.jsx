@@ -27,27 +27,6 @@ import {
 const NUMBER_FIXED_FORMAT = format(',.2f'),
       NUMBER_FORMAT = format(',');
 
-function renderNodeDisplay(props) {
-  const {
-    label,
-    flows,
-    value,
-    degree
-  } = props;
-
-  return (
-    <div>
-      <strong>{label}</strong>
-      <br />
-      Flows: {NUMBER_FORMAT(flows)}
-      <br />
-      Value: {NUMBER_FIXED_FORMAT(value)}
-      <br />
-      Degree: {NUMBER_FORMAT(degree)}
-    </div>
-  );
-}
-
 export default class ExplorationGlobals extends Component {
   render() {
     return (
@@ -77,11 +56,21 @@ export default class ExplorationGlobals extends Component {
   }
 })
 class NetworkPanel extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {selected: null};
+    this.setSelectedNode = this.setSelectedNode.bind(this);
+  }
+
   export() {
     exportCSV({
       data: this.props.state.data,
       name: 'Toflit18_Global_Trade_Countries_Network_view.csv',
     });
+  }
+
+  setSelectedNode(selectedNode) {
+    this.setState({selectedNode});
   }
 
   render() {
@@ -108,6 +97,8 @@ class NetworkPanel extends Component {
         dateMax
       }
     } = this.props;
+
+    const {selectedNode} = this.state;
 
     // TODO:
     // Store in "alert" any error / warning message:
@@ -238,7 +229,7 @@ class NetworkPanel extends Component {
           edgeSizeKey={edgeSize}
           labelThreshold={labelThreshold}
           labelSizeRatio={labelSizeRatio}
-          nodeDisplayRenderer={renderNodeDisplay}
+          setSelectedNode={this.setSelectedNode}
           alert={alert}
           loading={loading}
           className="col-xs-12 col-sm-6 col-md-8" />
@@ -345,6 +336,19 @@ class NetworkPanel extends Component {
                 </div>
               </div>
             </div>
+
+            {
+              selectedNode ?
+                <div className="node-display">
+                  <ul className="list-unstyled">
+                    <li><span className="title">{selectedNode.label}</span></li>
+                    <li>Flows: <strong>{NUMBER_FORMAT(selectedNode.flows)}</strong></li>
+                    <li>Value: <strong>{NUMBER_FIXED_FORMAT(selectedNode.value)}</strong></li>
+                    <li>Degree: <strong>{NUMBER_FORMAT(selectedNode.degree)}</strong></li>
+                  </ul>
+                </div> :
+                undefined
+            }
           </form>
           <div className="form-group-fixed form-group-fixed-right">
             <button
