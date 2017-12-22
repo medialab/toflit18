@@ -3,6 +3,7 @@
     "allowedOrigins": ["http://localhost:3000"],
     "limits": {
       "groups": 200,
+      "items":5,
       "minYear": 1716,
       "maxYear": 1839
     },

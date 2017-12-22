@@ -91,6 +91,36 @@ const Model = {
     });
   },
 
+ /**
+ * Retrieving item of one group with limit offset.
+ */
+  group(id, opts, callback) {
+    let params ={};
+    // Casting
+    params.id = database.int(id);
+    // items limit offset are start/end slice indices
+    params.limitItem = database.int(opts.limitItem+opts.offsetItem);
+    params.offsetItem = database.int(opts.offsetItem);
+    params.queryItem = searchPattern(opts.queryItem || '');
+    params.queryItemFrom = database.int(opts.queryItemFrom);
+    return database.cypher({query: queries.group,params},
+     function(err, result) {
+      if (err) return callback(err);
+      if (!result.length) return callback(null, null);
+      const row = result[0]
+      const group = {
+          ...row.group.properties,
+          items: row.items,
+          nbItems: row.nbItems,
+          id: row.group._id
+        }
+      if (opts.queryItem)
+        group.nbMatchedItems = row.nbMatchedItems
+      return callback(null, group);
+    });
+  },
+
+
   /**
    * Retrieving a sample of the classification's groups.
    */
@@ -98,8 +128,13 @@ const Model = {
 
     let query, params;
 
+   
     if (!opts.source) {
-      query = queries[opts.queryGroup || opts.queryItem ? 'searchGroups' : 'groups'];
+      if (opts.queryItem)
+            query = queries[opts.queryItemFrom ? 'searchGroupsFrom' : 'searchGroups'];
+      else
+            query = queries[opts.queryItemFrom ? 'groupsFrom' : 'groups'];
+
       params = {
           ...opts,
           id,
@@ -116,10 +151,31 @@ const Model = {
         };
     }
 
+     if (opts.orderBy && opt.orderBy === 'name'){
+      params.orderBy = 'goup.name'
+    }
+    else{// default to group size
+      if (opts.queryItem && 'nbMatches')
+        params.orderBy = 'nbMatchedItems DESC'
+      else
+        params.orderBy = 'nbItems DESC'
+    }
+
     // Casting
     params.id = database.int(params.id);
     params.limit = database.int(params.limit);
     params.offset = database.int(params.offset);
+    // items limit offset are start/end slice indices
+    params.limitItem = database.int(params.limitItem+params.offsetItem);
+    params.offsetItem = database.int(params.offsetItem);
+
+    if (params.queryItemFrom)
+      params.queryItemFrom = database.int(params.queryItemFrom)
+
+    console.log( {
+        query,
+        params
+      })
 
     return database.cypher(
       {
@@ -130,12 +186,15 @@ const Model = {
         if (err) return callback(err);
 
         const groups = results.map(row => {
-
-          return {
+          let group = {
             ...row.group.properties,
             items: row.items,
+            nbItems: row.nbItems,
             id: row.group._id
-          };
+          }
+          if (opts.queryItem)
+            group.nbMatchedItems = row.nbMatchedItems
+          return group;
         });
 
         return callback(null, groups);
