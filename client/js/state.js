@@ -64,6 +64,7 @@ const defaultState = {
 
       // Metadata view
       metadata: {
+        dataModel: null,
         dataType: null,
         perYear: null,
         flowsPerYear: null,

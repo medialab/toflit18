@@ -14,12 +14,12 @@ import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 
 import {exportCSV} from '../../lib/exports';
 import VizLayout from '../misc/VizLayout.jsx';
-import {prettyPrint} from '../../lib/helpers';
 
 import specs from '../../../specs.json';
 
 import {
-  select,
+  selectType,
+  selectModel,
   updateSelector as update,
   addChart
 } from '../../actions/metadata';
@@ -72,9 +72,10 @@ function formatArrayToCSV(data) {
 
 @branch({
   actions: {
-    select,
     update,
-    addChart
+    addChart,
+    selectType,
+    selectModel
   },
   cursors: {
     classifications: ['data', 'classifications', 'flat'],
@@ -120,14 +121,6 @@ export default class ExplorationMeta extends Component {
     // Store in "alert" any error / warning message:
     const alert = null;
 
-    const classificationsFiltered = classifications.product
-      .concat(classifications.country)
-      .filter(c => c.groupsCount)
-      .map(e => ({
-        ...e,
-        name: `${e.name} (${e.model === 'product' ? 'Products' : 'Countries'} - ${prettyPrint(e.groupsCount)} groups)`
-      }));
-
     const canDisplaySecondViz = (
       state.dataType &&
       (
@@ -135,6 +128,24 @@ export default class ExplorationMeta extends Component {
         state.dataType.special
       )
     );
+
+    let canUpdate = !!state.dataModel;
+
+    if (
+      state.dataModel
+      && (state.dataModel.value === 'country' || state.dataModel.value === 'country')
+      && !state.dataType
+    ) {
+      canUpdate = false;
+    }
+
+    if (
+      state.dataModel
+      && state.dataModel.value === 'sourceType'
+      && !selectors.sourceType
+    ) {
+      canUpdate = false;
+    }
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
@@ -188,21 +199,49 @@ export default class ExplorationMeta extends Component {
           <div className="form-group">
             <label htmlFor="classifications" className="control-label sr-only">Type of data</label>
             <ItemSelector
-              type="dataType"
-              data={[...metadataSelectors, ...classificationsFiltered]}
-              loading={!classifications.product.length}
-              onChange={actions.select}
-              selected={state.dataType} />
+              type="dataModel"
+              data={metadataSelectors}
+              onChange={val => {
+                actions.update('sourceType', null);
+                actions.selectModel(val);
+              }}
+              selected={state.dataModel} />
           </div>
-          <div className="form-group">
-            <label htmlFor="classifications" className="control-label sr-only">Source Type</label>
-            <ItemSelector
-              type="sourceType"
-              data={sourceTypesOptions}
-              loading={!sourceTypesOptions.length}
-              onChange={actions.update.bind(null, 'sourceType')}
-              selected={selectors.sourceType} />
-          </div>
+          {
+            /* eslint-disable no-nested-ternary */
+            (state.dataModel && state.dataModel.value === 'sourceType') ?
+              <div className="form-group">
+                <label htmlFor="classifications" className="control-label sr-only">Source Type</label>
+                <ItemSelector
+                  type="sourceType"
+                  data={sourceTypesOptions}
+                  loading={!sourceTypesOptions.length}
+                  onChange={actions.update.bind(null, 'sourceType')}
+                  selected={selectors.sourceType} />
+              </div> :
+            (state.dataModel && state.dataModel.value === 'product') ?
+              <div className="form-group">
+                <label htmlFor="classifications" className="control-label sr-only">Product</label>
+                <ItemSelector
+                  type="dataType"
+                  data={classifications.product}
+                  loading={!classifications.product.length}
+                  onChange={actions.selectType}
+                  selected={state.dataType} />
+              </div> :
+            (state.dataModel && state.dataModel.value === 'country') ?
+              <div className="form-group">
+                <label htmlFor="classifications" className="control-label sr-only">Country</label>
+                <ItemSelector
+                  type="dataType"
+                  data={classifications.country}
+                  loading={!classifications.country.length}
+                  onChange={actions.selectType}
+                  selected={state.dataType} />
+              </div> :
+              undefined
+              /* eslint-enable no-nested-ternary */
+          }
         </div>
 
         { /* Left panel */ }
@@ -270,7 +309,7 @@ export default class ExplorationMeta extends Component {
                 type="submit"
                 className="btn btn-default"
                 data-loading={loading}
-                disabled={!state.dataType}
+                disabled={!canUpdate}
                 onClick={actions.addChart}>
                 Update
               </button>
@@ -296,7 +335,7 @@ export default class ExplorationMeta extends Component {
           }
 
           <div className="viz-data">
-            {state.perYear && state.dataType && (
+            {state.perYear && state.dataModel && (
               <div className="box-viz">
                 {state.perYear ?
                   <div>

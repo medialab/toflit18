@@ -9,9 +9,6 @@ import _, {forIn} from 'lodash';
 
 const ROOT = ['states', 'exploration', 'metadata'];
 
-/**
- * Updating a selector.
- */
 function fetchGroups(tree, cursor, id) {
   tree.client.groups({params: {id}}, function(err, data) {
     if (err) return;
@@ -20,18 +17,33 @@ function fetchGroups(tree, cursor, id) {
   });
 }
 
-/**
- * Selecting a data type.
- */
-export function select(tree, selected) {
-  const cursor = tree.select(ROOT),
-        selectors = tree.select([...ROOT, 'selectors']),
+export function updateSelector(tree, name, item) {
+  const selectors = tree.select([...ROOT, 'selectors']),
         groups = tree.select([...ROOT, 'groups']);
 
-  if (selected && selected.value !== 'direction' && selected.value !== 'sourceType') {
-    // const classification = tree.get('data', 'classifications', 'index', selected.id);
+  // Updating the correct selector
+  selectors.set(name, item);
 
-    if (selected.model === 'country') {
+  // If we updated a classification, we need to reset some things
+  if (/classification/i.test(name)) {
+    const model = name.match(/(.*?)Classification/)[1];
+
+    selectors.set(model, null);
+    groups.set(model, []);
+
+    if (item)
+      fetchGroups(tree, groups.select(model), item.id);
+  }
+}
+
+export function selectType(tree, selected) {
+  const cursor = tree.select(ROOT),
+        selectors = tree.select([...ROOT, 'selectors']),
+        groups = tree.select([...ROOT, 'groups']),
+        model = tree.get(...ROOT, 'dataModel', 'value');
+
+  if (selected) {
+    if (model === 'country') {
       selectors.set('countryClassification', null);
       selectors.set('country', null);
       groups.set('country', []);
@@ -54,23 +66,32 @@ export function select(tree, selected) {
   cursor.set('dataType', selected);
 }
 
-export function updateSelector(tree, name, item) {
-  const selectors = tree.select([...ROOT, 'selectors']),
-        groups = tree.select([...ROOT, 'groups']);
+export function selectModel(tree, selected) {
+  const cursor = tree.select(ROOT),
+        sourceTypes = tree.get('data', 'sourceTypes'),
+        classifications = tree.get('data', 'classifications', 'flat');
 
-  // Updating the correct selector
-  selectors.set(name, item);
-
-  // If we updated a classification, we need to reset some things
-  if (/classification/i.test(name)) {
-    const model = name.match(/(.*?)Classification/)[1];
-
-    selectors.set(model, null);
-    groups.set(model, []);
-
-    if (item)
-      fetchGroups(tree, groups.select(model), item.id);
+  if (selected) {
+    if (selected.value === 'country') {
+      selectType(tree, classifications.country[0]);
+    }
+    else if (selected.value === 'product') {
+      selectType(tree, classifications.product[0]);
+    }
+    else if (selected.value === 'sourceType') {
+      if (sourceTypes.length) {
+        updateSelector(tree, 'sourceType', {
+          name: sourceTypes[0],
+          value: sourceTypes[0]
+        });
+      }
+    }
+    else {
+      selectType(tree, null);
+    }
   }
+
+  cursor.set('dataModel', selected);
 }
 
 export function addChart(tree) {
@@ -81,16 +102,17 @@ export function addChart(tree) {
   cursor.set('fileName', null);
   cursor.set('loading', true);
 
-  const selected = cursor.get('dataType');
+  const dataType = cursor.get('dataType'),
+        dataModel = cursor.get('dataModel');
 
-  if (!selected) {
+  if (!dataModel) {
     return;
   }
 
   // Loading data from server
-  const type = selected.id ?
-    `${selected.model}_${selected.id}` :
-    selected.value;
+  const type = (dataType && dataType.id) ?
+    `${dataModel.value}_${dataType.id}` :
+    dataModel.value;
 
   // set params for request
   const params = {},
@@ -130,7 +152,7 @@ export function addChart(tree) {
     cursor.set('perYear', perYear);
 
     // Don't ask for data we don't need
-    if (selected.id && data.result.length > specs.metadataGroupMax)
+    if (dataType && dataType.id && data.result.length > specs.metadataGroupMax)
       return;
 
     cursor.set('flowsPerYear', data.result);
