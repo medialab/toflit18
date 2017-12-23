@@ -79,6 +79,7 @@ export default class ExplorationGlobalsTerms extends Component {
     updateDate
   },
   cursors: {
+    alert: ['ui', 'alert'],
     classifications: ['data', 'classifications', 'flat'],
     classificationIndex: ['data', 'classifications', 'index'],
     directions: ['data', 'directions'],
@@ -106,6 +107,7 @@ class TermsPanel extends Component {
 
   render() {
     const {
+      alert,
       actions,
       classifications,
       classificationIndex,
@@ -132,10 +134,6 @@ class TermsPanel extends Component {
     } = this.props;
 
     const {selectedNode} = this.state;
-
-    // TODO:
-    // Store in "alert" any error / warning message:
-    const alert = null;
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {

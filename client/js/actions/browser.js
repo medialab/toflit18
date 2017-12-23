@@ -103,7 +103,7 @@ export function search(tree, id, queryGroup, queryItem) {
  * Download a classification as a CSV file.
  */
 export function download(tree, id) {
-  const flag = tree.select('flags', 'downloading');
+  const flag = tree.select('ui', 'downloading');
 
   flag.set(true);
   tree.client.export({params: {id}}, function(err, data) {

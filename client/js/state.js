@@ -23,9 +23,10 @@ const defaultState = {
     sourceTypes: null
   },
 
-  // Some generic UI flags
-  flags: {
-    downloading: false
+  // Some generic UI state
+  ui: {
+    downloading: false,
+    alert: null
   },
 
   // Specific states

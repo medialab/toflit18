@@ -50,6 +50,7 @@ export default class ExplorationGlobals extends Component {
     updateDate
   },
   cursors: {
+    alert: ['ui', 'alert'],
     classifications: ['data', 'classifications', 'flat'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
@@ -76,6 +77,7 @@ class NetworkPanel extends Component {
 
   render() {
     const {
+      alert,
       actions,
       classifications,
       sourceTypes,
@@ -100,10 +102,6 @@ class NetworkPanel extends Component {
     } = this.props;
 
     const {selectedNode} = this.state;
-
-    // TODO:
-    // Store in "alert" any error / warning message:
-    const alert = null;
 
     let dateMaxOptions, dateMinOptions;
     dateMin = actions.updateDate('dateMin');

@@ -83,6 +83,7 @@ function buildDescription(params, data) {
     update
   },
   cursors: {
+    alert: ['ui', 'alert'],
     classifications: ['data', 'classifications', 'flat'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
@@ -141,6 +142,7 @@ export default class ExplorationIndicators extends Component {
 
   render() {
     const {
+      alert,
       actions,
       classifications,
       directions,
@@ -156,10 +158,6 @@ export default class ExplorationIndicators extends Component {
     const lineAlreadyExisting = lines.some(
       line => isEqual(line.params, selectors)
     );
-
-    // TODO:
-    // Store in "alert" any error / warning message:
-    const alert = null;
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {

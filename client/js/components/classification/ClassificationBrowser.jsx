@@ -37,7 +37,7 @@ import {linker} from '../../actions/factory';
     resetFilters
   },
   cursors: {
-    downloading: ['flags', 'downloading'],
+    downloading: ['ui', 'downloading'],
     loading: ['states', 'classification', 'browser', 'loading'],
     current: ['states', 'classification', 'browser', 'current'],
     queryGroup: ['states', 'classification', 'browser', 'queryGroup'],

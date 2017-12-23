@@ -78,6 +78,7 @@ function formatArrayToCSV(data) {
     selectModel
   },
   cursors: {
+    alert: ['ui', 'alert'],
     classifications: ['data', 'classifications', 'flat'],
     classificationIndex: ['data', 'classifications', 'index'],
     directions: ['data', 'directions'],
@@ -103,6 +104,7 @@ export default class ExplorationMeta extends Component {
 
   render() {
     const {
+      alert,
       actions,
       classifications,
       classificationIndex,
@@ -116,10 +118,6 @@ export default class ExplorationMeta extends Component {
       loading,
       selectors
     } = state;
-
-    // TODO:
-    // Store in "alert" any error / warning message:
-    const alert = null;
 
     const canDisplaySecondViz = (
       state.dataType &&
