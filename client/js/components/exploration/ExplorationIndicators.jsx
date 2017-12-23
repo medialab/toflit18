@@ -360,7 +360,7 @@ class Charts extends Component {
         {
           (alert || loading) && (
             <div className="progress-container progress-container-viz">
-              {alert && <div className="alert alert-danger hidden" role="alert">{alert}</div>}
+              {alert && <div className="alert alert-danger" role="alert">{alert}</div>}
               {
                 loading && (
                   <div className="progress-line progress-line-viz">
