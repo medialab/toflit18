@@ -371,7 +371,7 @@ class Charts extends Component {
         }
 
         {
-          lines.length && (
+          !!lines.length && (
             <div className="viz-data">
               <div className="box-viz">
                 <span className="title">Total number of directions per year</span>
