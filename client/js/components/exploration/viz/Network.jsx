@@ -6,7 +6,6 @@
  * countries and directions.
  */
 import React, {Component} from 'react';
-import screenfull from 'screenfull';
 import Select from 'react-select';
 import cls from 'classnames';
 
@@ -97,24 +96,9 @@ export default class Network extends Component {
     };
 
     this.toggleFullScreen = () => {
-      const mount = this.refs.mount;
-
-      screenfull.toggle(mount);
-    };
-
-    this.fullScreenHandler = () => {
-      const mount = this.refs.mount;
-
-      if (screenfull.isFullscreen) {
-        mount.style.width = '100%';
-        mount.style.height = '100%';
+      if (typeof this.props.toggleFullscreen === 'function') {
+        this.props.toggleFullscreen();
       }
-      else {
-        mount.style.width = null;
-        mount.style.height = null;
-      }
-
-      this.sigma.refresh();
     };
 
     this.focusNode = node => {
@@ -143,8 +127,6 @@ export default class Network extends Component {
     this.sigma.bind('clickNode', e => {
       this.selectNode(e.data.node);
     });
-
-    document.addEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
 
     this.componentWillUpdate(this.props);
   }
@@ -208,8 +190,6 @@ export default class Network extends Component {
   componentWillUnmount() {
     this.sigma.kill();
     this.sigma = null;
-
-    document.removeEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
   }
 
   downloadGraphAsSVG() {

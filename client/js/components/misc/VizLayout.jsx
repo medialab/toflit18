@@ -4,6 +4,7 @@
  *
  */
 import React, {Component} from 'react';
+import screenfull from 'screenfull';
 import cls from 'classnames';
 import Icon from '../misc/Icon.jsx';
 
@@ -13,6 +14,26 @@ export default class Header extends Component {
 
     this.state = {deployedPanel: null};
     this.togglePanel = this.togglePanel.bind(this);
+
+    if (props.fullscreen) this.expand();
+  }
+
+  componentWillReceiveProps({fullscreen}) {
+    if (this.props.fullscreen === fullscreen) return;
+
+    if (fullscreen) {
+      this.expand();
+    }
+    else {
+      this.collapse();
+    }
+  }
+
+  expand() {
+    screenfull.request(this.refs.fullscreenRoot);
+  }
+  collapse() {
+    screenfull.exit();
   }
 
   togglePanel(panel) {
@@ -25,6 +46,7 @@ export default class Header extends Component {
   render() {
     const {
       title,
+      fullscreen,
       description,
       leftPanelName,
       rightPanelName,
@@ -67,10 +89,12 @@ export default class Header extends Component {
           </div>
         </div>
         <div
+          ref="fullscreenRoot"
           className={
             cls(
               'section-viz',
-              !boxSelection && 'sections-viz-no-box-selection'
+              !boxSelection && 'sections-viz-no-box-selection',
+              fullscreen && 'fullscreen'
             )
           }>
           {boxSelection}

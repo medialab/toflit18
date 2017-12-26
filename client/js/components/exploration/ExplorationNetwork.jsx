@@ -60,8 +60,9 @@ export default class ExplorationGlobals extends Component {
 class NetworkPanel extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {selected: null};
+    this.state = {selected: null, fullscreen: false};
     this.setSelectedNode = this.setSelectedNode.bind(this);
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
   }
 
   export() {
@@ -73,6 +74,10 @@ class NetworkPanel extends Component {
 
   setSelectedNode(selectedNode) {
     this.setState({selectedNode});
+  }
+
+  toggleFullscreen() {
+    this.setState({fullscreen: !this.state.fullscreen});
   }
 
   render() {
@@ -101,7 +106,10 @@ class NetworkPanel extends Component {
       }
     } = this.props;
 
-    const {selectedNode} = this.state;
+    const {
+      selectedNode,
+      fullscreen
+    } = this.state;
 
     let dateMaxOptions, dateMinOptions;
     dateMin = actions.updateDate('dateMin');
@@ -133,7 +141,8 @@ class NetworkPanel extends Component {
         title="Locations"
         description="Choose a country classification and display a graph showing relations between countries & directions."
         leftPanelName="Filters"
-        rightPanelName="Caption" >
+        rightPanelName="Caption"
+        fullscreen={fullscreen} >
         { /* Top of the left panel */ }
         <div className="box-selection">
           <h2 className="hidden-xs">
@@ -229,6 +238,7 @@ class NetworkPanel extends Component {
           labelThreshold={labelThreshold}
           labelSizeRatio={labelSizeRatio}
           setSelectedNode={this.setSelectedNode}
+          toggleFullscreen={this.toggleFullscreen}
           alert={alert}
           loading={loading}
           className="col-xs-12 col-sm-6 col-md-8" />
