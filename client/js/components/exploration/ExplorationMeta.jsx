@@ -5,6 +5,8 @@
  * Displaying a collection of visualizations dealing with the sources
  * themselves and how they interact with each other.
  */
+import cls from 'classnames';
+import {compact} from 'lodash';
 import React, {Component} from 'react';
 import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
@@ -70,6 +72,88 @@ function formatArrayToCSV(data) {
   return newArray;
 }
 
+class ExportButton extends Component {
+  constructor(...args) {
+    super(...args);
+    this.state = {deployed: false};
+
+    this.toggleList = this.toggleList.bind(this);
+    this.handleClickBody = this.handleClickBody.bind(this);
+
+    document.body.addEventListener('click', this.handleClickBody);
+  }
+  componentWillUnmount() {
+    document.body.removeEventListener('click', this.handleClickBody);
+  }
+
+  handleClickBody(e) {
+    if (!this.state.deployed) return;
+
+    const dom = this.refs.root;
+    let node = e.target;
+    let isOut = true;
+    let maxDepth = 4;
+
+    while (node && maxDepth-- && isOut) {
+      if (node === dom) isOut = false;
+
+      node = node.parentNode;
+    }
+
+    if (isOut) this.setState({deployed: false});
+  }
+  toggleList() {
+    if (this.props.exports.length === 1) {
+      this.props.exports[0].fn();
+    }
+    else if (this.props.exports.length > 1) {
+      this.setState({deployed: !this.state.deployed});
+    }
+  }
+
+  render() {
+    return (
+      <div
+        ref="root"
+        className={cls(
+          'dropup',
+          this.state.deployed && 'open'
+        )}>
+        <button
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="true"
+          onClick={this.toggleList}
+          disabled={!this.props.exports.length}
+          className={cls(
+            'btn',
+            'btn-default',
+            this.props.exports.length > 1 && 'dropdown-toggle'
+          )}>
+          <span>Exports</span>
+          { this.props.exports.length > 1 && <span className="caret" /> }
+        </button>
+        {
+          this.props.exports.length > 1 &&
+          <ul className="dropdown-menu">{
+            this.props.exports.map(({label, fn}) => (
+              <li
+                key={label}
+                onClick={e => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  fn();
+                }}>
+                <a href="#">{label}</a>
+              </li>
+            ))
+          }</ul>
+        }
+      </div>
+    );
+  }
+}
+
 @branch({
   actions: {
     update,
@@ -89,16 +173,28 @@ function formatArrayToCSV(data) {
 export default class ExplorationMeta extends Component {
   exportPerYear() {
     const {state} = this.props;
+    const name = compact([
+      state.dataModel.name,
+      state.dataType && state.dataType.name,
+      state.filename
+    ]).join(' - ');
+
     exportCSV({
       data: state.perYear,
-      name: `Toflit18_Meta_view ${state.dataType.name} - ${state.fileName} data_per_year.csv`,
+      name: `Toflit18_Meta_view ${name} data_per_year.csv`,
     });
   }
   exportFlows() {
     const {state} = this.props;
+    const name = compact([
+      state.dataModel.name,
+      state.dataType && state.dataType.name,
+      state.filename
+    ]).join(' - ');
+
     exportCSV({
       data: formatArrayToCSV(state.flowsPerYear || []),
-      name: `Toflit18_Meta_view ${state.dataType.name} - ${state.fileName} flows_per_year.csv`,
+      name: `Toflit18_Meta_view ${name} flows_per_year.csv`,
     });
   }
 
@@ -345,12 +441,6 @@ export default class ExplorationMeta extends Component {
                       syncId="sources-per-directions" />
                   </div> :
                   <Waiter />}
-                <button
-                  type="submit"
-                  className="btn btn-default"
-                  onClick={() => this.exportPerYear()}>
-                  Export
-                </button>
               </div>
             )}
             {canDisplaySecondViz && state.flowsPerYear && state.dataType && (
@@ -358,12 +448,6 @@ export default class ExplorationMeta extends Component {
                 {state.flowsPerYear ?
                   <SourcesPerDirections data={state.flowsPerYear} /> :
                   <Waiter />}
-                <button
-                  type="submit"
-                  className="btn btn-default"
-                  onClick={() => this.exportFlows()}>
-                  Export
-                </button>
               </div>
             )}
           </div>
@@ -376,6 +460,23 @@ export default class ExplorationMeta extends Component {
             <li><span style={{backgroundColor: '#4F7178'}} />Number of flows</li>
           </ul>
           <p>Barcharts are sorted by average number of flows per year.</p>
+          <div className="form-group-fixed form-group-fixed-right">
+            <ExportButton
+              exports={compact([
+                state.perYear && state.dataModel && {
+                  label: 'Export direction by years',
+                  fn: () => {
+                    this.exportPerYear();
+                  }
+                },
+                canDisplaySecondViz && state.flowsPerYear && state.dataType && {
+                  label: 'Export metadata',
+                  fn: () => {
+                    this.exportFlows();
+                  }
+                }
+              ])} />
+          </div>
         </div>
       </VizLayout>
     );
