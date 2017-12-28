@@ -136,6 +136,8 @@ class NetworkPanel extends Component {
       };
     });
 
+    const directed = selectors.kind && selectors.kind.id !== 'total';
+
     return (
       <VizLayout
         title="Locations"
@@ -232,8 +234,8 @@ class NetworkPanel extends Component {
         <Network
           ref={ref => this.networkComponent = ref}
           graph={graph}
-          directed
           sizeKey={nodeSize}
+          directed={directed}
           edgeSizeKey={edgeSize}
           labelThreshold={labelThreshold}
           labelSizeRatio={labelSizeRatio}
