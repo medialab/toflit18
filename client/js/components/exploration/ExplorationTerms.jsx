@@ -165,6 +165,8 @@ class TermsPanel extends Component {
     if (classification)
       childClassifications = getChildClassifications(classificationIndex, classification);
 
+    const directed = selectors.kind && selectors.kind.id !== 'total';
+
     return (
       <VizLayout
         title="Product terms"
@@ -288,7 +290,7 @@ class TermsPanel extends Component {
         <Network
           ref={ref => this.networkComponent = ref}
           graph={graph}
-          directed
+          directed={directed}
           colorKey={'communityColor'}
           sizeKey={nodeSize}
           edgeSizeKey={edgeSize}
