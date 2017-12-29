@@ -18,6 +18,16 @@
       "value": "country"
     }
   ],
+  "classificationSelectors": [
+    {
+      "name": "Products",
+      "value": "product"
+    },
+    {
+      "name": "Countries",
+      "value": "country"
+    }
+  ],
   "limits": {
     "minYear": 1719,
     "maxYear": 1839

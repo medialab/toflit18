@@ -37,14 +37,21 @@ const defaultState = {
 
       // Classification browser
       browser: {
+        kind: null,
         loading: false,
         selected: null,
+        selectedParent: null,
         queryGroup: '',
         queryItem: '',
         current: monkey(
           ['.', 'selected'],
           ['data', 'classifications', 'index'],
           (selected, index) => index[selected] || null
+        ),
+        currentParent: monkey(
+          ['.', 'selectedParent'],
+          ['data', 'classifications', 'index'],
+          (selectedParent, index) => index[selectedParent] || null
         ),
         rows: []
       },

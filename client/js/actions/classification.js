@@ -14,12 +14,20 @@ import {uniq} from 'lodash';
 const PATH = ['states', 'classification', 'browser'];
 
 /**
+ * Update some selector
+ */
+export function updateSelector(tree, key, value) {
+  tree.select(PATH).set(key, value);
+}
+
+/**
  * Selecting a classification
  */
-export function select(tree, id) {
+export function select(tree, id, parent = false) {
   const state = tree.select(PATH);
 
   state.set('selected', id);
+  state.set('selectedParent', null);
   state.set('rows', []);
   state.set('query', '');
   state.set('loading', true);
@@ -32,6 +40,15 @@ export function select(tree, id) {
 
     state.set('rows', data.result);
   });
+}
+
+/**
+ * Selecting a classification parent
+ */
+export function selectParent(tree, id) {
+  const state = tree.select(PATH);
+
+  state.set('selectedParent', id);
 }
 
 
