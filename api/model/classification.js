@@ -95,27 +95,31 @@ const Model = {
  * Retrieving item of one group with limit offset.
  */
   group(id, opts, callback) {
-    let params ={};
+    const params = {};
     // Casting
     params.id = database.int(id);
     // items limit offset are start/end slice indices
-    params.limitItem = database.int(opts.limitItem+opts.offsetItem);
+    params.limitItem = database.int(opts.limitItem + opts.offsetItem);
     params.offsetItem = database.int(opts.offsetItem);
     params.queryItem = searchPattern(opts.queryItem || '');
-    params.queryItemFrom = database.int(opts.queryItemFrom);
-    return database.cypher({query: queries.group,params},
-     function(err, result) {
+
+    if (opts.queryItemFrom)
+      params.queryItemFrom = database.int(opts.queryItemFrom);
+
+    const query = params.queryItemFrom ? queries.groupFrom : queries.group;
+
+    return database.cypher({query, params}, function(err, result) {
       if (err) return callback(err);
       if (!result.length) return callback(null, null);
-      const row = result[0]
+      const row = result[0];
       const group = {
-          ...row.group.properties,
-          items: row.items,
-          nbItems: row.nbItems,
-          id: row.group._id
-        }
+        ...row.group.properties,
+        items: row.items,
+        nbItems: row.nbItems,
+        id: row.group._id
+      };
       if (opts.queryItem)
-        group.nbMatchedItems = row.nbMatchedItems
+        group.nbMatchedItems = row.nbMatchedItems;
       return callback(null, group);
     });
   },
@@ -125,40 +129,38 @@ const Model = {
    * Retrieving a sample of the classification's groups.
    */
   search(id, opts, callback) {
-
     let query, params;
 
-   
     if (!opts.source) {
       if (opts.queryItem)
-            query = queries[opts.queryItemFrom ? 'searchGroupsFrom' : 'searchGroups'];
+        query = queries[opts.queryItemFrom ? 'searchGroupsFrom' : 'searchGroups'];
       else
-            query = queries[opts.queryItemFrom ? 'groupsFrom' : 'groups'];
+        query = queries[opts.queryItemFrom ? 'groupsFrom' : 'groups'];
 
       params = {
-          ...opts,
-          id,
-          queryGroup: searchPattern(opts.queryGroup || ''),
-          queryItem: searchPattern(opts.queryItem || '')
-        };
+        ...opts,
+        id,
+        queryGroup: searchPattern(opts.queryGroup || ''),
+        queryItem: searchPattern(opts.queryItem || '')
+      };
     }
     else {
       query = queries.searchGroupsSource;
       params = {
-          ...opts,
-          id,
-          queryGroup: searchPattern(opts.queryGroup || '')
-        };
+        ...opts,
+        id,
+        queryGroup: searchPattern(opts.queryGroup || '')
+      };
     }
 
-     if (opts.orderBy && opt.orderBy === 'name'){
-      params.orderBy = 'goup.name'
+    if (opts.orderBy && opts.orderBy === 'name') {
+      params.orderBy = 'group.name';
     }
-    else{// default to group size
+    else {// default to group size
       if (opts.queryItem && 'nbMatches')
-        params.orderBy = 'nbMatchedItems DESC'
+        params.orderBy = 'nbMatchedItems DESC';
       else
-        params.orderBy = 'nbItems DESC'
+        params.orderBy = 'nbItems DESC';
     }
 
     // Casting
@@ -166,16 +168,11 @@ const Model = {
     params.limit = database.int(params.limit);
     params.offset = database.int(params.offset);
     // items limit offset are start/end slice indices
-    params.limitItem = database.int(params.limitItem+params.offsetItem);
+    params.limitItem = database.int(params.limitItem + params.offsetItem);
     params.offsetItem = database.int(params.offsetItem);
 
     if (params.queryItemFrom)
-      params.queryItemFrom = database.int(params.queryItemFrom)
-
-    console.log( {
-        query,
-        params
-      })
+      params.queryItemFrom = database.int(params.queryItemFrom);
 
     return database.cypher(
       {
@@ -186,14 +183,14 @@ const Model = {
         if (err) return callback(err);
 
         const groups = results.map(row => {
-          let group = {
+          const group = {
             ...row.group.properties,
             items: row.items,
             nbItems: row.nbItems,
             id: row.group._id
-          }
+          };
           if (opts.queryItem)
-            group.nbMatchedItems = row.nbMatchedItems
+            group.nbMatchedItems = row.nbMatchedItems;
           return group;
         });
 
