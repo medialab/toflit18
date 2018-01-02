@@ -23,9 +23,13 @@ export function updateSelector(tree, key, value) {
 /**
  * Searching something specific.
  */
-export function search(tree) {
+export function search(tree, paginate = false) {
   const state = tree.select(PATH),
-        loading = state.select('loading');
+        loading = state.select('loading'),
+        classification = state.get('current'),
+        rows = state.get('rows');
+
+  if (loading.get()) return;
 
   loading.set(true);
 
@@ -40,18 +44,32 @@ export function search(tree) {
   if (selectedParent)
     data.queryItemFrom = selectedParent;
 
+  if (paginate) {
+    const comparedValue = classification.source ?
+      classification.itemsCount :
+      classification.groupsCount;
+
+    if (comparedValue <= rows.length)
+      return;
+
+    data.offset = rows.length;
+  }
+
   return tree.client.search(
     {params: {id: selected}, data},
     function(err, response) {
-
       loading.set(false);
+
       if (err) return;
 
       response.result.forEach(d => {
         d.items = uniq(d.items);
       });
 
-      state.set('rows', response.result);
+      if (paginate)
+        state.concat('rows', response.result);
+      else
+        state.set('rows', response.result);
     }
   );
 }
@@ -81,45 +99,6 @@ export function selectParent(tree, id) {
 
   // Fetching the necessary rows
   search(tree);
-}
-
-
-/**
- * Expand the rows displayed on screen.
- */
-export function expand(tree, classification) {
-  const state = tree.select(PATH),
-        current = state.get('rows'),
-        queryItem = state.get('queryItem'),
-        queryGroup = state.get('queryGroup');
-
-  const comparedValue = classification.source ?
-    classification.itemsCount :
-    classification.groupsCount;
-
-  // NOTE: this is hardcoded but can be found in the API's configuration
-  if (queryGroup || queryItem && !(comparedValue % 200))
-    return;
-
-  if (comparedValue <= current.length)
-    return;
-
-  const data = {offset: current.length};
-
-  if (queryGroup || queryItem) {
-    data.queryGroup = queryGroup;
-    data.queryItem = queryItem;
-  }
-
-  // change this function
-  return tree.client.search(
-    {params: {id: classification.id}, data},
-    function(err, response) {
-      if (err) return;
-
-      state.concat('rows', response.result);
-    }
-  );
 }
 
 

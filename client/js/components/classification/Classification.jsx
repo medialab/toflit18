@@ -58,6 +58,20 @@ const ClassificationWell = ({groupsCount, itemsCount, unclassifiedItemsCount, co
   }
 })
 export default class Classification extends Component {
+  componentDidMount() {
+    this.handleScroll();
+  }
+
+
+  handleScroll() {
+    const end = this.refs.lastRow;
+    const list = this.refs.list;
+
+    if (end && list.scrollTop + list.offsetHeight > end.offsetTop) {
+      this.props.actions.search(true);
+    }
+  }
+
   submit() {
     const {current} = this.props;
 
@@ -234,11 +248,15 @@ export default class Classification extends Component {
               </form>
             </div>
             <div className="group-list-container">
-              <div className="col-sm-12">
+              <div
+                ref="list"
+                className="col-sm-12"
+                onScroll={() => this.handleScroll()}>
                 <div className="row">{
-                  (rows || []).map(row => (
+                  (rows || []).map((row, i, a) => (
                     <div
                       key={row.id}
+                      ref={i === a.length - 1 ? 'lastRow' : undefined}
                       className="group-list">
                       <div className="col-sm-6">
                         <div className="group-list-title well">
