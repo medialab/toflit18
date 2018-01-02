@@ -5,6 +5,8 @@
  *
  * Displaying the existing classifications..
  */
+import {compact} from 'lodash';
+import Select from 'react-select';
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 
@@ -49,6 +51,7 @@ const ClassificationWell = ({groupsCount, itemsCount, unclassifiedItemsCount, co
     rows: ['states', 'classification', 'browser', 'rows'],
     kind: ['states', 'classification', 'browser', 'kind'],
     loading: ['states', 'classification', 'browser', 'loading'],
+    orderBy: ['states', 'classification', 'browser', 'orderBy'],
     current: ['states', 'classification', 'browser', 'current'],
     currentParent: ['states', 'classification', 'browser', 'currentParent'],
     queryItem: ['states', 'classification', 'browser', 'queryItem'],
@@ -76,11 +79,7 @@ export default class Classification extends Component {
     const {current} = this.props;
 
     if (current)
-      this.props.actions.search(
-        current.id,
-        this.refs.queryGroup.value,
-        this.refs.queryItem.value
-      );
+      this.props.actions.search();
   }
 
   expandGroup(groupId, itemsFrom) {
@@ -96,6 +95,7 @@ export default class Classification extends Component {
       rows,
       kind,
       actions,
+      orderBy,
       current,
       currentParent,
       queryItem,
@@ -183,7 +183,7 @@ export default class Classification extends Component {
               <form>
                 <legend className="text-center">Simplification</legend>
                 <div className="row">
-                  <div className="col-sm-12 col-lg-8 col-lg-offset-2">
+                  <div className="col-sm-6 col-lg-6">
                     <div className="form-group">
                       <label
                         className="sr-only"
@@ -208,6 +208,33 @@ export default class Classification extends Component {
                           </button>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="col-sm-6 col-lg-6">
+                    <div className="form-group">
+                      <Select
+                        name="edgeSize"
+                        clearable={false}
+                        searchable={false}
+                        options={compact([
+                          {
+                            value: 'size',
+                            label: 'Order by number of items',
+                          },
+                          {
+                            value: 'name',
+                            label: 'Order by name',
+                          },
+                          !!queryItem && {
+                            value: 'nbMatches',
+                            label: 'Order with matching items first',
+                          }
+                        ])}
+                        value={orderBy}
+                        onChange={({value}) => {
+                          actions.updateSelector('orderBy', value);
+                          this.submit();
+                        }} />
                     </div>
                   </div>
                 </div>

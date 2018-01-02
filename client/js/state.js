@@ -41,6 +41,7 @@ const defaultState = {
         loading: false,
         selected: null,
         selectedParent: null,
+        orderBy: 'size',
         queryGroup: '',
         queryItem: '',
         current: monkey(

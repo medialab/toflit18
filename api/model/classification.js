@@ -153,15 +153,12 @@ const Model = {
       };
     }
 
-    if (opts.orderBy && opts.orderBy === 'name') {
+    if (opts.orderBy === 'name')
       params.orderBy = 'group.name';
-    }
-    else {// default to group size
-      if (opts.queryItem && 'nbMatches')
-        params.orderBy = 'nbMatchedItems DESC';
-      else
-        params.orderBy = 'nbItems DESC';
-    }
+    else if (opts.queryItem && opts.orderBy === 'nbMatches')
+      params.orderBy = 'nbMatchedItems DESC';
+    else
+      params.orderBy = 'nbItems DESC';
 
     // Casting
     params.id = database.int(params.id);

@@ -18,6 +18,11 @@ const PATH = ['states', 'classification', 'browser'];
  */
 export function updateSelector(tree, key, value) {
   tree.select(PATH).set(key, value);
+
+  // Some quite specific behaviours:
+  // 1. It is possible to order by matched elements only when there is some queryItem:
+  if (key === 'queryItem' && !value && tree.get(...PATH, 'orderBy') === 'nbMatches')
+    tree.set([...PATH, 'orderBy'], 'size');
 }
 
 /**
@@ -31,11 +36,10 @@ export function search(tree, paginate = false) {
 
   if (loading.get()) return;
 
-  loading.set(true);
-
   const data = {
-    queryItem: state.get('queryItem'),
-    queryGroup: state.get('queryGroup'),
+    orderBy: state.get('orderBy'),
+    queryItem: state.get('queryItem') || '',
+    queryGroup: state.get('queryGroup') || '',
     source: state.get('current', 'source') || false
   };
 
@@ -54,6 +58,8 @@ export function search(tree, paginate = false) {
 
     data.offset = rows.length;
   }
+
+  loading.set(true);
 
   return tree.client.search(
     {params: {id: selected}, data},
