@@ -5,7 +5,6 @@
  * Defining data fetching rules.
  */
 import Parrot from './lib/parrot';
-import * as classification from './actions/classification';
 
 export default function(state, client) {
   return new Parrot(state, {

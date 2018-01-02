@@ -21,25 +21,54 @@ export function updateSelector(tree, key, value) {
 }
 
 /**
+ * Searching something specific.
+ */
+export function search(tree) {
+  const state = tree.select(PATH),
+        loading = state.select('loading');
+
+  loading.set(true);
+
+  const data = {
+    queryItem: state.get('queryItem'),
+    queryGroup: state.get('queryGroup'),
+    source: state.get('current', 'source') || false
+  };
+
+  const selected = state.get('selected');
+  const selectedParent = state.get('selectedParent');
+  if (selectedParent)
+    data.queryItemFrom = selectedParent;
+
+  return tree.client.search(
+    {params: {id: selected}, data},
+    function(err, response) {
+
+      loading.set(false);
+      if (err) return;
+
+      response.result.forEach(d => {
+        d.items = uniq(d.items);
+      });
+
+      state.set('rows', response.result);
+    }
+  );
+}
+
+/**
  * Selecting a classification
  */
-export function select(tree, id, parent = false) {
+export function select(tree, id) {
   const state = tree.select(PATH);
 
   state.set('selected', id);
   state.set('selectedParent', null);
   state.set('rows', []);
   state.set('query', '');
-  state.set('loading', true);
 
   // Fetching the necessary rows
-  tree.client.search({params: {id}}, function(err, data) {
-    state.set('loading', false);
-
-    if (err) return;
-
-    state.set('rows', data.result);
-  });
+  search(tree);
 }
 
 /**
@@ -49,15 +78,20 @@ export function selectParent(tree, id) {
   const state = tree.select(PATH);
 
   state.set('selectedParent', id);
+
+  // Fetching the necessary rows
+  search(tree);
 }
 
 
 /**
  * Expand the rows displayed on screen.
  */
-export function expand(tree, classification, queryGroup, queryItem) {
+export function expand(tree, classification) {
   const state = tree.select(PATH),
-        current = state.get('rows');
+        current = state.get('rows'),
+        queryItem = state.get('queryItem'),
+        queryGroup = state.get('queryGroup');
 
   const comparedValue = classification.source ?
     classification.itemsCount :
@@ -88,30 +122,37 @@ export function expand(tree, classification, queryGroup, queryItem) {
   );
 }
 
+
 /**
- * Searching something specific.
+ * Expand the rows displayed on screen.
  */
-export function search(tree, id, queryGroup, queryItem) {
-  const loading = tree.select(PATH.concat('loading'));
+export function expandGroup(tree, groupId) {
+  const state = tree.select(PATH),
+        group = state.get('rows', {id: groupId}),
+        selectedParent = state.get('selectedParent'),
+        queryItem = state.get('queryItem');
 
-  loading.set(true);
+  if (group.items.length >= group.nbItems)
+    return;
 
-  const source = tree.get(PATH.concat('current', 'source')) || false;
+  const data = {
+    limitItem: 50,
+    offsetItem: group.items.length
+  };
 
-  return tree.client.search(
-    {params: {id}, data: {queryGroup, queryItem, source}},
-    function(err, data) {
+  if (queryItem)
+    data.queryItem = queryItem;
 
-      loading.set(false);
+  if (selectedParent)
+    data.queryItemFrom = selectedParent;
+
+  // change this function
+  return tree.client.group(
+    {params: {id: group.id}, data},
+    function(err, response) {
       if (err) return;
 
-      data.result.forEach(d => {
-        d.items = uniq(d.items);
-      });
-
-      tree.set(PATH.concat(['queryGroup']), queryGroup);
-      tree.set(PATH.concat(['queryItem']), queryItem);
-      tree.set(PATH.concat(['rows']), data.result);
+      state.concat(['rows', {id: groupId}, 'items'], response.result.items);
     }
   );
 }
@@ -123,7 +164,7 @@ export function download(tree, id) {
   const flag = tree.select('ui', 'downloading');
 
   flag.set(true);
-  tree.client.export({params: {id}}, function(err, data) {
+  tree.client.export({params: {id}}, (err, data) => {
     flag.set(false);
 
     if (err) return;

@@ -6,25 +6,22 @@
  * Displaying the existing classifications..
  */
 import React, {Component} from 'react';
-import cls from 'classnames';
 import {branch} from 'baobab-react/decorators';
 
 import Icon from '../misc/Icon.jsx';
-import {Waiter} from '../misc/Loaders.jsx';
-import Infinite from '../misc/Infinite.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
-import {prettyPrint} from '../../lib/helpers';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 
 import specs from '../../../specs.json';
 
 // Actions
 import {
+  search,
   select,
   selectParent,
+  expandGroup,
   updateSelector
 } from '../../actions/classification';
-import {linker} from '../../actions/factory';
 
 const ClassificationWell = ({groupsCount, itemsCount, unclassifiedItemsCount, completion}) => (
   <div className="well">
@@ -42,30 +39,53 @@ const ClassificationWell = ({groupsCount, itemsCount, unclassifiedItemsCount, co
  */
 @branch({
   actions: {
+    search,
     select,
     selectParent,
+    expandGroup,
     updateSelector
   },
   cursors: {
-    downloading: ['ui', 'downloading'],
+    rows: ['states', 'classification', 'browser', 'rows'],
     kind: ['states', 'classification', 'browser', 'kind'],
     loading: ['states', 'classification', 'browser', 'loading'],
     current: ['states', 'classification', 'browser', 'current'],
     currentParent: ['states', 'classification', 'browser', 'currentParent'],
-    queryGroup: ['states', 'classification', 'browser', 'queryGroup'],
     queryItem: ['states', 'classification', 'browser', 'queryItem'],
+    queryGroup: ['states', 'classification', 'browser', 'queryGroup'],
     classifications: ['data', 'classifications', 'flat'],
     classificationsIndex: ['data', 'classifications', 'index']
   }
 })
 export default class Classification extends Component {
+  submit() {
+    const {current} = this.props;
+
+    if (current)
+      this.props.actions.search(
+        current.id,
+        this.refs.queryGroup.value,
+        this.refs.queryItem.value
+      );
+  }
+
+  expandGroup(groupId, itemsFrom) {
+    this.props.actions.expandGroup(
+      groupId,
+      this.refs.queryGroup.value,
+      itemsFrom
+    );
+  }
+
   render() {
     const {
+      rows,
       kind,
       actions,
       current,
       currentParent,
-      downloading,
+      queryItem,
+      queryGroup,
       classifications,
       classificationsIndex,
     } = this.props;
@@ -92,7 +112,10 @@ export default class Classification extends Component {
               selected={kind}
               type="dataModel"
               data={specs.classificationSelectors}
-              onChange={val => actions.updateSelector('kind', val)} />
+              onChange={val => {
+                actions.select(null);
+                actions.updateSelector('kind', val);
+              }} />
           </div>
         </div>
 
@@ -112,7 +135,7 @@ export default class Classification extends Component {
                     type={kind.value}
                     loading={!classifications[kind.value]}
                     data={classifications[kind.value]}
-                    onChange={o => actions.select(o.id)}
+                    onChange={o => actions.select(o ? o.id : null)}
                     selected={current} />
                 </div>
             }
@@ -131,14 +154,11 @@ export default class Classification extends Component {
                     type={kind.value}
                     loading={false}
                     data={parents}
-                    onChange={o => actions.selectParent(o.id, true)}
+                    onChange={o => actions.selectParent(o ? o.id : null, true)}
                     selected={currentParent} />
                 </div>
             }
             { !!currentParent && <ClassificationWell {...currentParent} /> }
-            <div className="form-group-fixed">
-              <button type="submit" className="btn btn-default">Update</button>
-            </div>
           </form>
         </div>
 
@@ -158,14 +178,18 @@ export default class Classification extends Component {
                       </label>
                       <div className="input-group">
                         <input
+                          ref="queryGroup"
                           type="text"
                           className="form-control"
                           id="search-simplification"
-                          placeholder="Search" />
+                          placeholder="Search"
+                          value={queryGroup || ''}
+                          onChange={e => actions.updateSelector('queryGroup', e.target.value)} />
                         <div className="input-group-btn">
                           <button
                             className="btn btn-default btn-search"
-                            type="submit">
+                            type="submit"
+                            onClick={() => this.submit()}>
                             <Icon name="icon-search-lg" />
                           </button>
                         </div>
@@ -188,14 +212,18 @@ export default class Classification extends Component {
                       </label>
                       <div className="input-group">
                         <input
+                          ref="queryItem"
                           type="text"
                           className="form-control"
                           id="search-source"
-                          placeholder="Search" />
+                          placeholder="Search"
+                          value={queryItem || ''}
+                          onChange={e => actions.updateSelector('queryItem', e.target.value)} />
                         <div className="input-group-btn">
                           <button
                             className="btn btn-default btn-search"
-                            type="submit">
+                            type="submit"
+                            onClick={() => this.submit()}>
                             <Icon name="icon-search-lg" />
                           </button>
                         </div>
@@ -207,91 +235,47 @@ export default class Classification extends Component {
             </div>
             <div className="group-list-container">
               <div className="col-sm-12">
-                <div className="row">
-                  <div className="group-list">
-                    <div className="col-sm-6">
-                      <div className="group-list-title well">
-                        <h4>abassis</h4>
+                <div className="row">{
+                  (rows || []).map(row => (
+                    <div
+                      key={row.id}
+                      className="group-list">
+                      <div className="col-sm-6">
+                        <div className="group-list-title well">
+                          <h4>{row.name}</h4>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="group-list-items well">
+                          <ul className="list-customs">
+                            {
+                              (row.items || []).map(item => (
+                                <li key={item.name}>{
+                                  (queryItem && item.matched) ?
+                                    <strong><em>{item.name}</em></strong> :
+                                    <em>{item.name}</em>
+                                }</li>
+                              ))
+                            }
+                            {
+                              row.items.length < row.nbItems &&
+                                <li className="no-bullet">
+                                  <button
+                                    className="btn btn-default btn-xs btn-icon"
+                                    type="submit"
+                                    onClick={() => {
+                                      this.expandGroup(row.id, row.items.length);
+                                    }}>
+                                    <Icon name="icon-zoom-in" />
+                                  </button>
+                                </li>
+                            }
+                          </ul>
+                        </div>
                       </div>
                     </div>
-                    <div className="col-sm-6">
-                      <div className="group-list-items well">
-                        <ul className="list-customs">
-                          <li><em>Abacir</em></li>
-                          <li><em>Abafine</em></li>
-                          <li><em>Abassis</em></li>
-                          <li><em>abassis</em></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="group-list">
-                    <div className="col-sm-6">
-                      <div className="group-list-title well">
-                        <h4>abats</h4>
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="group-list-items well">
-                        <ul className="list-customs">
-                          <li><em>abats</em></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="group-list">
-                    <div className="col-sm-6">
-                      <div className="group-list-title well">
-                        <h4>abattis de morue</h4>
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="group-list-items well">
-                        <ul className="list-customs">
-                          <li><em>Abbatis de morue</em></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="group-list">
-                    <div className="col-sm-6">
-                      <div className="group-list-title well">
-                        <h4>abricots confits</h4>
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="group-list-items well">
-                        <ul className="list-customs">
-                          <li><em>Abricots confits</em></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="group-list">
-                    <div className="col-sm-6">
-                      <div className="group-list-title well">
-                        <h4>acacia</h4>
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="group-list-items well">
-                        <ul className="list-customs">
-                          <li><em>Acacia</em></li>
-                          <li><em>Accacia</em></li>
-                          <li><em>Agacia</em></li>
-                          <li><em>acacia</em></li>
-                          <li className="no-bullet">
-                            <button
-                              className="btn btn-default btn-xs btn-icon"
-                              type="submit">
-                              <Icon name="icon-zoom-in" />
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  ))
+                }</div>
               </div>
             </div>
           </div>
