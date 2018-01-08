@@ -36,10 +36,10 @@ ORDER BY lower(group.name);
 // name: group
 // Retrieving every items for a given group in a classification
 //------------------------------------------------------------------------------
-MATCH  (group)-[:AGGREGATES*1..]->(item)
+MATCH  (group)-[:AGGREGATES]->(item)
 WHERE id(group)={id}
 WITH group, item
-ORDER BY item.name =~{queryItem} DESC, item.name ASC
+ORDER BY item.name =~{queryItem} DESC, item.name
 WITH group, collect({name:item.name,matched:item.name =~{queryItem}}) AS items
 RETURN group, items[{offsetItem}..{limitItem}] as items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
 
@@ -49,7 +49,7 @@ RETURN group, items[{offsetItem}..{limitItem}] as items, size(items) as nbItems,
 MATCH  (group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci)
 WHERE id(group)={id} AND id(ci)={queryItemFrom}
 WITH group, item
-ORDER BY item.name =~{queryItem} DESC, item.name ASC
+ORDER BY item.name =~{queryItem} DESC, item.name
 WITH group, collect({name:item.name,matched:item.name =~{queryItem}}) AS items
 RETURN group, items[{offsetItem}..{limitItem}] as items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
 
@@ -61,9 +61,6 @@ WHERE  id(cg)={id} AND group.name =~ {queryGroup}
 WITH group, item
 ORDER BY item.name
 RETURN group, collect({name:item.name})[{offsetItem}..{limitItem}] as items, size(collect(item)) as nbItems
-ORDER BY {orderBy}
-SKIP {offset}
-LIMIT {limit}
 
 // name: groupsFrom
 // Retrieving a sample of groups for the given classification but listing items from an upper classification.
@@ -71,12 +68,8 @@ LIMIT {limit}
 MATCH (cg)-[:HAS]->(group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci)
 WHERE  id(cg)={id} AND group.name =~ {queryGroup} AND id(ci)={queryItemFrom}
 WITH group, item
-ORDER BY item.name
+ORDER BY group.name, item.name
 RETURN group, collect({name:item.name})[{offsetItem}..{limitItem}] as items, size(collect(item)) as nbItems
-ORDER BY {orderBy}
-SKIP {offset}
-LIMIT {limit}
-
 
 // name: searchGroups
 // Searching a sample of groups for the given classification.
@@ -90,10 +83,9 @@ LIMIT {limit}
 
 OPTIONAL MATCH (group)-[:AGGREGATES]->(item)
 WITH group, item
-ORDER BY item.name =~{queryItem} DESC, item.name ASC
+ORDER BY item.name =~{queryItem} DESC, item.name
 WITH group, collect({name:item.name,matched:item.name =~{queryItem}}) AS items
 RETURN group, items[{offsetItem}..{limitItem}] as items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
-ORDER BY {orderBy}
 
 // name: searchGroupsFrom
 // Searching a sample of groups for the given classification but listing items from an upper classification.
@@ -108,10 +100,10 @@ LIMIT {limit}
 OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci)
 WHERE id(ci)={queryItemFrom}
 WITH group, item
-ORDER BY item.name =~{queryItem} DESC, item.name ASC
+ORDER BY item.name =~{queryItem} DESC, item.name
 WITH group, collect({name:item.name,matched:item.name =~{queryItem}}) AS items
 RETURN group, items[{offsetItem}..{limitItem}] as items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
-ORDER BY {orderBy}
+
 // name: searchGroupsSource
 // Searching a sample of groups for the given source classification.
 //------------------------------------------------------------------------------

@@ -118,6 +118,7 @@ const Model = {
         nbItems: row.nbItems,
         id: row.group._id
       };
+
       if (opts.queryItem)
         group.nbMatchedItems = row.nbMatchedItems;
       return callback(null, group);
@@ -129,13 +130,13 @@ const Model = {
    * Retrieving a sample of the classification's groups.
    */
   search(id, opts, callback) {
-    let query, params;
+    let queryString, params;
 
     if (!opts.source) {
       if (opts.queryItem)
-        query = queries[opts.queryItemFrom ? 'searchGroupsFrom' : 'searchGroups'];
+        queryString = queries[opts.queryItemFrom ? 'searchGroupsFrom' : 'searchGroups'];
       else
-        query = queries[opts.queryItemFrom ? 'groupsFrom' : 'groups'];
+        queryString = queries[opts.queryItemFrom ? 'groupsFrom' : 'groups'];
 
       params = {
         ...opts,
@@ -145,7 +146,7 @@ const Model = {
       };
     }
     else {
-      query = queries.searchGroupsSource;
+      queryString = queries.searchGroupsSource;
       params = {
         ...opts,
         id,
@@ -153,12 +154,10 @@ const Model = {
       };
     }
 
-    if (opts.orderBy === 'name')
-      params.orderBy = 'group.name';
-    else if (opts.queryItem && opts.orderBy === 'nbMatches')
-      params.orderBy = 'nbMatchedItems DESC';
-    else
-      params.orderBy = 'nbItems DESC';
+    // create the dynamic query
+    const query = decypher.Query();
+    queryString.split('\n').forEach(function(line){
+      query.add(line)})
 
     // Casting
     params.id = database.int(params.id);
@@ -171,14 +170,28 @@ const Model = {
     if (params.queryItemFrom)
       params.queryItemFrom = database.int(params.queryItemFrom);
 
+    // order by
+    if (opts.orderBy === 'name')
+      query.orderBy('group.name');
+    else if (opts.queryItem && opts.orderBy === 'nbMatches')
+      query.orderBy('nbMatchedItems DESC');
+    else
+      query.orderBy('nbItems DESC');
+
+    //skip & limit
+    if (!opts.source && !opts.queryItem){
+      //dynamic skip & limit only for groupsFrom and groups queries cause the limit and skip has to be after the dynamic orderBy
+      query.skip(''+params.offset);
+      query.limit(''+params.limit);
+    }
+
+    query.params(params)
+
     return database.cypher(
-      {
-        query,
-        params
-      },
+      query.build(),
       function(err, results) {
         if (err) return callback(err);
-
+        
         const groups = results.map(row => {
           const group = {
             ...row.group.properties,
