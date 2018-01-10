@@ -83,7 +83,6 @@ export function addChart(tree) {
   });
 
   const classification = cursor.get('classification');
-  const kind = cursor.get('selectors', 'kind', 'id');
 
   if (!classification)
     return;
@@ -112,12 +111,6 @@ export function addChart(tree) {
 
     data.result.edges.forEach(edge => {
       edge.size = edge.flows;
-
-      if (kind === 'import') {
-        const tmp = edge.source;
-        edge.source = edge.target;
-        edge.target = tmp;
-      }
     });
 
     cursor.set('graph', data.result);
