@@ -105,7 +105,7 @@ export default class GlossaryPanel extends Component {
     return (
       <main className="container-fluid container-global no-padding">
         <div className="section-search">
-          <form>
+          <form onSubmit={e => e.preventDefault()}>
             <div className="form-group-search">
               <div className="container">
                 <div className="row">

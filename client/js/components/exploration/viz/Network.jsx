@@ -320,7 +320,7 @@ class Controls extends Component {
     return (
       <div className="viz-tools">
         <div className="viz-actions">
-          <form>
+          <form onSubmit={e => e.preventDefault()}>
             <div className="form-group form-group-xs">
               <label className="sr-only">Search</label>
               <div className="input-group">

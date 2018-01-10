@@ -135,7 +135,7 @@ export default class Classification extends Component {
 
         { /* Left panel */ }
         <div className="aside-filters">
-          <form>
+          <form onSubmit={e => e.preventDefault()}>
             {
               !!kind &&
                 <div className="form-group">
@@ -180,7 +180,7 @@ export default class Classification extends Component {
         <div className="col-xs-12 col-sm-6 col-md-8">
           <div className="row">
             <div className="col-sm-6">
-              <form>
+              <form onSubmit={e => e.preventDefault()}>
                 <legend className="text-center">Simplification</legend>
                 <div className="row">
                   <div className="col-sm-6 col-lg-6">
@@ -241,7 +241,7 @@ export default class Classification extends Component {
               </form>
             </div>
             <div className="col-sm-6">
-              <form>
+              <form onSubmit={e => e.preventDefault()}>
                 <legend className="text-center">Source / <small>Orthographic Normalization</small></legend>
                 <div className="row">
                   <div className="col-sm-12 col-lg-8 col-lg-offset-2">
