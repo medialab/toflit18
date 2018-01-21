@@ -68,7 +68,6 @@ export function selectType(tree, selected) {
 
 export function selectModel(tree, selected) {
   const cursor = tree.select(ROOT),
-        sourceTypes = tree.get('data', 'sourceTypes'),
         classifications = tree.get('data', 'classifications', 'flat');
 
   if (selected) {
@@ -77,14 +76,6 @@ export function selectModel(tree, selected) {
     }
     else if (selected.value === 'product') {
       selectType(tree, classifications.product[0]);
-    }
-    else if (selected.value === 'sourceType') {
-      if (sourceTypes.length) {
-        updateSelector(tree, 'sourceType', {
-          name: sourceTypes[0],
-          value: sourceTypes[0]
-        });
-      }
     }
     else {
       selectType(tree, null);

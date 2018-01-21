@@ -216,10 +216,10 @@ export default class ExplorationMeta extends Component {
     } = state;
 
     const canDisplaySecondViz = (
-      state.dataType &&
+      state.dataModel &&
       (
         (state.flowsPerYear && state.flowsPerYear.length < specs.metadataGroupMax) ||
-        state.dataType.special
+        state.dataType && state.dataType.special
       )
     );
 
@@ -271,10 +271,12 @@ export default class ExplorationMeta extends Component {
 
     let unit = 'classified items';
 
-    if (state.dataType && state.dataType.value === 'sourceType')
-      unit = 'source types';
-    if (state.dataType && state.dataType.value === 'direction')
-      unit = 'directions';
+    if (state.dataModel) {
+      if (state.dataModel.value === 'sourceType') unit = 'source types';
+      if (state.dataModel.value === 'direction') unit = 'directions';
+      if (state.dataModel.value === 'product') unit = 'products';
+      if (state.dataModel.value === 'country') unit = 'countries';
+    }
 
     let childClassifications;
 
@@ -303,16 +305,6 @@ export default class ExplorationMeta extends Component {
           </div>
           {
             /* eslint-disable no-nested-ternary */
-            (state.dataModel && state.dataModel.value === 'sourceType') ?
-              <div className="form-group">
-                <label htmlFor="classifications" className="control-label sr-only">Source Type</label>
-                <ItemSelector
-                  type="sourceType"
-                  data={sourceTypesOptions}
-                  loading={!sourceTypesOptions.length}
-                  onChange={actions.update.bind(null, 'sourceType')}
-                  selected={selectors.sourceType} />
-              </div> :
             (state.dataModel && state.dataModel.value === 'product') ?
               <div className="form-group">
                 <label htmlFor="classifications" className="control-label sr-only">Product</label>
@@ -381,6 +373,16 @@ export default class ExplorationMeta extends Component {
                 selected={selectors.country} />
             </div>
             <div className="form-group">
+              <label htmlFor="direction" className="control-label">Sources</label>
+              <small className="help-block">TODO - Lorem ipsum dolores sit amet.</small>
+              <ItemSelector
+                type="sourceType"
+                data={sourceTypesOptions}
+                loading={!sourceTypesOptions.length}
+                onChange={actions.update.bind(null, 'sourceType')}
+                selected={selectors.sourceType} />
+            </div>
+            <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
               <small className="help-block">The French harbor where the transactions were recorded.</small>
               <ItemSelector
@@ -443,7 +445,7 @@ export default class ExplorationMeta extends Component {
                   <Waiter />}
               </div>
             )}
-            {canDisplaySecondViz && state.flowsPerYear && state.dataType && (
+            {canDisplaySecondViz && state.flowsPerYear && state.dataModel && (
               <div className="box-viz">
                 {state.flowsPerYear ?
                   <SourcesPerDirections data={state.flowsPerYear} /> :
@@ -469,7 +471,7 @@ export default class ExplorationMeta extends Component {
                     this.exportPerYear();
                   }
                 },
-                canDisplaySecondViz && state.flowsPerYear && state.dataType && {
+                canDisplaySecondViz && state.flowsPerYear && state.dataModel && {
                   label: 'Export metadata',
                   fn: () => {
                     this.exportFlows();
