@@ -99,6 +99,11 @@ export function select(tree, id) {
   state.set('rows', []);
   state.set('query', '');
 
+  if (id) {
+    const selected = tree.get('data', 'classifications', 'index', id);
+    state.set('selectedParent', (selected || {}).parent);
+  }
+
   // Fetching the necessary rows
   search(tree);
 }

@@ -148,7 +148,7 @@ export default class Classification extends Component {
                   <ClassificationSelector
                     type={kind.value}
                     loading={!classifications[kind.value]}
-                    data={classifications[kind.value]}
+                    data={classifications[kind.value].filter(o => !!o.parent)}
                     onChange={o => actions.select(o ? o.id : null)}
                     selected={current} />
                 </div>
@@ -167,6 +167,7 @@ export default class Classification extends Component {
                   <ClassificationSelector
                     type={kind.value}
                     loading={false}
+                    clearable={false}
                     data={parents}
                     onChange={o => actions.selectParent(o ? o.id : null, true)}
                     selected={currentParent} />
@@ -179,101 +180,115 @@ export default class Classification extends Component {
         { /* Content panel */ }
         <div className="col-xs-12 col-sm-6 col-md-8">
           <div className="row">
-            <div className="col-sm-6">
-              <form onSubmit={e => e.preventDefault()}>
-                <legend className="text-center">Simplification</legend>
-                <div className="row">
-                  <div className="col-sm-6 col-lg-6">
-                    <div className="form-group">
-                      <label
-                        className="sr-only"
-                        htmlFor="search-simplification">
-                        Search
-                      </label>
-                      <div className="input-group">
-                        <input
-                          ref="queryGroup"
-                          type="text"
-                          className="form-control"
-                          id="search-simplification"
-                          placeholder="Search"
-                          value={queryGroup || ''}
-                          onChange={e => actions.updateSelector('queryGroup', e.target.value)} />
-                        <div className="input-group-btn">
-                          <button
-                            className="btn btn-default btn-search"
-                            type="submit"
-                            onClick={() => this.submit()}>
-                            <Icon name="icon-search-lg" />
-                          </button>
+            {
+              !!current &&
+                <div className="col-sm-6">
+                  <form onSubmit={e => e.preventDefault()}>
+                    <legend className="text-center">{
+                      current.name
+                    }</legend>
+                    <div className="row">
+                      <div className="col-sm-6 col-lg-6">
+                        <div className="form-group">
+                          <label
+                            className="sr-only"
+                            htmlFor="search-simplification">
+                            Search
+                          </label>
+                          <div className="input-group">
+                            <input
+                              ref="queryGroup"
+                              type="text"
+                              className="form-control"
+                              id="search-simplification"
+                              placeholder="Search"
+                              value={queryGroup || ''}
+                              style={{borderColor: '#d9d9d9'}}
+                              onChange={e => actions.updateSelector('queryGroup', e.target.value)} />
+                            <div className="input-group-btn">
+                              <button
+                                className="btn btn-default btn-search"
+                                type="submit"
+                                onClick={() => this.submit()}
+                                style={{borderColor: '#d9d9d9'}}>
+                                <Icon name="icon-search-lg" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6 col-lg-6">
+                        <div className="form-group">
+                          <Select
+                            name="orderBy"
+                            clearable={false}
+                            searchable={false}
+                            options={compact([
+                              {
+                                value: 'size',
+                                label: 'Order by number of items',
+                              },
+                              {
+                                value: 'name',
+                                label: 'Order by name',
+                              },
+                              !!queryItem && {
+                                value: 'nbMatches',
+                                label: 'Order with matching items first',
+                              }
+                            ])}
+                            value={orderBy}
+                            onChange={({value}) => {
+                              actions.updateSelector('orderBy', value);
+                              this.submit();
+                            }} />
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-sm-6 col-lg-6">
-                    <div className="form-group">
-                      <Select
-                        name="edgeSize"
-                        clearable={false}
-                        searchable={false}
-                        options={compact([
-                          {
-                            value: 'size',
-                            label: 'Order by number of items',
-                          },
-                          {
-                            value: 'name',
-                            label: 'Order by name',
-                          },
-                          !!queryItem && {
-                            value: 'nbMatches',
-                            label: 'Order with matching items first',
-                          }
-                        ])}
-                        value={orderBy}
-                        onChange={({value}) => {
-                          actions.updateSelector('orderBy', value);
-                          this.submit();
-                        }} />
-                    </div>
-                  </div>
+                  </form>
                 </div>
-              </form>
-            </div>
-            <div className="col-sm-6">
-              <form onSubmit={e => e.preventDefault()}>
-                <legend className="text-center">Source / <small>Orthographic Normalization</small></legend>
-                <div className="row">
-                  <div className="col-sm-12 col-lg-8 col-lg-offset-2">
-                    <div className="form-group">
-                      <label
-                        className="sr-only"
-                        htmlFor="search-source">
-                        Search
-                      </label>
-                      <div className="input-group">
-                        <input
-                          ref="queryItem"
-                          type="text"
-                          className="form-control"
-                          id="search-source"
-                          placeholder="Search"
-                          value={queryItem || ''}
-                          onChange={e => actions.updateSelector('queryItem', e.target.value)} />
-                        <div className="input-group-btn">
-                          <button
-                            className="btn btn-default btn-search"
-                            type="submit"
-                            onClick={() => this.submit()}>
-                            <Icon name="icon-search-lg" />
-                          </button>
+            }
+            {
+              !!currentParent &&
+                <div className="col-sm-6">
+                  <form onSubmit={e => e.preventDefault()}>
+                    <legend className="text-center">{
+                      currentParent.name
+                    }</legend>
+                    <div className="row">
+                      <div className="col-sm-12 col-lg-8 col-lg-offset-2">
+                        <div className="form-group">
+                          <label
+                            className="sr-only"
+                            htmlFor="search-source">
+                            Search
+                          </label>
+                          <div className="input-group">
+                            <input
+                              ref="queryItem"
+                              type="text"
+                              className="form-control"
+                              id="search-source"
+                              placeholder="Search"
+                              value={queryItem || ''}
+                              style={{borderColor: '#d9d9d9'}}
+                              onChange={e => actions.updateSelector('queryItem', e.target.value)} />
+                            <div className="input-group-btn">
+                              <button
+                                className="btn btn-default btn-search"
+                                type="submit"
+                                onClick={() => this.submit()}
+                                style={{borderColor: '#d9d9d9'}}>
+                                <Icon name="icon-search-lg" />
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
-              </form>
-            </div>
+            }
             <div className="group-list-container">
               <div
                 ref="list"
@@ -286,8 +301,15 @@ export default class Classification extends Component {
                       ref={i === a.length - 1 ? 'lastRow' : undefined}
                       className="group-list">
                       <div className="col-sm-6">
-                        <div className="group-list-title well">
+                        <div
+                          className="group-list-title well"
+                          style={{display: 'block'}}>
                           <h4>{row.name}</h4>
+                          <div>{compact([
+                            `${row.nbItems} item${row.nbItems > 1 ? 's' : ''}`,
+                            typeof row.nbMatchedItems === 'number' &&
+                              `(${row.nbMatchedItems} matching item${row.nbMatchedItems > 1 ? 's' : ''})`,
+                          ]).join(' ')}</div>
                         </div>
                       </div>
                       <div className="col-sm-6">
