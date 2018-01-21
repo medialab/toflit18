@@ -31,10 +31,15 @@ export function updateSelector(tree, key, value) {
 export function search(tree, paginate = false) {
   const state = tree.select(PATH),
         loading = state.select('loading'),
+        reachedBottom = state.select('reachedBottom'),
         classification = state.get('current'),
         rows = state.get('rows');
 
   if (loading.get()) return;
+
+  if (paginate && reachedBottom.get()) return;
+
+  if (!paginate && reachedBottom.get()) reachedBottom.set(false);
 
   const data = {
     orderBy: state.get('orderBy'),
@@ -76,6 +81,9 @@ export function search(tree, paginate = false) {
         state.concat('rows', response.result);
       else
         state.set('rows', response.result);
+
+      if (response.result.length < 200)
+        reachedBottom.set(true);
     }
   );
 }
@@ -189,6 +197,7 @@ export function resetFilters(tree, id) {
     document.getElementById('searchItem').value = '';
 
   // reset tree fields
+  tree.set(['states', 'classification', 'browser', 'reachedBottom'], false);
   tree.set(['states', 'classification', 'browser', 'queryGroup'], '');
   tree.set(['states', 'classification', 'browser', 'queryItem'], '');
 

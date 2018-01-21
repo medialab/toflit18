@@ -54,7 +54,8 @@ const defaultState = {
           ['data', 'classifications', 'index'],
           (selectedParent, index) => index[selectedParent] || null
         ),
-        rows: []
+        rows: [],
+        reachedBottom: false,
       },
 
       // Classification modal
