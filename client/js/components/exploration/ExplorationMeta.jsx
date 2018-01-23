@@ -6,11 +6,14 @@
  * themselves and how they interact with each other.
  */
 import cls from 'classnames';
+import FileSaver from 'file-saver';
 import {compact} from 'lodash';
 import React, {Component} from 'react';
 import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import {branch} from 'baobab-react/decorators';
+import d2i from 'dom-to-image';
+
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 
@@ -171,6 +174,26 @@ class ExportButton extends Component {
   }
 })
 export default class ExplorationMeta extends Component {
+  getUnit() {
+    const {state} = this.props;
+    if (state.dataModel) {
+      if (state.dataModel.value === 'sourceType') return 'source types';
+      if (state.dataModel.value === 'direction') return 'directions';
+      if (state.dataModel.value === 'product') return 'products';
+      if (state.dataModel.value === 'country') return 'countries';
+    }
+    return 'classified items';
+  }
+  canDisplaySecondViz() {
+    const {state} = this.props;
+    return (
+      state.dataModel &&
+      (
+        (state.flowsPerYear && state.flowsPerYear.length < specs.metadataGroupMax) ||
+        state.dataType && state.dataType.special
+      )
+    );
+  }
   exportPerYear() {
     const {state} = this.props;
     const name = compact([
@@ -197,6 +220,24 @@ export default class ExplorationMeta extends Component {
       name: `Toflit18_Meta_view ${name} flows_per_year.csv`,
     });
   }
+  exportCharts() {
+    d2i
+      .toSvg(this.vizContainer)
+      .then(dataUrl => {
+        // 1. Clear "data-url" prefix:
+        const svg = dataUrl.replace(/^[^<]*</, '<');
+
+        // 2. Clear first margin (which kinda breaks the export):
+        const cleanSvg = svg.replace(/ margin\:[^;]*;/, '');
+
+        // 3. Save the file
+        const blob = new Blob(
+          [cleanSvg],
+          {type: 'text/plain;charset=utf-8'}
+        );
+        FileSaver.saveAs(blob, 'charts.svg');
+      });
+  }
 
   render() {
     const {
@@ -215,13 +256,7 @@ export default class ExplorationMeta extends Component {
       selectors
     } = state;
 
-    const canDisplaySecondViz = (
-      state.dataModel &&
-      (
-        (state.flowsPerYear && state.flowsPerYear.length < specs.metadataGroupMax) ||
-        state.dataType && state.dataType.special
-      )
-    );
+    const canDisplaySecondViz = this.canDisplaySecondViz();
 
     let canUpdate = !!state.dataModel;
 
@@ -430,7 +465,11 @@ export default class ExplorationMeta extends Component {
             )
           }
 
-          <div className="viz-data">
+          <div
+            className="viz-data"
+            ref={el => {
+              this.vizContainer = el;
+            }}>
             {state.perYear && state.dataModel && (
               <div className="box-viz">
                 {state.perYear ?
@@ -475,6 +514,12 @@ export default class ExplorationMeta extends Component {
                   label: 'Export metadata',
                   fn: () => {
                     this.exportFlows();
+                  }
+                },
+                state.dataModel && (state.perYear || state.flowsPerYear) && {
+                  label: 'Export charts',
+                  fn: () => {
+                    this.exportCharts();
                   }
                 }
               ])} />
