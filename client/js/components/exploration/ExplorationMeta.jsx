@@ -6,18 +6,16 @@
  * themselves and how they interact with each other.
  */
 import cls from 'classnames';
-import FileSaver from 'file-saver';
 import {compact} from 'lodash';
 import React, {Component} from 'react';
 import {Waiter} from '../misc/Loaders.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import {branch} from 'baobab-react/decorators';
-import d2i from 'dom-to-image';
 
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 
-import {exportCSV} from '../../lib/exports';
+import {exportCSV, exportSVG} from '../../lib/exports';
 import VizLayout from '../misc/VizLayout.jsx';
 
 import specs from '../../../specs.json';
@@ -221,22 +219,10 @@ export default class ExplorationMeta extends Component {
     });
   }
   exportCharts() {
-    d2i
-      .toSvg(this.vizContainer)
-      .then(dataUrl => {
-        // 1. Clear "data-url" prefix:
-        const svg = dataUrl.replace(/^[^<]*</, '<');
-
-        // 2. Clear first margin (which kinda breaks the export):
-        const cleanSvg = svg.replace(/ margin\:[^;]*;/, '');
-
-        // 3. Save the file
-        const blob = new Blob(
-          [cleanSvg],
-          {type: 'text/plain;charset=utf-8'}
-        );
-        FileSaver.saveAs(blob, 'charts.svg');
-      });
+    exportSVG({
+      nodes: [this.legendContainer, this.vizContainer],
+      name: 'charts.svg'
+    });
   }
 
   render() {
@@ -495,7 +481,11 @@ export default class ExplorationMeta extends Component {
         </div>
 
         { /* Right panel */ }
-        <div className="aside-legend">
+        <div
+          className="aside-legend"
+          ref={el => {
+            this.legendContainer = el;
+          }}>
           <ul className="list-unstyled list-legend">
             <li><span style={{backgroundColor: '#8d4d42'}} />Number direction</li>
             <li><span style={{backgroundColor: '#4F7178'}} />Number of flows</li>
