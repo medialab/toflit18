@@ -114,7 +114,7 @@ export default class Classification extends Component {
     return (
       <VizLayout
         title="Classifications"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper."
+        description="Select a type of data (locations or products) and check the content of each classification."
         leftPanelName="Filters"
         rightPanelName="Caption" >
         { /* Top of the left panel */ }

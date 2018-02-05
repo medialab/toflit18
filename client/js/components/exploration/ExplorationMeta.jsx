@@ -307,7 +307,7 @@ export default class ExplorationMeta extends Component {
     return (
       <VizLayout
         title="Metadata"
-        description="Some information about the data itself."
+        description="Select a variable to see the number different values of this variable for each year and (if there are less than 20 different values) the number of trade flows pertaining to each value."
         leftPanelName="Filters"
         rightPanelName="Caption" >
         { /* Top of the left panel */ }
