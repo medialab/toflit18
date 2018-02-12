@@ -22,7 +22,7 @@ export default class Home extends Component {
                 <h1>Transformations of the French Economy through the Lens of International Trade</h1>
                 <p className="lead">1716-1821</p>
                 <p>TOFLIT18 is a project dedicated to French trade statistics from 1716 to 1821. It combines a historical trade database that covers French external trade comprising more than 500,000 flows at the level of partners and individual products with a range of tools that allow the exploration of the material world of the Early Modern period.</p>
-<p>TOFLIT18 is the result of the collaboration of data scientists, economists and historians. It started as a project funded by the Agence Nationale de la Recherche in 2014. <a style='color:white' href='http://toflit18.hypotheses.org'>http://toflit18.hypotheses.org</a></p>
+<p>TOFLIT18 is the result of the collaboration of data scientists, economists and historians. It started as a project funded by the Agence Nationale de la Recherche in 2014. <a href='http://toflit18.hypotheses.org'>http://toflit18.hypotheses.org</a></p>
               </div>
             </div>
           </div>
@@ -158,15 +158,13 @@ export default class Home extends Component {
               <div className="col-sm-6">
                 <h2>Open Science</h2>
                 <p>Tools produced in the TOFLIT18 project are in free access:</p>
-                <p><b>Source code of the exploration tool</b>
+                <b>Source code of the exploration tool</b>
                   <p>The source code of this application is available on github under license AGPLv3 <a href="https://github.com/medialab/toflit18">https://github.com/medialab/toflit18</a></p>
                   
-                </p>
-                <p>
+
                   <b>TOFLIT18 corpus</b>
                   <p>The data you can extract from this webside are under ODbL license. <a href="http://opendatacommons.org/licenses/odbl/1.0/">http://opendatacommons.org/licenses/odbl/1.0/</a></p>
                   <p>To access the full data collected by the project, please contact Guillaume Daudin guillaume.daudin@dauphine.fr</p>
-                </p>              
               </div>
             </div>
           </div>

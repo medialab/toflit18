@@ -61,6 +61,12 @@
             color: $olive-haze;
         }
 
+        a, a:active {
+            color:$mercury;
+        }
+
+        a:hover {color:$white}
+
         //
         // Responsive
         // --------------------------------------------------

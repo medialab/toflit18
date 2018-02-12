@@ -11,6 +11,8 @@ import cls from 'classnames';
 import Icon from '../misc/Icon.jsx';
 import RAW_GLOSSARY_DATA from '../../../glossary.json';
 
+import VizLayout from '../misc/VizLayout.jsx';
+
 /**
  * Constants.
  */
@@ -103,53 +105,53 @@ export default class GlossaryPanel extends Component {
     });
 
     return (
-      <main className="container-fluid container-global no-padding">
-        <div className="section-search">
-          <form onSubmit={e => e.preventDefault()}>
-            <div className="form-group-search">
-              <div className="container">
-                <div className="row">
-                  <div className="col-sm-8 col-sm-offset-2">
-                    <div className="form-group">
-                      <Icon name="icon-search-lg" />
-                      <label
-                        className="sr-only"
-                        htmlFor="searchGlossary" >
-                        Search
-                      </label>
-                      <input
-                        id="searchGlossary"
-                        className="form-control input-lg"
-                        type="search"
-                        placeholder="Search..."
-                        onChange={this.handleInput}
-                        value={query} />
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <VizLayout
+        title="Glossary"
+        description="This glossary gives identification and definitions of selected commodities that were exchanged between France and its economic partners."
+        leftPanelName="Search" >
+        { /* Top of the left panel */ }
+
+          { /* Left panel */ }
+        <div className="aside-filters">
+         <label
+                    htmlFor="classifications"
+                    className="control-label">
+                    Search
+                  </label>
+           <form onSubmit={e => e.preventDefault()}>
+           <div className="form-group">
+              <input
+                id="searchGroup"
+                type="text"
+                className="form-control"
+                placeholder="Search products..."
+                value={query}
+                onChange={this.handleInput} />
             </div>
-          </form>
-          <div className="container">
-            <div className="row">
-              <div className="col-sm-10 col-sm-offset-1">
-                <div className="search-result">
-                  <h1>Glossary</h1>
-                  <p className={cls((!entries.length || query.length <= 2) && 'hidden')}>
-                    We found <strong>{entries.length}</strong> results found for "{query}"
-                  </p>
-                  <p className={cls(entries.length && 'hidden')}>
-                    We're sorry. We cannot find any matches for your search.
-                  </p>
-                  <dl>
-                    {entries}
-                  </dl>
-                </div>
-              </div>
+            <div className="form-group">
+             <p className={cls((!entries.length || query.length <= 2) && 'hidden')}>
+                      We found <strong>{entries.length}</strong> results found for "{query}"
+                    </p>
+                    <p className={cls(entries.length && 'hidden')}>
+                      We're sorry. We cannot find any matches for your search.
+                    </p>
             </div>
+          </form> 
+        </div>
+         { /* Content panel */ }
+         <div class="content-viz">
+          <div className="col-xs-12 col-sm-6 col-md-8">
+          
+           <div className="row">
+                    <dl>
+                      {entries}
+                    </dl>
           </div>
         </div>
-      </main>
+      </div>
+      </VizLayout>
+      
+
     );
   }
 }
