@@ -14,7 +14,7 @@ import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import {capitalize, isEqual, mapValues, pick} from 'lodash';
 import Icon from '../misc/Icon.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
-import {exportCSV} from '../../lib/exports';
+import {exportCSV, exportSVG} from '../../lib/exports';
 import {
   updateSelector as update,
   addLine,
@@ -141,8 +141,11 @@ export default class ExplorationIndicators extends Component {
     });
   }
 
-  exportSVG() {
-    // TODO
+  exportCharts() {
+    exportSVG({
+      nodes: [this.legendContainer, this.charts.vizContainer],
+      name: 'charts.svg'
+    });
   }
 
   render() {
@@ -260,10 +263,17 @@ export default class ExplorationIndicators extends Component {
         <Charts
           alert={alert}
           loading={creating}
-          lines={lines.filter(line => !!line.data)} />
+          lines={lines.filter(line => !!line.data)}
+          ref={el => {
+            this.charts = el;
+          }} />
 
         { /* Right panel */ }
-        <div className="aside-legend">
+        <div
+          className="aside-legend"
+          ref={el => {
+            this.legendContainer = el;
+          }}>
           <ul className="list-unstyled list-labels">
             {lines.map(function(line, i) {
               const style = {
@@ -291,20 +301,24 @@ export default class ExplorationIndicators extends Component {
           </ul>
           <div className="form-group-fixed form-group-fixed-right">
             <ExportButton
-              exports={[
-                {
-                  label: 'Export CSV',
-                  fn: () => {
-                    this.exportCSV();
-                  }
-                },
-                {
-                  label: 'Export SVG',
-                  fn: () => {
-                    this.exportSVG();
-                  }
-                }
-              ]} />
+              exports={
+                lines.length ?
+                  [
+                    {
+                      label: 'Export CSV',
+                      fn: () => {
+                        this.exportCSV();
+                      }
+                    },
+                    {
+                      label: 'Export SVG',
+                      fn: () => {
+                        this.exportCharts();
+                      }
+                    }
+                  ] :
+                  []
+              } />
           </div>
         </div>
 
@@ -386,7 +400,11 @@ class Charts extends Component {
 
         {
           !!lines.length && (
-            <div className="viz-data">
+            <div
+              className="viz-data"
+              ref={el => {
+                this.vizContainer = el;
+              }}>
               <div className="box-viz">
                 <span className="title">Total number of directions per year</span>
                 <DataQualityBarChart
@@ -414,14 +432,21 @@ class Charts extends Component {
                 <span className="title">Quantities of flows per year (pieces)</span>
                 <LineChart shareKey="nbr_share" valueKey="nbr" data={lines} />
               </div>}
-              <div className="viz-data-expand">
-                <button
-                  type="submit"
-                  onClick={this.toggleQuantities}
-                  className="btn btn-default">
-                  Expand collapse quantities
-                </button>
-              </div>
+            </div>
+          )
+        }
+
+        {
+          !!lines.length && (
+            <div className="viz-data-expand">
+              <button
+                type="submit"
+                onClick={this.toggleQuantities}
+                className="btn btn-default">{
+                quantitiesOpened ?
+                  'Collapse quantities' :
+                  'Expand quantities'
+              }</button>
             </div>
           )
         }
