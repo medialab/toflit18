@@ -5,10 +5,10 @@
  * Displaying a collection of visualizations dealing with the sources
  * themselves and how they interact with each other.
  */
-import cls from 'classnames';
 import {compact} from 'lodash';
 import React, {Component} from 'react';
 import {Waiter} from '../misc/Loaders.jsx';
+import {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import {branch} from 'baobab-react/decorators';
 
@@ -71,88 +71,6 @@ function formatArrayToCSV(data) {
   );
 
   return newArray;
-}
-
-class ExportButton extends Component {
-  constructor(...args) {
-    super(...args);
-    this.state = {deployed: false};
-
-    this.toggleList = this.toggleList.bind(this);
-    this.handleClickBody = this.handleClickBody.bind(this);
-
-    document.body.addEventListener('click', this.handleClickBody);
-  }
-  componentWillUnmount() {
-    document.body.removeEventListener('click', this.handleClickBody);
-  }
-
-  handleClickBody(e) {
-    if (!this.state.deployed) return;
-
-    const dom = this.refs.root;
-    let node = e.target;
-    let isOut = true;
-    let maxDepth = 4;
-
-    while (node && maxDepth-- && isOut) {
-      if (node === dom) isOut = false;
-
-      node = node.parentNode;
-    }
-
-    if (isOut) this.setState({deployed: false});
-  }
-  toggleList() {
-    if (this.props.exports.length === 1) {
-      this.props.exports[0].fn();
-    }
-    else if (this.props.exports.length > 1) {
-      this.setState({deployed: !this.state.deployed});
-    }
-  }
-
-  render() {
-    return (
-      <div
-        ref="root"
-        className={cls(
-          'dropup',
-          this.state.deployed && 'open'
-        )}>
-        <button
-          type="button"
-          aria-haspopup="true"
-          aria-expanded="true"
-          onClick={this.toggleList}
-          disabled={!this.props.exports.length}
-          className={cls(
-            'btn',
-            'btn-default',
-            this.props.exports.length > 1 && 'dropdown-toggle'
-          )}>
-          <span>Exports</span>
-          { this.props.exports.length > 1 && <span className="caret" /> }
-        </button>
-        {
-          this.props.exports.length > 1 &&
-          <ul className="dropdown-menu">{
-            this.props.exports.map(({label, fn}) => (
-              <li
-                key={label}
-                onClick={e => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  fn();
-                }}>
-                <a href="#">{label}</a>
-              </li>
-            ))
-          }</ul>
-        }
-      </div>
-    );
-  }
 }
 
 @branch({

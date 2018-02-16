@@ -7,6 +7,7 @@
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Waiter} from '../misc/Loaders.jsx';
+import {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
@@ -91,7 +92,7 @@ function buildDescription(params, data) {
   }
 })
 export default class ExplorationIndicators extends Component {
-  export() {
+  exportCSV() {
     // create an array with all lines, add a column with name of country selected
     // create csv only with indicators selected
     let arrayDataLines = [];
@@ -138,6 +139,10 @@ export default class ExplorationIndicators extends Component {
       data: arrayDataLines,
       name: 'Indicators_Number_of_directions_per_year.csv',
     });
+  }
+
+  exportSVG() {
+    // TODO
   }
 
   render() {
@@ -285,12 +290,21 @@ export default class ExplorationIndicators extends Component {
             })}
           </ul>
           <div className="form-group-fixed form-group-fixed-right">
-            <button
-              type="submit"
-              className="btn btn-default"
-              onClick={() => this.export()}>
-              Export
-            </button>
+            <ExportButton
+              exports={[
+                {
+                  label: 'Export CSV',
+                  fn: () => {
+                    this.exportCSV();
+                  }
+                },
+                {
+                  label: 'Export SVG',
+                  fn: () => {
+                    this.exportSVG();
+                  }
+                }
+              ]} />
           </div>
         </div>
 
