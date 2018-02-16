@@ -156,8 +156,7 @@ const Model = {
 
     // create the dynamic query
     const query = decypher.Query();
-    queryString.split('\n').forEach(function(line){
-      query.add(line)})
+    queryString.split('\n').forEach(line => query.add(line));
 
     // Casting
     params.id = database.int(params.id);
@@ -179,19 +178,20 @@ const Model = {
       query.orderBy('nbItems DESC');
 
     //skip & limit
-    if (!opts.source && !opts.queryItem){
-      //dynamic skip & limit only for groupsFrom and groups queries cause the limit and skip has to be after the dynamic orderBy
-      query.skip(''+params.offset);
-      query.limit(''+params.limit);
+    if (!opts.source && !opts.queryItem) {
+      // dynamic skip & limit only for groupsFrom and groups queries cause the
+      // limit and skip has to be after the dynamic orderBy
+      query.skip('' + params.offset);
+      query.limit('' + params.limit);
     }
 
-    query.params(params)
+    query.params(params);
 
     return database.cypher(
       query.build(),
       function(err, results) {
         if (err) return callback(err);
-        
+
         const groups = results.map(row => {
           const group = {
             ...row.group.properties,

@@ -5,10 +5,8 @@
  * Collection of Bootstrap v4 button-related components.
  */
 import React, {Component} from 'react';
+import cls from 'classnames';
 import Ladda from 'ladda';
-import csvParse from 'papaparse';
-import {saveAs} from 'browser-filesaver';
-import gexf from 'gexf';
 
 export default class Button extends Component {
 
@@ -44,13 +42,13 @@ export default class Button extends Component {
       style = {}
     } = this.props;
 
-    let cls = `btn btn-${kind} ladda-button`;
+    let classes = `btn btn-${kind} ladda-button`;
 
     if (disabled)
-      cls += ' disabled';
+      classes += ' disabled';
 
     if (size)
-      cls += (size === 'small' ? ' btn-sm' : 'btn-lg');
+      classes += (size === 'small' ? ' btn-sm' : 'btn-lg');
 
     const optional = {};
 
@@ -62,7 +60,7 @@ export default class Button extends Component {
         ref="button"
         type="button"
         data-style="slide-left"
-        className={cls}
+        className={classes}
         style={style}
         onClick={e => !disabled && typeof onClick === 'function' && onClick(e)}
         {...optional}>

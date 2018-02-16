@@ -8,7 +8,6 @@
 import React, {Component} from 'react';
 import {escapeRegexp} from 'talisman/regexp';
 import cls from 'classnames';
-import Icon from '../misc/Icon.jsx';
 import RAW_GLOSSARY_DATA from '../../../glossary.json';
 
 import VizLayout from '../misc/VizLayout.jsx';
@@ -111,15 +110,15 @@ export default class GlossaryPanel extends Component {
         leftPanelName="Search" >
         { /* Top of the left panel */ }
 
-          { /* Left panel */ }
+        { /* Left panel */ }
         <div className="aside-filters">
-         <label
-                    htmlFor="classifications"
-                    className="control-label">
-                    Search
-                  </label>
-           <form onSubmit={e => e.preventDefault()}>
-           <div className="form-group">
+          <label
+            htmlFor="classifications"
+            className="control-label">
+            Search
+          </label>
+          <form onSubmit={e => e.preventDefault()}>
+            <div className="form-group">
               <input
                 id="searchGroup"
                 type="text"
@@ -129,29 +128,24 @@ export default class GlossaryPanel extends Component {
                 onChange={this.handleInput} />
             </div>
             <div className="form-group">
-             <p className={cls((!entries.length || query.length <= 2) && 'hidden')}>
-                      We found <strong>{entries.length}</strong> results found for "{query}"
-                    </p>
-                    <p className={cls(entries.length && 'hidden')}>
-                      We're sorry. We cannot find any matches for your search.
-                    </p>
+            <p className={cls((!entries.length || query.length <= 2) && 'hidden')}>
+              We found <strong>{entries.length}</strong> results found for "{query}"
+            </p>
+            <p className={cls(entries.length && 'hidden')}>
+              We're sorry. We cannot find any matches for your search.
+            </p>
             </div>
-          </form> 
+          </form>
         </div>
-         { /* Content panel */ }
-         <div class="content-viz">
+        { /* Content panel */ }
+        <div className="content-viz">
           <div className="col-xs-12 col-sm-6 col-md-8">
-          
-           <div className="row">
-                    <dl>
-                      {entries}
-                    </dl>
+            <div className="row">
+              <dl>{entries}</dl>
+            </div>
           </div>
         </div>
-      </div>
       </VizLayout>
-      
-
     );
   }
 }
