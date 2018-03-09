@@ -193,7 +193,7 @@ class TermsPanel extends Component {
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="sourceType" className="control-label">Source Type</label>
-              <small className="help-block">From wich sources does the data comes from ?</small>
+              <small className="help-block">From wich sources do the data comes from ?</small>
               <ItemSelector
                 type="sourceType"
                 data={sourceTypesOptions}
