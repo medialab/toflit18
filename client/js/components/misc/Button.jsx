@@ -5,10 +5,8 @@
  * Collection of Bootstrap v4 button-related components.
  */
 import React, {Component} from 'react';
+import cls from 'classnames';
 import Ladda from 'ladda';
-import csvParse from 'papaparse';
-import {saveAs} from 'browser-filesaver';
-import gexf from 'gexf';
 
 export default class Button extends Component {
 
@@ -44,13 +42,13 @@ export default class Button extends Component {
       style = {}
     } = this.props;
 
-    let cls = `btn btn-${kind} ladda-button`;
+    let classes = `btn btn-${kind} ladda-button`;
 
     if (disabled)
-      cls += ' disabled';
+      classes += ' disabled';
 
     if (size)
-      cls += (size === 'small' ? ' btn-sm' : 'btn-lg');
+      classes += (size === 'small' ? ' btn-sm' : 'btn-lg');
 
     const optional = {};
 
@@ -62,7 +60,7 @@ export default class Button extends Component {
         ref="button"
         type="button"
         data-style="slide-left"
-        className={cls}
+        className={classes}
         style={style}
         onClick={e => !disabled && typeof onClick === 'function' && onClick(e)}
         {...optional}>
@@ -74,145 +72,84 @@ export default class Button extends Component {
   }
 }
 
-export class ButtonGroup extends Component {
-  render() {
-    return <div className="btn-group" role="group">{this.props.children}</div>;
-  }
-}
-
 export class ExportButton extends Component {
+  constructor(...args) {
+    super(...args);
+    this.state = {deployed: false};
 
-  download() {
-    const data = this.props.data,
-          type = this.props.type,
-          network = this.props.network;
+    this.toggleList = this.toggleList.bind(this);
+    this.handleClickBody = this.handleClickBody.bind(this);
 
-          if (type === 'gexf' && network === 'terms') {
+    document.body.addEventListener('click', this.handleClickBody);
+  }
+  componentWillUnmount() {
+    document.body.removeEventListener('click', this.handleClickBody);
+  }
 
-            const meta = {
-              creator: 'toflit18',
-              lastmodifieddate: '2010-05-29+01:27',
-              title: 'A graph of terms'
-            };
+  handleClickBody(e) {
+    if (!this.state.deployed) return;
 
-            const model = {
-              node: [
-                {
-                  id: 'community',
-                  type: 'float',
-                  title: 'Community'
-                },
-                {
-                  id: 'position',
-                  type: 'float',
-                  title: 'Position'
-                }
-              ]
-            };
+    const dom = this.refs.root;
+    let node = e.target;
+    let isOut = true;
+    let maxDepth = 4;
 
-            const nodes = [];
-            data.nodes.forEach(n => {
-              const node = {
-                id: n.id,
-                label: n.label,
-                attributes: {
-                  community: n.community,
-                  position: n.position
-                },
-                viz: {
-                  color: n.communityColor,
-                  size: n.size,
-                  position: {
-                    x: n.x,
-                    y: n.y,
-                    z: 0
-                  }
-                }
-              };
+    while (node && maxDepth-- && isOut) {
+      if (node === dom) isOut = false;
 
-              nodes.push(node);
-            });
+      node = node.parentNode;
+    }
 
-            const params = {
-              version: '0.0.1',
-              meta,
-              model,
-              nodes,
-              edges: data.edges
-            };
-
-            const myGexf = gexf.create(params),
-                  blob = new Blob([myGexf.serialize()], {type: 'text/gexf+xml;charset=utf-8'});
-
-            return saveAs(blob, this.props.name);
-          }
-          else if (type === 'gexf' && network === 'country') {
-
-            const meta = {
-              creator: 'toflit18',
-              lastmodifieddate: '2010-05-29+01:27',
-              title: 'A graph of terms'
-            };
-
-            const model = {
-              node: [
-                {
-                  id: 'community',
-                  type: 'string',
-                  title: 'Community'
-                }
-              ]
-            };
-
-            const nodes = [];
-            data.nodes.forEach(n => {
-              const node = {
-                id: n.id,
-                label: n.label,
-                attributes: {
-                  community: n.community
-                },
-                viz: {
-                  color: n.color,
-                  size: n.size,
-                  position: {
-                    x: n.x,
-                    y: n.y,
-                    z: 0
-                  }
-                }
-              };
-
-              nodes.push(node);
-            });
-
-            const params = {
-              version: '0.0.1',
-              defaultEdgeType: 'directed',
-              meta,
-              model,
-              nodes,
-              edges: data.edges
-            };
-
-            const myGexf = gexf.create(params),
-                  blob = new Blob([myGexf.serialize()], {type: 'text/gexf+xml;charset=utf-8'});
-
-            return saveAs(blob, this.props.name);
-          }
-          else {
-             const csv = csvParse.unparse(data),
-                   blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
-
-              return saveAs(blob, this.props.name);
-          }
+    if (isOut) this.setState({deployed: false});
+  }
+  toggleList() {
+    if (this.props.exports.length === 1) {
+      this.props.exports[0].fn();
+    }
+    else if (this.props.exports.length > 1) {
+      this.setState({deployed: !this.state.deployed});
+    }
   }
 
   render() {
     return (
-      <Button onClick={() => this.download()} kind="secondary">
-        {this.props.children}
-      </Button>
+      <div
+        ref="root"
+        className={cls(
+          'dropup',
+          this.state.deployed && 'open'
+        )}>
+        <button
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="true"
+          onClick={this.toggleList}
+          disabled={!this.props.exports.length}
+          className={cls(
+            'btn',
+            'btn-default',
+            this.props.exports.length > 1 && 'dropdown-toggle'
+          )}>
+          <span>Exports</span>
+          { this.props.exports.length > 1 && <span className="caret" /> }
+        </button>
+        {
+          this.props.exports.length > 1 &&
+          <ul className="dropdown-menu">{
+            this.props.exports.map(({label, fn}) => (
+              <li
+                key={label}
+                onClick={e => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  fn();
+                }}>
+                <a href="#">{label}</a>
+              </li>
+            ))
+          }</ul>
+        }
+      </div>
     );
   }
 }

@@ -82,6 +82,8 @@ export function addNetwork(tree) {
     const nodes = {},
           edges = [];
 
+    const kind = cursor.get('selectors', 'kind', 'id');
+
     result.forEach(function(row) {
 
       const directionId = '$d$' + row.direction,
@@ -134,12 +136,10 @@ export function addNetwork(tree) {
         size: row.count,
         flows: row.count,
         value: row.value,
-        source: directionId,
-        target: countryId
+        source: kind === 'import' ? countryId : directionId,
+        target: kind === 'import' ? directionId : countryId
       });
     });
-
-    const kind = cursor.get('selectors', 'kind', 'id');
 
     const directed = kind === 'import' || kind === 'export';
 

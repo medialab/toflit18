@@ -28,6 +28,11 @@ const client = new Client({
 
     groups: '/classification/:id/groups',
 
+    group: {
+      contentType: FORM,
+      url: '/classification/group/:id'
+    },
+
     directions: '/directions',
 
     sourceTypes: '/source_types',

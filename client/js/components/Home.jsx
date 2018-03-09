@@ -7,7 +7,6 @@
  */
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import Icon from './misc/Icon.jsx';
 
 export default class Home extends Component {
   render() {
@@ -18,9 +17,11 @@ export default class Home extends Component {
           <div className="container">
             <div className="row">
               <div className="col-sm-10 col-sm-offset-1">
+                <h1>TOFLIT18</h1>
                 <h1>Transformations of the French Economy through the Lens of International Trade</h1>
                 <p className="lead">1716-1821</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper. Vivamus varius diam enim, ac semper nisl venenatis eget.</p>
+                <p>TOFLIT18 is a project dedicated to French trade statistics from 1716 to 1821. It combines a historical trade database that covers French external trade comprising more than 500,000 flows at the level of partners and individual products with a range of tools that allow the exploration of the material world of the Early Modern period.</p>
+                <p>TOFLIT18 is the result of the collaboration of data scientists, economists and historians. It started as a project funded by the Agence Nationale de la Recherche in 2014. <a href="http://toflit18.hypotheses.org">http://toflit18.hypotheses.org</a></p>
               </div>
             </div>
           </div>
@@ -37,16 +38,15 @@ export default class Home extends Component {
                     <img
                       className="img-responsive"
                       src="./assets/images/indicators.png"
-                      alt="Indicators"
+                      alt="Time series"
                       width="300"
                       height="180" />
                     <figcaption>
-                      <Icon name="icon-curve" />
-                      <span>Indicators</span>
+                      <span>Time series</span>
                     </figcaption>
                   </figure>
                 </Link>
-                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+                <p>Here, you can vizualize the evolutions of particular branches of French trade through time.</p>
               </div>
               <div className="col-sm-4">
                 <Link
@@ -60,12 +60,11 @@ export default class Home extends Component {
                       width="300"
                       height="180" />
                     <figcaption>
-                      <Icon name="icon-network" />
                       <span>Products</span>
                     </figcaption>
                   </figure>
                 </Link>
-                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+                <p>Here, you can vizualize lexicographic networks of commodities traded by France.</p>
               </div>
               <div className="col-sm-4">
                 <Link
@@ -79,12 +78,11 @@ export default class Home extends Component {
                       width="300"
                       height="180" />
                     <figcaption>
-                      <Icon name="icon-network" />
                       <span>Countries</span>
                     </figcaption>
                   </figure>
                 </Link>
-                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+                <p>Here, you can vizualize geographical networks of French international trade.</p>
               </div>
             </div>
             <div className="row">
@@ -101,12 +99,11 @@ export default class Home extends Component {
                       width="300"
                       height="180" />
                     <figcaption>
-                      <Icon name="icon-curve" />
                       <span>Sources</span>
                     </figcaption>
                   </figure>
                 </Link>
-                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+                <p>Provides information on the sources and the methods used to create the TOFLIT18 database.</p>
               </div>
               <div className="col-sm-4">
                 <Link
@@ -120,12 +117,12 @@ export default class Home extends Component {
                       width="300"
                       height="180" />
                     <figcaption>
-                      <Icon name="icon-stack" />
+
                       <span>Metadata</span>
                     </figcaption>
                   </figure>
                 </Link>
-                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+                <p>Provides visual tools to explore the coverage of the database (years, products, partners, locations...).</p>
               </div>
               <div className="col-sm-4">
                 <Link
@@ -139,12 +136,12 @@ export default class Home extends Component {
                       width="300"
                       height="180" />
                     <figcaption>
-                      <Icon name="icon-classification" />
+
                       <span>Classifications</span>
                     </figcaption>
                   </figure>
                 </Link>
-                <p>Sed porta, mi laoreet cursus consectetur, sapien risus commodo turpis, quis vestibulum purus justo in ex.</p>
+                <p>Provides tools to access and understand the product and partner classifications used in the TOFLIT18 database.</p>
               </div>
             </div>
           </div>
@@ -154,11 +151,16 @@ export default class Home extends Component {
             <div className="row">
               <div className="col-sm-6">
                 <h2>How to cite</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. </p>
+                <p>Loïc Charles, Guillaume Daudin, Guillaume Plique and Paul Girard, TOFLIT18 website (year month day of consultation). Retrieved from http://toflit18.medialab.sciences-po.fr </p>
               </div>
               <div className="col-sm-6">
-                <h2>How to Use</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. </p>
+                <h2>Open Science</h2>
+                <p>Tools produced in the TOFLIT18 project are in free access:</p>
+                <b>Source code of the exploration tool</b>
+                  <p>The source code of this application is available on github under license AGPLv3 <a href="https://github.com/medialab/toflit18">https://github.com/medialab/toflit18</a></p>
+                  <b>TOFLIT18 corpus</b>
+                  <p>The data you can extract from this webside are under ODbL license. <a href="http://opendatacommons.org/licenses/odbl/1.0/">http://opendatacommons.org/licenses/odbl/1.0/</a></p>
+                  <p>To access the full data collected by the project, please contact Guillaume Daudin guillaume.daudin@dauphine.fr</p>
               </div>
             </div>
           </div>

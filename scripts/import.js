@@ -37,9 +37,10 @@ const ROOT_PATH = '/base',
       SIMPLIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_simplifiees.csv'),
       MEDICINAL_CLASSIFICATIONS = path.join(ROOT_PATH, '/bdd_marchandises_medicinales.csv'),
       HAMBURG_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_hamburg.csv'),
-      AMERIQUEDUNORD_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_NorthAmerica.csv'),
+      CANADA_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_Canada.csv'),
       EDENTREATY_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_edentreaty.csv'),
       GRAIN_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_grains.csv'),
+      COTON_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_coton.csv'),
       SITC_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_sitc.csv'),
       SITC_EN_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_sitc_EN.csv'),
       SITC_FR_CLASSIFICATION = path.join(ROOT_PATH, '/bdd_marchandises_sitc_FR.csv'),
@@ -243,11 +244,11 @@ const CLASSIFICATION_NODES = {
     slug: 'hamburg',
     description: 'link to the Hamburg classification'
   }, 'Classification'),
-  product_ameriquedunord: BUILDER.save({
-    name: 'North America',
+  product_canada: BUILDER.save({
+    name: 'Canada',
     model: 'product',
-    slug: 'ameriquedunord',
-    description: 'indicates if products are from North America'
+    slug: 'canada',
+    description: 'indicates if products are from Canada'
   }, 'Classification'),
   product_edentreaty: BUILDER.save({
     name: 'Eden Treaty',
@@ -260,6 +261,12 @@ const CLASSIFICATION_NODES = {
     model: 'product',
     slug: 'grain',
     description: 'classification of grains type'
+  }, 'Classification'),
+  product_coton: BUILDER.save({
+    name: 'coton',
+    model: 'product',
+    slug: 'coton',
+    description: 'classification of raw coton goods'
   }, 'Classification'),
   product_sitc: BUILDER.save({
     name: 'SITC',
@@ -323,9 +330,10 @@ BUILDER.relate(CLASSIFICATION_NODES.product_orthographic, 'BASED_ON', CLASSIFICA
 BUILDER.relate(CLASSIFICATION_NODES.product_simplified, 'BASED_ON', CLASSIFICATION_NODES.product_orthographic);
 BUILDER.relate(CLASSIFICATION_NODES.product_medicinal, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_hamburg, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
-BUILDER.relate(CLASSIFICATION_NODES.product_ameriquedunord, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.product_canada, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_edentreaty, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_grain, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
+BUILDER.relate(CLASSIFICATION_NODES.product_coton, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_sitc, 'BASED_ON', CLASSIFICATION_NODES.product_simplified);
 BUILDER.relate(CLASSIFICATION_NODES.product_sitc_en, 'BASED_ON', CLASSIFICATION_NODES.product_sitc);
 BUILDER.relate(CLASSIFICATION_NODES.product_sitc_fr, 'BASED_ON', CLASSIFICATION_NODES.product_sitc);
@@ -688,12 +696,12 @@ const hamburgProduct = makeClassificationConsumer(
   {}
 );
 
-const ameriquedunordProduct = makeClassificationConsumer(
-  CLASSIFICATION_INDEXES.product_ameriquedunord,
-  CLASSIFICATION_NODES.product_ameriquedunord,
+const canadaProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_canada,
+  CLASSIFICATION_NODES.product_canada,
   CLASSIFICATION_NODES.product_simplified,
   CLASSIFICATION_INDEXES.product_simplified,
-  'ameriquedunord',
+  'canada',
   'simplified',
   {}
 );
@@ -717,6 +725,17 @@ const grainProduct = makeClassificationConsumer(
   'simplified',
   {}
 );
+
+const cotonProduct = makeClassificationConsumer(
+  CLASSIFICATION_INDEXES.product_coton,
+  CLASSIFICATION_NODES.product_coton,
+  CLASSIFICATION_NODES.product_simplified,
+  CLASSIFICATION_INDEXES.product_simplified,
+  'coton',
+  'simplified',
+  {}
+);
+
 
 const sitcProduct = makeClassificationConsumer(
   CLASSIFICATION_INDEXES.product_sitc,
@@ -922,19 +941,19 @@ async.series({
     });
   },
 
-   productAmeriquedunord(next) {
-    console.log('  -- Products Amerique du Nord classifications');
+   productCanada(next) {
+    console.log('  -- Products Canada classifications');
 
     // Parsing various classifications
-    const csvData = fs.readFileSync(DATA_PATH + AMERIQUEDUNORD_CLASSIFICATION, 'utf-8');
+    const csvData = fs.readFileSync(DATA_PATH + CANADA_CLASSIFICATION, 'utf-8');
     parseCsv(csvData, {delimiter: ','}, function(err, data) {
       data
         .slice(1)
         .map(line => ({
           simplified: cleanText(line[0]),
-          ameriquedunord: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+          canada: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
-        .forEach(ameriquedunordProduct);
+        .forEach(canadaProduct);
 
       return next();
     });
@@ -969,6 +988,23 @@ async.series({
           grain: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
         .forEach(grainProduct);
+
+      return next();
+    });
+  },
+  productCoton(next) {
+    console.log('  -- Products coton classifications');
+
+    // Parsing various classifications
+    const csvData = fs.readFileSync(DATA_PATH + COTON_CLASSIFICATION, 'utf-8');
+    parseCsv(csvData, {delimiter: ','}, function(err, data) {
+      data
+        .slice(1)
+        .map(line => ({
+          simplified: cleanText(line[0]),
+          coton: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+        }))
+        .forEach(cotonProduct);
 
       return next();
     });

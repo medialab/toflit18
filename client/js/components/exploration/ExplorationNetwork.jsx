@@ -7,6 +7,7 @@
 import React, {Component} from 'react';
 import {format} from 'd3-format';
 import {range} from 'lodash';
+import Select from 'react-select';
 import {branch} from 'baobab-react/decorators';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
@@ -26,27 +27,6 @@ import {
 
 const NUMBER_FIXED_FORMAT = format(',.2f'),
       NUMBER_FORMAT = format(',');
-
-function renderNodeDisplay(props) {
-  const {
-    label,
-    flows,
-    value,
-    degree
-  } = props;
-
-  return (
-    <div>
-      <strong>{label}</strong>
-      <br />
-      Flows: {NUMBER_FORMAT(flows)}
-      <br />
-      Value: {NUMBER_FIXED_FORMAT(value)}
-      <br />
-      Degree: {NUMBER_FORMAT(degree)}
-    </div>
-  );
-}
 
 export default class ExplorationGlobals extends Component {
   render() {
@@ -70,6 +50,7 @@ export default class ExplorationGlobals extends Component {
     updateDate
   },
   cursors: {
+    alert: ['ui', 'alert'],
     classifications: ['data', 'classifications', 'flat'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
@@ -77,6 +58,13 @@ export default class ExplorationGlobals extends Component {
   }
 })
 class NetworkPanel extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {selected: null, fullscreen: false};
+    this.setSelectedNode = this.setSelectedNode.bind(this);
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
+  }
+
   export() {
     exportCSV({
       data: this.props.state.data,
@@ -84,8 +72,17 @@ class NetworkPanel extends Component {
     });
   }
 
+  setSelectedNode(selectedNode) {
+    this.setState({selectedNode});
+  }
+
+  toggleFullscreen() {
+    this.setState({fullscreen: !this.state.fullscreen});
+  }
+
   render() {
     const {
+      alert,
       actions,
       classifications,
       sourceTypes,
@@ -108,6 +105,11 @@ class NetworkPanel extends Component {
         dateMax
       }
     } = this.props;
+
+    const {
+      selectedNode,
+      fullscreen
+    } = this.state;
 
     let dateMaxOptions, dateMinOptions;
     dateMin = actions.updateDate('dateMin');
@@ -134,12 +136,15 @@ class NetworkPanel extends Component {
       };
     });
 
+    const directed = selectors.kind && selectors.kind.id !== 'total';
+
     return (
       <VizLayout
         title="Locations"
         description="Choose a country classification and display a graph showing relations between countries & directions."
         leftPanelName="Filters"
-        rightPanelName="Caption" >
+        rightPanelName="Caption"
+        fullscreen={fullscreen} >
         { /* Top of the left panel */ }
         <div className="box-selection">
           <h2 className="hidden-xs">
@@ -229,12 +234,15 @@ class NetworkPanel extends Component {
         <Network
           ref={ref => this.networkComponent = ref}
           graph={graph}
-          directed
           sizeKey={nodeSize}
+          directed={directed}
           edgeSizeKey={edgeSize}
           labelThreshold={labelThreshold}
           labelSizeRatio={labelSizeRatio}
-          nodeDisplayRenderer={renderNodeDisplay}
+          setSelectedNode={this.setSelectedNode}
+          toggleFullscreen={this.toggleFullscreen}
+          alert={alert}
+          loading={loading}
           className="col-xs-12 col-sm-6 col-md-8" />
 
         { /* Right panel */ }
@@ -243,53 +251,43 @@ class NetworkPanel extends Component {
             <div className="form-group">
               <label htmlFor="edgeSize" className="control-label">Edge</label>
               <small className="help-block">Thickness</small>
-              <select
-                id="edgeSize"
-                value={edgeSize}
-                onChange={e => actions.selectEdgeSize(e.target.value)} >{
-                [
+              <Select
+                name="edgeSize"
+                clearable={false}
+                searchable={false}
+                options={[
                   {
-                    id: 'flows',
+                    value: 'flows',
                     label: 'Nb of flows.',
                   }, {
-                    id: 'value',
+                    value: 'value',
                     label: 'Value of flows.',
                   }
-                ].map(({id, label}) => (
-                  <option
-                    key={id}
-                    value={id} >{
-                      label
-                  }</option>
-                ))
-              }</select>
+                ]}
+                value={edgeSize}
+                onChange={({value}) => actions.selectEdgeSize(value)} />
             </div>
             <div className="form-group">
               <label htmlFor="nodeSize" className="control-label">Node</label>
               <small className="help-block">Size</small>
-              <select
-                id="nodeSize"
-                value={nodeSize}
-                onChange={e => actions.selectNodeSize(e.target.value)} >{
-                [
+              <Select
+                name="nodeSize"
+                clearable={false}
+                searchable={false}
+                options={[
                   {
-                    id: 'flows',
+                    value: 'flows',
                     label: 'Nb of flows.',
                   }, {
-                    id: 'value',
+                    value: 'value',
                     label: 'Value of flows.',
                   }, {
-                    id: 'degree',
+                    value: 'degree',
                     label: 'Degree.',
                   }
-                ].map(({id, label}) => (
-                  <option
-                    key={id}
-                    value={id} >{
-                      label
-                  }</option>
-                ))
-              }</select>
+                ]}
+                value={nodeSize}
+                onChange={({value}) => actions.selectNodeSize(value)} />
             </div>
             <div className="form-group">
               <label className="control-label">Color</label>
@@ -309,36 +307,45 @@ class NetworkPanel extends Component {
               <div className="row">
                 <div className="col-xs-6">
                   <small className="help-block">Size</small>
-                  <select
-                    id="labelSize"
-                    value={labelSizeRatio}
-                    onChange={e => actions.selectLabelSizeRatio(+e.target.value)} >{
-                    range(1, 10).map(num => (
-                      <option
-                        key={num}
-                        value={num} >{
-                          num
-                      }</option>
-                    ))
-                  }</select>
+                  <Select
+                    name="labelSize"
+                    clearable={false}
+                    searchable={false}
+                    options={range(1, 10).map(num => ({
+                      value: num + '',
+                      label: num + '',
+                    }))}
+                    value={labelSizeRatio + ''}
+                    onChange={({value}) => actions.selectLabelSizeRatio(+value)} />
                 </div>
                 <div className="col-xs-6">
                   <small className="help-block">Threshold</small>
-                  <select
-                    id="labelThreshold"
-                    value={labelThreshold}
-                    onChange={e => actions.selectLabelThreshold(+e.target.value)} >{
-                    range(0, 20).map(num => (
-                      <option
-                        key={num}
-                        value={num} >{
-                          num
-                      }</option>
-                    ))
-                  }</select>
+                  <Select
+                    name="labelThreshold"
+                    clearable={false}
+                    searchable={false}
+                    options={range(0, 20).map(num => ({
+                      value: num + '',
+                      label: num + '',
+                    }))}
+                    value={labelThreshold + ''}
+                    onChange={({value}) => actions.selectLabelThreshold(+value)} />
                 </div>
               </div>
             </div>
+
+            {
+              selectedNode ?
+                <div className="node-display">
+                  <ul className="list-unstyled">
+                    <li><span className="title">{selectedNode.label}</span></li>
+                    <li>Flows: <strong>{NUMBER_FORMAT(selectedNode.flows)}</strong></li>
+                    <li>Value: <strong>{NUMBER_FIXED_FORMAT(selectedNode.value)}</strong></li>
+                    <li>Degree: <strong>{NUMBER_FORMAT(selectedNode.degree)}</strong></li>
+                  </ul>
+                </div> :
+                undefined
+            }
           </form>
           <div className="form-group-fixed form-group-fixed-right">
             <button

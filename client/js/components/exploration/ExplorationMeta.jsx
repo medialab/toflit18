@@ -5,21 +5,24 @@
  * Displaying a collection of visualizations dealing with the sources
  * themselves and how they interact with each other.
  */
+import {compact} from 'lodash';
 import React, {Component} from 'react';
 import {Waiter} from '../misc/Loaders.jsx';
+import {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import {branch} from 'baobab-react/decorators';
+
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 
-import {exportCSV} from '../../lib/exports';
+import {exportCSV, exportSVG} from '../../lib/exports';
 import VizLayout from '../misc/VizLayout.jsx';
-import {prettyPrint} from '../../lib/helpers';
 
 import specs from '../../../specs.json';
 
 import {
-  select,
+  selectType,
+  selectModel,
   updateSelector as update,
   addChart
 } from '../../actions/metadata';
@@ -72,11 +75,13 @@ function formatArrayToCSV(data) {
 
 @branch({
   actions: {
-    select,
     update,
-    addChart
+    addChart,
+    selectType,
+    selectModel
   },
   cursors: {
+    alert: ['ui', 'alert'],
     classifications: ['data', 'classifications', 'flat'],
     classificationIndex: ['data', 'classifications', 'index'],
     directions: ['data', 'directions'],
@@ -85,23 +90,62 @@ function formatArrayToCSV(data) {
   }
 })
 export default class ExplorationMeta extends Component {
+  getUnit() {
+    const {state} = this.props;
+    if (state.dataModel) {
+      if (state.dataModel.value === 'sourceType') return 'source types';
+      if (state.dataModel.value === 'direction') return 'directions';
+      if (state.dataModel.value === 'product') return 'products';
+      if (state.dataModel.value === 'country') return 'countries';
+    }
+    return 'classified items';
+  }
+  canDisplaySecondViz() {
+    const {state} = this.props;
+    return (
+      state.dataModel &&
+      (
+        (state.flowsPerYear && state.flowsPerYear.length < specs.metadataGroupMax) ||
+        state.dataType && state.dataType.special
+      )
+    );
+  }
   exportPerYear() {
     const {state} = this.props;
+    const name = compact([
+      state.dataModel.name,
+      state.dataType && state.dataType.name,
+      state.filename
+    ]).join(' - ');
+
     exportCSV({
       data: state.perYear,
-      name: `Toflit18_Meta_view ${state.dataType.name} - ${state.fileName} data_per_year.csv`,
+      name: `Toflit18_Meta_view ${name} data_per_year.csv`,
     });
   }
   exportFlows() {
     const {state} = this.props;
+    const name = compact([
+      state.dataModel.name,
+      state.dataType && state.dataType.name,
+      state.filename
+    ]).join(' - ');
+
     exportCSV({
       data: formatArrayToCSV(state.flowsPerYear || []),
-      name: `Toflit18_Meta_view ${state.dataType.name} - ${state.fileName} flows_per_year.csv`,
+      name: `Toflit18_Meta_view ${name} flows_per_year.csv`,
+    });
+  }
+  exportCharts() {
+    exportSVG({
+      nodes: [this.legendContainer, this.vizContainer],
+      name: 'charts.svg'
     });
   }
 
   render() {
     const {
+      alert,
       actions,
       classifications,
       classificationIndex,
@@ -112,24 +156,29 @@ export default class ExplorationMeta extends Component {
 
     const {
       groups,
+      loading,
       selectors
     } = state;
 
-    const classificationsFiltered = classifications.product
-      .concat(classifications.country)
-      .filter(c => c.groupsCount)
-      .map(e => ({
-        ...e,
-        name: `${e.name} (${e.model === 'product' ? 'Products' : 'Countries'} - ${prettyPrint(e.groupsCount)} groups)`
-      }));
+    const canDisplaySecondViz = this.canDisplaySecondViz();
 
-    const canDisplaySecondViz = (
-      state.dataType &&
-      (
-        (state.flowsPerYear && state.flowsPerYear.length < specs.metadataGroupMax) ||
-        state.dataType.special
-      )
-    );
+    let canUpdate = !!state.dataModel;
+
+    if (
+      state.dataModel
+      && (state.dataModel.value === 'country' || state.dataModel.value === 'country')
+      && !state.dataType
+    ) {
+      canUpdate = false;
+    }
+
+    if (
+      state.dataModel
+      && state.dataModel.value === 'sourceType'
+      && !selectors.sourceType
+    ) {
+      canUpdate = false;
+    }
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
@@ -161,10 +210,12 @@ export default class ExplorationMeta extends Component {
 
     let unit = 'classified items';
 
-    if (state.dataType && state.dataType.value === 'sourceType')
-      unit = 'source types';
-    if (state.dataType && state.dataType.value === 'direction')
-      unit = 'directions';
+    if (state.dataModel) {
+      if (state.dataModel.value === 'sourceType') unit = 'source types';
+      if (state.dataModel.value === 'direction') unit = 'directions';
+      if (state.dataModel.value === 'product') unit = 'products';
+      if (state.dataModel.value === 'country') unit = 'countries';
+    }
 
     let childClassifications;
 
@@ -174,7 +225,7 @@ export default class ExplorationMeta extends Component {
     return (
       <VizLayout
         title="Metadata"
-        description="Some information about the data itself."
+        description="Select a variable to see the number different values of this variable for each year and (if there are less than 20 different values) the number of trade flows pertaining to each value."
         leftPanelName="Filters"
         rightPanelName="Caption" >
         { /* Top of the left panel */ }
@@ -183,21 +234,39 @@ export default class ExplorationMeta extends Component {
           <div className="form-group">
             <label htmlFor="classifications" className="control-label sr-only">Type of data</label>
             <ItemSelector
-              type="dataType"
-              data={[...metadataSelectors, ...classificationsFiltered]}
-              loading={!classifications.product.length}
-              onChange={actions.select}
-              selected={state.dataType} />
+              type="dataModel"
+              data={metadataSelectors}
+              onChange={val => {
+                actions.update('sourceType', null);
+                actions.selectModel(val);
+              }}
+              selected={state.dataModel} />
           </div>
-          <div className="form-group">
-            <label htmlFor="classifications" className="control-label sr-only">Source Type</label>
-            <ItemSelector
-              type="sourceType"
-              data={sourceTypesOptions}
-              loading={!sourceTypesOptions.length}
-              onChange={actions.update.bind(null, 'sourceType')}
-              selected={selectors.sourceType} />
-          </div>
+          {
+            /* eslint-disable no-nested-ternary */
+            (state.dataModel && state.dataModel.value === 'product') ?
+              <div className="form-group">
+                <label htmlFor="classifications" className="control-label sr-only">Product</label>
+                <ItemSelector
+                  type="dataType"
+                  data={classifications.product}
+                  loading={!classifications.product.length}
+                  onChange={actions.selectType}
+                  selected={state.dataType} />
+              </div> :
+            (state.dataModel && state.dataModel.value === 'country') ?
+              <div className="form-group">
+                <label htmlFor="classifications" className="control-label sr-only">Country</label>
+                <ItemSelector
+                  type="dataType"
+                  data={classifications.country}
+                  loading={!classifications.country.length}
+                  onChange={actions.selectType}
+                  selected={state.dataType} />
+              </div> :
+              undefined
+              /* eslint-enable no-nested-ternary */
+          }
         </div>
 
         { /* Left panel */ }
@@ -243,6 +312,16 @@ export default class ExplorationMeta extends Component {
                 selected={selectors.country} />
             </div>
             <div className="form-group">
+              <label htmlFor="direction" className="control-label">Sources</label>
+              <small className="help-block">TODO - Lorem ipsum dolores sit amet.</small>
+              <ItemSelector
+                type="sourceType"
+                data={sourceTypesOptions}
+                loading={!sourceTypesOptions.length}
+                onChange={actions.update.bind(null, 'sourceType')}
+                selected={selectors.sourceType} />
+            </div>
+            <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
               <small className="help-block">The French harbor where the transactions were recorded.</small>
               <ItemSelector
@@ -264,8 +343,8 @@ export default class ExplorationMeta extends Component {
               <button
                 type="submit"
                 className="btn btn-default"
-                data-loading={state.loading}
-                disabled={!state.dataType}
+                data-loading={loading}
+                disabled={!canUpdate}
                 onClick={actions.addChart}>
                 Update
               </button>
@@ -275,8 +354,27 @@ export default class ExplorationMeta extends Component {
 
         { /* Content panel */ }
         <div className="col-xs-12 col-sm-6 col-md-8">
-          <div className="viz-data">
-            {state.perYear && state.dataType && (
+          {
+            (alert || loading) && (
+              <div className="progress-container progress-container-viz">
+                {alert && <div className="alert alert-danger" role="alert">{alert}</div>}
+                {
+                  loading && (
+                    <div className="progress-line progress-line-viz">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  )
+                }
+              </div>
+            )
+          }
+
+          <div
+            className="viz-data"
+            ref={el => {
+              this.vizContainer = el;
+            }}>
+            {state.perYear && state.dataModel && (
               <div className="box-viz">
                 {state.perYear ?
                   <div>
@@ -288,37 +386,52 @@ export default class ExplorationMeta extends Component {
                       syncId="sources-per-directions" />
                   </div> :
                   <Waiter />}
-                <button
-                  type="submit"
-                  className="btn btn-default"
-                  onClick={() => this.exportPerYear()}>
-                  Export
-                </button>
               </div>
             )}
-            {canDisplaySecondViz && state.flowsPerYear && state.dataType && (
+            {canDisplaySecondViz && state.flowsPerYear && state.dataModel && (
               <div className="box-viz">
                 {state.flowsPerYear ?
                   <SourcesPerDirections data={state.flowsPerYear} /> :
                   <Waiter />}
-                <button
-                  type="submit"
-                  className="btn btn-default"
-                  onClick={() => this.exportFlows()}>
-                  Export
-                </button>
               </div>
             )}
           </div>
         </div>
 
         { /* Right panel */ }
-        <div className="aside-legend">
+        <div
+          className="aside-legend"
+          ref={el => {
+            this.legendContainer = el;
+          }}>
           <ul className="list-unstyled list-legend">
             <li><span style={{backgroundColor: '#8d4d42'}} />Number direction</li>
             <li><span style={{backgroundColor: '#4F7178'}} />Number of flows</li>
           </ul>
           <p>Barcharts are sorted by average number of flows per year.</p>
+          <div className="form-group-fixed form-group-fixed-right">
+            <ExportButton
+              exports={compact([
+                state.perYear && state.dataModel && {
+                  label: 'Export direction by years',
+                  fn: () => {
+                    this.exportPerYear();
+                  }
+                },
+                canDisplaySecondViz && state.flowsPerYear && state.dataModel && {
+                  label: 'Export metadata',
+                  fn: () => {
+                    this.exportFlows();
+                  }
+                },
+                state.dataModel && (state.perYear || state.flowsPerYear) && {
+                  label: 'Export charts',
+                  fn: () => {
+                    this.exportCharts();
+                  }
+                }
+              ])} />
+          </div>
         </div>
       </VizLayout>
     );

@@ -2,12 +2,30 @@
   "metadataGroupMax": 100,
   "metadataSelectors": [
     {
+      "name": "Source Type",
+      "value": "sourceType"
+    },
+    {
       "name": "Direction",
       "value": "direction"
     },
     {
-      "name": "Source Type",
-      "value": "sourceType"
+      "name": "Products",
+      "value": "product"
+    },
+    {
+      "name": "Countries",
+      "value": "country"
+    }
+  ],
+  "classificationSelectors": [
+    {
+      "name": "Products",
+      "value": "product"
+    },
+    {
+      "name": "Countries",
+      "value": "country"
     }
   ],
   "limits": {

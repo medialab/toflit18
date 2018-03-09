@@ -7,13 +7,14 @@
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
 import {Waiter} from '../misc/Loaders.jsx';
+import {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import {capitalize, isEqual, mapValues, pick} from 'lodash';
 import Icon from '../misc/Icon.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
-import {exportCSV} from '../../lib/exports';
+import {exportCSV, exportSVG} from '../../lib/exports';
 import {
   updateSelector as update,
   addLine,
@@ -83,6 +84,7 @@ function buildDescription(params, data) {
     update
   },
   cursors: {
+    alert: ['ui', 'alert'],
     classifications: ['data', 'classifications', 'flat'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
@@ -90,7 +92,7 @@ function buildDescription(params, data) {
   }
 })
 export default class ExplorationIndicators extends Component {
-  export() {
+  exportCSV() {
     // create an array with all lines, add a column with name of country selected
     // create csv only with indicators selected
     let arrayDataLines = [];
@@ -139,8 +141,16 @@ export default class ExplorationIndicators extends Component {
     });
   }
 
+  exportCharts() {
+    exportSVG({
+      nodes: [this.legendContainer, this.charts.vizContainer],
+      name: 'charts.svg'
+    });
+  }
+
   render() {
     const {
+      alert,
       actions,
       classifications,
       directions,
@@ -250,10 +260,20 @@ export default class ExplorationIndicators extends Component {
         </div>
 
         { /* Content panel */ }
-        <Charts lines={lines.filter(line => !!line.data)} />
+        <Charts
+          alert={alert}
+          loading={creating}
+          lines={lines.filter(line => !!line.data)}
+          ref={el => {
+            this.charts = el;
+          }} />
 
         { /* Right panel */ }
-        <div className="aside-legend">
+        <div
+          className="aside-legend"
+          ref={el => {
+            this.legendContainer = el;
+          }}>
           <ul className="list-unstyled list-labels">
             {lines.map(function(line, i) {
               const style = {
@@ -280,12 +300,25 @@ export default class ExplorationIndicators extends Component {
             })}
           </ul>
           <div className="form-group-fixed form-group-fixed-right">
-            <button
-              type="submit"
-              className="btn btn-default"
-              onClick={() => this.export()}>
-              Export
-            </button>
+            <ExportButton
+              exports={
+                lines.length ?
+                  [
+                    {
+                      label: 'Export CSV',
+                      fn: () => {
+                        this.exportCSV();
+                      }
+                    },
+                    {
+                      label: 'Export SVG',
+                      fn: () => {
+                        this.exportCharts();
+                      }
+                    }
+                  ] :
+                  []
+              } />
           </div>
         </div>
 
@@ -313,10 +346,7 @@ class Charts extends Component {
   }
 
   render() {
-    const lines = this.props.lines;
-
-    if (!lines.length)
-      return <div className="col-xs-12 col-sm-6 col-md-8" />;
+    const {lines, alert, loading} = this.props;
 
     const quantitiesOpened = this.state.quantitiesOpened;
 
@@ -324,9 +354,10 @@ class Charts extends Component {
     let barData = [];
 
     if (lines.some(line => !!line.data.length)) {
+      /* eslint-disable no-confusing-arrow */
       const minYear = Math.min.apply(null, lines.map(line => line.data[0] ? line.data[0].year : 9999));
-
       const maxYear = Math.max.apply(null, lines.map(line => line.data[line.data.length - 1] ? line.data[line.data.length - 1].year : 0));
+      /* eslint-enable no-confusing-arrow */
 
       barData = new Array(maxYear - minYear + 1);
 
@@ -352,43 +383,73 @@ class Charts extends Component {
 
     return (
       <div className="col-xs-12 col-sm-6 col-md-8">
-        <div className="viz-data">
-          <div className="box-viz">
-            <span className="title">Total number of directions per year</span>
-            <DataQualityBarChart
-              data={barData}
-              syncId="indicators"
-              yAxis />
-          </div>
-          <div className="box-viz">
-            <span className="title">Number of flows per year</span>
-            <LineChart valueKey="count" data={lines} />
-          </div>
-          <div className="box-viz">
-            <span className="title">Total value of flows per year</span>
-            <LineChart shareKey="value_share" data={lines} />
-          </div>
-          {quantitiesOpened && <div className="box-viz">
-            <span className="title">Quantities of flows per year (kilograms)</span>
-            <LineChart shareKey="kg_share" valueKey="kg" data={lines} />
-          </div>}
-          {quantitiesOpened && <div className="box-viz">
-            <span className="title">Quantities of flows per year (litres)</span>
-            <LineChart shareKey="litre_share" valueKey="litre" data={lines} />
-          </div>}
-          {quantitiesOpened && <div className="box-viz">
-            <span className="title">Quantities of flows per year (pieces)</span>
-            <LineChart shareKey="nbr_share" valueKey="nbr" data={lines} />
-          </div>}
-          <div className="viz-data-expand">
-            <button
-              type="submit"
-              onClick={this.toggleQuantities}
-              className="btn btn-default">
-              Expand collapse quantities
-            </button>
-          </div>
-        </div>
+        {
+          (alert || loading) && (
+            <div className="progress-container progress-container-viz">
+              {alert && <div className="alert alert-danger" role="alert">{alert}</div>}
+              {
+                loading && (
+                  <div className="progress-line progress-line-viz">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                )
+              }
+            </div>
+          )
+        }
+
+        {
+          !!lines.length && (
+            <div
+              className="viz-data"
+              ref={el => {
+                this.vizContainer = el;
+              }}>
+              <div className="box-viz">
+                <span className="title">Total number of directions per year</span>
+                <DataQualityBarChart
+                  data={barData}
+                  syncId="indicators"
+                  yAxis />
+              </div>
+              <div className="box-viz">
+                <span className="title">Number of flows per year</span>
+                <LineChart valueKey="count" data={lines} />
+              </div>
+              <div className="box-viz">
+                <span className="title">Total value of flows per year</span>
+                <LineChart shareKey="value_share" data={lines} />
+              </div>
+              {quantitiesOpened && <div className="box-viz">
+                <span className="title">Quantities of flows per year (kilograms)</span>
+                <LineChart shareKey="kg_share" valueKey="kg" data={lines} />
+              </div>}
+              {quantitiesOpened && <div className="box-viz">
+                <span className="title">Quantities of flows per year (litres)</span>
+                <LineChart shareKey="litre_share" valueKey="litre" data={lines} />
+              </div>}
+              {quantitiesOpened && <div className="box-viz">
+                <span className="title">Quantities of flows per year (pieces)</span>
+                <LineChart shareKey="nbr_share" valueKey="nbr" data={lines} />
+              </div>}
+            </div>
+          )
+        }
+
+        {
+          !!lines.length && (
+            <div className="viz-data-expand">
+              <button
+                type="submit"
+                onClick={this.toggleQuantities}
+                className="btn btn-default">{
+                quantitiesOpened ?
+                  'Collapse quantities' :
+                  'Expand quantities'
+              }</button>
+            </div>
+          )
+        }
       </div>
     );
   }

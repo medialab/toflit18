@@ -61,7 +61,6 @@ const renderTooltip = valueKey => data => {
       <em className="recharts-tooltip-label">{data.label}</em>
       <ul style={{listStyleType: 'none', padding: '0px', margin: '0px'}}>
         {payload.map((item, line) => {
-
           if (!item.value)
             return null;
 
@@ -71,7 +70,7 @@ const renderTooltip = valueKey => data => {
                 {NUMBER_FORMAT(Math.trunc(item.value))}
                 &nbsp;
                 {UNITS[valueKey](item.payload)}
-                {item.payload[line].share && ` (${PERCENTAGE_FORMAT(item.payload[line].share)})`}</span>
+                {item.payload[line] && item.payload[line].share && ` (${PERCENTAGE_FORMAT(item.payload[line].share)})`}</span>
             </li>
           );
         })}

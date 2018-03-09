@@ -57,6 +57,7 @@ export class ClassificationSelector extends Component {
         isLoading={this.props.loading}
         disabled={this.props.loading || this.props.disabled}
         placeholder={placeholder}
+        clearable={this.props.clearable}
         options={classifications}
         optionRenderer={this.renderOption}
         onChange={this.props.onChange}

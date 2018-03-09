@@ -7,6 +7,7 @@
 import React, {Component} from 'react';
 import {format} from 'd3-format';
 import {range} from 'lodash';
+import Select from 'react-select';
 import {branch} from 'baobab-react/decorators';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
@@ -53,24 +54,6 @@ function getChildClassifications(index, target) {
 const NUMBER_FIXED_FORMAT = format(',.2f'),
       NUMBER_FORMAT = format(',');
 
-function renderNodeDisplay(props) {
-  const {
-    label,
-    flows,
-    value,
-    degree
-  } = props;
-
-  return (
-    <ul className="list-unstyled">
-      <li><span className="title">{label}</span></li>
-      <li>Flows: <strong>{NUMBER_FORMAT(flows)}</strong></li>
-      <li>Value: <strong>{NUMBER_FIXED_FORMAT(value)}</strong></li>
-      <li>Degree: <strong>{NUMBER_FORMAT(degree)}</strong></li>
-    </ul>
-  );
-}
-
 /**
  * Main component.
  */
@@ -96,6 +79,7 @@ export default class ExplorationGlobalsTerms extends Component {
     updateDate
   },
   cursors: {
+    alert: ['ui', 'alert'],
     classifications: ['data', 'classifications', 'flat'],
     classificationIndex: ['data', 'classifications', 'index'],
     directions: ['data', 'directions'],
@@ -104,15 +88,26 @@ export default class ExplorationGlobalsTerms extends Component {
   }
 })
 class TermsPanel extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {selected: null};
+    this.setSelectedNode = this.setSelectedNode.bind(this);
+  }
+
   export() {
     exportCSV({
       data: this.props.state.data,
-      name: 'Toflit18_Global_Trade_Countries_Network_view.csv',
+      name: 'Toflit18_Global_Trade_Countries_Terms_view.csv',
     });
+  }
+
+  setSelectedNode(selectedNode) {
+    this.setState({selectedNode});
   }
 
   render() {
     const {
+      alert,
       actions,
       classifications,
       classificationIndex,
@@ -137,6 +132,8 @@ class TermsPanel extends Component {
         dateMax
       }
     } = this.props;
+
+    const {selectedNode} = this.state;
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
@@ -171,7 +168,7 @@ class TermsPanel extends Component {
     return (
       <VizLayout
         title="Product terms"
-        description="Choose a product classification and display a graph showing relations between terms of the aforementioned classification"
+        description="Choose a product classification and display a graph showing relations between terms of the aforementioned classification."
         leftPanelName="Filters"
         rightPanelName="Caption" >
         { /* Top of the left panel */ }
@@ -291,13 +288,15 @@ class TermsPanel extends Component {
         <Network
           ref={ref => this.networkComponent = ref}
           graph={graph}
-          directed
+          directed={false}
           colorKey={'communityColor'}
           sizeKey={nodeSize}
           edgeSizeKey={edgeSize}
           labelThreshold={labelThreshold}
           labelSizeRatio={labelSizeRatio}
-          nodeDisplayRenderer={renderNodeDisplay}
+          setSelectedNode={this.setSelectedNode}
+          alert={alert}
+          loading={loading}
           className="col-xs-12 col-sm-6 col-md-8" />
 
         { /* Right panel */ }
@@ -306,53 +305,43 @@ class TermsPanel extends Component {
             <div className="form-group">
               <label htmlFor="edgeSize" className="control-label">Edge</label>
               <small className="help-block">Thickness</small>
-              <select
-                id="edgeSize"
-                value={edgeSize}
-                onChange={e => actions.selectEdgeSize(e.target.value)} >{
-                [
+              <Select
+                name="edgeSize"
+                clearable={false}
+                searchable={false}
+                options={[
                   {
-                    id: 'flows',
+                    value: 'flows',
                     label: 'Nb of flows.',
                   }, {
-                    id: 'value',
+                    value: 'value',
                     label: 'Value of flows.',
                   }
-                ].map(({id, label}) => (
-                  <option
-                    key={id}
-                    value={id} >{
-                      label
-                  }</option>
-                ))
-              }</select>
+                ]}
+                value={edgeSize}
+                onChange={({value}) => actions.selectEdgeSize(value)} />
             </div>
             <div className="form-group">
               <label htmlFor="nodeSize" className="control-label">Node</label>
               <small className="help-block">Size</small>
-              <select
-                id="nodeSize"
-                value={nodeSize}
-                onChange={e => actions.selectNodeSize(e.target.value)} >{
-                [
+              <Select
+                name="nodeSize"
+                clearable={false}
+                searchable={false}
+                options={[
                   {
-                    id: 'flows',
+                    value: 'flows',
                     label: 'Nb of flows.',
                   }, {
-                    id: 'value',
+                    value: 'value',
                     label: 'Value of flows.',
                   }, {
-                    id: 'degree',
+                    value: 'degree',
                     label: 'Degree.',
                   }
-                ].map(({id, label}) => (
-                  <option
-                    key={id}
-                    value={id} >{
-                      label
-                  }</option>
-                ))
-              }</select>
+                ]}
+                value={nodeSize}
+                onChange={({value}) => actions.selectNodeSize(value)} />
             </div>
             <div className="form-group">
               <label className="control-label">Color</label>
@@ -363,36 +352,45 @@ class TermsPanel extends Component {
               <div className="row">
                 <div className="col-xs-6">
                   <small className="help-block">Size</small>
-                  <select
-                    id="labelSize"
-                    value={labelSizeRatio}
-                    onChange={e => actions.selectLabelSizeRatio(+e.target.value)} >{
-                    range(1, 10).map(num => (
-                      <option
-                        key={num}
-                        value={num} >{
-                          num
-                      }</option>
-                    ))
-                  }</select>
+                  <Select
+                    name="labelSize"
+                    clearable={false}
+                    searchable={false}
+                    options={range(1, 10).map(num => ({
+                      value: num + '',
+                      label: num + '',
+                    }))}
+                    value={labelSizeRatio + ''}
+                    onChange={({value}) => actions.selectLabelSizeRatio(+value)} />
                 </div>
                 <div className="col-xs-6">
                   <small className="help-block">Threshold</small>
-                  <select
-                    id="labelThreshold"
-                    value={labelThreshold}
-                    onChange={e => actions.selectLabelThreshold(+e.target.value)} >{
-                    range(0, 20).map(num => (
-                      <option
-                        key={num}
-                        value={num} >{
-                          num
-                      }</option>
-                    ))
-                  }</select>
+                  <Select
+                    name="labelThreshold"
+                    clearable={false}
+                    searchable={false}
+                    options={range(0, 20).map(num => ({
+                      value: num + '',
+                      label: num + '',
+                    }))}
+                    value={labelThreshold + ''}
+                    onChange={({value}) => actions.selectLabelThreshold(+value)} />
                 </div>
               </div>
             </div>
+
+            {
+              selectedNode ?
+                <div className="node-display">
+                  <ul className="list-unstyled">
+                    <li><span className="title">{selectedNode.label}</span></li>
+                    <li>Flows: <strong>{NUMBER_FORMAT(selectedNode.flows)}</strong></li>
+                    <li>Value: <strong>{NUMBER_FIXED_FORMAT(selectedNode.value)}</strong></li>
+                    <li>Degree: <strong>{NUMBER_FORMAT(selectedNode.degree)}</strong></li>
+                  </ul>
+                </div> :
+                undefined
+            }
           </form>
           <div className="form-group-fixed form-group-fixed-right">
             <button

@@ -6,7 +6,6 @@
  * countries and directions.
  */
 import React, {Component} from 'react';
-import screenfull from 'screenfull';
 import Select from 'react-select';
 import cls from 'classnames';
 
@@ -97,24 +96,9 @@ export default class Network extends Component {
     };
 
     this.toggleFullScreen = () => {
-      const mount = this.refs.mount;
-
-      screenfull.toggle(mount);
-    };
-
-    this.fullScreenHandler = () => {
-      const mount = this.refs.mount;
-
-      if (screenfull.isFullscreen) {
-        mount.style.width = '100%';
-        mount.style.height = '100%';
+      if (typeof this.props.toggleFullscreen === 'function') {
+        this.props.toggleFullscreen();
       }
-      else {
-        mount.style.width = null;
-        mount.style.height = null;
-      }
-
-      this.sigma.refresh();
     };
 
     this.focusNode = node => {
@@ -128,6 +112,9 @@ export default class Network extends Component {
 
     this.selectNode = node => {
       this.setState({selectedNode: node});
+      if (typeof this.props.setSelectedNode === 'function') {
+        this.props.setSelectedNode(node);
+      }
     };
   }
 
@@ -140,8 +127,6 @@ export default class Network extends Component {
     this.sigma.bind('clickNode', e => {
       this.selectNode(e.data.node);
     });
-
-    document.addEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
 
     this.componentWillUpdate(this.props);
   }
@@ -205,8 +190,6 @@ export default class Network extends Component {
   componentWillUnmount() {
     this.sigma.kill();
     this.sigma = null;
-
-    document.removeEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
   }
 
   downloadGraphAsSVG() {
@@ -218,17 +201,36 @@ export default class Network extends Component {
   }
 
   render() {
-    const graph = this.props.graph,
-          isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length),
-          nodeDisplayRenderer = this.props.nodeDisplayRenderer,
-          selectedNode = this.state.selectedNode;
+    const {
+      graph,
+      alert,
+      loading,
+      className,
+    } = this.props;
+    const isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length);
 
     return (
       <div
         id="sigma-graph"
         ref="mount"
-        className={this.props.className} >
+        className={className} >
         {isGraphEmpty && <Message text="No Data to display." />}
+
+        {
+          (alert || loading) && (
+            <div className="progress-container progress-container-viz">
+              {alert && <div className="alert alert-danger" role="alert">{alert}</div>}
+              {
+                loading && (
+                  <div className="progress-line progress-line-viz">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                )
+              }
+            </div>
+          )
+        }
+
         <Controls
           nodes={graph ? graph.nodes : []}
           camera={this.sigma.cameras.main}
@@ -236,14 +238,6 @@ export default class Network extends Component {
           toggleLayout={this.toggleLayout}
           layoutRunning={this.state.layoutRunning}
           onChangeQuery={this.focusNode} />
-        {typeof nodeDisplayRenderer === 'function' && (
-          <div className="node-display">
-            {selectedNode ?
-              nodeDisplayRenderer(selectedNode) :
-              <em>Try clicking a node to get some information...</em>
-            }
-          </div>
-        )}
       </div>
     );
   }
@@ -326,7 +320,7 @@ class Controls extends Component {
     return (
       <div className="viz-tools">
         <div className="viz-actions">
-          <form>
+          <form onSubmit={e => e.preventDefault()}>
             <div className="form-group form-group-xs">
               <label className="sr-only">Search</label>
               <div className="input-group">

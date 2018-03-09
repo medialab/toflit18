@@ -23,9 +23,10 @@ const defaultState = {
     sourceTypes: null
   },
 
-  // Some generic UI flags
-  flags: {
-    downloading: false
+  // Some generic UI state
+  ui: {
+    downloading: false,
+    alert: null
   },
 
   // Specific states
@@ -36,8 +37,11 @@ const defaultState = {
 
       // Classification browser
       browser: {
+        kind: null,
         loading: false,
         selected: null,
+        selectedParent: null,
+        orderBy: 'size',
         queryGroup: '',
         queryItem: '',
         current: monkey(
@@ -45,7 +49,13 @@ const defaultState = {
           ['data', 'classifications', 'index'],
           (selected, index) => index[selected] || null
         ),
-        rows: []
+        currentParent: monkey(
+          ['.', 'selectedParent'],
+          ['data', 'classifications', 'index'],
+          (selectedParent, index) => index[selectedParent] || null
+        ),
+        rows: [],
+        reachedBottom: false,
       },
 
       // Classification modal
@@ -64,6 +74,7 @@ const defaultState = {
 
       // Metadata view
       metadata: {
+        dataModel: null,
         dataType: null,
         perYear: null,
         flowsPerYear: null,

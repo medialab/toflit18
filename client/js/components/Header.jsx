@@ -19,7 +19,11 @@ const LINKS = {
     '/exploration/network',
     '/exploration/terms',
   ],
-  glossary: '/glossary',
+  glossary: [
+    '/glossary',
+    '/concepts',
+  ],
+  sources: '/sources',
   about: '/about',
   legal: '/legal',
 };
@@ -178,12 +182,38 @@ export default class Header extends Component {
                       <Link to="/classification/browser">Classifications</Link>
                     </li>
                     <li>
-                      <Link to="/sources">Sources</Link>
+                      <Link to="/exploration/sources">Sources</Link>
                     </li>
                   </ul>
                 </li>
-                <li className={cls(isActive(LINKS.glossary) && 'active')}>
-                  <Link to="/glossary">Glossary</Link>
+                <li
+                  className={cls(
+                    'dropdown',
+                    deployedMenu === 'glossary' && 'open',
+                    isActive(LINKS.glossary) && 'active',
+                  )}>
+                  <a
+                    href="#"
+                    ref={ref => this.menus.push(ref)}
+                    className="dropdown-toggle dropdown-caret"
+                    role="button"
+                    aria-haspopup="true"
+                    aria-expanded={deployedMenu === 'glossary' ? 'true' : 'false'}
+                    onClick={e => {
+                      e.preventDefault();
+                      this.toggleMenu('glossary');
+                    }} >
+                    <span>Glossary</span>
+                    <Icon name="icon-arrow-down" />
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link to="/glossary/products">Products</Link>
+                    </li>
+                    <li>
+                      <Link to="/glossary/concepts">Concepts</Link>
+                    </li>
+                  </ul>
                 </li>
                 <li className={cls(isActive(LINKS.about) && 'active')}>
                   <Link to="/about">About</Link>
