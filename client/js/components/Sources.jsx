@@ -30,68 +30,64 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National best guess</h2>
               <p className="lead">
-                autoselects each year the best source about trade by product x
-                partner for the whole of France.
+                This autoselects the best source about trade by product x
+                partner for the whole of France in each year.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Local best guess</h2>
               <p className="lead">
-                autoselect each year the best source about trade by product x
-                partner x direction
+                This autoselects the best source about trade by product x
+                partner x direction in each year.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
-              <h2>National</h2>
+              <h2>Objet Général</h2>
               <p className="lead">
-                sources contain data for the whole of France.
-              </p>
-            </div>
-            <div className="col-sm-10 col-sm-offset-1">
-              <h2>1792 first semester</h2>
-              <p className="lead">
-                contains trade by product x partner for the whole of France for
-                the first semester of 1792. They include mainly quantities.
-              </p>
-              <p>AN F12 252</p>
-            </div>
-            <div className="col-sm-10 col-sm-offset-1">
-              <h2>1792-both semester</h2>
-              <p className="lead">
-                contains trade by product x continent for the whole of Frane for
-                1792. They contain a mix of quantities and values (but never
-                both for a single flow)
-              </p>
-              <p>AN F12 252</p>
-            </div>
-            <div className="col-sm-10 col-sm-offset-1">
-              <h2>Divers</h2>
-              <p className="lead">????</p>
-              <p>
-                <ul>
-                  <li>AD44 C706</li>
-                  <li>AN F12 1834A</li>
-                  <li>Fond Montyon 101FOSS/25</li>
-                  <li>Tableau décennal</li>
-                  <li>Tableau Général 1839</li>
-                </ul>
-              </p>
-            </div>
-            <div className="col-sm-10 col-sm-offset-1">
-              <h2>National partenaires manquants</h2>
-              <p className="lead">
-                contain trade by product x partner for the whole of France and a
-                small number of partners (Angleterre, Barbarie, États-Unis,
-                Russie for individual years in the 1780s).
+                were produced from 1752 to 1788. They contain trade by product x
+                partner for the whole of France. They always include the value
+                of the flows. From 1771, they include quantities and / or unit
+                prices.
               </p>
               <p>
                 <ul>
                   <li>AN F12 1835</li>
-                  <li>AN F12 250</li>
+                  <li>AN F12 242</li>
+                  <li>AN F12 243</li>
+                  <li>AN F12 245</li>
+                  <li>AN F12 246</li>
+                  <li>AN F12 247</li>
+                  <li>AN F12 248</li>
+                  <li>AN F12 249</li>
+                  <li>BM Rouen, Fonds Montbret, 155-1 (2e partie)</li>
+                  <li>BM Rouen, Fonds Montbret, 155-2</li>
+                  <li>IIHS-122A</li>
+                  <li>IIHS-122C</li>
+                  <li>IIHS-122E</li>
+                  <li>IIHS-122G</li>
+                  <li>Montbret 155-1</li>
+                  <li>Montbret 155-2</li>
+                  <li>Montbret 849</li>
+                  <li>NEHA 122B</li>
+                  <li>NEHA 122D</li>
+                  <li>NEHA 122F</li>
                 </ul>
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
+              <h2>Résumé</h2>
+              <p className="lead">
+                cover the 1787-1789 and 1797-1821. They contain trade by class
+                of products x partner for the whole of France. They include the
+                value of the flows.
+              </p>
+              <p>
+                <ul>
+                  <li>AN F12 251</li>
+                </ul>
+              </p>
+            </div>
+        	<div className="col-sm-10 col-sm-offset-1">
               <h2>National toutes directions partenaires manquant</h2>
               <p className="lead">
                 They contain trade by product x partner x direction for the
@@ -153,92 +149,6 @@ export default class Sources extends Component {
                   <li>Fonds Gournay - M85</li>
                   <li>Fonds Gournay - M86</li>
                   <li>Fonds Gournay - M87</li>
-                </ul>
-              </p>
-            </div>
-            <div className="col-sm-10 col-sm-offset-1">
-              <h2>Objet Général</h2>
-              <p className="lead">
-                were produced from 1752 to 1788. They contain trade by product x
-                partner for the whole of France. They always include the value
-                of the flows. From 1771, they include quantities and / or unit
-                prices.
-              </p>
-              <p>
-                <ul>
-                  <li>AN F12 1835</li>
-                  <li>AN F12 242</li>
-                  <li>AN F12 243</li>
-                  <li>AN F12 245</li>
-                  <li>AN F12 246</li>
-                  <li>AN F12 247</li>
-                  <li>AN F12 248</li>
-                  <li>AN F12 249</li>
-                  <li>BM Rouen, Fonds Montbret, 155-1 (2e partie)</li>
-                  <li>BM Rouen, Fonds Montbret, 155-2</li>
-                  <li>IIHS-122A</li>
-                  <li>IIHS-122C</li>
-                  <li>IIHS-122E</li>
-                  <li>IIHS-122G</li>
-                  <li>Montbret 155-1</li>
-                  <li>Montbret 155-2</li>
-                  <li>Montbret 849</li>
-                  <li>NEHA 122B</li>
-                  <li>NEHA 122D</li>
-                  <li>NEHA 122F</li>
-                </ul>
-              </p>
-            </div>
-            <div className="col-sm-10 col-sm-offset-1">
-              <h2>Résumé</h2>
-              <p className="lead">
-                cover the 1787-1789 and 1797-1821. They contain trade by class
-                of products x partner for the whole of France. They include the
-                value of the flows.
-              </p>
-              <p>
-                <ul>
-                  <li>AN F12 251</li>
-                </ul>
-              </p>
-            </div>
-            <div className="col-sm-10 col-sm-offset-1">
-              <h2>Tableau des quantités</h2>
-              <p className="lead">
-                covers 1822 and 1823. It contains trade by product x partner for
-                the whole of France. They include mainly quantities.
-              </p>
-              <p>
-                <ul>
-                  <li>AN F12 251</li>
-                </ul>
-              </p>
-            </div>
-            <div className="col-sm-10 col-sm-offset-1">
-              <h2>Tableau des marchandises</h2>
-              <p className="lead">
-                covers 1819 and 1821. It contains trade by product for the whole
-                of France. They include mainly quantites and tolls paid.
-              </p>
-              <p>
-                <ul>
-                  <li>AN F12 251</li>
-                </ul>
-              </p>
-            </div>
-            <div className="col-sm-10 col-sm-offset-1">
-              <h2>Tableau Général</h2>
-              <p className="lead">
-                include bilateral trade from 1716. We have completed the
-                original ""Tableau Général"" with various other sources giving
-                the same information up to 1792.
-              </p>
-              <p>
-                <ul>
-                  <li>AN F12 252 et F12 1843B</li>
-                  <li>Romano1957+Velde+IIHS-128</li>
-                  <li>WEBER Commerce de la compagnie des Indes 1904</li>
-                  <li>WEBER Commerce de la compagnie des Indes 1904</li>
                 </ul>
               </p>
             </div>
@@ -404,6 +314,92 @@ export default class Sources extends Component {
                 </ul>
               </p>
             </div>
+            <div className="col-sm-10 col-sm-offset-1">
+              <h2>1792 first semester</h2>
+              <p className="lead">
+                contains trade by product x partner for the whole of France for
+                the first semester of 1792. They include mainly quantities.
+              </p>
+              <p>AN F12 252</p>
+            </div>
+            <div className="col-sm-10 col-sm-offset-1">
+              <h2>Divers</h2>
+              <p className="lead">????</p>
+              <p>
+                <ul>
+                  <li>AD44 C706</li>
+                  <li>AN F12 1834A</li>
+                  <li>Fond Montyon 101FOSS/25</li>
+                  <li>Tableau décennal</li>
+                  <li>Tableau Général 1839</li>
+                </ul>
+              </p>
+            </div>
+            <div className="col-sm-10 col-sm-offset-1">
+              <h2>National partenaires manquants</h2>
+              <p className="lead">
+                contain trade by product x partner for the whole of France and a
+                small number of partners (Angleterre, Barbarie, États-Unis,
+                Russie for individual years in the 1780s).
+              </p>
+              <p>
+                <ul>
+                  <li>AN F12 1835</li>
+                  <li>AN F12 250</li>
+                </ul>
+              </p>
+            </div>
+
+                <div className="col-sm-10 col-sm-offset-1">
+              <h2>1792-both semester</h2>
+              <p className="lead">
+                contains trade by product x continent for the whole of Frane for
+                1792. They contain a mix of quantities and values (but never
+                both for a single flow)
+              </p>
+              <p>AN F12 252</p>
+            </div>
+            <div className="col-sm-10 col-sm-offset-1">
+              <h2>Tableau des quantités</h2>
+              <p className="lead">
+                covers 1822 and 1823. It contains trade by product x partner for
+                the whole of France. They include mainly quantities.
+              </p>
+              <p>
+                <ul>
+                  <li>AN F12 251</li>
+                </ul>
+              </p>
+            </div>
+            <div className="col-sm-10 col-sm-offset-1">
+              <h2>Tableau des marchandises</h2>
+              <p className="lead">
+                covers 1819 and 1821. It contains trade by product for the whole
+                of France. They include mainly quantites and tolls paid.
+              </p>
+              <p>
+                <ul>
+                  <li>AN F12 251</li>
+                </ul>
+              </p>
+            </div>
+            <div className="col-sm-10 col-sm-offset-1">
+              <h2>Tableau Général</h2>
+              <p className="lead">
+                include bilateral trade from 1716. We have completed the
+                original ""Tableau Général"" with various other sources giving
+                the same information up to 1792.
+              </p>
+              <p>
+                <ul>
+                  <li>AN F12 252 et F12 1843B</li>
+                  <li>Romano1957+Velde+IIHS-128</li>
+                  <li>WEBER Commerce de la compagnie des Indes 1904</li>
+                  <li>WEBER Commerce de la compagnie des Indes 1904</li>
+                </ul>
+              </p>
+            </div>
+
           </div>
         </div>
       </main>

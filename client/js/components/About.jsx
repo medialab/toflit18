@@ -31,8 +31,7 @@ export default class About extends Component {
               <p>
                 Alas, we could not find the time yet to do an user guide.
                 However, you can consult an user guide for the first version of
-                the datascape. Many concepts have not changed. METTRE LE PDF DE
-                MATHIAS
+                the datascape. Many concepts have not changed. https://toflit18.hypotheses.org/695
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
