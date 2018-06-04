@@ -144,7 +144,7 @@ export default class Classification extends Component {
                     className="control-label">
                     Classifications
                   </label>
-                  <small className="help-block">Lorem ipsum....</small>
+                  <small className="help-block">Choose a classification and search its group names</small>
                   <ClassificationSelector
                     type={kind.value}
                     loading={!classifications[kind.value]}
@@ -163,7 +163,7 @@ export default class Classification extends Component {
                     className="control-label">
                     Classifications parent
                   </label>
-                  <small className="help-block">Lorem ipsum....</small>
+                  <small className="help-block">Choose a parent classification and explore its item names</small>
                   <ClassificationSelector
                     type={kind.value}
                     loading={false}
@@ -350,7 +350,7 @@ export default class Classification extends Component {
 
         { /* Right panel */ }
         <div className="aside-legend">
-          <p>Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups.</p>
+          <p>Each classification relates "items" (products or locations present in the sources or the parent classification) to a smaller number of "groups". The information on each classification are: the number of groups, the number of classified items, the number of items that could be classified, and the share of classified items</p>
           <div className="form-group-fixed form-group-fixed-right">
             <button
               type="submit"

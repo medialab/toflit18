@@ -313,7 +313,7 @@ export default class ExplorationMeta extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Sources</label>
-              <small className="help-block">TODO - Lorem ipsum dolores sit amet.</small>
+              <small className="help-block">The type of source from which the data are extracted</small>
               <ItemSelector
                 type="sourceType"
                 data={sourceTypesOptions}
