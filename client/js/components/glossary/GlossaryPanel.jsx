@@ -106,7 +106,7 @@ export default class GlossaryPanel extends Component {
     return (
       <VizLayout
         title="Glossary"
-        description="This glossary gives identification and definitions of selected commodities that were exchanged between France and its economic partners."
+        description="This glossary gives identification and definitions of selected commodities that were exchanged between France and its economic partners. If you want to contribute a definition, or correct a mistake, please send an email to guillaume.daudin@dauphine.fr"
         leftPanelName="Search" >
         { /* Top of the left panel */ }
 
