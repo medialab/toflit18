@@ -101,7 +101,7 @@ export default class Classification extends Component {
       queryItem,
       queryGroup,
       classifications,
-      classificationsIndex,
+      classificationsIndex
     } = this.props;
 
     const parents = [];
@@ -109,6 +109,11 @@ export default class Classification extends Component {
     while (tmp && tmp.parent) {
       tmp = classificationsIndex[tmp.parent];
       parents.unshift(tmp);
+    }
+
+    // default value refresh trigger
+    if(rows.length===0){
+      this.submit()
     }
 
     return (

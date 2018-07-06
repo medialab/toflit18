@@ -37,10 +37,10 @@ const defaultState = {
 
       // Classification browser
       browser: {
-        kind: null,
+        kind: { name: "Products", value: "product" },
         loading: false,
-        selected: null,
-        selectedParent: null,
+        selected: 2,
+        selectedParent: 1,
         orderBy: 'size',
         queryGroup: '',
         queryItem: '',
@@ -74,7 +74,7 @@ const defaultState = {
 
       // Metadata view
       metadata: {
-        dataModel: null,
+        dataModel: { name: "Direction", value: "direction", special: true },
         dataType: null,
         perYear: null,
         flowsPerYear: null,
@@ -105,7 +105,7 @@ const defaultState = {
           country: null,
           direction: null,
           kind: null,
-          sourceType: null
+          sourceType: { name: "National best guess", value: "National best guess" }
         },
         groups: {
           country: [],
@@ -118,10 +118,10 @@ const defaultState = {
       network: {
         graph: null,
         data: null,
-        classification: null,
+        classification: { name: "Grouping", author: "toflit18", slug: "grouping", id: 15 },
         nodeSize: 'flows',
         edgeSize: 'flows',
-        labelThreshold: 7,
+        labelThreshold: 5,
         labelSizeRatio: 2,
         loading: false,
         selectors: {
@@ -129,9 +129,9 @@ const defaultState = {
           product: null,
           countryClassification: null,
           kind: null,
-          sourceType: null,
-          dateMin: null,
-          dateMax: null
+          sourceType: { name: "National best guess", value: "National best guess" },
+          dateMin: {name: 1750, id: 1750},
+          dateMax: {name: 1750, id: 1750}
         },
         groups: {
           country: [],
@@ -142,23 +142,23 @@ const defaultState = {
         creating: false,
         graph: null,
         data: null,
-        classification: null,
+        classification: { name: "Simplification", slug: "simplification", id: 3, author: "toflit18"},
         nodeSize: 'flows',
         edgeSize: 'flows',
-        labelThreshold: 7,
+        labelThreshold: 5,
         labelSizeRatio: 2,
         loading: false,
         selectors: {
           productClassification: null,
           countryClassification: null,
-          childClassification: null,
+          childClassification: { author: "toflit18", id: 10, name: "SITC EN", slug: "sitc_en"},
           country: null,
-          child: null,
+          child: { id: 615179, name: "Raw materials, inedible, except fuels" },
           direction: null,
           kind: null,
-          sourceType: null,
-          dateMin: null,
-          dateMax: null
+          sourceType: { name: "National best guess", value: "National best guess" },
+          dateMin: {name: 1750, id: 1750},
+          dateMax: {name: 1750, id: 1750}
         },
         groups: {
           country: [],

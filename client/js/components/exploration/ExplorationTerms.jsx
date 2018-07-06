@@ -31,6 +31,11 @@ import {
 function getChildClassifications(index, target) {
   const children = [];
 
+  // target can only contain an id (default settings)
+  // in that case copy children from index
+  if(index[target.id])
+    target = index[target.id];
+
   if (!target.children || !target.children.length)
     return children;
 
@@ -164,6 +169,18 @@ class TermsPanel extends Component {
 
     if (classification)
       childClassifications = getChildClassifications(classificationIndex, classification);
+
+        // defautl value handler
+    if (selectors.child && groups.child.length===0){
+      const c = selectors.child;
+      actions.update('childClassification', selectors.childClassification);
+      actions.update('child', c);
+    }
+
+    // default graph rendering
+    if (!graph && classification){
+      actions.addChart();
+    }
 
     return (
       <VizLayout

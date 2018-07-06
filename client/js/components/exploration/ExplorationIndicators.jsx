@@ -163,6 +163,7 @@ export default class ExplorationIndicators extends Component {
       }
     } = this.props;
 
+
     const lineAlreadyExisting = lines.some(
       line => isEqual(line.params, selectors)
     );
@@ -173,6 +174,11 @@ export default class ExplorationIndicators extends Component {
         value: type
       };
     });
+
+    // default line creation : if no line already drawn we trigger default line creation
+    if(lines.length === 0){
+      actions.addLine();
+    }
 
     return (
       <VizLayout

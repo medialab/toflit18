@@ -129,6 +129,7 @@ class NetworkPanel extends Component {
       dateMinOptions = dateMin ? dateMin : buildDateMin(dateMin, dateMax);
     }
 
+
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
         name: type,
@@ -137,6 +138,10 @@ class NetworkPanel extends Component {
     });
 
     const directed = selectors.kind && selectors.kind.id !== 'total';
+
+    // default network rendering
+    if (!graph && classification)
+        actions.addNetwork();
 
     return (
       <VizLayout

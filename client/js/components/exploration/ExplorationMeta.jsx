@@ -33,6 +33,11 @@ import {
 function getChildClassifications(index, target) {
   const children = [];
 
+  // target can only contain an id (default settings)
+  // in that case copy children from index
+  if(index[target.id])
+    target = index[target.id];
+
   if (!target.children || !target.children.length)
     return children;
 
@@ -49,6 +54,7 @@ function getChildClassifications(index, target) {
 
   return children;
 }
+
 
 const metadataSelectors = (specs.metadataSelectors || []).map(option => {
   return {
@@ -160,6 +166,7 @@ export default class ExplorationMeta extends Component {
       selectors
     } = state;
 
+
     const canDisplaySecondViz = this.canDisplaySecondViz();
 
     let canUpdate = !!state.dataModel;
@@ -221,6 +228,11 @@ export default class ExplorationMeta extends Component {
 
     if (state.dataType && !!state.dataType.model)
       childClassifications = getChildClassifications(classificationIndex, state.dataType);
+
+    // default chart rendered only if no existing cahrt
+    if (!state.flowsPerYear && canUpdate && !loading){
+      actions.addChart();
+    }
 
     return (
       <VizLayout
