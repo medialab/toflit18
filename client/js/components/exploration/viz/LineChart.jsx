@@ -79,6 +79,38 @@ const renderTooltip = valueKey => data => {
   );
 };
 
+const renderDot = (color, line) => data => {
+
+  if (!data.value)
+    return null;
+
+  const row = data.payload[line];
+
+  return (
+    <g key={data.key}>
+      <circle
+        cx={data.cx}
+        cy={data.cy}
+        r={2}
+        style={{
+          strokeWidth: 0.3,
+          stroke: '#fff',
+          fill: '#fff'
+        }} />
+      <circle
+        cx={data.cx}
+        cy={data.cy}
+        r={2}
+        style={{
+          fillOpacity: 'share' in row ? row.share : 1,
+          strokeWidth: 0.3,
+          stroke: color,
+          fill: color
+        }} />
+    </g>
+  );
+};
+
 /**
  * Main component.
  */
@@ -144,7 +176,7 @@ export default class LineChart extends Component {
                   dataKey={row => row[i] && row[i].value}
                   stroke={line.color}
                   isAnimationActive={false}
-                  dot={{r: 2, stroke: line.color, strokeWidth: 1}}
+                  dot={renderDot(line.color, i)}
                   activeDot={{r: 4, stroke: 'white', strokeWidth: 2, fill: line.color}} />
               );
             })}
