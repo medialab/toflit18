@@ -1,0 +1,85 @@
+//
+// TOFLIT18 COMPONENTS MOLECULS FORM GROUP LIST
+// --------------------------------------------------
+
+.group-list {
+    margin: 0 0 1em 0;
+
+    @media (min-width: $screen-xs-max) {
+        @include flexbox;
+    }
+
+    &-container {
+        overflow: hidden;
+
+        @include square(100%);
+
+        > .col-sm-12 {
+            overflow-y: auto;
+
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (min-width: $screen-xs-max) {
+                height: calc(100vh - 19em);
+            }
+
+            @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+                height: calc(100vh - 22em);
+            }
+
+            @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+                height: calc(100vh - 18.4em);
+            }
+
+            @media (min-width: $screen-lg-min) and (max-width: $screen-xlg-max) {
+                height: calc(100vh - 17em);
+            }
+
+            @media (min-width: $screen-xlg-max) {
+                height: calc(100vh - 16.9em);
+            }
+        }
+    }
+
+    > .col-sm-6 {
+        @include flexbox;
+
+        @include align-items(stretch);
+
+        width: 100%;
+    }
+
+    // Title & Items
+    // --------------------------------------------------
+    &-title,
+    &-items {
+        @include flexbox;
+        @include align-items(center);
+
+        width: 100%;
+        margin: 0;
+
+        &.well {
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (min-width: $screen-xs-max) {
+                margin: 0;
+            }
+        }
+    }
+
+    &-title {
+        @include justify-content(space-between);
+
+        margin-bottom: 0;
+
+        h4 {
+            margin: 0;
+            font-family: $font-family-sans-serif;
+            font-weight: bold;
+            color: $sandal-darken;
+        }
+    }
+}

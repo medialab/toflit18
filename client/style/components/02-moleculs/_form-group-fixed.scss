@@ -1,0 +1,31 @@
+//
+// TOFLIT18 COMPONENTS MOLECUL FORM GROUP FIXED
+// --------------------------------------------------
+.form-group-fixed {
+    @include position(fixed, null, null, 0, 0, null);
+
+    width: 25%;
+    padding: 1em;
+    background-color: $white;
+    text-align: center;
+    border-bottom: 1px solid $gray-lighter;
+    border-top: 1px solid $gray-lighter;
+
+    @include box-shadow(0 2px 20px 0 rgba(137, 128, 113, 0.2));
+
+    //
+    // Responsive
+    // --------------------------------------------------
+    @media (max-width: $screen-xs-max) {
+        width: 60%;
+    }
+
+    @media (min-width: $screen-md-min) {
+        width: 16.66667%;
+    }
+
+    &-right {
+        left: inherit;
+        right: 0;
+    }
+}

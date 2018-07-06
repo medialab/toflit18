@@ -1,0 +1,19 @@
+//
+// TOFLIT18 COMPONENTS PAGE VIEW
+// --------------------------------------------------
+.section {
+    &-heading {
+        position: relative;
+        top: 3.2em;
+        min-height: 74px;
+        padding: 15px;
+        background-color: $cachou;
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            min-height: 60px;
+        }
+    }
+}

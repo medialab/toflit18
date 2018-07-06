@@ -6,8 +6,10 @@
  * countries and directions.
  */
 import React, {Component} from 'react';
-import screenfull from 'screenfull';
-import ExplorationNodeSearcher from '../ExplorationNodeSearcher.jsx';
+import Select from 'react-select';
+import cls from 'classnames';
+
+import Icon from '../../misc/Icon.jsx';
 
 /**
  * Settings.
@@ -76,8 +78,6 @@ export default class Network extends Component {
     this.layoutSettings = LAYOUT_SETTINGS;
 
     this.state = {
-      labelThreshold: SIGMA_SETTINGS.labelThreshold,
-      labelSizeRatio: SIGMA_SETTINGS.labelSizeRatio,
       layoutRunning: true,
       selectedNode: null
     };
@@ -96,34 +96,9 @@ export default class Network extends Component {
     };
 
     this.toggleFullScreen = () => {
-      const mount = this.refs.mount;
-
-      screenfull.toggle(mount);
-    };
-
-    this.fullScreenHandler = () => {
-      const mount = this.refs.mount;
-
-      if (screenfull.isFullscreen) {
-        mount.style.width = '100%';
-        mount.style.height = '100%';
+      if (typeof this.props.toggleFullscreen === 'function') {
+        this.props.toggleFullscreen();
       }
-      else {
-        mount.style.width = null;
-        mount.style.height = null;
-      }
-
-      this.sigma.refresh();
-    };
-
-    this.updateLabelThreshold = e => {
-      this.setState({labelThreshold: +e.target.value});
-      this.sigma.settings({labelThreshold: +e.target.value});
-    };
-
-    this.updateLabelSizeRatio = e => {
-      this.setState({labelSizeRatio: +e.target.value});
-      this.sigma.settings({labelSizeRatio: +e.target.value});
     };
 
     this.focusNode = node => {
@@ -137,6 +112,9 @@ export default class Network extends Component {
 
     this.selectNode = node => {
       this.setState({selectedNode: node});
+      if (typeof this.props.setSelectedNode === 'function') {
+        this.props.setSelectedNode(node);
+      }
     };
   }
 
@@ -149,8 +127,6 @@ export default class Network extends Component {
     this.sigma.bind('clickNode', e => {
       this.selectNode(e.data.node);
     });
-
-    document.addEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
 
     this.componentWillUpdate(this.props);
   }
@@ -202,14 +178,18 @@ export default class Network extends Component {
     if (nextProps.edgeSizeKey)
       g.edges().forEach(edge => edge.size = edge[nextProps.edgeSizeKey]);
 
+    if (nextProps.labelThreshold)
+      this.sigma.settings({labelThreshold: +nextProps.labelThreshold});
+
+    if (nextProps.labelSizeRatio)
+      this.sigma.settings({labelSizeRatio: +nextProps.labelSizeRatio});
+
     this.sigma.refresh();
   }
 
   componentWillUnmount() {
     this.sigma.kill();
     this.sigma = null;
-
-    document.removeEventListener(screenfull.raw.fullscreenchange, this.fullScreenHandler);
   }
 
   downloadGraphAsSVG() {
@@ -221,32 +201,43 @@ export default class Network extends Component {
   }
 
   render() {
-    const graph = this.props.graph,
-          isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length);
-
-    const nodeDisplayRenderer = this.props.nodeDisplayRenderer;
-
-    const selectedNode = this.state.selectedNode;
+    const {
+      graph,
+      alert,
+      loading,
+      className,
+    } = this.props;
+    const isGraphEmpty = graph && (!graph.nodes || !graph.nodes.length);
 
     return (
-      <div id="sigma-graph" ref="mount">
+      <div
+        id="sigma-graph"
+        ref="mount"
+        className={className} >
         {isGraphEmpty && <Message text="No Data to display." />}
-        <Filters
-          threshold={this.state.labelThreshold}
-          size={this.state.labelSizeRatio}
-          updateThreshold={this.updateLabelThreshold}
-          updateSizeRatio={this.updateLabelSizeRatio} />
-        {typeof nodeDisplayRenderer === 'function' && (
-          <NodeDisplay node={selectedNode} renderer={nodeDisplayRenderer} />
-        )}
-        <ExplorationNodeSearcher
-          nodes={graph ? graph.nodes : []}
-          onChange={this.focusNode} />
+
+        {
+          (alert || loading) && (
+            <div className="progress-container progress-container-viz">
+              {alert && <div className="alert alert-danger" role="alert">{alert}</div>}
+              {
+                loading && (
+                  <div className="progress-line progress-line-viz">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                )
+              }
+            </div>
+          )
+        }
+
         <Controls
+          nodes={graph ? graph.nodes : []}
           camera={this.sigma.cameras.main}
           toggleFullScreen={this.toggleFullScreen}
           toggleLayout={this.toggleLayout}
-          layoutRunning={this.state.layoutRunning} />
+          layoutRunning={this.state.layoutRunning}
+          onChangeQuery={this.focusNode} />
       </div>
     );
   }
@@ -266,21 +257,22 @@ class Message extends Component {
 }
 
 /**
- * Glyph.
- */
-class Glyph extends Component {
-  render() {
-    const name = this.props.name,
-          className = `fa fa-${name}`;
-
-    return <i className={className} />;
-  }
-}
-
-/**
  * Controls.
  */
 class Controls extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      value: null
+    };
+
+    this.handleSelection = this.handleSelection.bind(this);
+    this.rescale = this.rescale.bind(this);
+    this.zoom = this.zoom.bind(this);
+    this.unzoom = this.unzoom.bind(this);
+  }
+
   componentDidMount() {
     this.forceUpdate();
   }
@@ -311,78 +303,65 @@ class Controls extends Component {
     );
   }
 
-  render() {
-    const toggleFullScreen = this.props.toggleFullScreen,
-          toggleLayout = this.props.toggleLayout,
-          icon = this.props.layoutRunning ? 'pause' : 'play';
-
-    return (
-      <div className="controls">
-        <div className="control" onClick={toggleFullScreen}>
-          <button><Glyph name="arrows-alt" /></button>
-        </div>
-        <div className="control" onClick={() => this.zoom()}>
-          <button><Glyph name="plus" /></button>
-        </div>
-        <div className="control" onClick={() => this.unzoom()}>
-          <button><Glyph name="minus" /></button>
-        </div>
-        <div className="control" onClick={() => this.rescale()}>
-          <button><Glyph name="dot-circle-o" /></button>
-        </div>
-        <div className="control" onClick={toggleLayout}>
-          <button><Glyph name={icon} /></button>
-        </div>
-      </div>
-    );
+  handleSelection(value) {
+    if (typeof this.props.onChangeQuery === 'function')
+      this.props.onChangeQuery(value);
+    this.setState({value});
   }
-}
 
-/**
- * Filters.
- */
-class Filters extends Component {
-  render() {
-    return (
-      <div className="filters">
-        <input
-          name="threshold"
-          type="range"
-          min="0"
-          max="20"
-          value={this.props.threshold}
-          onChange={this.props.updateThreshold} />
-        <label htmlFor="threshold">Label Threshold ({this.props.threshold})</label>
-        <br />
-        <input
-          name="size"
-          type="range"
-          min="1"
-          max="10"
-          value={this.props.size}
-          onChange={this.props.updateSizeRatio} />
-        <label htmlFor="size">Label Size Ratio ({this.props.size})</label>
-      </div>
-    );
-  }
-}
-
-/**
- * Node display.
- */
-class NodeDisplay extends Component {
   render() {
     const {
-      renderer,
-      node
+      nodes,
+      toggleLayout,
+      toggleFullScreen,
+      layoutRunning,
     } = this.props;
 
     return (
-      <div className="node-display">
-        {node ?
-          renderer(node) :
-          <em>Try clicking a node to get some information...</em>
-        }
+      <div className="viz-tools">
+        <div className="viz-actions">
+          <form onSubmit={e => e.preventDefault()}>
+            <div className="form-group form-group-xs">
+              <label className="sr-only">Search</label>
+              <div className="input-group">
+                <Select
+                  options={nodes}
+                  labelKey="label"
+                  placeholder="Search a node in the graph..."
+                  onChange={this.handleSelection}
+                  value={this.state.value} />
+              </div>
+            </div>
+          </form>
+          <button
+            className="btn btn-default btn-xs btn-icon"
+            onClick={toggleLayout}>
+            <Icon name="icon-stop" className={cls(!layoutRunning && 'hidden')} />
+            <Icon name="icon-play" className={cls(layoutRunning && 'hidden')} />
+          </button>
+        </div>
+        <div className="viz-nav">
+          <button
+            className="btn btn-default btn-xs btn-icon"
+            onClick={this.rescale}>
+            <Icon name="icon-localisation" />
+          </button>
+          <button
+            className="btn btn-default btn-xs btn-icon"
+            onClick={this.zoom}>
+            <Icon name="icon-zoom-in" />
+          </button>
+          <button
+            className="btn btn-default btn-xs btn-icon"
+            onClick={this.unzoom}>
+            <Icon name="icon-zoom-out" />
+          </button>
+          <button
+            className="btn btn-default btn-xs btn-icon"
+            onClick={toggleFullScreen}>
+            <Icon name="icon-full-screen" />
+          </button>
+        </div>
       </div>
     );
   }

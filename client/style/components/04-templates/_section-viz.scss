@@ -1,0 +1,193 @@
+//
+// TOFLIT18 TEMPLATE SECTION VIZ
+// --------------------------------------------------
+.section {
+    &-viz {
+        position: relative;
+        top: 3.2em;
+
+        @media (max-width: $screen-xs-max) {
+            overflow: hidden;
+            min-height: calc(100vh - 7em);
+
+            //margin-bottom: 5em;
+        }
+    }
+}
+
+// Content
+// --------------------------------------------------
+.content {
+    &-viz {
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            height: calc(100vh - 7em);
+
+            //margin-bottom: 6.4em;
+            overflow-y: auto;
+            padding-top: 2.5em;
+        }
+
+        #sigma-graph {
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (max-width: $screen-xs-max) {
+                overflow: hidden;
+                height: 100%;
+                padding-left: 0;
+            }
+
+            @media (min-width: $screen-sm-min) {
+                padding: 0;
+            }
+        }
+
+        .col-xs-12 {
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+                height: calc(100vh - 125px);
+            }
+
+            @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+                height: calc(100vh - 148px);
+            }
+
+            @media (min-width: $screen-lg-min) {
+                height: calc(100vh - 125px);
+            }
+        }
+
+        // Content Viz Data
+        // --------------------------------------------------
+        &.content-viz-data {
+            position: relative;
+
+            .col-xs-12 {
+                overflow-y: auto;
+            }
+        }
+    }
+}
+
+.viz-data {
+    //
+    // Responsive
+    // --------------------------------------------------
+    @media (min-width: $screen-xs-max) {
+        margin-top: 3.3em;
+    }
+
+    &-expand {
+        margin-bottom: 3.3em;
+    }
+}
+
+// Content Viz with .box-selection
+// --------------------------------------------------
+.box-selection {
+    + .container-fluid {
+        .content-viz {
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (max-width: $screen-xs-max) {
+                height: calc(100vh - 11.3em);
+            }
+        }
+    }
+}
+
+// Content Viz with .box-selection-lg
+// --------------------------------------------------
+.box-selection {
+    &.box-selection-lg {
+        + .container-fluid {
+            .content-viz {
+                //
+                // Responsive
+                // --------------------------------------------------
+                @media (max-width: $screen-xs-max) {
+                    height: calc(100vh - 15.4em);
+                }
+            }
+        }
+    }
+}
+
+// Fullscreen mode
+// (basically: all screen-xs rules applied when .section-viz has .fullscreen)
+// --------------------------------------------------
+.section-viz.fullscreen {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    #sigma-graph {
+        height: 100vh;
+        width: 100%;
+    }
+
+    // Hide left column:
+    .aside-left,
+    .aside-right,
+    .aside-btn-left,
+    .aside-btn-right,
+    .box-selection {
+        display: none !important;
+    }
+
+    // Right column collapsable rules:
+    @media (min-width: $screen-xs-max) {
+        .aside-btn-right {
+            display: block !important;
+        }
+        .row-offcanvas {
+            position: relative;
+
+            .icon-close {
+                display: none;
+            }
+        }
+        .row-offcanvas-right.active {
+            display: flex;
+            flex-direction: row;
+
+            .aside-right {
+                display: block !important;
+                height: calc(100vh - 4.2em);
+            }
+            .content-viz {
+                flex-grow: 1;
+                position: relative;
+            }
+        }
+        .viz-tools {
+            top: 3em;
+        }
+    }
+    @media (max-width: $screen-xs-max) {
+        .row-offcanvas-left.active {
+            left: 0;
+        }
+        .row-offcanvas-right.active {
+            right: 0;
+        }
+        .content-viz {
+            height: 100vh;
+            padding-top: 0;
+        }
+        .viz-tools {
+            top: 1em;
+        }
+    }
+}

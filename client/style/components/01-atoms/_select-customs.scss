@@ -1,0 +1,8 @@
+//
+// TOFLIT18 COMPONENTS ATOM SELECT CUSTOMS
+// --------------------------------------------------
+select {
+    &[disabled] {
+        @include opacity(0.4);
+    }
+}

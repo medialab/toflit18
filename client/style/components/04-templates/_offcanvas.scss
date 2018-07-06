@@ -1,0 +1,67 @@
+//
+// TOFLIT18 TEMPLATE OFFCANVAS
+// --------------------------------------------------
+//
+// Responsive
+// --------------------------------------------------
+
+@media (max-width: $screen-xs-max) {
+    .row-offcanvas {
+        position: relative;
+
+        @include transition(all 0.4s ease-out);
+
+        .icon-close {
+            display: none;
+        }
+    }
+
+    .row-offcanvas-left
+    #sidebarLeft {
+        left: calc(-60% + 15px);
+    }
+
+    .row-offcanvas-left.active,
+    .row-offcanvas-right.active {
+        .aside-btn-left {
+            span {
+                display: none;
+            }
+
+            .icon-close {
+                display: block;
+            }
+        }
+    }
+
+    .row-offcanvas-left.active {
+        left: 60%;
+
+        .aside-left {
+            display: block;
+        }
+
+        .aside-btn-left {
+            left: 15px;
+        }
+    }
+
+    .row-offcanvas-right
+    #sidebarRight {
+        right: -60%;
+    }
+
+    .row-offcanvas-right.active {
+        right: 60%;
+
+        .aside-right {
+            display: block;
+        }
+    }
+
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+        width: 60%;
+    }
+}

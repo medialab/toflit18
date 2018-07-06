@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="TOFLIT18 | Transformations of the french economy through the lens of international trade, 1716-1821">
+    <meta name="author" content="TOFLIT18">
+
+    <title>TOFLIT18</title>
+
+    <!-- TOFLIT18 WebFonts -->
+    <link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700|Source+Sans+Pro:400,400i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- TOFLIT18 core CSS -->
+    <link rel="stylesheet" href="dist/toflit18.css">
+    <link rel="stylesheet" href="../node_modules/react-select/dist/react-select.min.css">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="../assets/favicons/apple-touch-icon.png">
+    <link rel="icon" href="../assets/favicons/favicon.ico">
+  </head>
+  <body>
+    <div>
+      <div>
+        <header>
+          <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <!--
+                  NAVBAR TOGGLE MOBILE ONLY
+                    CLICK on 'navbar-toggle'
+                      remove class 'collapsed'
+                      add class 'in'
+                      change aria-expanded="true" (x2)
+                        CLICK on 'navbar-toggle'
+                          add class 'collapsed'
+                          remove class 'in'
+                          change aria-expanded="false"
+                -->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"><!-- REMOVE .collapsed, CHANGE aria-expanded="true" -->
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                  <span class="sr-only">TOFLIT18</span>
+                  <svg class="icon icon-logotype" aria-hidden="true">
+                    <use xlink:href="../assets/svg/logotype/logotype.svg#icon-logotype"></use>
+                  </svg>
+                </a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <span>Explore trade</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/time-series.html">Time series</a></li>
+                      <li><a href="/product-terms.html">Product terms network</a></li>
+                      <li><a href="/locations.html">Locations network</a></li>
+                    </ul>
+                  </li>
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <span>Data</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/sources.html">Sources</a></li>
+                      <li><a href="/metadata.html">Metadata</a></li>
+                      <li><a href="/classifications">Classifications</a></li>
+                    </ul>
+                  </li>
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown open">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                      <span>Glossary</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/glossary.html">Products</a></li>
+                      <li class="active"><a href="/concepts-glossary.html">Concepts</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#">About</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="#">Legal notice</a></li>
+                </ul>
+              </div><!-- /.navbar-collapse -->
+            </div><!-- /.container -->
+          </nav>
+        </header>
+        <main class="container-fluid no-padding"><!-- !! REMOVE class container-global -->
+          <div class="section-heading">
+            <div class="text-heading">
+              <div class="row">
+                <div class="col-sm-4 col-md-3">
+                  <h1>Concepts</h1>
+                </div>
+                <div class="col-sm-8 col-md-5">
+                  <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex. Fusce ullamcorper libero sit amet metus lacinia semper.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container content">
+            <div class="row">
+              <div class="col-sm-10 col-sm-offset-1">
+                <h2>Flows</h2>
+                <p class="lead">Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte.</p>
+                <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.</p>
+              </div>
+              <div class="col-sm-10 col-sm-offset-1">
+                <h2>Directions</h2>
+                <p class="lead">Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte.</p>
+                <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.</p>
+              </div>
+              <div class="col-sm-10 col-sm-offset-1">
+                <h2>Classifications</h2>
+                <p class="lead">Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte.</p>
+                <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.</p>
+              </div>
+              <div class="col-sm-10 col-sm-offset-1">
+                <h2>Locations</h2>
+                <p class="lead">Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte.</p>
+                <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.</p>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

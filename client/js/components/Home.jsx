@@ -11,119 +11,161 @@ import {Link} from 'react-router';
 export default class Home extends Component {
   render() {
     return (
-      <div id="home">
-        <div className="panel">
-          <h3>Welcome to the TOFLIT18 Datascape!</h3>
-          <hr />
-          <p>
-            <em>
-              Here is a brief description of the various features of the
-              datascape you might want to use.
-            </em>
-            <br />
-            <em>
-              If you happen to lose yourself, don't hesitate to open the menu using the
-              top-left button or to come back to this page by clicking on the
-              TOFLIT18 logo just above.
-            </em>
-          </p>
-          <br />
-          <p>
-            <em>
-              Also, a documentation of the datascape is available&nbsp;
-              <a className="red" href="./How_to_use_the_Datascape.pdf">here</a>.
-            </em>
-          </p>
+      <main className="container-fluid container-global no-padding">
+        <div className="section section-home-top">
+          <span className="background-color" />
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-10 col-sm-offset-1">
+                <h1>TOFLIT18</h1>
+                <h1>Transformations of the French Economy through the Lens of International Trade</h1>
+                <p className="lead">1716-1821</p>
+                <p>TOFLIT18 is a project dedicated to French trade statistics from 1716 to 1821. It combines a historical trade database that covers French external trade comprising more than 500,000 flows at the level of partners and individual products with a range of tools that allow the exploration of the material world of the Early Modern period.</p>
+                <p>TOFLIT18 is the result of the collaboration of data scientists, economists and historians. It started as a project funded by the Agence Nationale de la Recherche in 2014. <a href="http://toflit18.hypotheses.org">http://toflit18.hypotheses.org</a></p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="panel">
-          <h5>
-            1.&nbsp;
-            <Link to="exploration/meta">
-              Metadata about the collected data
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Learn about the database's structure to understand how the data
-              was collected and which traps one should avoid when interpreting
-              them.
-            </em>
-          </p>
+        <div className="section-home-navigation">
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-12"><h2>Explore Trade</h2></div>
+              <div className="col-sm-4">
+                <Link
+                  to="/exploration/indicators"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/indicators.png"
+                      alt="Time series"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <span>Time series</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Here, you can vizualize the evolutions of particular branches of French trade through time.</p>
+              </div>
+              <div className="col-sm-4">
+                <Link
+                  to="/exploration/terms"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/products.png"
+                      alt="Products"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <span>Products</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Here, you can vizualize lexicographic networks of commodities traded by France.</p>
+              </div>
+              <div className="col-sm-4">
+                <Link
+                  to="/exploration/network"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/countries.png"
+                      alt="Countries"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <span>Countries</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Here, you can vizualize geographical networks of French international trade.</p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12"><h2>Data</h2></div>
+              <div className="col-sm-4">
+                <Link
+                  to="/sources"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/sources.png"
+                      alt="Sources"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+                      <span>Sources</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Provides information on the sources and the methods used to create the TOFLIT18 database.</p>
+              </div>
+              <div className="col-sm-4">
+                <Link
+                  to="/exploration/meta"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/metadata.png"
+                      alt="Metadata"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+
+                      <span>Metadata</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Provides visual tools to explore the coverage of the database (years, products, partners, locations...).</p>
+              </div>
+              <div className="col-sm-4">
+                <Link
+                  to="/classification/browser"
+                  className="btn btn-link" >
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/classification.png"
+                      alt="Classifications"
+                      width="300"
+                      height="180" />
+                    <figcaption>
+
+                      <span>Classifications</span>
+                    </figcaption>
+                  </figure>
+                </Link>
+                <p>Provides tools to access and understand the product and partner classifications used in the TOFLIT18 database.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="panel">
-          <h5>
-            2.&nbsp;
-            <Link to="classification/browser">
-              Classifications browser
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Source products & target countries were classified using different
-              strategies for different analysis purposes.
-            </em>
-          </p>
-          <p>
-            <em>
-              Learn about them and explore them using the classification browser.
-            </em>
-          </p>
+        <div className="section-bottom">
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-6">
+                <h2>How to cite</h2>
+                <p>Loïc Charles, Guillaume Daudin, Guillaume Plique and Paul Girard, TOFLIT18 website (year month day of consultation). Retrieved from http://toflit18.medialab.sciences-po.fr </p>
+              </div>
+              <div className="col-sm-6">
+                <h2>Open Science</h2>
+                <p>Tools produced in the TOFLIT18 project are in free access:</p>
+                <b>Source code of the exploration tool</b>
+                  <p>The source code of this application is available on github under license AGPLv3 <a href="https://github.com/medialab/toflit18">https://github.com/medialab/toflit18</a></p>
+                  <b>TOFLIT18 corpus</b>
+                  <p>The data you can extract from this webside are under ODbL license. <a href="http://opendatacommons.org/licenses/odbl/1.0/">http://opendatacommons.org/licenses/odbl/1.0/</a></p>
+                  <p>To access the full data collected by the project, please contact Guillaume Daudin guillaume.daudin@dauphine.fr</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="panel">
-          <h5>
-            3.&nbsp;
-            <Link to="glossary">
-              Glossary
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Having trouble identifying a product's name in 18th century
-              terminology? This searchable glossary might be of some help.
-            </em>
-          </p>
-        </div>
-        <div className="panel">
-          <h5>
-            4.&nbsp;
-            <Link to="exploration/indicators">
-              Indicators
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Build & explore time series showing the evolution of trade flows in values
-              & quantities using.
-            </em>
-          </p>
-        </div>
-        <div className="panel">
-          <h5>
-            5.&nbsp;
-            <Link to="exploration/network">
-              Countries networks
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Explore networks of countries whither France exported or whence France imported.
-            </em>
-          </p>
-        </div>
-        <div className="panel">
-          <h5>
-            6.&nbsp;
-            <Link to="exploration/terms">
-              Product terms networks
-            </Link>
-          </h5>
-          <p>
-            <em>
-              Explore networks of product terms traded by & with France.
-            </em>
-          </p>
-        </div>
-      </div>
+      </main>
     );
   }
 }

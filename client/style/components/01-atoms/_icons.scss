@@ -1,0 +1,12 @@
+//
+// TOFLIT18 ATOM ICONS
+// --------------------------------------------------
+.icon {
+    display: inline-block;
+
+    @include square(1em);
+
+    stroke-width: 0;
+    stroke: currentColor;
+    fill: currentColor;
+}

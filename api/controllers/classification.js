@@ -34,6 +34,33 @@ const controller = [
     }
   },
   {
+    url: '/group/:id',
+    method: 'GET',
+    validate: {
+      query: {
+        queryItem: '?string',
+        queryItemFrom: '?string',
+        limitItem: '?string',
+        offsetItem: '?string'
+      }
+    },
+    action(req, res) {
+       const opts = {
+        queryItem: req.query.queryItem || null,
+        queryItemFrom: req.query.queryItemFrom || null,
+        limitItem: +(req.query.limitItem || limits.items),
+        offsetItem: +(req.query.offsetItem || 0)
+      };
+
+      return model.group(+req.params.id, opts, function(err, group) {
+        if (err) return res.serverError(err);
+        if (!group) return res.notFound();
+
+        return res.ok(group);
+      });
+    }
+  },
+  {
     url: '/:id/search',
     method: 'GET',
     validate: {
@@ -42,7 +69,11 @@ const controller = [
         limit: '?string',
         offset: '?string',
         queryGroup: '?string',
-        queryItem: '?string'
+        queryItem: '?string',
+        queryItemFrom: '?string',
+        limitItem: '?string',
+        offsetItem: '?string',
+        orderBy: '?string'
       }
     },
     action(req, res) {
@@ -51,7 +82,11 @@ const controller = [
         limit: +(req.query.limit || limits.groups),
         offset: +(req.query.offset || 0),
         queryGroup: req.query.queryGroup || null,
-        queryItem: req.query.queryItem || null
+        queryItem: req.query.queryItem || null,
+        queryItemFrom: req.query.queryItemFrom || null,
+        limitItem: +(req.query.limitItem || limits.items),
+        offsetItem: +(req.query.offsetItem || 0),
+        orderBy: req.query.orderBy || null
       };
 
       return model.search(+req.params.id, opts, function(err, groups) {

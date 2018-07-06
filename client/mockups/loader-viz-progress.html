@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="TOFLIT18 | Transformations of the french economy through the lens of international trade, 1716-1821">
+    <meta name="author" content="TOFLIT18">
+
+    <title>TOFLIT18</title>
+
+    <!-- TOFLIT18 WebFonts -->
+    <link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700|Source+Sans+Pro:400,400i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- TOFLIT18 core CSS -->
+    <link rel="stylesheet" href="dist/toflit18.css">
+    <link rel="stylesheet" href="../node_modules/react-select/dist/react-select.min.css">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="../assets/favicons/apple-touch-icon.png">
+    <link rel="icon" href="../assets/favicons/favicon.ico">
+  </head>
+  <body>
+    <div>
+      <div>
+        <header>
+          <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <!--
+                  NAVBAR TOGGLE MOBILE ONLY
+                    CLICK on 'navbar-toggle'
+                      remove class 'collapsed'
+                      add class 'in'
+                      change aria-expanded="true" (x2)
+                        CLICK on 'navbar-toggle'
+                          add class 'collapsed'
+                          remove class 'in'
+                          change aria-expanded="false"
+                -->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"><!-- REMOVE .collapsed, CHANGE aria-expanded="true" -->
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                  <span class="sr-only">TOFLIT18</span>
+                  <svg class="icon icon-logotype" aria-hidden="true">
+                    <use xlink:href="../assets/svg/logotype/logotype.svg#icon-logotype"></use>
+                  </svg>
+                </a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <span>Explore trade</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/time-series.html">Time series</a></li>
+                      <li><a href="/product-terms.html">Product terms network</a></li>
+                      <li><a href="/locations.html">Locations network</a></li>
+                    </ul>
+                  </li>
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <span>Data</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/sources.html">Sources</a></li>
+                      <li><a href="/metadata.html">Metadata</a></li>
+                      <li><a href="/classifications">Classifications</a></li>
+                    </ul>
+                  </li>
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <span>Glossary</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/glossary.html">Products</a></li>
+                      <li><a href="/concepts-glossary.html">Concepts</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#">About</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="#">Legal notice</a></li>
+                </ul>
+              </div><!-- /.navbar-collapse -->
+            </div><!-- /.container -->
+          </nav>
+        </header>
+        <main class="container-fluid no-padding"><!-- !! REMOVE class container-global -->
+          <div class="section-heading">
+            <div class="text-heading">
+              <div class="row">
+                <div class="col-sm-4 col-md-3">
+                  <h1>Products</h1>
+                </div>
+                <div class="col-sm-8 col-md-5">
+                  <p class="hidden-xs">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur erat a sem semper venenatis. Mauris facilisis at velit quis fermentum. Fusce non ante dignissim, luctus magna sed, posuere ex.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section-viz">
+            <div class="box-selection">
+              <h2 class="hidden-xs"><span class="hidden-sm hidden-md">Product</span> classification</h2>
+              <select id="productClassificationHead">
+                <option value="valeur1">Valeur 1</option>
+                <option value="valeur2" selected>Valeur 2</option>
+                <option value="valeur3">Valeur 3</option>
+              </select>
+            </div>
+            <div class="container-fluid">
+              <div class="row row-offcanvas row-offcanvas-left"><!-- add and remove .active for toggle button aside-btn-left -->
+                <div class="row-offcanvas row-offcanvas-right"><!-- add and remove .active for toggle button aside-btn-right -->
+                  <aside class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-left" id="sidebarLeft">
+                    <div class="aside-filters">
+                      <h3>Filters</h3>
+                      <form>
+                        <div class="form-group">
+                          <label for="sourceType" class="control-label">Source Type</label>
+                          <small class="help-block">From wich sources does the data comes from ?</small>
+                          <select id="sourceType">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="product" class="control-label">Product</label>
+                          <small class="help-block">The type of product being shipped.</small>
+                          <select id="product">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                          <select>
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="country" class="control-label">Country</label>
+                          <small class="help-block">The country whence we got the products or wither we are sending them.</small>
+                          <select id="country">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                          <select>
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="direction" class="control-label">Direction</label>
+                          <small class="help-block">The French harbor where the transactions were recorded.</small>
+                          <select id="direction">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="kind" class="control-label">Kind</label>
+                          <small class="help-block">Should we look at import, export, or total?</small>
+                          <select id="kind">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="dates" class="control-label">Dates</label>
+                          <small class="help-block">Choose one date or a range data</small>
+                          <div class="row">
+                            <div class="col-xs-6">
+                              <select id="dates">
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                            <div class="col-xs-6">
+                              <select>
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group-fixed">
+                          <button type="submit" class="btn btn-default">Update</button>
+                        </div>
+                      </form>
+                    </div>
+                  </aside>
+                  <div class="content-viz">
+                    <button class="aside-btn-left" type="button">
+                      <span>Filters</span>
+                      <svg class="icon icon-close" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-close"></use>
+                      </svg>
+                    </button>
+                    <button class="aside-btn-right" type="button">
+                      <span>Legend</span>
+                      <svg class="icon icon-close" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-close"></use>
+                      </svg>
+                    </button>
+                    <div class="col-xs-12 col-sm-6 col-md-8">
+                      <div class="progress-container progress-container-viz">
+                        <div class="alert alert-danger hidden" role="alert"><!-- REMOVE .hidden for switch with loader -->
+                          Oh snap! Change a few things up and try submitting again.
+                        </div>
+                        <div class="progress-line progress-line-viz"><!-- ADD .hidden for switch with message error -->
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                      <div class="viz-tools">
+                        <div class="viz-actions">
+                          <form>
+                            <div class="form-group form-group-xs">
+                              <label class="sr-only" for="search">Search</label>
+                              <select id="search">
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                          </form>
+                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                            <!-- Switch svg stop/play add and remove class .hidden -->
+                            <svg class="icon icon-stop hidden" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-stop"></use>
+                            </svg>
+                            <svg class="icon icon-play" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-play"></use>
+                            </svg>
+                          </button>
+                        </div>
+                        <div class="viz-nav">
+                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                            <svg class="icon icon-localisation" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-localisation"></use>
+                            </svg>
+                          </button>
+                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                            <svg class="icon icon-zoom-in" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-zoom-in"></use>
+                            </svg>
+                          </button>
+                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                            <svg class="icon icon-zoom-out" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-zoom-out"></use>
+                            </svg>
+                          </button>
+                          <button class="btn btn-default btn-xs btn-icon" type="submit">
+                            <svg class="icon icon-full-screen" aria-hidden="true">
+                              <use xlink:href="../assets/svg/icons/icons.svg#icon-full-screen"></use>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <aside class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-right" id="sidebarRight">
+                    <div class="aside-legend">
+                      <form>
+                        <div class="form-group">
+                          <label for="edge" class="control-label">Edge</label>
+                          <small class="help-block">Thickness</small>
+                          <select id="edge">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="edge" class="control-label">Node</label>
+                          <small class="help-block">Size</small>
+                          <select id="edge">
+                            <option value="valeur1">Valeur 1</option>
+                            <option value="valeur2" selected>Valeur 2</option>
+                            <option value="valeur3">Valeur 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label">Color</label>
+                          <small class="help-block">Community Louvain</small>
+                        </div>
+                        <div class="form-group">
+                          <label for="label" class="control-label">Label</label>
+                          <div class="row">
+                            <div class="col-xs-6">
+                              <small class="help-block">Size</small>
+                              <select id="label">
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                            <div class="col-xs-6">
+                              <small class="help-block">Threshold</small>
+                              <select>
+                                <option value="valeur1">Valeur 1</option>
+                                <option value="valeur2" selected>Valeur 2</option>
+                                <option value="valeur3">Valeur 3</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      <div class="form-group-fixed form-group-fixed-right">
+                        <button type="submit" class="btn btn-default">Export</button>
+                      </div>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

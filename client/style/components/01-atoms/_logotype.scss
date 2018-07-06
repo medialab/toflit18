@@ -1,0 +1,15 @@
+//
+// TOFLIT18 ATOM LOGOTYPE
+// --------------------------------------------------
+.navbar-brand {
+    @media (min-width: $screen-xs-max) {
+        position: absolute;
+        left: 15px;
+    }
+}
+
+.icon {
+    &-logotype {
+        width: 5.876953125em;
+    }
+}

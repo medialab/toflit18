@@ -61,7 +61,6 @@ const renderTooltip = valueKey => data => {
       <em className="recharts-tooltip-label">{data.label}</em>
       <ul style={{listStyleType: 'none', padding: '0px', margin: '0px'}}>
         {payload.map((item, line) => {
-
           if (!item.value)
             return null;
 
@@ -71,7 +70,7 @@ const renderTooltip = valueKey => data => {
                 {NUMBER_FORMAT(Math.trunc(item.value))}
                 &nbsp;
                 {UNITS[valueKey](item.payload)}
-                {item.payload[line].share && ` (${PERCENTAGE_FORMAT(item.payload[line].share)})`}</span>
+                {item.payload[line] && item.payload[line].share && ` (${PERCENTAGE_FORMAT(item.payload[line].share)})`}</span>
             </li>
           );
         })}
@@ -91,12 +90,12 @@ export default class LineChart extends Component {
       valueKey = 'value'
     } = this.props;
 
-    if (!data || !data.length)
+    if (!data || !data.some(line => !!line.data.length))
       return null;
 
-    const minYear = Math.min.apply(null, data.map(line => line.data[0].year));
+    const minYear = Math.min.apply(null, data.map(line => line.data[0] ? line.data[0].year : 9999));
 
-    const maxYear = Math.max.apply(null, data.map(line => line.data[line.data.length - 1].year));
+    const maxYear = Math.max.apply(null, data.map(line => line.data[line.data.length - 1] ? line.data[line.data.length - 1].year : 0));
 
     const lineData = new Array(maxYear - minYear + 1);
 

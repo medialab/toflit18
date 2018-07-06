@@ -1,0 +1,31 @@
+//
+// TOFLIT18 COMPONENTS ATOM ASIDE BTN
+// --------------------------------------------------
+.aside-btn-left,
+.aside-btn-right {
+    @extend .visible-xs;
+
+    @include position(absolute, 0.5em, null, null, null, 10);
+
+    @extend .btn;
+
+    @extend .btn-default;
+
+    @extend .btn-xs;
+
+    min-height: 1.8em;
+}
+
+.aside-btn-left {
+    left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 0;
+}
+
+.aside-btn-right {
+    right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+}

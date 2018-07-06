@@ -4,7 +4,7 @@
  *
  * Actions related to the globals' view.
  */
-import {six as palette} from '../lib/palettes';
+import {two as palette} from '../lib/palettes';
 import {values, forIn} from 'lodash';
 
 const ROOT = ['states', 'exploration', 'network'];
@@ -82,6 +82,8 @@ export function addNetwork(tree) {
     const nodes = {},
           edges = [];
 
+    const kind = cursor.get('selectors', 'kind', 'id');
+
     result.forEach(function(row) {
 
       const directionId = '$d$' + row.direction,
@@ -134,12 +136,10 @@ export function addNetwork(tree) {
         size: row.count,
         flows: row.count,
         value: row.value,
-        source: directionId,
-        target: countryId
+        source: kind === 'import' ? countryId : directionId,
+        target: kind === 'import' ? directionId : countryId
       });
     });
-
-    const kind = cursor.get('selectors', 'kind', 'id');
 
     const directed = kind === 'import' || kind === 'export';
 
@@ -187,4 +187,12 @@ export function updateDate(tree, dateChoosen) {
   const date = selectors.get(dateChoosen);
 
   return date;
+}
+
+export function selectLabelSizeRatio(tree, key) {
+  tree.set(ROOT.concat('labelSizeRatio'), key);
+}
+
+export function selectLabelThreshold(tree, key) {
+  tree.set(ROOT.concat('labelThreshold'), key);
 }

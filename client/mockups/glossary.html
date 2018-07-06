@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="TOFLIT18 | Transformations of the french economy through the lens of international trade, 1716-1821">
+    <meta name="author" content="TOFLIT18">
+
+    <title>TOFLIT18</title>
+
+    <!-- TOFLIT18 WebFonts -->
+    <link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700|Source+Sans+Pro:400,400i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- TOFLIT18 core CSS -->
+    <link rel="stylesheet" href="dist/toflit18.css">
+    <link rel="stylesheet" href="../node_modules/react-select/dist/react-select.min.css">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="../assets/favicons/apple-touch-icon.png">
+    <link rel="icon" href="../assets/favicons/favicon.ico">
+  </head>
+  <body>
+    <div>
+      <div>
+        <header>
+          <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <!--
+                  NAVBAR TOGGLE MOBILE ONLY
+                    CLICK on 'navbar-toggle'
+                      remove class 'collapsed'
+                      add class 'in'
+                      change aria-expanded="true" (x2)
+                        CLICK on 'navbar-toggle'
+                          add class 'collapsed'
+                          remove class 'in'
+                          change aria-expanded="false"
+                -->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"><!-- REMOVE .collapsed, CHANGE aria-expanded="true" -->
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                  <span class="sr-only">TOFLIT18</span>
+                  <svg class="icon icon-logotype" aria-hidden="true">
+                    <use xlink:href="../assets/svg/logotype/logotype.svg#icon-logotype"></use>
+                  </svg>
+                </a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <span>Explore trade</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/time-series.html">Time series</a></li>
+                      <li><a href="/product-terms.html">Product terms network</a></li>
+                      <li><a href="/locations.html">Locations network</a></li>
+                    </ul>
+                  </li>
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <span>Data</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/sources.html">Sources</a></li>
+                      <li><a href="/metadata.html">Metadata</a></li>
+                      <li><a href="/classifications">Classifications</a></li>
+                    </ul>
+                  </li>
+                  <!--
+                    DROPDOWN ACTIONS
+                      CLICK on 'dropdown-toggle'
+                        add class 'open'
+                        change aria-expanded="true"
+                          CLICK on 'dropdown-toggle'
+                            remove class 'open'
+                            change aria-expanded="false"
+                      CLICK outside anywhere
+                        remove class 'open'
+                        change aria-expanded="false"
+                  -->
+                  <li class="dropdown open">
+                    <a href="#" class="dropdown-toggle dropdown-caret" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                      <span>Glossary</span>
+                      <svg class="icon icon-arrow-down" aria-hidden="true">
+                        <use xlink:href="../assets/svg/icons/icons.svg#icon-arrow-down"></use>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li class="active"><a href="/glossary.html">Products</a></li>
+                      <li><a href="/concepts-glossary.html">Concepts</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#">About</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="#">Legal notice</a></li>
+                </ul>
+              </div><!-- /.navbar-collapse -->
+            </div><!-- /.container -->
+          </nav>
+        </header>
+        <main class="container-fluid container-global no-padding">
+          <div class="section-search">
+            <form>
+              <div class="form-group-search">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                      <div class="form-group">
+                        <svg class="icon icon-search-lg" aria-hidden="true">
+                          <use xlink:href="../assets/svg/icons/icons.svg#icon-search-lg"></use>
+                        </svg>
+                        <label class="sr-only" for="searchGlossary">Search</label>
+                        <input id="searchGlossary" class="form-control input-lg" type="search" value="aba" placeholder="search">
+                      </div>
+                      <ul class="list-inline list-unstyled list-letters">
+                        <li><button type="button" class="btn btn-link">A</button></li>
+                        <li><button type="button" class="btn btn-link">B</button></li>
+                        <li><button type="button" class="btn btn-link">C</button></li>
+                        <li><button type="button" class="btn btn-link">D</button></li>
+                        <li><button type="button" class="btn btn-link">E</button></li>
+                        <li><button type="button" class="btn btn-link">F</button></li>
+                        <li><button type="button" class="btn btn-link">G</button></li>
+                        <li><button type="button" class="btn btn-link">H</button></li>
+                        <li><button type="button" class="btn btn-link">I</button></li>
+                        <li><button type="button" class="btn btn-link">J</button></li>
+                        <li><button type="button" class="btn btn-link">K</button></li>
+                        <li><button type="button" class="btn btn-link">L</button></li>
+                        <li><button type="button" class="btn btn-link">M</button></li>
+                        <li><button type="button" class="btn btn-link">N</button></li>
+                        <li><button type="button" class="btn btn-link">O</button></li>
+                        <li><button type="button" class="btn btn-link">P</button></li>
+                        <li><button type="button" class="btn btn-link">Q</button></li>
+                        <li><button type="button" class="btn btn-link">R</button></li>
+                        <li><button type="button" class="btn btn-link">S</button></li>
+                        <li><button type="button" class="btn btn-link">T</button></li>
+                        <li><button type="button" class="btn btn-link">U</button></li>
+                        <li><button type="button" class="btn btn-link">V</button></li>
+                        <li><button type="button" class="btn btn-link">W</button></li>
+                        <li><button type="button" class="btn btn-link">X</button></li>
+                        <li><button type="button" class="btn btn-link">Y</button></li>
+                        <li><button type="button" class="btn btn-link">Z</button></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="container content">
+              <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                  <div class="search-result">
+                    <h1>Glossary</h1>
+                    <p>We found <strong>2</strong> results found for "aba"</p><!-- if no results add class hidden -->
+                    <p class="hidden">We're sorry. We cannot find any matches for your search.</p><!-- if no results remove class hidden -->
+                    <dl>
+                      <div class="well">
+                        <dt>abafine</dt>
+                        <dd>erreur, = "abassis"</dd>
+                      </div>
+                      <div class="well">
+                        <dt>abassi, abassis, abaci</dt>
+                        <dd>Abagi ou Abassi, "monnoie qui a cours en Perse", article "Abagi", Jacques Savary des Brûlons, Dictionnaire universel de commerce, vol. 1, Paris, Vve Estienne, 1741, p. 559 [ci-après Savary, Dictionnaire 1], article "Abagi".</dd>
+                      </div>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

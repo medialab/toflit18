@@ -1,0 +1,22 @@
+//
+// TOFLIT18 ORGANISM LIST GROUP
+// --------------------------------------------------
+.list-group {
+    &-item-heading {
+        @extend dt;
+
+        font-family: $font-family-sans-serif;
+        margin-bottom: 0.5em;
+    }
+
+    li {
+        color: $olive-haze-darken;
+    }
+}
+
+a,
+button {
+    &.list-group-item .list-group-item-heading {
+        color: $sandal-darken;
+    }
+}

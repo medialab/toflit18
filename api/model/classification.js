@@ -91,51 +91,117 @@ const Model = {
     });
   },
 
+ /**
+ * Retrieving item of one group with limit offset.
+ */
+  group(id, opts, callback) {
+    const params = {};
+    // Casting
+    params.id = database.int(id);
+    // items limit offset are start/end slice indices
+    params.limitItem = database.int(opts.limitItem + opts.offsetItem);
+    params.offsetItem = database.int(opts.offsetItem);
+    params.queryItem = searchPattern(opts.queryItem || '');
+
+    if (opts.queryItemFrom)
+      params.queryItemFrom = database.int(opts.queryItemFrom);
+
+    const query = params.queryItemFrom ? queries.groupFrom : queries.group;
+
+    return database.cypher({query, params}, function(err, result) {
+      if (err) return callback(err);
+      if (!result.length) return callback(null, null);
+      const row = result[0];
+      const group = {
+        ...row.group.properties,
+        items: row.items,
+        nbItems: row.nbItems,
+        id: row.group._id
+      };
+
+      if (opts.queryItem)
+        group.nbMatchedItems = row.nbMatchedItems;
+      return callback(null, group);
+    });
+  },
+
+
   /**
    * Retrieving a sample of the classification's groups.
    */
   search(id, opts, callback) {
-
-    let query, params;
+    let queryString, params;
 
     if (!opts.source) {
-      query = queries[opts.queryGroup || opts.queryItem ? 'searchGroups' : 'groups'];
+      if (opts.queryItem)
+        queryString = queries[opts.queryItemFrom ? 'searchGroupsFrom' : 'searchGroups'];
+      else
+        queryString = queries[opts.queryItemFrom ? 'groupsFrom' : 'groups'];
+
       params = {
-          ...opts,
-          id,
-          queryGroup: searchPattern(opts.queryGroup || ''),
-          queryItem: searchPattern(opts.queryItem || '')
-        };
+        ...opts,
+        id,
+        queryGroup: searchPattern(opts.queryGroup || ''),
+        queryItem: searchPattern(opts.queryItem || '')
+      };
     }
     else {
-      query = queries.searchGroupsSource;
+      queryString = queries.searchGroupsSource;
       params = {
-          ...opts,
-          id,
-          queryGroup: searchPattern(opts.queryGroup || '')
-        };
+        ...opts,
+        id,
+        queryGroup: searchPattern(opts.queryGroup || '')
+      };
     }
+
+    // create the dynamic query
+    const query = decypher.Query();
+    queryString.split('\n').forEach(line => query.add(line));
 
     // Casting
     params.id = database.int(params.id);
     params.limit = database.int(params.limit);
     params.offset = database.int(params.offset);
+    // items limit offset are start/end slice indices
+    params.limitItem = database.int(params.limitItem + params.offsetItem);
+    params.offsetItem = database.int(params.offsetItem);
+
+    if (params.queryItemFrom)
+      params.queryItemFrom = database.int(params.queryItemFrom);
+
+    // order by
+    if (opts.orderBy === 'name')
+      query.orderBy('group.name');
+    else if (opts.queryItem && opts.orderBy === 'nbMatches')
+      query.orderBy('nbMatchedItems DESC');
+    else
+      query.orderBy('nbItems DESC');
+
+    //skip & limit
+    if (!opts.source && !opts.queryItem) {
+      // dynamic skip & limit only for groupsFrom and groups queries cause the
+      // limit and skip has to be after the dynamic orderBy
+      query.skip('' + params.offset);
+      query.limit('' + params.limit);
+    }
+
+    query.params(params);
 
     return database.cypher(
-      {
-        query,
-        params
-      },
+      query.build(),
       function(err, results) {
         if (err) return callback(err);
 
         const groups = results.map(row => {
-
-          return {
+          const group = {
             ...row.group.properties,
             items: row.items,
+            nbItems: row.nbItems,
             id: row.group._id
           };
+          if (opts.queryItem)
+            group.nbMatchedItems = row.nbMatchedItems;
+          return group;
         });
 
         return callback(null, groups);

@@ -1,0 +1,93 @@
+//
+// TOFLIT18 COMPONENTS ORGANISM VIZ TOOLS
+// --------------------------------------------------
+.viz {
+    &-tools {
+        @include position(absolute, 1em, 1em, null, null, 10);
+
+        @include flexbox;
+        @include align-items(end);
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            top: 0;
+
+            .form-control {
+                max-width: 10em;
+                float: right;
+            }
+        }
+
+        form,
+        .form-group {
+            margin: 0;
+        }
+
+        // Viz Zoom Only
+        // --------------------------------------------------
+        &.viz-zoom {
+            width: 1.3em;
+        }
+    }
+
+    // Actions
+    // --------------------------------------------------
+    &-actions {
+        @include flexbox;
+
+        margin-right: 2em;
+
+        > * {
+            margin-left: 0.5em;
+        }
+
+        .input-group {
+            min-width: 15em;
+
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (max-width: $screen-xs-max) {
+                min-width: 12em;
+            }
+        }
+
+        // Actions Min
+        // --------------------------------------------------
+
+        &-min {
+            margin-right: 0;
+        }
+    }
+
+    // Nav
+    // --------------------------------------------------
+    &-nav {
+        > * {
+            margin-bottom: 0.5em;
+
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (max-width: $screen-xs-max) {
+                margin-bottom: 0;
+                margin-top: 0.5em;
+            }
+
+            &:first-child {
+                //
+                // Responsive
+                // --------------------------------------------------
+                @media (max-width: $screen-xs-max) {
+                    margin-top: 0;
+                }
+            }
+
+            &:last-child {
+                margin-top: 2em;
+            }
+        }
+    }
+}

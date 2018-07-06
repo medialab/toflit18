@@ -7,8 +7,10 @@
  */
 import React, {Component} from 'react';
 import {escapeRegexp} from 'talisman/regexp';
-import {debounce} from 'lodash';
+import cls from 'classnames';
 import RAW_GLOSSARY_DATA from '../../../glossary.json';
+
+import VizLayout from '../misc/VizLayout.jsx';
 
 /**
  * Constants.
@@ -34,13 +36,9 @@ const GLOSSARY_DATA = RAW_GLOSSARY_DATA.map(entry => {
  */
 function GlossaryEntry({name, html}) {
   return (
-    <div className="glossary-entry">
-      <div className="glossary-name">
-        {name}
-      </div>
-      <div className="glossary-definition">
-        <div dangerouslySetInnerHTML={{__html: html}} />
-      </div>
+    <div className="well">
+      <dt>{name}</dt>
+      <dd dangerouslySetInnerHTML={{__html: html}} />
     </div>
   );
 }
@@ -58,7 +56,6 @@ export default class GlossaryPanel extends Component {
     };
 
     this.handleInput = this.handleInput.bind(this);
-    this.debouncedSearch = debounce(this.performSearch.bind(this), 300);
   }
 
   handleInput(e) {
@@ -71,56 +68,84 @@ export default class GlossaryPanel extends Component {
       this.setState({query});
 
       if (query.length > 2)
-        this.debouncedSearch(query);
+        this.performSearch(query);
+      else
+        this.performSearch('');
     }
   }
 
   performSearch(query) {
-    const pattern = new RegExp(escapeRegexp(query));
+    if (!query) {
+      this.setState({entries: GLOSSARY_DATA.slice(0)});
+    }
+    else {
+      const pattern = new RegExp(escapeRegexp(query));
 
-    const filteredEntries = GLOSSARY_DATA.filter(entry => {
-      return (
-        pattern.test(entry.name) ||
-        pattern.test(entry.definition)
-      );
-    });
+      const filteredEntries = GLOSSARY_DATA.filter(entry => {
+        return (
+          pattern.test(entry.name) ||
+          pattern.test(entry.definition)
+        );
+      });
 
-    this.setState({entries: filteredEntries});
+      this.setState({entries: filteredEntries});
+    }
   }
 
   render() {
-
-    let entries;
-
-    if (this.state.entries.length) {
-      entries = this.state.entries.map(entry => {
-        return (
-          <GlossaryEntry
-            key={entry.name}
-            name={entry.name}
-            html={entry.html} />
-        );
-      });
-    }
-    else {
-      entries = <div>No matching entries...</div>;
-    }
+    const {query} = this.state;
+    const entries = this.state.entries.map(entry => {
+      return (
+        <GlossaryEntry
+          key={entry.name}
+          name={entry.name}
+          html={entry.html} />
+      );
+    });
 
     return (
-      <div id="glossary">
-        <div className="panel">
-          <h3>Glossary</h3>
-          <hr />
-          <input
-            className="form-control"
-            placeholder="Search..."
-            type="text"
-            onChange={this.handleInput}
-            value={this.state.query} />
-          <br />
-          {entries}
+      <VizLayout
+        title="Glossary"
+        description="This glossary gives identification and definitions of selected commodities that were exchanged between France and its economic partners. If you want to contribute a definition, or correct a mistake, please send an email to guillaume.daudin@dauphine.fr"
+        leftPanelName="Search" >
+        { /* Top of the left panel */ }
+
+        { /* Left panel */ }
+        <div className="aside-filters">
+          <label
+            htmlFor="classifications"
+            className="control-label">
+            Search
+          </label>
+          <form onSubmit={e => e.preventDefault()}>
+            <div className="form-group">
+              <input
+                id="searchGroup"
+                type="text"
+                className="form-control"
+                placeholder="Search products..."
+                value={query}
+                onChange={this.handleInput} />
+            </div>
+            <div className="form-group">
+            <p className={cls((!entries.length || query.length <= 2) && 'hidden')}>
+              We found <strong>{entries.length}</strong> results found for "{query}"
+            </p>
+            <p className={cls(entries.length && 'hidden')}>
+              We're sorry. We cannot find any matches for your search.
+            </p>
+            </div>
+          </form>
         </div>
-      </div>
+        { /* Content panel */ }
+        <div className="content-viz">
+          <div className="col-xs-12 col-sm-6 col-md-8">
+            <div className="row">
+              <dl>{entries}</dl>
+            </div>
+          </div>
+        </div>
+      </VizLayout>
     );
   }
 }

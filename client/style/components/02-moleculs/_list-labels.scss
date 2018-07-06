@@ -1,0 +1,48 @@
+//
+// TOFLIT18 COMPONENTS MOLECULS LIST LABELS
+// --------------------------------------------------
+.list-labels {
+    li {
+        @include flexbox;
+        @include align-items(center);
+
+        @include justify-content(space-between);
+
+        padding: 0 0 0 0.5em;
+        margin-bottom: 0.3em;
+        background-color: $olive-haze-darken;
+        color: $white;
+        border-radius: $border-radius-base;
+    }
+
+    // Text
+    // --------------------------------------------------
+    span {
+        display: inline-block;
+
+        @include flex-grow(1);
+
+        padding: 0.3em 0.5em 0.3em 0;
+        font-size: 0.9em;
+        line-height: 1.15em;
+        border-right: 1px solid $white;
+    }
+
+    strong {
+        display: block;
+    }
+
+    // Btn Icon
+    // --------------------------------------------------
+    .btn-icon {
+        padding: 0.5em;
+        margin-left: 0;
+        font-size: 0.8em;
+        color: $white;
+
+        &:hover,
+        &:focus {
+            color: rgba($white, 0.5);
+        }
+    }
+}

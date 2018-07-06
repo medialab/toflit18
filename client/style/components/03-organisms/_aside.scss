@@ -1,0 +1,131 @@
+//
+// TOFLIT18 ORGANISM ASIDE
+// --------------------------------------------------
+.aside {
+    &-left,
+    &-right {
+        overflow: auto;
+        height: calc(100vh - 15.6em);
+        background-color: $white;
+
+        @media (min-width: $screen-xs-max) and (max-width: $screen-sm-max) {
+            height: calc(100vh - 14.8em);
+        }
+    }
+
+    &-left {
+        box-shadow: 0 2px 20px 0 rgba($olive-haze-darken, 0.2);
+        border-left: 1px solid lighten($olive-haze-darken, 40%);
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            display: none;
+            height: calc(100vh - 11.2em);
+        }
+
+        @media (min-width: $screen-xs-max) {
+            overflow-y: auto;
+            height: calc(100vh - 19em);
+            margin-top: 6.5em;
+        }
+
+        @media (min-width: $screen-sm-min) {
+            height: calc(100vh - 18.6em);
+        }
+    }
+
+    &-right {
+        box-shadow: 0 -2px 20px 0 rgba($olive-haze-darken, 0.2);
+        border-right: 1px solid lighten($olive-haze-darken, 40%);
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            display: none;
+            height: calc(100vh - 11.2em);
+        }
+
+        @media (min-width: $screen-xs-max) {
+            overflow-y: auto;
+            height: calc(100vh - 13.5em);
+        }
+
+        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+            height: calc(100vh - 12.2em);
+        }
+
+        @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+            height: calc(100vh - 13.5em);
+        }
+
+        @media (min-width: $screen-lg-min) {
+            height: calc(100vh - 12em);
+        }
+    }
+}
+
+// Aside with .box-selection
+// --------------------------------------------------
+.box-selection {
+    + .container-fluid {
+        aside {
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (max-width: $screen-xs-max) {
+                height: calc(100vh - 15.6em);
+            }
+        }
+    }
+}
+
+// Aside Left with .box-selection-lg
+// --------------------------------------------------
+.box-selection-lg {
+    + .container-fluid {
+        .aside-left {
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (min-width: $screen-xs-max) {
+                height: calc(100vh - 23em);
+                margin-top: 9.5em;
+            }
+
+            @media (min-width: $screen-sm-min) {
+                height: calc(100vh - 21.6em);
+            }
+        }
+    }
+}
+
+// Aside Left with .box-selection-lg
+// --------------------------------------------------
+.box-selection {
+    &.box-selection-lg {
+        + .container-fluid {
+            .aside {
+                &.left {
+                    //
+                    // Responsive
+                    // --------------------------------------------------
+                    @media (max-width: $screen-xs-max) {
+                        height: calc(100vh - 19.8em);
+                    }
+                }
+
+                &.right {
+                    //
+                    // Responsive
+                    // --------------------------------------------------
+                    @media (max-width: $screen-xs-max) {
+                        height: calc(100vh - 15.4em);
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,92 @@
+//
+// TOFLIT18 COMPONENTS MOLECULS FORM GROUP SEARCH
+// --------------------------------------------------
+.form-group-search {
+    @include flexbox;
+    @include flex-direction(column);
+    @include justify-content(center);
+    @include align-items(center);
+
+    padding: 3em 0 2em;
+    margin-bottom: 4em;
+    background-color: $mine-shaft;
+
+    //
+    // Responsive
+    // --------------------------------------------------
+    @media (max-width: $screen-sm-max) {
+        display: block;
+    }
+
+    > .container {
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-xs-max) {
+            padding: 15px;
+        }
+
+        @media (min-width: $screen-xs-max) {
+            padding: 30px;
+        }
+    }
+
+    .icon-search-lg {
+        @include square(2.5em);
+        @include position(absolute, 0.35em, null, null, 2.5em, 1);
+    }
+
+    input {
+        position: relative;
+        width: 100%;
+        padding-left: 4em;
+        background-color: rgba(#606060, 0.5);
+        color: $olive-haze;
+        border-color: rgba(#606060, 0.5);
+    }
+
+    input::-webkit-input-placeholder {
+        color: $mine-shaft-darken;
+    }
+
+    input::-moz-placeholder {
+        color: $mine-shaft-darken;
+    }
+
+    input:-ms-input-placeholder {
+        color: $mine-shaft-darken;
+    }
+
+    input:-moz-placeholder {
+        color: $mine-shaft-darken;
+    }
+
+    input::placeholder {
+        color: $mine-shaft-darken;
+    }
+
+    .list-letters {
+        @include flexbox;
+        @include justify-content(space-around);
+        @include align-items(center);
+
+        margin-bottom: 0;
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (max-width: $screen-sm-max) {
+            display: block;
+        }
+
+        li {
+            padding: 0;
+        }
+
+        .btn {
+            padding: 0.5em;
+            color: $olive-haze;
+            font-size: 1.1em;
+        }
+    }
+}

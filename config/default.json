@@ -3,11 +3,12 @@
     "allowedOrigins": ["http://localhost:3000"],
     "limits": {
       "groups": 200,
+      "items":5,
       "minYear": 1716,
       "maxYear": 1839
     },
     "port": 4000,
-    "secret": "merrain"
+    "secret": "douelle"
   },
   "db": {
     "host": "localhost",

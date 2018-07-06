@@ -1,0 +1,187 @@
+//
+// TOFLIT18 COMPONENTS PAGE HOME
+// --------------------------------------------------
+.background-color {
+    display: block;
+
+    @include position(absolute, 52px, null, null, 0, 1);
+    @include square(100%);
+
+    background: linear-gradient(to top, $cachou 0%, $cachou 10%, rgba($cachou, 0) 100%);
+
+    + .container {
+        position: relative;
+        z-index: 10;
+        padding: 0 30px;
+        color: $white;
+    }
+}
+
+// Sections
+// --------------------------------------------------
+.section {
+    position: relative;
+    overflow: hidden;
+    min-height: 100%;
+    height: calc(100vh - 2em);
+
+    @include flexbox;
+    @include flex-direction(column);
+    @include justify-content(center);
+
+    // Home top
+    // --------------------------------------------------
+    &-home-top {
+        min-height: 100%;
+        height: calc(100vh - 2em);
+        background-position: 0 100%;
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @include cover-background("../assets/images/home-bg_1600x1200.jpg");
+
+        @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+            @include cover-background("../assets/images/home-bg_1024x768.jpg");
+        }
+
+        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+            @include cover-background("../assets/images/home-bg_768x1024.jpg");
+        }
+
+        @media (max-width: $screen-xs-max) {
+            padding-top: 10em;
+
+            @include cover-background("../assets/images/home-bg_375x667.jpg");
+        }
+
+        .lead {
+            font-family: $font-family-heading;
+            font-weight: bold;
+            color: $olive-haze;
+        }
+
+        a, a:active {
+            color:$mercury;
+        }
+
+        a:hover {color:$white}
+
+        //
+        // Responsive
+        // --------------------------------------------------
+        @media (min-width: $screen-sm-max) {
+            h1 {
+                font-size: 3em;
+            }
+
+            p {
+                font-size: 1.4em;
+            }
+
+            .lead {
+                font-size: 2.5em;
+            }
+        }
+
+        // 404 Page
+        // --------------------------------------------------
+        &-404 {
+            height: 100vh;
+        }
+    }
+
+    // Home navigation & bottom
+    // --------------------------------------------------
+    &-home-navigation,
+    &-bottom {
+        h2 {
+            padding: 1em 0;
+        }
+    }
+
+    &-home-navigation {
+        background-color: $cachou;
+        padding-bottom: 10em;
+
+        h2 {
+            color: $olive-haze;
+        }
+
+        p {
+            color: $white;
+        }
+
+        .btn {
+            padding: 0;
+            margin-bottom: 1em;
+
+            span {
+                font-size: 1.2em;
+            }
+
+            &:hover,
+            &:focus {
+                img {
+                    @include scale(1.1);
+                    @include transition(all 0.35s ease-out);
+                }
+            }
+
+            + p {
+                margin-top: 1em;
+            }
+        }
+
+        figure {
+            overflow: hidden;
+            position: relative;
+            padding: 0;
+            border-radius: $border-radius-large;
+        }
+
+        img {
+            @include transition(all 0.35s ease-out);
+
+            //
+            // Responsive
+            // --------------------------------------------------
+            @media (min-width: $screen-lg-min) {
+                min-width: 360px;
+                height: 210px;
+            }
+
+            @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+                height: 210px;
+            }
+
+            @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+                height: 150px;
+            }
+        }
+
+        svg {
+            margin-right: 1.5em;
+            font-size: 1.5em;
+            color: current-color;
+        }
+
+        figcaption {
+            @include position(absolute, null, 0, 0, 0, 1);
+            @include flexbox;
+            @include align-items(center);
+            @include justify-content(flex-start);
+
+            background-color: rgba($white, 0.8);
+            padding: 1em 1.5em;
+            border-bottom-left-radius: $border-radius-large;
+            border-bottom-right-radius: $border-radius-large;
+
+            @include box-shadow(0px 1px 13px rgba(0, 0, 0, 0.3));
+        }
+    }
+
+    &-bottom {
+        padding: 5em 0;
+    }
+}
