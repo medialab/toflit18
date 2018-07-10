@@ -56,7 +56,7 @@ const client = new Client({
 
     // Viz
     viz: {
-      contentType: FORM,
+      method: 'POST',
       url: '/viz/:name'
     },
 

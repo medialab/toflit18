@@ -80,7 +80,18 @@ export function addLine(tree) {
 
   for (const k in selectors)
     if (!!selectors[k]) {
-      payload[k] = (k === 'sourceType') ? selectors[k].value : selectors[k].id;
+      switch(k){
+        case 'sourceType':
+          payload[k] = selectors[k].value;
+          break;
+        case 'product':
+        case 'country':
+          payload[k] = selectors[k];
+          break;
+        default:
+          payload[k] = selectors[k].id;
+      } 
+    
     }
 
   tree.client.viz({params: {name: 'line'}, data: payload}, function(err, data) {

@@ -6,7 +6,27 @@
 import decypher from 'decypher';
 import database from '../connection';
 
+
 const {Expression, Query} = decypher;
+
+// utility
+const filterItemsByIdsRegexps = (items,variable) => {
+  const params = {};
+  let idsExpression = null;
+  let regexpsExpression = null;
+  if (items.ids && items.ids.length>0){
+    idsExpression = new Expression(`id(${variable}) IN {${variable}Ids}`);
+    params[`${variable}Ids`] = items.ids;
+  }
+  
+  let i=0;
+  items.regexps.forEach(r =>{
+    regexpsExpression = new Expression(`${variable}.name =~ {${variable}Pattern${i}}`)
+    params[`${variable}Pattern${i}`] = decypher.helpers.searchPattern(r, {flags: 'im'});
+    i++;
+  })
+  return {expression: idsExpression ? idsExpression.or(regexpsExpression) : regexpsExpression, params}
+}
 
 const ModelCreateLine = {
 
@@ -59,9 +79,12 @@ const ModelCreateLine = {
       const whereProduct = new Expression('id(pc) = {productClassification}');
       query.params({productClassification: database.int(productClassification)});
 
+      console.log(product)
       if (product) {
-        whereProduct.and('id(pci) = {product}');
-        query.params({product: database.int(product)});
+        const productFilter = filterItemsByIdsRegexps(product, 'pci') 
+
+        whereProduct.and(productFilter.expression);
+        query.params(productFilter.params);
       }
       where.and(whereProduct);
     }
@@ -76,8 +99,10 @@ const ModelCreateLine = {
       query.params({countryClassification: database.int(countryClassification)});
 
       if (country) {
-        whereCountry.and('id(cci) = {country}');
-        query.params({country: database.int(country)});
+        const countryFilter = filterItemsByIdsRegexps(country, 'cci')
+
+        whereCountry.and(countryFilter.expression);
+        query.params(countryFilter.params);
       }
 
       where.and(whereCountry);
@@ -160,7 +185,7 @@ const ModelCreateLine = {
       query.return('count(f) AS count, sum(toFloat(f.value)) AS value, sum(toFloat(f.quantity_kg)) AS kg, sum(toFloat(f.quantity_nbr)) AS nbr, sum(toFloat(f.quantity_litre)) AS litre, f.year AS year,  collect(distinct(f.direction)) as nb_direction, ' + shares);
       query.orderBy('f.year');
     }
-
+    console.log(query.interpolate())
     database.cypher(query.build(), function(err, data) {
 
       if (err) return callback(err);

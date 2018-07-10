@@ -28,10 +28,18 @@ import {
  * Lines summary.
  */
 function buildDescription(params, data) {
-  const selectors = mapValues(params, 'name');
+
+  const selectors = mapValues(params, (v,k) => {
+      if (v && (k === 'product' || k === 'country')){
+        return v.map(p => p.name).join(", ")
+      }
+
+      if (v)
+        return v.name});
   let content = [
     <strong key="flows">{capitalize(selectors.kind || 'total') + ' flows'}</strong>,
   ];
+
 
   if (selectors.product) {
     if (data.length)
@@ -49,13 +57,13 @@ function buildDescription(params, data) {
 
   if (selectors.direction && selectors.direction !== '$all')
     content = content.concat([
-      'from ',
+      ' from ',
       <strong key="direction">{selectors.direction}</strong>
     ]);
 
   if (selectors.country)
     content = content.concat([
-      'to ',
+      ' to ',
       <strong key="country">{selectors.country}</strong>,
       ' (',
       <em key="country-classes">{selectors.countryClassification}</em>,

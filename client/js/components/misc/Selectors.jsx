@@ -5,7 +5,7 @@
  * Series of various selectors used throughout the app.
  */
 import React, {Component, PropTypes} from 'react';
-import Select from 'react-select';
+import Select, {AsyncCreatable, Creatable} from 'react-select';
 import {prettyPrint} from '../../lib/helpers';
 import {debounce, identity} from 'lodash';
 import cls from 'classnames';
@@ -107,7 +107,6 @@ export class ItemSelector extends Component {
   }
 
   search(input, callback) {
-
     const warning = {
       id: '$warning$',
       disabled: true,
@@ -122,8 +121,9 @@ export class ItemSelector extends Component {
       .filter(function(group) {
         input = input.toLowerCase();
         const name = group.name.toLowerCase();
-        return !!~name.indexOf(input);
+        return !!~name.search(input);
       });
+
 
     if (options.length > MAX_LIST_SIZE) {
       options = options
@@ -172,12 +172,19 @@ export class ItemSelector extends Component {
       return <Select {...commonProps} options={this.compulsoryOptions.concat(data)} />;
 
     return (
-      <Select.Async
+      <AsyncCreatable
         {...commonProps}
         loadOptions={debounce(this.search.bind(this), 300)}
-        filterOptions={identity}
+        filterOption={identity}
         ignoreAccents={false}
-        cache={false} />
+        cache={false}
+        isValidNewOption={() => true}
+        multi={true}
+        joinValues={true}
+        deliminter="##"
+        promptTextCreator={(label) => label}
+        newOptionCreator={(p) => { return {value:p.label, name:`${type} matching '${p.label}'`, id:-1}}} 
+        />
     );
   }
 }

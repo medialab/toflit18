@@ -44,21 +44,22 @@ const controller = [
   },
   {
     url: '/line',
-    method: 'GET',
-    validate: {
-      query: {
-        sourceType: '?string',
-        productClassification: '?string',
-        product: '?string',
-        countryClassification: '?string',
-        country: '?string',
-        direction: '?string',
-        kind: '?string'
-      }
-    },
+    method: 'POST',
     action(req, res) {
-      const payload = mapValues(req.query, (v, k) => {
-        return k !== 'kind' && k !== 'sourceType' ? +v : v;
+      const payload = mapValues(req.body, (v, k) => {
+        
+        if (k === 'product' || k === 'country'){
+          // separate filters on id from those on name trhough regexp
+          return v.length > 0 ? {
+            ids: v.filter(e => e.id !== -1).map(e => +e.id),
+            regexps: v.filter(e => e.id === -1).map(e => e.value)
+          } : null
+        }
+
+        if (k !== 'kind' && k !== 'sourceType')
+          return +v
+        
+        return v;
       });
 
       return modelCreateLine.createLine(payload, function(err, data) {
