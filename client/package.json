@@ -56,7 +56,7 @@
     "file-loader": "^0.11.1",
     "json-loader": "^0.5.2",
     "kotatsu": "^0.15.2",
-    "node-sass": "^4.5.3",
+    "node-sass": "4.5.3",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.18.2"
   },
