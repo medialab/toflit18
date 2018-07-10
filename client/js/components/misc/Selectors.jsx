@@ -168,7 +168,7 @@ export class ItemSelector extends Component {
       valueRenderer: this.renderOption
     };
 
-    if (!isTooLong)
+    if (type!='product' && type != 'country')
       return <Select {...commonProps} options={this.compulsoryOptions.concat(data)} />;
 
     return (

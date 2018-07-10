@@ -5,6 +5,7 @@
  */
 import decypher from 'decypher';
 import database from '../connection';
+import filterItemsByIdsRegexps from './utils';
 
 const {Expression, Query} = decypher;
 
@@ -51,8 +52,10 @@ const ModelNetwork = {
       query.params({productClassification: database.int(productClassification)});
 
       if (product) {
-        whereProduct.and('id(pci) = {product}');
-        query.params({product: database.int(product)});
+        const productFilter = filterItemsByIdsRegexps(product, 'pci') 
+
+        whereProduct.and(productFilter.expression);
+        query.params(productFilter.params);
       }
       where.and(whereProduct);
     }

@@ -7,6 +7,7 @@ import config from 'config';
 import decypher from 'decypher';
 import database from '../connection';
 import _ from 'lodash';
+import filterItemsByIdsRegexps from './utils';
 
 const {Expression, Query} = decypher;
 
@@ -71,11 +72,14 @@ const ModelFlowsPerYear = {
         const whereProduct = new Expression('id(pc) = ' + productClassification);
         query.params({productClassification});
 
+    
         if (product) {
-          whereProduct.and('id(pg) = ' + product);
-          query.params({product});
-        }
+          const productFilter = filterItemsByIdsRegexps(product, 'pg') 
 
+          whereProduct.and(productFilter.expression);
+          query.params(productFilter.params);
+        }
+      
         withs.push('products');
         query.where(whereProduct);
 
@@ -96,8 +100,10 @@ const ModelFlowsPerYear = {
         query.params({productClassification});
 
         if (product) {
-          whereProduct.and('id(ppg) = ' + product);
-          query.params({product});
+          const productFilter = filterItemsByIdsRegexps(product, 'ppg') 
+
+          whereProduct.and(productFilter.expression);
+          query.params(productFilter.params);
         }
 
         withs.push('products');
@@ -119,8 +125,10 @@ const ModelFlowsPerYear = {
         query.params({countryClassification});
 
         if (country) {
-          whereCountry.and('id(cg) = ' + country);
-          query.params({country});
+          const countryFilter = filterItemsByIdsRegexps(country, 'cg')
+
+          whereCountry.and(countryFilter.expression);
+          query.params(countryFilter.params);
         }
 
         query.where(whereCountry);
@@ -137,9 +145,12 @@ const ModelFlowsPerYear = {
         const whereCountry = new Expression('id(cc) = ' + countryClassification);
         query.params({countryClassification});
 
+     
         if (country) {
-          whereCountry.and('id(ccg) = ' + country);
-          query.params({country});
+          const countryFilter = filterItemsByIdsRegexps(country, 'ccg')
+
+          whereCountry.and(countryFilter.expression);
+          query.params(countryFilter.params);
         }
 
         query.where(whereCountry);
@@ -225,7 +236,7 @@ const ModelFlowsPerYear = {
         query.return(dataTypeField + ' AS dataType, count(f) AS flows, f.year AS year');
         query.orderBy('f.year, dataType');
       }
-
+      console.log(query.interpolate())
       database.cypher(query.build(), function(err, result) {
         if (err) return callback(err);
 

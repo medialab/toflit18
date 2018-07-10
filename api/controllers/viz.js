@@ -10,23 +10,35 @@ import modelTerms from '../model/terms';
 import modelNetwork from '../model/country';
 import {mapValues} from 'lodash';
 
+const formatItemsParams = (items) => {
+    // separate filters on id from those on name trhough regexp
+    return items.length > 0 ? {
+      ids: items.filter(e => e.id !== -1).map(e => +e.id),
+      regexps: items.filter(e => e.id === -1).map(e => e.value)
+    } : null
+}
+
 const controller = [
   {
     url: '/flows_per_year/:type',
-    method: 'GET',
-    validate: {
-      query: {
-        sourceType: '?string',
-        productClassification: '?string',
-        product: '?string',
-        countryClassification: '?string',
-        country: '?string',
-        direction: '?string',
-        kind: '?string'
-      }
-    },
+    method: 'POST',
+    // validate: {
+    //   query: {
+    //     sourceType: '?string',
+    //     productClassification: '?string',
+    //     product: '?string',
+    //     countryClassification: '?string',
+    //     country: '?string',
+    //     direction: '?string',
+    //     kind: '?string'
+    //   }
+    // },
     action(req, res) {
-      const payloadFlows = mapValues(req.query, (v, k) => {
+      const payloadFlows = mapValues(req.body, (v, k) => {
+        if (k === 'product' || k === 'country'){
+          // separate filters on id from those on name trhough regexp
+          return formatItemsParams(v)
+        }
         if (v !== 'null') {
           return k !== 'kind' && k !== 'sourceType' ? +v : v;
         }
@@ -50,10 +62,7 @@ const controller = [
         
         if (k === 'product' || k === 'country'){
           // separate filters on id from those on name trhough regexp
-          return v.length > 0 ? {
-            ids: v.filter(e => e.id !== -1).map(e => +e.id),
-            regexps: v.filter(e => e.id === -1).map(e => e.value)
-          } : null
+          return formatItemsParams(v)
         }
 
         if (k !== 'kind' && k !== 'sourceType')
@@ -71,20 +80,25 @@ const controller = [
   },
   {
     url: '/network/:id',
-    method: 'GET',
-    validate: {
-      query: {
-        sourceType: '?string',
-        productClassification: '?string',
-        product: '?string',
-        countryClassification: '?string',
-        kind: '?string',
-        dateMin: '?string',
-        dateMax: '?string'
-      }
-    },
+    method: 'POST',
+    // validate: {
+    //   query: {
+    //     sourceType: '?string',
+    //     productClassification: '?string',
+    //     product: '?string',
+    //     countryClassification: '?string',
+    //     kind: '?string',
+    //     dateMin: '?string',
+    //     dateMax: '?string'
+    //   }
+    // },
     action(req, res) {
-      const payloadNetwork = mapValues(req.query, (v, k) => {
+      const payloadNetwork = mapValues(req.body, (v, k) => {
+        if (k === 'product' || k === 'country'){
+          // separate filters on id from those on name trhough regexp
+          return formatItemsParams(v)
+        }
+
         if (v !== 'null') {
           return k !== 'kind' && k !== 'sourceType' ? +v : v;
         }
@@ -92,7 +106,7 @@ const controller = [
           console.log(v, k);
         }
       });
-
+      console.log(req.body, payloadNetwork)
       return modelNetwork.network(+req.params.id, payloadNetwork, function(err, data) {
         if (err) return res.serverError(err);
 
@@ -102,24 +116,28 @@ const controller = [
   },
   {
     url: '/terms/:id',
-    method: 'GET',
-    validate: {
-      query: {
-        sourceType: '?string',
-        productClassification: '?string',
-        product: '?string',
-        countryClassification: '?string',
-        country: '?string',
-        childClassification: '?string',
-        child: '?string',
-        direction: '?string',
-        kind: '?string',
-        dateMin: '?string',
-        dateMax: '?string'
-      }
-    },
+    method: 'POST',
+    // validate: {
+    //   query: {
+    //     sourceType: '?string',
+    //     productClassification: '?string',
+    //     product: '?string',
+    //     countryClassification: '?string',
+    //     country: '?string',
+    //     childClassification: '?string',
+    //     child: '?string',
+    //     direction: '?string',
+    //     kind: '?string',
+    //     dateMin: '?string',
+    //     dateMax: '?string'
+    //   }
+    // },
     action(req, res) {
-      const payloadTerms = mapValues(req.query, (v, k) => {
+      const payloadTerms = mapValues(req.body, (v, k) => {
+        if (k === 'child' || k === 'country'){
+          // separate filters on id from those on name trhough regexp
+          return formatItemsParams(v)
+        }
         if (v !== 'null') {
           return k !== 'kind' && k !== 'sourceType' ? +v : v;
         }
@@ -127,7 +145,6 @@ const controller = [
           console.log(v, k);
         }
       });
-
       return modelTerms.terms(+req.params.id, payloadTerms, function(err, terms) {
         if (err) return res.serverError(err);
         if (!terms) return res.notFound();

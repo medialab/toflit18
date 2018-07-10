@@ -1,0 +1,23 @@
+import decypher from 'decypher';
+const {Expression, Query} = decypher;
+
+// utility
+const filterItemsByIdsRegexps = (items,variable) => {
+  const params = {};
+  let idsExpression = null;
+  let regexpsExpression = null;
+  if (items.ids && items.ids.length>0){
+    idsExpression = new Expression(`id(${variable}) IN {${variable}Ids}`);
+    params[`${variable}Ids`] = items.ids;
+  }
+  
+  let i=0;
+  items.regexps.forEach(r =>{
+    regexpsExpression = new Expression(`${variable}.name =~ {${variable}Pattern${i}}`)
+    params[`${variable}Pattern${i}`] = decypher.helpers.searchPattern(r, {flags: 'im'});
+    i++;
+  })
+  return {expression: idsExpression ? idsExpression.or(regexpsExpression) : regexpsExpression, params}
+}
+
+export default filterItemsByIdsRegexps;

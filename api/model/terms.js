@@ -10,6 +10,8 @@ import louvain from 'graphology-communities-louvain';
 import {tokenizeTerms} from '../../lib/tokenizer';
 import _ from 'lodash';
 
+import filterItemsByIdsRegexps from './utils';
+
 const {Expression, Query} = decypher;
 
 const ModelTerms = {
@@ -67,9 +69,12 @@ const ModelTerms = {
         const whereCountry = new Expression('id(cc) = {countryClassification}');
         query.params({countryClassification: database.int(countryClassification)});
 
+
         if (country) {
-          whereCountry.and('id(cci) = {country}');
-          query.params({country: database.int(country)});
+          const countryFilter = filterItemsByIdsRegexps(country, 'cci')
+
+          whereCountry.and(countryFilter.expression);
+          query.params(countryFilter.params);
         }
 
         where.and(whereCountry);
@@ -78,9 +83,12 @@ const ModelTerms = {
       //-- Do we need to match a child classification item?
       if (childClassification && child) {
         match.push('(pci)<-[:AGGREGATES*1..]-(chci:ClassifiedItem)<-[:HAS]-(chc:Classification)');
-        where.and('id(chci) = {child}');
+        const childFilter = filterItemsByIdsRegexps(child, 'chci')
+
+        where.and(childFilter.expression);
+        query.params(childFilter.params);
         where.and('id(chc) = {childClassification}');
-        query.params({childClassification: database.int(childClassification), child: database.int(child)});
+        query.params({childClassification: database.int(childClassification)});
       }
 
       //-- Do we need to match a source type?

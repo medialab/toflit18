@@ -76,10 +76,17 @@ export function addChart(tree) {
 
   // keep only params !== null for request
   forIn(params, (v, k) => {
-    if (k === 'sourceType')
-      paramsRequest[k] = v.value;
-    else
-      paramsRequest[k] = v.id;
+     switch(k){
+        case 'sourceType':
+          paramsRequest[k] = v.value;
+          break;
+        case 'child':
+        case 'country':
+          paramsRequest[k] = v;
+          break;
+        default:
+          paramsRequest[k] = v.id;
+      } 
   });
 
   const classification = cursor.get('classification');

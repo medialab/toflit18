@@ -66,17 +66,17 @@ const client = new Client({
     },
 
     flowsPerYear: {
-      contentType: FORM,
+      method: 'POST',
       url: '/viz/flows_per_year/:type'
     },
 
     network: {
-      contentType: FORM,
+      method: 'POST',
       url: '/viz/network/:id'
     },
 
     terms: {
-      contentType: FORM,
+      method: 'POST',
       url: '/viz/terms/:id'
     }
   }

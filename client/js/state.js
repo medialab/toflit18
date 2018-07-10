@@ -153,7 +153,7 @@ const defaultState = {
           countryClassification: null,
           childClassification: { author: "toflit18", id: 10, name: "SITC EN", slug: "sitc_en"},
           country: null,
-          child: { id: 615179, name: "Raw materials, inedible, except fuels" },
+          child: [{ id: 615179, name: "Raw materials, inedible, except fuels" }],
           direction: null,
           kind: null,
           sourceType: { name: "National best guess", value: "National best guess" },
