@@ -11,7 +11,7 @@ import {argv} from 'yargs';
 import async from 'async';
 import path from 'path';
 import fs from 'fs';
-import Index from 'mnemonist/index';
+import FuzzyMap from 'mnemonist/fuzzy-map'
 import {parse as parseCSV} from 'csv';
 import database from '../api/connection';
 import {cleanText, cleanNumber} from '../lib/clean';
@@ -93,7 +93,7 @@ const HASH_LEVEL3_GET = data => {
 
 const INDEX_LEVEL1 = new Map(),
       INDEX_LEVEL2 = new Map(),
-      INDEX_LEVEL3 = new Index([HASH_LEVEL3_ADD, HASH_LEVEL3_GET]);
+      INDEX_LEVEL3 = new FuzzyMap([HASH_LEVEL3_ADD, HASH_LEVEL3_GET]);
 
 const UPDATE_BATCH = [];
 
