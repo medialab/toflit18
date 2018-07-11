@@ -173,16 +173,8 @@ export default class ExplorationMeta extends Component {
 
     if (
       state.dataModel
-      && (state.dataModel.value === 'country' || state.dataModel.value === 'country')
+      && (state.dataModel.value === 'country' || state.dataModel.value === 'product')
       && !state.dataType
-    ) {
-      canUpdate = false;
-    }
-
-    if (
-      state.dataModel
-      && state.dataModel.value === 'sourceType'
-      && !selectors.sourceType
     ) {
       canUpdate = false;
     }
@@ -324,6 +316,7 @@ export default class ExplorationMeta extends Component {
               <ItemSelector
                 type="sourceType"
                 data={sourceTypesOptions}
+                disabled={state.dataModel && state.dataModel.value === 'sourceType'}
                 loading={!sourceTypesOptions.length}
                 onChange={actions.update.bind(null, 'sourceType')}
                 selected={selectors.sourceType} />
@@ -334,6 +327,7 @@ export default class ExplorationMeta extends Component {
               <ItemSelector
                 type="direction"
                 loading={!directions}
+                disabled={state.dataModel && state.dataModel.value === 'direction'}
                 data={directions || []}
                 onChange={actions.update.bind(null, 'direction')}
                 selected={selectors.direction} />
