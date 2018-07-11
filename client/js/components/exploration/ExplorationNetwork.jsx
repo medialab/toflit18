@@ -139,10 +139,7 @@ class NetworkPanel extends Component {
 
     const directed = selectors.kind && selectors.kind.id !== 'total';
 
-    // default network rendering
-    if (!graph && classification)
-        actions.addNetwork();
-
+    
     return (
       <VizLayout
         title="Locations"
@@ -362,5 +359,15 @@ class NetworkPanel extends Component {
         </div>
       </VizLayout>
     );
+  }
+
+  componentDidMount(){
+    const {
+      actions
+    } = this.props;
+
+    // default network rendering
+    actions.addNetwork();
+
   }
 }

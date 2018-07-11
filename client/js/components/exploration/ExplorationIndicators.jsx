@@ -183,11 +183,6 @@ export default class ExplorationIndicators extends Component {
       };
     });
 
-    // default line creation : if no line already drawn we trigger default line creation
-    if(lines.length === 0){
-      actions.addLine();
-    }
-
     return (
       <VizLayout
         title="Time series"
@@ -338,6 +333,20 @@ export default class ExplorationIndicators extends Component {
 
       </VizLayout>
     );
+  }
+
+  componentDidMount(){
+    const {
+      actions,
+       state: {
+        lines
+      }
+    } = this.props;
+
+    // default line creation : if no line already drawn we trigger default line creation
+    if(lines.length === 0){
+      actions.addLine();
+    }
   }
 }
 

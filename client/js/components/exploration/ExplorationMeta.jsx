@@ -229,11 +229,6 @@ export default class ExplorationMeta extends Component {
     if (state.dataType && !!state.dataType.model)
       childClassifications = getChildClassifications(classificationIndex, state.dataType);
 
-    // default chart rendered only if no existing cahrt
-    if (!state.flowsPerYear && canUpdate && !loading){
-      actions.addChart();
-    }
-
     return (
       <VizLayout
         title="Metadata"
@@ -447,5 +442,21 @@ export default class ExplorationMeta extends Component {
         </div>
       </VizLayout>
     );
+  }
+  componentDidMount(){
+    const {
+      actions,
+      state
+    } = this.props;
+
+    const {
+      loading
+    } = state;
+
+    // default chart rendered only if no existing cahrt
+    if (!state.flowsPerYear && !!state.dataModel && !loading){
+      actions.addChart();
+    }
+
   }
 }

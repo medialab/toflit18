@@ -111,11 +111,6 @@ export default class Classification extends Component {
       parents.unshift(tmp);
     }
 
-    // default value refresh trigger
-    if(rows.length===0){
-      this.submit()
-    }
-
     return (
       <VizLayout
         title="Classifications"
@@ -367,6 +362,17 @@ export default class Classification extends Component {
       </VizLayout>
 
     );
+  }
+
+  componentDidMount(){
+    const {
+      rows
+    } = this.props
+    // default value refresh trigger
+    if(rows.length===0){
+      this.submit()
+    }
+
   }
 }
 

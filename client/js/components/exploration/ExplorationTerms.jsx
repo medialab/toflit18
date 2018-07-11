@@ -177,11 +177,6 @@ class TermsPanel extends Component {
       actions.update('child', c);
     }
 
-    // default graph rendering
-    if (!graph && classification){
-      actions.addChart();
-    }
-
     return (
       <VizLayout
         title="Product terms"
@@ -419,5 +414,14 @@ class TermsPanel extends Component {
         </div>
       </VizLayout>
     );
+  }
+  componentDidMount(){
+    const {
+      actions
+    } = this.props;
+
+    // default network rendering
+    actions.addChart();
+
   }
 }
