@@ -11,12 +11,14 @@ import {Waiter} from '../misc/Loaders.jsx';
 import {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import {branch} from 'baobab-react/decorators';
+import {Link} from 'react-router';
 
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import SourcesPerDirections from './viz/SourcesPerDirections.jsx';
 
 import {exportCSV, exportSVG} from '../../lib/exports';
 import VizLayout from '../misc/VizLayout.jsx';
+import Icon from '../misc/Icon.jsx';
 
 import specs from '../../../specs.json';
 
@@ -276,7 +278,7 @@ export default class ExplorationMeta extends Component {
               <label htmlFor="product" className="control-label">{
                 (state.dataType && state.dataType.model === 'product') ? 'Child product' : 'Product'
               }</label>
-              <small className="help-block">The type of product being shipped.</small>
+              <small className="help-block">The type of product being shipped.<Link to="/glossary/concepts"><Icon name="icon-search" /></Link></small> 
               <ClassificationSelector
                 type="product"
                 loading={!classifications.product.length}
@@ -295,7 +297,7 @@ export default class ExplorationMeta extends Component {
               <label htmlFor="country" className="control-label">{
                 (state.dataType && state.dataType.model === 'country') ? 'Child country' : 'Country'
               }</label>
-              <small className="help-block">The country whence we got the products or wither we are sending them.</small>
+              <small className="help-block">The country whence we got the products or wither we are sending them.<Link to="/glossary/concepts"><Icon name="icon-search" /></Link></small>
               <ClassificationSelector
                 type="country"
                 loading={!classifications.country.length}
@@ -312,7 +314,7 @@ export default class ExplorationMeta extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Sources</label>
-              <small className="help-block">The type of source from which the data are extracted</small>
+              <small className="help-block">The type of source from which the data are extracted. <Link to="/data/sources"><Icon name="icon-search" /></Link></small>
               <ItemSelector
                 type="sourceType"
                 data={sourceTypesOptions}
@@ -323,7 +325,7 @@ export default class ExplorationMeta extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
-              <small className="help-block">The French harbor where the transactions were recorded.</small>
+              <small className="help-block">The French harbor where the transactions were recorded. <Link to="/glossary/concepts"><Icon name="icon-search" /></Link></small>
               <ItemSelector
                 type="direction"
                 loading={!directions}
