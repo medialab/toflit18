@@ -236,7 +236,7 @@ const ModelFlowsPerYear = {
         query.return(dataTypeField + ' AS dataType, count(f) AS flows, f.year AS year');
         query.orderBy('f.year, dataType');
       }
-      console.log(query.interpolate())
+
       database.cypher(query.build(), function(err, result) {
         if (err) return callback(err);
 

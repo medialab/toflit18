@@ -168,7 +168,7 @@ const ModelCreateLine = {
       query.return('count(f) AS count, sum(toFloat(f.value)) AS value, sum(toFloat(f.quantity_kg)) AS kg, sum(toFloat(f.quantity_nbr)) AS nbr, sum(toFloat(f.quantity_litre)) AS litre, f.year AS year,  collect(distinct(f.direction)) as nb_direction, ' + shares);
       query.orderBy('f.year');
     }
-    console.log(query.interpolate())
+
     database.cypher(query.build(), function(err, data) {
 
       if (err) return callback(err);
