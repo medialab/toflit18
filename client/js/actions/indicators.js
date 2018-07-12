@@ -17,7 +17,7 @@ function fetchGroups(tree, cursor, id) {
   tree.client.groups({params: {id}}, function(err, data) {
     if (err) return;
 
-    cursor.set(data.result);
+    cursor.set(data.result.map(d => {return {...d, value:d.id}}));
   });
 }
 
