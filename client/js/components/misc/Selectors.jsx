@@ -113,18 +113,19 @@ export class ItemSelector extends Component {
       name: 'This list contains too many elements. Try searching...'
     };
 
+    let options = []
+    
     if (!input.trim())
-      return callback(null, {options: this.compulsoryOptions.concat([warning])});
-
-    // TODO: This could be optimized by using lodash's lazy chaining
-    let options = this.props.data
+      options = this.props.data;
+    else {
+      // TODO: This could be optimized by using lodash's lazy chaining
+      options = this.props.data
       .filter(function(group) {
         input = input.toLowerCase();
         const name = group.name.toLowerCase();
         return !!~name.search(input);
       });
-
-
+    }
     if (options.length > MAX_LIST_SIZE) {
       options = options
         .slice(0, MAX_LIST_SIZE)
