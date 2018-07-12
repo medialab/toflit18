@@ -13,6 +13,7 @@ import LineChart from './viz/LineChart.jsx';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import {capitalize, isEqual, mapValues, pick} from 'lodash';
 import Icon from '../misc/Icon.jsx';
+import {Link} from 'react-router';
 import VizLayout from '../misc/VizLayout.jsx';
 import {exportCSV, exportSVG} from '../../lib/exports';
 import {
@@ -195,7 +196,7 @@ export default class ExplorationIndicators extends Component {
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="sourceType" className="control-label">Source Type</label>
-              <small className="help-block">From wich sources does the data comes from ?</small>
+              <small className="help-block">Type of sources the data comes from. <Link to="/exploration/sources"><Icon name="icon-info" /></Link></small>
               <ItemSelector
                 type="sourceType"
                 data={sourceTypesOptions}
@@ -205,7 +206,7 @@ export default class ExplorationIndicators extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
-              <small className="help-block">The type of product being shipped.</small>
+              <small className="help-block">The type of product being shipped. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
               <ClassificationSelector
                 type="product"
                 loading={!classifications.product.length}
@@ -221,8 +222,8 @@ export default class ExplorationIndicators extends Component {
                 selected={selectors.product} />
             </div>
             <div className="form-group">
-              <label htmlFor="country" className="control-label">Country</label>
-              <small className="help-block">The country whence we got the products or wither we are sending them.</small>
+              <label htmlFor="country" className="control-label">Location</label>
+              <small className="help-block">Whence products are exchanged. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
               <ClassificationSelector
                 type="country"
                 loading={!classifications.country.length}
@@ -239,7 +240,7 @@ export default class ExplorationIndicators extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
-              <small className="help-block">The French harbor where the transactions were recorded.</small>
+              <small className="help-block">Where, in France, the transactions were recorded. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
               <ItemSelector
                 type="direction"
                 loading={!directions}

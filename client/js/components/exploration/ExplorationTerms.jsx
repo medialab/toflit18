@@ -24,6 +24,8 @@ import {
   addChart,
   updateDate
 } from '../../actions/terms';
+import {Link} from 'react-router';
+import Icon from '../misc/Icon.jsx';
 
 /**
  * Helper used to get the child classifications of the given classification.
@@ -202,7 +204,7 @@ class TermsPanel extends Component {
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="sourceType" className="control-label">Source Type</label>
-              <small className="help-block">From wich sources do the data comes from ?</small>
+              <small className="help-block">Type of sources the data comes from. <Link to="/exploration/sources"><Icon name="icon-info" /></Link></small>
               <ItemSelector
                 type="sourceType"
                 data={sourceTypesOptions}
@@ -212,7 +214,7 @@ class TermsPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
-              <small className="help-block">The type of product being shipped.</small>
+              <small className="help-block">The type of product being shipped. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
               <ClassificationSelector
                 type="product"
                 placeholder="Child classification..."
@@ -231,7 +233,7 @@ class TermsPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">Country</label>
-              <small className="help-block">The country whence we got the products or wither we are sending them.</small>
+              <small className="help-block">Whence products are exchanged. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
               <ClassificationSelector
                 type="country"
                 loading={!classifications.country.length}
@@ -248,7 +250,7 @@ class TermsPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
-              <small className="help-block">The French harbor where the transactions were recorded.</small>
+              <small className="help-block">Where, in France, the transactions were recorded. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
               <ItemSelector
                 type="direction"
                 loading={!directions}

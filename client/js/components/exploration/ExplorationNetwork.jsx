@@ -24,6 +24,8 @@ import {
   addNetwork,
   updateDate
 } from '../../actions/network';
+import {Link} from 'react-router';
+import Icon from '../misc/Icon.jsx';
 
 const NUMBER_FIXED_FORMAT = format(',.2f'),
       NUMBER_FORMAT = format(',');
@@ -166,7 +168,7 @@ class NetworkPanel extends Component {
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="sourceType" className="control-label">Source Type</label>
-              <small className="help-block">From wich sources does the data comes from ?</small>
+              <small className="help-block">Type of sources the data comes from. <Link to="/exploration/sources"><Icon name="icon-info" /></Link></small>
               <ItemSelector
                 type="sourceType"
                 data={sourceTypesOptions}
@@ -176,7 +178,7 @@ class NetworkPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
-              <small className="help-block">The type of product being shipped.</small>
+              <small className="help-block">The type of product being shipped. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
               <ClassificationSelector
                 type="product"
                 placeholder="Child classification..."
