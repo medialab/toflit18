@@ -38,7 +38,7 @@ const ModelFlowsPerYear = {
 
       const query = new Query(),
             where = new Expression(),
-            withs = [];
+            withs = new Set();
 
       // handle clasification dataType
       if (dataType !== 'direction' && dataType !== 'sourceType') {
@@ -67,7 +67,7 @@ const ModelFlowsPerYear = {
 
       //-- Do we need to match a product?
       if (productClassification && !twofoldProduct) {
-        query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)');
+        query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow)');
 
         const whereProduct = new Expression('id(pc) = ' + productClassification);
         query.params({productClassification});
@@ -80,21 +80,21 @@ const ModelFlowsPerYear = {
           query.params(productFilter.params);
         }
       
-        withs.push('products');
+        withs.add('f');
         query.where(whereProduct);
 
         if (dataType === 'product') {
-          withs.push('classificationGroupName');
-          query.with('pg.name as classificationGroupName, collect(pi.name) AS products');
+          withs.add('classificationGroupName');
+          query.with('f, pg.name as classificationGroupName');
         }
         else {
-          query.with('collect(pi.name) AS products');
+           query.with('f');
         }
       }
 
       // NOTE: twofold classification
       if (productClassification && twofoldProduct) {
-        query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi), (ppg)-[:AGGREGATES*0..]->(pg)');
+        query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow), (ppg)-[:AGGREGATES*0..]->(pg)');
 
         const whereProduct = new Expression('id(pc) = ' + productClassification);
         query.params({productClassification});
@@ -106,21 +106,21 @@ const ModelFlowsPerYear = {
           query.params(productFilter.params);
         }
 
-        withs.push('products');
+        withs.add('f');
         query.where(whereProduct);
 
         if (dataType === 'product') {
-          withs.push('classificationGroupName');
-          query.with('pg.name as classificationGroupName, collect(pi.name) AS products');
+          withs.add('classificationGroupName');
+          query.with('f, pg.name as classificationGroupName');
         }
         else {
-          query.with('collect(pi.name) AS products');
+           query.with('f');
         }
       }
 
       //-- Do we need to match a country?
       if (countryClassification && !twofoldCountry) {
-        query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)');
+        query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow)');
         const whereCountry = new Expression('id(cc) = ' + countryClassification);
         query.params({countryClassification});
 
@@ -132,16 +132,19 @@ const ModelFlowsPerYear = {
         }
 
         query.where(whereCountry);
-
-        if (dataType === 'country')
-          query.with(withs.concat('cg.name as classificationGroupName, collect(ci.name) AS countries').join(', '));
+        withs.add('f')
+        
+        if (dataType === 'country'){
+          query.with([...withs].concat('cg.name as classificationGroupName').join(', '))        
+          withs.add('classificationGroupName')
+        }
         else
-          query.with(withs.concat('collect(ci.name) AS countries').join(', '));
+          query.with([...withs].join(', '));
       }
 
       // NOTE: twofold classification
       if (countryClassification && twofoldCountry) {
-        query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci), (ccg)-[:AGGREGATES*0..]->(cg)');
+        query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow), (ccg)-[:AGGREGATES*0..]->(cg)');
         const whereCountry = new Expression('id(cc) = ' + countryClassification);
         query.params({countryClassification});
 
@@ -155,14 +158,19 @@ const ModelFlowsPerYear = {
 
         query.where(whereCountry);
 
-        if (dataType === 'country')
-          query.with(withs.concat('cg.name as classificationGroupName, collect(ci.name) AS countries').join(', '));
+        withs.add('f')
+
+        if (dataType === 'country'){
+          query.with([...withs].concat('cg.name as classificationGroupName').join(', '))           
+          withs.add('classificationGroupName')
+        }
         else
-          query.with(withs.concat('collect(ci.name) AS countries').join(', '));
+          query.with([...withs].join(', '));
       }
 
-      //direction or sourceType requested
-      query.match('(f:Flow)');
+      // Add a  match flow if not only done
+      if(dataType === 'direction' || dataType === 'sourceType')
+        query.match('(f:Flow)')
 
       //-- direction
       if (direction && direction !== '$all$') {
@@ -194,15 +202,6 @@ const ModelFlowsPerYear = {
 
       if (sourceType === 'Local best guess') {
         where.and('f.sourceType IN ["Local","National toutes directions tous partenaires"] ');
-      }
-
-      //-- Should we match a precise direction?
-      if (countryClassification) {
-        where.and('f.country IN countries');
-      }
-
-      if (productClassification) {
-        where.and('f.product IN products');
       }
 
       if (!where.isEmpty())
