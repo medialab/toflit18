@@ -7,3 +7,20 @@
         text-align: center;
     }
 }
+
+.Select-value-label {
+	max-width:150px;
+	max-height:50px;
+}
+.Select--multi .Select-value {
+	color: $mine-shaft-darken;
+	background-color: white;
+}
+
+.Select.is-focused:not(is-open) > .Select-control {
+	border-color:$olive-haze;
+}
+
+.Select.is-focused:not(.is-open) > .Select-control {
+	border-color:$olive-haze;
+}
