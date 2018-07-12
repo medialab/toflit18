@@ -282,7 +282,7 @@ export default class ExplorationMeta extends Component {
               <ClassificationSelector
                 type="product"
                 loading={!classifications.product.length}
-                data={childClassifications || classifications.product.filter(c => !c.source)}
+                data={(state.dataType && state.dataType.model === 'country') ? childClassifications : classifications.product.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification} />
               <ItemSelector
@@ -301,7 +301,7 @@ export default class ExplorationMeta extends Component {
               <ClassificationSelector
                 type="country"
                 loading={!classifications.country.length}
-                data={childClassifications || classifications.country.filter(c => !c.source)}
+                data={(state.dataType && state.dataType.model === 'country') ? childClassifications : classifications.country.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'countryClassification')}
                 selected={selectors.countryClassification} />
               <ItemSelector
