@@ -17,7 +17,16 @@ const filterItemsByIdsRegexps = (items,variable) => {
     params[`${variable}Pattern${i}`] = decypher.helpers.searchPattern(r, {flags: 'im'});
     i++;
   })
-  return {expression: idsExpression ? idsExpression.or(regexpsExpression) : regexpsExpression, params}
+  if (idsExpression && regexpsExpression)
+    return {expression: idsExpression.or(regexpsExpression), params}
+  
+  if (idsExpression)
+    return {expression: idsExpression, params}
+
+  if (regexpsExpression)
+    return {expression: regexpsExpression, params}
+
+  return new Expression('true');
 }
 
 export default filterItemsByIdsRegexps;
