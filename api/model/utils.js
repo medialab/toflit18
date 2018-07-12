@@ -14,7 +14,7 @@ const filterItemsByIdsRegexps = (items,variable) => {
   let i=0;
   items.regexps.forEach(r =>{
     regexpsExpression = new Expression(`${variable}.name =~ {${variable}Pattern${i}}`)
-    params[`${variable}Pattern${i}`] = decypher.helpers.searchPattern(r, {flags: 'im'});
+    params[`${variable}Pattern${i}`] = `(?im).*${r}.*`;
     i++;
   })
   if (idsExpression && regexpsExpression)
