@@ -36,6 +36,8 @@ const LAYOUT_SETTINGS = {
   slowDown: 2
 };
 
+const LAYOUT_TIMEOUT = 7000;
+
 /**
  * Helper function that moves the camera on the desired node.
  */
@@ -82,6 +84,8 @@ export default class Network extends Component {
       selectedNode: null
     };
 
+    this.layoutTimeout = null;
+
     this.toggleLayout = () => {
       const running = this.sigma.isForceAtlas2Running();
 
@@ -90,6 +94,8 @@ export default class Network extends Component {
       }
       else {
         this.sigma.stopForceAtlas2();
+        clearTimeout(this.layoutTimeout);
+        this.layoutTimeout = null;
       }
 
       this.setState({layoutRunning: !running});
@@ -162,6 +168,11 @@ export default class Network extends Component {
 
       this.sigma.startForceAtlas2(this.layoutSettings);
       this.setState({layoutRunning: true});
+
+      this.layoutTimeout = setTimeout(() => {
+        this.sigma.stopForceAtlas2();
+        this.setState({layoutRunning: false});
+      }, LAYOUT_TIMEOUT);
     }
 
     if (!nextProps.graph) {
