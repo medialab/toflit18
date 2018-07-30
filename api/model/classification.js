@@ -141,8 +141,8 @@ const Model = {
       params = {
         ...opts,
         id,
-        queryGroup: searchPattern(opts.queryGroup || ''),
-        queryItem: searchPattern(opts.queryItem || '')
+        queryGroup: opts.queryGroup ? `(?im).*${opts.queryGroup}.*` : '.*',
+        queryItem: opts.queryItem ? `(?im).*${opts.queryItem}.*` : '.*'
       };
     }
     else {
