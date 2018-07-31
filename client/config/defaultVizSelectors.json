@@ -1,10 +1,22 @@
 {
-	"ExplorationTerms":{
+	"terms":{
       "classification": "Simplification",
       "childClassification": "SITC EN",
       "child": ["Raw materials, inedible, except fuels"],
       "sourceType": "National best guess",
       "dateMin": 1750,
-      "dateMax": 1790
-    }
+      "dateMax": 1750
+    },
+    "network":{
+      "classification": "Grouping",
+      "sourceType": "National best guess",
+      "dateMin": 1750,
+      "dateMax": 1750
+    },
+    "indicators":{
+      "sourceType": "National best guess"
+    },
+    "metadata":{
+      "dataModel": "Direction"
+  	}
 }

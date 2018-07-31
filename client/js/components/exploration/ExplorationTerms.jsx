@@ -192,7 +192,7 @@ class TermsPanel extends Component {
             onChange={actions.selectTerms}
             onUpdate={actions.selectTerms}
             selected={classification}
-            defaultValue={defaultSelectors.ExplorationTerms.classification} />
+            defaultValue={defaultSelectors.terms.classification} />
         </div>
 
         { /* Left panel */ }
@@ -209,7 +209,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'sourceType')}
                 selected={selectors.sourceType}
                 onUpdate={v => actions.update('sourceType', v)}
-                defaultValue={defaultSelectors.ExplorationTerms.sourceType} />
+                defaultValue={defaultSelectors.terms.sourceType} />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
@@ -223,7 +223,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'childClassification')}
                 selected={selectors.childClassification} 
                 onUpdate={v => actions.update('childClassification', v)}
-                defaultValue={defaultSelectors.ExplorationTerms.childClassification}/>
+                defaultValue={defaultSelectors.terms.childClassification}/>
               <ItemSelector
                 type="product"
                 disabled={!selectors.childClassification || !groups.child.length}
@@ -232,7 +232,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'child')}
                 selected={selectors.child}
                 onUpdate={v => actions.update('child', v)}
-                defaultValue={defaultSelectors.ExplorationTerms.child}/>
+                defaultValue={defaultSelectors.terms.child}/>
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">Country</label>
@@ -244,7 +244,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'countryClassification')}
                 selected={selectors.countryClassification}
                 onUpdate={v => actions.update('countryClassification', v)}
-                defaultValue={defaultSelectors.ExplorationTerms.countryClassification}/>
+                defaultValue={defaultSelectors.terms.countryClassification}/>
               <ItemSelector
                 type="country"
                 disabled={!selectors.countryClassification || !groups.country.length}
@@ -253,7 +253,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'country')}
                 selected={selectors.country}
                 onUpdate={v => actions.update('country', v)}
-                defaultValue={defaultSelectors.ExplorationTerms.country}/>
+                defaultValue={defaultSelectors.terms.country}/>
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
@@ -265,7 +265,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'direction')}
                 selected={selectors.direction} 
                 onUpdate={v => actions.update('direction', v)}
-                defaultValue={defaultSelectors.ExplorationTerms.direction} />
+                defaultValue={defaultSelectors.terms.direction} />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">Kind</label>
@@ -275,7 +275,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
                 onUpdate={v => actions.update('kind', v)}
-                defaultValue={defaultSelectors.ExplorationTerms.kind} />
+                defaultValue={defaultSelectors.terms.kind} />
             </div>
             <div className="form-group">
               <label htmlFor="dates" className="control-label">Dates</label>
@@ -288,7 +288,7 @@ class TermsPanel extends Component {
                     onChange={actions.update.bind(null, 'dateMin')}
                     selected={selectors.dateMin}
                     onUpdate={v => actions.update('dateMin', v)}
-                    defaultValue={defaultSelectors.ExplorationTerms.dateMin} />
+                    defaultValue={defaultSelectors.terms.dateMin} />
                 </div>
                 <div className="col-xs-6">
                   <ItemSelector
@@ -297,7 +297,7 @@ class TermsPanel extends Component {
                     onChange={actions.update.bind(null, 'dateMax')}
                     selected={selectors.dateMax}
                     onUpdate={v => actions.update('dateMax', v)}
-                    defaultValue={defaultSelectors.ExplorationTerms.dateMax} />
+                    defaultValue={defaultSelectors.terms.dateMax} />
                 </div>
               </div>
             </div>

@@ -74,7 +74,7 @@ const defaultState = {
 
       // Metadata view
       metadata: {
-        dataModel: { name: "Direction", value: "direction", special: true },
+        dataModel: null,
         dataType: null,
         perYear: null,
         flowsPerYear: null,
@@ -105,7 +105,7 @@ const defaultState = {
           country: null,
           direction: null,
           kind: null,
-          sourceType: { name: "National best guess", value: "National best guess" }
+          sourceType: null
         },
         groups: {
           country: [],
@@ -118,7 +118,7 @@ const defaultState = {
       network: {
         graph: null,
         data: null,
-        classification: { name: "Grouping", author: "toflit18", slug: "grouping", id: 15 },
+        classification: null,
         nodeSize: 'flows',
         edgeSize: 'flows',
         labelThreshold: 5,
@@ -129,9 +129,9 @@ const defaultState = {
           product: null,
           countryClassification: null,
           kind: null,
-          sourceType: { name: "National best guess", value: "National best guess" },
-          dateMin: {name: 1750, id: 1750},
-          dateMax: {name: 1750, id: 1750}
+          sourceType: null,
+          dateMin: null,
+          dateMax: null
         },
         groups: {
           country: [],

@@ -22,6 +22,8 @@ import {
   dropLine
 } from '../../actions/indicators';
 
+const defaultSelectors = require('../../../config/defaultVizSelectors.json');
+
 // TODO: move branching to sub component for optimized rendering logic
 // TODO: better use pure rendering logic
 
@@ -202,7 +204,9 @@ export default class ExplorationIndicators extends Component {
                 data={sourceTypesOptions}
                 loading={!sourceTypesOptions.length}
                 onChange={actions.update.bind(null, 'sourceType')}
-                selected={selectors.sourceType} />
+                selected={selectors.sourceType}
+                onUpdate={v => actions.update('sourceType', v)}
+                defaultValue={defaultSelectors.indicators.sourceType} />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
@@ -212,14 +216,18 @@ export default class ExplorationIndicators extends Component {
                 loading={!classifications.product.length}
                 data={classifications.product.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'productClassification')}
-                selected={selectors.productClassification} />
+                selected={selectors.productClassification}
+                onUpdate={v => actions.update('productClassification', v)}
+                defaultValue={defaultSelectors.indicators.productClassification} />
               <ItemSelector
                 type="product"
                 disabled={!selectors.productClassification || !groups.product.length}
                 loading={selectors.productClassification && !groups.product.length}
                 data={groups.product}
                 onChange={actions.update.bind(null, 'product')}
-                selected={selectors.product} />
+                selected={selectors.product}
+                onUpdate={v => actions.update('product', v)}
+                defaultValue={defaultSelectors.indicators.product} />
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">Location</label>
@@ -229,14 +237,18 @@ export default class ExplorationIndicators extends Component {
                 loading={!classifications.country.length}
                 data={classifications.country.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'countryClassification')}
-                selected={selectors.countryClassification} />
+                selected={selectors.countryClassification}
+                onUpdate={v => actions.update('countryClassification', v)}
+                defaultValue={defaultSelectors.indicators.countryClassification} />
               <ItemSelector
                 type="country"
                 disabled={!selectors.countryClassification || !groups.country.length}
                 loading={selectors.countryClassification && !groups.country.length}
                 data={groups.country}
                 onChange={actions.update.bind(null, 'country')}
-                selected={selectors.country} />
+                selected={selectors.country}
+                onUpdate={v => actions.update('country', v)}
+                defaultValue={defaultSelectors.indicators.country} />
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
@@ -246,7 +258,9 @@ export default class ExplorationIndicators extends Component {
                 loading={!directions}
                 data={directions || []}
                 onChange={actions.update.bind(null, 'direction')}
-                selected={selectors.direction} />
+                selected={selectors.direction}
+                onUpdate={v => actions.update('direction', v)}
+                defaultValue={defaultSelectors.indicators.direction} />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">Kind</label>
@@ -254,7 +268,9 @@ export default class ExplorationIndicators extends Component {
               <ItemSelector
                 type="kind"
                 onChange={actions.update.bind(null, 'kind')}
-                selected={selectors.kind} />
+                selected={selectors.kind}
+                onUpdate={v => actions.update('kind', v)}
+                defaultValue={defaultSelectors.indicators.kind} />
             </div>
             <div className="form-group-fixed">
               <button

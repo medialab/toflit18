@@ -26,6 +26,7 @@ import {
 } from '../../actions/network';
 import {Link} from 'react-router';
 import Icon from '../misc/Icon.jsx';
+const defaultSelectors = require('../../../config/defaultVizSelectors.json');
 
 const NUMBER_FIXED_FORMAT = format(',.2f'),
       NUMBER_FORMAT = format(',');
@@ -159,7 +160,9 @@ class NetworkPanel extends Component {
             loading={!classifications.country.length}
             data={classifications.country}
             onChange={actions.selectClassification}
-            selected={classification} />
+            selected={classification} 
+            onUpdate={actions.selectClassification}
+            defaultValue={defaultSelectors.network.classification} />
         </div>
 
         { /* Left panel */ }
@@ -174,7 +177,9 @@ class NetworkPanel extends Component {
                 data={sourceTypesOptions}
                 loading={!sourceTypesOptions.length}
                 onChange={val => actions.updateSelector('sourceType', val)}
-                selected={selectors.sourceType} />
+                selected={selectors.sourceType} 
+                onUpdate={val => actions.updateSelector('sourceType', val)}
+                defaultValue={defaultSelectors.network.sourceType} />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
@@ -185,14 +190,18 @@ class NetworkPanel extends Component {
                 loading={!classifications.product.length}
                 data={classifications.product.filter(c => !c.source)}
                 onChange={val => actions.updateSelector('productClassification', val)}
-                selected={selectors.productClassification} />
+                selected={selectors.productClassification} 
+                onUpdate={val => actions.updateSelector('productClassification', val)}
+                defaultValue={defaultSelectors.network.productClassification} />
               <ItemSelector
                 type="product"
                 disabled={!selectors.productClassification || !groups.product.length}
                 loading={selectors.productClassification && !groups.product.length}
                 data={groups.product}
                 onChange={val => actions.updateSelector('product', val)}
-                selected={selectors.product} />
+                selected={selectors.product}
+                onUpdate={val => actions.updateSelector('product', val)}
+                defaultValue={defaultSelectors.network.product} />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">Kind</label>
@@ -200,7 +209,9 @@ class NetworkPanel extends Component {
               <ItemSelector
                 type="kind"
                 onChange={val => actions.updateSelector('kind', val)}
-                selected={selectors.kind} />
+                selected={selectors.kind}
+                onUpdate={val => actions.updateSelector('kind', val)}
+                defaultValue={defaultSelectors.network.kind} />
             </div>
             <div className="form-group">
               <label htmlFor="dates" className="control-label">Dates</label>
@@ -211,14 +222,18 @@ class NetworkPanel extends Component {
                     type="dateMin"
                     data={dateMinOptions}
                     onChange={val => actions.updateSelector('dateMin', val)}
-                    selected={selectors.dateMin} />
+                    selected={selectors.dateMin}
+                    onUpdate={val => actions.updateSelector('dateMin', val)}
+                    defaultValue={defaultSelectors.network.dateMin} />
                 </div>
                 <div className="col-xs-6">
                   <ItemSelector
                     type="dateMax"
                     data={dateMaxOptions}
                     onChange={val => actions.updateSelector('dateMax', val)}
-                    selected={selectors.dateMax} />
+                    selected={selectors.dateMax}
+                    onUpdate={val => actions.updateSelector('dateMax', val)}
+                    defaultValue={defaultSelectors.network.dateMax} />
                 </div>
               </div>
             </div>
