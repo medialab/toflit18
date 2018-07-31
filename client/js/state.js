@@ -142,7 +142,7 @@ const defaultState = {
         creating: false,
         graph: null,
         data: null,
-        classification: { name: "Simplification", slug: "simplification", id: 3, author: "toflit18"},
+        classification: null,
         nodeSize: 'flows',
         edgeSize: 'flows',
         labelThreshold: 5,
@@ -151,14 +151,14 @@ const defaultState = {
         selectors: {
           productClassification: null,
           countryClassification: null,
-          childClassification: { author: "toflit18", id: 10, name: "SITC EN", slug: "sitc_en"},
+          childClassification: null,
           country: null,
-          child: [{ id: 615179, name: "Raw materials, inedible, except fuels" }],
+          child: [],
           direction: null,
           kind: null,
-          sourceType: { name: "National best guess", value: "National best guess" },
-          dateMin: {name: 1750, id: 1750},
-          dateMax: {name: 1750, id: 1750}
+          sourceType: null,
+          dateMin: null,
+          dateMax: null
         },
         groups: {
           country: [],

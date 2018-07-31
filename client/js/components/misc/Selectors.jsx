@@ -10,6 +10,8 @@ import {prettyPrint} from '../../lib/helpers';
 import {debounce, identity} from 'lodash';
 import cls from 'classnames';
 
+
+
 /**
  * Classification selector.
  */
@@ -18,6 +20,14 @@ export class ClassificationSelector extends Component {
     data: PropTypes.array.isRequired,
     type: PropTypes.string.isRequired
   };
+
+  componentWillUpdate(nextProps, nextState){
+    // we might have default selection to initialize
+    // test if we have new data
+   if (this.props.defaultValue && !this.props.selected && nextProps.data.length > 0){
+      nextProps.onUpdate(nextProps.data.filter(d => d.name === this.props.defaultValue)[0])
+    }
+  }
 
   renderOption(o) {
     const classifiedItemsCount = prettyPrint(o.itemsCount - o.unclassifiedItemsCount);
@@ -61,8 +71,10 @@ export class ClassificationSelector extends Component {
         options={classifications}
         optionRenderer={this.renderOption}
         onChange={this.props.onChange}
+        onUpdate={this.props.onUpdate}
         value={this.props.selected}
-        valueRenderer={this.renderOption} />
+        valueRenderer={this.renderOption}
+        defaultValue={this.props.defaultValue} />
     );
   }
 }
@@ -100,11 +112,25 @@ export class ItemSelector extends Component {
 
   constructor(props, context) {
     super(props, context);
-
     const type = props.type;
 
     this.compulsoryOptions = (TEMPLATES[type] || []).map(o => ({...o, special: true}));
   }
+
+  componentWillUpdate(nextProps, nextState){
+    // we might have default selection to initialize
+    // once we got the props ready we test if we can find the name of the default value
+    if (nextProps.defaultValue && !nextProps.selected && nextProps.data.length > 0){
+        if (['product', 'country'].indexOf(nextProps.type) != -1 ) {
+          // products and country are multiple selectors, let's iterate trough selection
+          nextProps.onUpdate(nextProps.defaultValue.map(s => nextProps.data.filter(d => d.name === s)[0]))
+        }
+        else {
+          nextProps.onUpdate(nextProps.data.filter(d => d.name === nextProps.defaultValue)[0])
+        }
+      }    
+  }
+
 
   search(input, callback) {
     const warning = {
@@ -149,8 +175,10 @@ export class ItemSelector extends Component {
       disabled,
       loading,
       onChange,
+      onUpdate,
       selected,
-      type
+      type,
+      defaultValue
     } = this.props;
 
     const isTooLong = data.length > MAX_LIST_SIZE;
@@ -164,9 +192,11 @@ export class ItemSelector extends Component {
       labelKey: 'name',
       value: selected || !trulyDisabled && this.compulsoryOptions[0],
       onChange,
+      onUpdate,
       placeholder: PLACEHOLDERS[type],
       optionRenderer: this.renderOption,
-      valueRenderer: this.renderOption
+      valueRenderer: this.renderOption,
+      defaultValue
     };
 
     if (type!='product' && type != 'country')

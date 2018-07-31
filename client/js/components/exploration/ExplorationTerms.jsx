@@ -26,6 +26,7 @@ import {
 } from '../../actions/terms';
 import {Link} from 'react-router';
 import Icon from '../misc/Icon.jsx';
+const defaultSelectors = require('../../../config/defaultVizSelectors.json');
 
 /**
  * Helper used to get the child classifications of the given classification.
@@ -172,13 +173,7 @@ class TermsPanel extends Component {
     if (classification)
       childClassifications = getChildClassifications(classificationIndex, classification);
 
-        // defautl value handler
-    if (selectors.child && groups.child.length===0){
-      const c = selectors.child;
-      actions.update('childClassification', selectors.childClassification);
-      actions.update('child', c);
-    }
-
+    
     return (
       <VizLayout
         title="Product terms"
@@ -195,7 +190,9 @@ class TermsPanel extends Component {
             loading={!classifications.product.length}
             data={classifications.product}
             onChange={actions.selectTerms}
-            selected={classification} />
+            onUpdate={actions.selectTerms}
+            selected={classification}
+            defaultValue={defaultSelectors.ExplorationTerms.classification} />
         </div>
 
         { /* Left panel */ }
@@ -210,7 +207,9 @@ class TermsPanel extends Component {
                 data={sourceTypesOptions}
                 loading={!sourceTypesOptions.length}
                 onChange={actions.update.bind(null, 'sourceType')}
-                selected={selectors.sourceType} />
+                selected={selectors.sourceType}
+                onUpdate={v => actions.update('sourceType', v)}
+                defaultValue={defaultSelectors.ExplorationTerms.sourceType} />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
@@ -222,14 +221,18 @@ class TermsPanel extends Component {
                 loading={!classifications.product.length}
                 data={childClassifications}
                 onChange={actions.update.bind(null, 'childClassification')}
-                selected={selectors.childClassification} />
+                selected={selectors.childClassification} 
+                onUpdate={v => actions.update('childClassification', v)}
+                defaultValue={defaultSelectors.ExplorationTerms.childClassification}/>
               <ItemSelector
                 type="product"
                 disabled={!selectors.childClassification || !groups.child.length}
                 loading={selectors.childClassification && !groups.child.length}
                 data={groups.child}
                 onChange={actions.update.bind(null, 'child')}
-                selected={selectors.child} />
+                selected={selectors.child}
+                onUpdate={v => actions.update('child', v)}
+                defaultValue={defaultSelectors.ExplorationTerms.child}/>
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">Country</label>
@@ -239,14 +242,18 @@ class TermsPanel extends Component {
                 loading={!classifications.country.length}
                 data={classifications.country.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'countryClassification')}
-                selected={selectors.countryClassification} />
+                selected={selectors.countryClassification}
+                onUpdate={v => actions.update('countryClassification', v)}
+                defaultValue={defaultSelectors.ExplorationTerms.countryClassification}/>
               <ItemSelector
                 type="country"
                 disabled={!selectors.countryClassification || !groups.country.length}
                 loading={selectors.countryClassification && !groups.country.length}
                 data={groups.country}
                 onChange={actions.update.bind(null, 'country')}
-                selected={selectors.country} />
+                selected={selectors.country}
+                onUpdate={v => actions.update('country', v)}
+                defaultValue={defaultSelectors.ExplorationTerms.country}/>
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
@@ -256,7 +263,9 @@ class TermsPanel extends Component {
                 loading={!directions}
                 data={directions || []}
                 onChange={actions.update.bind(null, 'direction')}
-                selected={selectors.direction} />
+                selected={selectors.direction} 
+                onUpdate={v => actions.update('direction', v)}
+                defaultValue={defaultSelectors.ExplorationTerms.direction} />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">Kind</label>
@@ -264,7 +273,9 @@ class TermsPanel extends Component {
               <ItemSelector
                 type="kind"
                 onChange={actions.update.bind(null, 'kind')}
-                selected={selectors.kind} />
+                selected={selectors.kind}
+                onUpdate={v => actions.update('kind', v)}
+                defaultValue={defaultSelectors.ExplorationTerms.kind} />
             </div>
             <div className="form-group">
               <label htmlFor="dates" className="control-label">Dates</label>
@@ -275,14 +286,18 @@ class TermsPanel extends Component {
                     type="dateMin"
                     data={dateMinOptions}
                     onChange={actions.update.bind(null, 'dateMin')}
-                    selected={selectors.dateMin} />
+                    selected={selectors.dateMin}
+                    onUpdate={v => actions.update('dateMin', v)}
+                    defaultValue={defaultSelectors.ExplorationTerms.dateMin} />
                 </div>
                 <div className="col-xs-6">
                   <ItemSelector
                     type="dateMax"
                     data={dateMaxOptions}
                     onChange={actions.update.bind(null, 'dateMax')}
-                    selected={selectors.dateMax} />
+                    selected={selectors.dateMax}
+                    onUpdate={v => actions.update('dateMax', v)}
+                    defaultValue={defaultSelectors.ExplorationTerms.dateMax} />
                 </div>
               </div>
             </div>
