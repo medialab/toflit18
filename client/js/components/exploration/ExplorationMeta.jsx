@@ -108,7 +108,7 @@ export default class ExplorationMeta extends Component {
       if (state.dataModel.value === 'product') return 'products';
       if (state.dataModel.value === 'country') return 'countries';
     }
-    return 'classified items';
+    return '...';
   }
   canDisplaySecondViz() {
     const {state} = this.props;
@@ -433,7 +433,7 @@ export default class ExplorationMeta extends Component {
             this.legendContainer = el;
           }}>
           <ul className="list-unstyled list-legend">
-            <li><span style={{backgroundColor: '#8d4d42'}} />Number direction</li>
+            <li><span style={{backgroundColor: '#8d4d42'}} />Number of {this.getUnit()}</li>
             <li><span style={{backgroundColor: '#4F7178'}} />Number of flows</li>
           </ul>
           <p>Barcharts are sorted by average number of flows per year.</p>
