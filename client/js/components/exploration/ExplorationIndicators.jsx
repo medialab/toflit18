@@ -23,6 +23,7 @@ import {
 } from '../../actions/indicators';
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
+import { checkDefaultValues } from './utils';
 
 // TODO: move branching to sub component for optimized rendering logic
 // TODO: better use pure rendering logic
@@ -206,7 +207,7 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'sourceType')}
                 selected={selectors.sourceType}
                 onUpdate={v => actions.update('sourceType', v)}
-                defaultValue={defaultSelectors.indicators.sourceType} />
+                defaultValue={defaultSelectors.indicators['selectors.sourceType']} />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
@@ -218,7 +219,7 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification}
                 onUpdate={v => actions.update('productClassification', v)}
-                defaultValue={defaultSelectors.indicators.productClassification} />
+                defaultValue={defaultSelectors.indicators['selectors.productClassification']} />
               <ItemSelector
                 type="product"
                 disabled={!selectors.productClassification || !groups.product.length}
@@ -227,7 +228,7 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'product')}
                 selected={selectors.product}
                 onUpdate={v => actions.update('product', v)}
-                defaultValue={defaultSelectors.indicators.product} />
+                defaultValue={defaultSelectors.indicators['selectors.product']} />
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">Location</label>
@@ -239,7 +240,7 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'countryClassification')}
                 selected={selectors.countryClassification}
                 onUpdate={v => actions.update('countryClassification', v)}
-                defaultValue={defaultSelectors.indicators.countryClassification} />
+                defaultValue={defaultSelectors.indicators['selectors.countryClassification']} />
               <ItemSelector
                 type="country"
                 disabled={!selectors.countryClassification || !groups.country.length}
@@ -248,7 +249,7 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'country')}
                 selected={selectors.country}
                 onUpdate={v => actions.update('country', v)}
-                defaultValue={defaultSelectors.indicators.country} />
+                defaultValue={defaultSelectors.indicators['selectors.country']} />
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
@@ -260,7 +261,7 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'direction')}
                 selected={selectors.direction}
                 onUpdate={v => actions.update('direction', v)}
-                defaultValue={defaultSelectors.indicators.direction} />
+                defaultValue={defaultSelectors.indicators['selectors.direction']} />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">Kind</label>
@@ -270,7 +271,7 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
                 onUpdate={v => actions.update('kind', v)}
-                defaultValue={defaultSelectors.indicators.kind} />
+                defaultValue={defaultSelectors.indicators['selectors.kind']} />
             </div>
             <div className="form-group-fixed">
               <button
@@ -352,17 +353,18 @@ export default class ExplorationIndicators extends Component {
     );
   }
 
-  componentDidMount(){
-    const {
-      actions,
-       state: {
-        lines
+  componentDidUpdate(prevProps, prevState, snapshot){
+    
+    // default network rendering
+    // only if : 
+    // - there is no graph already
+    if (this.props.state.lines.length === 0) {
+      console.log("checking default")
+      // - default values are set
+      if (checkDefaultValues(defaultSelectors.indicators, this.props.state)){
+        console.log("trigering default addLine")
+        this.props.actions.addLine();
       }
-    } = this.props;
-
-    // default line creation : if no line already drawn we trigger default line creation
-    if(lines.length === 0){
-      actions.addLine();
     }
   }
 }

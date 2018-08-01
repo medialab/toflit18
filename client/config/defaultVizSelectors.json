@@ -1,20 +1,20 @@
 {
 	"terms":{
       "classification": "Simplification",
-      "childClassification": "SITC EN",
-      "child": ["Raw materials, inedible, except fuels"],
-      "sourceType": "National best guess",
-      "dateMin": 1750,
-      "dateMax": 1750
+      "selectors.childClassification": "SITC EN",
+      "selectors.child": ["Raw materials, inedible, except fuels"],
+      "selectors.sourceType": "National best guess",
+      "selectors.dateMin": 1750,
+      "selectors.dateMax": 1750
     },
     "network":{
       "classification": "Grouping",
-      "sourceType": "National best guess",
-      "dateMin": 1750,
-      "dateMax": 1750
+      "selectors.sourceType": "National best guess",
+      "selectors.dateMin": 1750,
+      "selectors.dateMax": 1750
     },
     "indicators":{
-      "sourceType": "National best guess"
+      "selectors.sourceType": "National best guess"
     },
     "metadata":{
       "dataModel": "Direction"

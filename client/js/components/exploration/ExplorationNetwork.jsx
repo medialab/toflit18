@@ -26,7 +26,9 @@ import {
 } from '../../actions/network';
 import {Link} from 'react-router';
 import Icon from '../misc/Icon.jsx';
+
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
+import { checkDefaultValues } from './utils';
 
 const NUMBER_FIXED_FORMAT = format(',.2f'),
       NUMBER_FORMAT = format(',');
@@ -179,7 +181,7 @@ class NetworkPanel extends Component {
                 onChange={val => actions.updateSelector('sourceType', val)}
                 selected={selectors.sourceType} 
                 onUpdate={val => actions.updateSelector('sourceType', val)}
-                defaultValue={defaultSelectors.network.sourceType} />
+                defaultValue={defaultSelectors.network['selectors.sourceType']} />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
@@ -192,7 +194,7 @@ class NetworkPanel extends Component {
                 onChange={val => actions.updateSelector('productClassification', val)}
                 selected={selectors.productClassification} 
                 onUpdate={val => actions.updateSelector('productClassification', val)}
-                defaultValue={defaultSelectors.network.productClassification} />
+                defaultValue={defaultSelectors.network['selectors.productClassification']} />
               <ItemSelector
                 type="product"
                 disabled={!selectors.productClassification || !groups.product.length}
@@ -201,7 +203,7 @@ class NetworkPanel extends Component {
                 onChange={val => actions.updateSelector('product', val)}
                 selected={selectors.product}
                 onUpdate={val => actions.updateSelector('product', val)}
-                defaultValue={defaultSelectors.network.product} />
+                defaultValue={defaultSelectors.network['selectors.product']} />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">Kind</label>
@@ -211,12 +213,12 @@ class NetworkPanel extends Component {
                 onChange={val => actions.updateSelector('kind', val)}
                 selected={selectors.kind}
                 onUpdate={val => actions.updateSelector('kind', val)}
-                defaultValue={defaultSelectors.network.kind} />
+                defaultValue={defaultSelectors.network['selectors.kind']} />
             </div>
             <div className="form-group">
               <label htmlFor="dates" className="control-label">Dates</label>
               <small className="help-block">Choose one date or a range data</small>
-              <div className="row">
+              <div className="row">   
                 <div className="col-xs-6">
                   <ItemSelector
                     type="dateMin"
@@ -224,7 +226,7 @@ class NetworkPanel extends Component {
                     onChange={val => actions.updateSelector('dateMin', val)}
                     selected={selectors.dateMin}
                     onUpdate={val => actions.updateSelector('dateMin', val)}
-                    defaultValue={defaultSelectors.network.dateMin} />
+                    defaultValue={defaultSelectors.network['selectors.dateMin']} />
                 </div>
                 <div className="col-xs-6">
                   <ItemSelector
@@ -233,7 +235,7 @@ class NetworkPanel extends Component {
                     onChange={val => actions.updateSelector('dateMax', val)}
                     selected={selectors.dateMax}
                     onUpdate={val => actions.updateSelector('dateMax', val)}
-                    defaultValue={defaultSelectors.network.dateMax} />
+                    defaultValue={defaultSelectors.network['selectors.dateMax']} />
                 </div>
               </div>
             </div>
@@ -378,13 +380,16 @@ class NetworkPanel extends Component {
     );
   }
 
-  componentDidMount(){
-    const {
-      actions
-    } = this.props;
+  componentDidUpdate(){
 
-    // default network rendering
-    actions.addNetwork();
+     if (!this.props.state.graph && !this.props.state.loading) {
+      // - default values are set
+      console.log('checking default')
+      if (checkDefaultValues(defaultSelectors.network, this.props.state) && !this.props.state.loading){
+        console.log("trigering default addNetwork")
+        this.props.actions.addNetwork();
+      }
+    }
 
   }
 }

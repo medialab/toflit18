@@ -27,6 +27,7 @@ import {
 import {Link} from 'react-router';
 import Icon from '../misc/Icon.jsx';
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
+import { checkDefaultValues } from './utils';
 
 /**
  * Helper used to get the child classifications of the given classification.
@@ -209,7 +210,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'sourceType')}
                 selected={selectors.sourceType}
                 onUpdate={v => actions.update('sourceType', v)}
-                defaultValue={defaultSelectors.terms.sourceType} />
+                defaultValue={defaultSelectors.terms['selectors.sourceType']} />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
@@ -223,7 +224,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'childClassification')}
                 selected={selectors.childClassification} 
                 onUpdate={v => actions.update('childClassification', v)}
-                defaultValue={defaultSelectors.terms.childClassification}/>
+                defaultValue={defaultSelectors.terms['selectors.childClassification']}/>
               <ItemSelector
                 type="product"
                 disabled={!selectors.childClassification || !groups.child.length}
@@ -232,7 +233,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'child')}
                 selected={selectors.child}
                 onUpdate={v => actions.update('child', v)}
-                defaultValue={defaultSelectors.terms.child}/>
+                defaultValue={defaultSelectors.terms['selectors.child']}/>
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">Country</label>
@@ -244,7 +245,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'countryClassification')}
                 selected={selectors.countryClassification}
                 onUpdate={v => actions.update('countryClassification', v)}
-                defaultValue={defaultSelectors.terms.countryClassification}/>
+                defaultValue={defaultSelectors.terms['selectors.countryClassification']}/>
               <ItemSelector
                 type="country"
                 disabled={!selectors.countryClassification || !groups.country.length}
@@ -253,7 +254,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'country')}
                 selected={selectors.country}
                 onUpdate={v => actions.update('country', v)}
-                defaultValue={defaultSelectors.terms.country}/>
+                defaultValue={defaultSelectors.terms['selectors.country']}/>
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
@@ -265,7 +266,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'direction')}
                 selected={selectors.direction} 
                 onUpdate={v => actions.update('direction', v)}
-                defaultValue={defaultSelectors.terms.direction} />
+                defaultValue={defaultSelectors.terms['selectors.direction']} />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">Kind</label>
@@ -275,7 +276,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
                 onUpdate={v => actions.update('kind', v)}
-                defaultValue={defaultSelectors.terms.kind} />
+                defaultValue={defaultSelectors.terms['selectors.kind']} />
             </div>
             <div className="form-group">
               <label htmlFor="dates" className="control-label">Dates</label>
@@ -288,7 +289,7 @@ class TermsPanel extends Component {
                     onChange={actions.update.bind(null, 'dateMin')}
                     selected={selectors.dateMin}
                     onUpdate={v => actions.update('dateMin', v)}
-                    defaultValue={defaultSelectors.terms.dateMin} />
+                    defaultValue={defaultSelectors.terms['selectors.dateMin']} />
                 </div>
                 <div className="col-xs-6">
                   <ItemSelector
@@ -297,7 +298,7 @@ class TermsPanel extends Component {
                     onChange={actions.update.bind(null, 'dateMax')}
                     selected={selectors.dateMax}
                     onUpdate={v => actions.update('dateMax', v)}
-                    defaultValue={defaultSelectors.terms.dateMax} />
+                    defaultValue={defaultSelectors.terms['selectors.dateMax']} />
                 </div>
               </div>
             </div>
@@ -432,13 +433,19 @@ class TermsPanel extends Component {
       </VizLayout>
     );
   }
-  componentDidMount(){
-    const {
-      actions
-    } = this.props;
 
+  componentDidUpdate(prevProps, prevState, snapshot){
+    
     // default network rendering
-    actions.addChart();
-
+    // only if : 
+    // - there is no graph already
+    if (!this.props.state.graph && !this.props.state.creating) {
+      console.log("checking default")
+      // - default values are set
+      if (checkDefaultValues(defaultSelectors.terms, this.props.state) && !this.props.state.creating){
+        console.log("trigering default addChart")
+        this.props.actions.addChart();
+      }
+    }
   }
 }

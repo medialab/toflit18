@@ -120,6 +120,7 @@ export class ItemSelector extends Component {
   componentWillUpdate(nextProps, nextState){
     // we might have default selection to initialize
     // once we got the props ready we test if we can find the name of the default value
+    //console.log(nextProps.data, nextProps.defaultValue)
     if (nextProps.defaultValue && !nextProps.selected && nextProps.data.length > 0){
         if (['product', 'country'].indexOf(nextProps.type) != -1 ) {
           // products and country are multiple selectors, let's iterate trough selection
@@ -127,6 +128,20 @@ export class ItemSelector extends Component {
         }
         else {
           nextProps.onUpdate(nextProps.data.filter(d => d.name === nextProps.defaultValue)[0])
+        }
+      }    
+  }
+
+  componentDidMount(){
+    // we might have default selection to initialize
+    // once we got the props ready we test if we can find the name of the default value
+    if (this.props.defaultValue && !this.props.selected && this.props.data.length > 0){
+        if (['product', 'country'].indexOf(this.props.type) != -1 ) {
+          // products and country are multiple selectors, let's iterate trough selection
+          this.props.onUpdate(this.props.defaultValue.map(s => this.props.data.filter(d => d.name === s)[0]))
+        }
+        else {
+          this.props.onUpdate(this.props.data.filter(d => d.name === this.props.defaultValue)[0])
         }
       }    
   }

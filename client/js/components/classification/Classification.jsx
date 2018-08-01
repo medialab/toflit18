@@ -371,9 +371,12 @@ export default class Classification extends Component {
     } = this.props
     // default value refresh trigger
     if(rows.length===0){
-      this.submit()
+      console.log('submit')
+      this.props.actions.search()
     }
 
   }
+
+
 }
 

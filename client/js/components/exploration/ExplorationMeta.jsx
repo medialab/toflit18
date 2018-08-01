@@ -30,6 +30,7 @@ import {
 } from '../../actions/metadata';
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
+import { checkDefaultValues } from './utils';
 
 /**
  * Helper used to get the child classifications of the given classification.
@@ -248,7 +249,7 @@ export default class ExplorationMeta extends Component {
                 actions.update('sourceType', null);
                 actions.selectModel(val);
               }}
-              defaultValue={defaultSelectors.metadata.sourceType} />
+              defaultValue={defaultSelectors.metadata.dataModel} />
           </div>
           {
             /* eslint-disable no-nested-ternary */
@@ -262,7 +263,7 @@ export default class ExplorationMeta extends Component {
                   onChange={actions.selectType}
                   selected={state.dataType}
                   onUpdate={actions.selectType}
-                  defaultValue={defaultSelectors.metadata.product} />
+                  defaultValue={defaultSelectors.metadata['selectors.product']} />
               </div> :
             (state.dataModel && state.dataModel.value === 'country') ?
               <div className="form-group">
@@ -274,7 +275,7 @@ export default class ExplorationMeta extends Component {
                   onChange={actions.selectType}
                   selected={state.dataType}
                   onUpdate={actions.selectType}
-                  defaultValue={defaultSelectors.metadata.country} />
+                  defaultValue={defaultSelectors.metadata['selectors.country']} />
               </div> :
               undefined
               /* eslint-enable no-nested-ternary */
@@ -297,7 +298,7 @@ export default class ExplorationMeta extends Component {
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification}
                 onUpdate={v => actions.update('productClassification', v)}
-                defaultValue={defaultSelectors.metadata.productClassification} />
+                defaultValue={defaultSelectors.metadata['selectors.productClassification']} />
               <ItemSelector
                 type="product"
                 disabled={!selectors.productClassification || !groups.product.length}
@@ -306,7 +307,7 @@ export default class ExplorationMeta extends Component {
                 onChange={actions.update.bind(null, 'product')}
                 selected={selectors.product}
                 onUpdate={v => actions.update('product', v)}
-                defaultValue={defaultSelectors.metadata.product} />
+                defaultValue={defaultSelectors.metadata['selectors.product']} />
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">{
@@ -320,7 +321,7 @@ export default class ExplorationMeta extends Component {
                 onChange={actions.update.bind(null, 'countryClassification')}
                 selected={selectors.countryClassification}
                 onUpdate={v => actions.update('countryClassification', v)}
-                defaultValue={defaultSelectors.metadata.countryClassification} />
+                defaultValue={defaultSelectors.metadata['selectors.countryClassification']} />
               <ItemSelector
                 type="country"
                 disabled={!selectors.countryClassification || !groups.country.length}
@@ -329,7 +330,7 @@ export default class ExplorationMeta extends Component {
                 onChange={actions.update.bind(null, 'country')}
                 selected={selectors.country}
                 onUpdate={v => actions.update('country', v)}
-                defaultValue={defaultSelectors.metadata.country} />
+                defaultValue={defaultSelectors.metadata['selectors.country']} />
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Sources</label>
@@ -342,7 +343,7 @@ export default class ExplorationMeta extends Component {
                 onChange={actions.update.bind(null, 'sourceType')}
                 selected={selectors.sourceType}
                 onUpdate={v => actions.update('sourceType', v)}
-                defaultValue={defaultSelectors.metadata.sourceType} />
+                defaultValue={defaultSelectors.metadata['selectors.sourceType']} />
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
@@ -355,7 +356,7 @@ export default class ExplorationMeta extends Component {
                 onChange={actions.update.bind(null, 'direction')}
                 selected={selectors.direction}
                 onUpdate={v => actions.update('direction', v)}
-                defaultValue={defaultSelectors.metadata.direction} />
+                defaultValue={defaultSelectors.metadata['selectors.direction']} />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">Kind</label>
@@ -365,7 +366,7 @@ export default class ExplorationMeta extends Component {
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
                 onUpdate={v => actions.update('kind', v)}
-                defaultValue={defaultSelectors.metadata.kind} />
+                defaultValue={defaultSelectors.metadata['selectors.kind']} />
             </div>
             <div className="form-group-fixed">
               <button
@@ -464,19 +465,16 @@ export default class ExplorationMeta extends Component {
       </VizLayout>
     );
   }
-  componentDidMount(){
-    const {
-      actions,
-      state
-    } = this.props;
 
-    const {
-      loading
-    } = state;
+  componentDidUpdate(){
 
-    // default chart rendered only if no existing cahrt
-    if (!state.flowsPerYear && !!state.dataModel && !loading){
-      actions.addChart();
+     if (!this.props.state.flowsPerYear && !!this.props.state.dataModel && !this.props.state.loading) {
+      // - default values are set
+      console.log('checking default')
+      if (checkDefaultValues(defaultSelectors.metadata, this.props.state) && !this.props.state.loading){
+        console.log("trigering default addNetwork")
+        this.props.actions.addChart();
+      }
     }
 
   }

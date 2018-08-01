@@ -145,7 +145,7 @@ const defaultState = {
         classification: null,
         nodeSize: 'flows',
         edgeSize: 'flows',
-        labelThreshold: 5,
+        labelThreshold: 3,
         labelSizeRatio: 2,
         loading: false,
         selectors: {
