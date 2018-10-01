@@ -357,6 +357,10 @@ const OUTSIDER_SOURCES_NODES = {
  * order to produce the graph to import.
  */
 
+// helper
+// we want every product to have their first letter capitalized and leave the rest as in the source
+const capitalize_product = p => _.capitalize(p[0])+p.slice(1,p.length)
+
 /**
  * Consuming the flows.
  */
@@ -384,6 +388,7 @@ function importer(csvLine) {
     rawYear: csvLine.year,
     import: '' + isImport,
   };
+
 
   // Year
   if (csvLine.year) {
@@ -453,8 +458,13 @@ function importer(csvLine) {
     nodeData.direction = direction;
   if (originalDirection)
     nodeData.originalDirection = originalDirection;
-  if (csvLine.marchandises)
-    nodeData.product = csvLine.marchandises;
+
+
+
+  if (csvLine.marchandises){
+    // we want every product name to be have a capital on the first letter
+    nodeData.product = capitalize_product(csvLine.marchandises);
+  }
   if (csvLine.sourcetype)
     nodeData.sourceType = csvLine.sourcetype;
 
@@ -491,10 +501,11 @@ function importer(csvLine) {
 
   // Product
   if (csvLine.marchandises) {
-    const alreadyLinked = INDEXES.products[csvLine.marchandises];
+    const product = capitalize_product(csvLine.marchandises)
+    const alreadyLinked = INDEXES.products[product];
 
-    const productNode = indexedNode(INDEXES.products, ['Product', 'Item'], csvLine.marchandises, {
-      name: csvLine.marchandises
+    const productNode = indexedNode(INDEXES.products, ['Product', 'Item'], product, {
+      name: product
     });
 
     BUILDER.relate(flowNode, 'OF', productNode);
