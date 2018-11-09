@@ -889,8 +889,8 @@ async.series({
         .slice(1)
         .map(line => ({
           original: cleanText(line[0]),
-          modified: cleanText(line[1]),
-          note: cleanText(line[2])
+          modified: cleanText(line[2]),
+          note: cleanText(line[4])
         }))
         .forEach(orthographicProduct);
 
@@ -908,7 +908,7 @@ async.series({
         .slice(1)
         .map(line => ({
           orthographic: cleanText(line[0]),
-          simplified: cleanText(line[1])
+          simplified: cleanText(line[2])
         }))
         .forEach(simplifiedProduct);
 
