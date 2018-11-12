@@ -24,8 +24,9 @@ export class ClassificationSelector extends Component {
   componentWillUpdate(nextProps, nextState){
     // we might have default selection to initialize
     // test if we have new data
-   if (this.props.defaultValue && !this.props.selected && nextProps.data.length > 0){
+   if (!this.defaultTriggered && this.props.defaultValue && !this.props.selected && nextProps.data.length > 0){
       nextProps.onUpdate(nextProps.data.filter(d => d.name === this.props.defaultValue)[0])
+      this.defaultTriggered = true;
     }
   }
 
@@ -113,6 +114,7 @@ export class ItemSelector extends Component {
   constructor(props, context) {
     super(props, context);
     const type = props.type;
+    this.defaultTriggered = false;
 
     this.compulsoryOptions = (TEMPLATES[type] || []).map(o => ({...o, special: true}));
   }
@@ -120,8 +122,8 @@ export class ItemSelector extends Component {
   componentWillUpdate(nextProps, nextState){
     // we might have default selection to initialize
     // once we got the props ready we test if we can find the name of the default value
-    //console.log(nextProps.data, nextProps.defaultValue)
-    if (nextProps.defaultValue && !nextProps.selected && nextProps.data.length > 0){
+
+    if (!this.defaultTriggered && nextProps.defaultValue && !nextProps.selected && nextProps.data.length > 0){
         if (['product', 'country'].indexOf(nextProps.type) != -1 ) {
           // products and country are multiple selectors, let's iterate trough selection
           nextProps.onUpdate(nextProps.defaultValue.map(s => nextProps.data.filter(d => d.name === s)[0]))
@@ -129,6 +131,7 @@ export class ItemSelector extends Component {
         else {
           nextProps.onUpdate(nextProps.data.filter(d => d.name === nextProps.defaultValue)[0])
         }
+        this.defaultTriggered = true;
       }    
   }
 
