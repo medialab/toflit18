@@ -29,6 +29,7 @@ import Icon from '../misc/Icon.jsx';
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
 import { checkDefaultValues } from './utils';
 
+
 /**
  * Helper used to get the child classifications of the given classification.
  */
@@ -440,7 +441,6 @@ class TermsPanel extends Component {
     // only if : 
     // - there is no graph already
     if (!this.props.state.graph && !this.props.state.creating) {
-      console.log("checking default")
       // - default values are set
       if (checkDefaultValues(defaultSelectors.terms, this.props.state) && !this.props.state.creating){
         console.log("trigering default addChart")

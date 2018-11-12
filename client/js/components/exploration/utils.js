@@ -9,10 +9,8 @@ function resolvePathInState(path, state){
 
 export function checkDefaultValues(defaults, state) {
 
-	let shouldTriggerViz = true;
 	for (let selector in defaults) {
 		const currentValue = resolvePathInState(selector, state);
-		console.log(selector,currentValue, defaults[selector], state)
 		
 		if (!currentValue)
 		  	return false;
