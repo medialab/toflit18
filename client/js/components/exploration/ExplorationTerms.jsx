@@ -106,9 +106,10 @@ class TermsPanel extends Component {
   }
 
   export() {
+    const now = new Date();
     exportCSV({
       data: this.props.state.data,
-      name: 'Toflit18_Global_Trade_Countries_Terms_view.csv',
+      name: `TOFLIT18_Product_terms_${now.toLocaleString('se-SE').replace(' ','_')}.csv`
     });
   }
 

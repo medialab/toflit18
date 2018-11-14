@@ -72,9 +72,10 @@ class NetworkPanel extends Component {
   }
 
   export() {
+    const now = new Date();
     exportCSV({
       data: this.props.state.data,
-      name: 'Toflit18_Global_Trade_Countries_Network_view.csv',
+      name: `TOFLIT18_Locations_${now.toLocaleString('se-SE').replace(' ','_')}.csv`
     });
   }
 

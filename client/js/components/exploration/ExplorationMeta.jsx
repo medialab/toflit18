@@ -131,7 +131,7 @@ export default class ExplorationMeta extends Component {
 
     exportCSV({
       data: state.perYear,
-      name: `Toflit18_Meta_view ${name} data_per_year.csv`,
+      name: `TOFLIT18_Metadata_${name}_data_per_year.csv`,
     });
   }
   exportFlows() {
@@ -144,13 +144,20 @@ export default class ExplorationMeta extends Component {
 
     exportCSV({
       data: formatArrayToCSV(state.flowsPerYear || []),
-      name: `Toflit18_Meta_view ${name} flows_per_year.csv`,
+      name: `TOFLIT18_Metadata_${name}_flows_per_year.csv`,
     });
   }
   exportCharts() {
+    const {state} = this.props;
+    const name = compact([
+      state.dataModel.name,
+      state.dataType && state.dataType.name,
+      state.filename
+    ]).join(' - ');
+
     exportSVG({
       nodes: [this.legendContainer, this.vizContainer],
-      name: 'charts.svg'
+      name: `TOFLIT18_Metadata_${name}_charts.svg`
     });
   }
 

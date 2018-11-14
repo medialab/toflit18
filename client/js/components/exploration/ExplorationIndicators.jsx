@@ -146,17 +146,18 @@ export default class ExplorationIndicators extends Component {
       // add all lines values in an array to export data in one csv
       arrayDataLines = arrayDataLines.concat(dataLines);
     });
-
+    const now = new Date();
     exportCSV({
       data: arrayDataLines,
-      name: 'Indicators_Number_of_directions_per_year.csv',
+      name: `TOFLIT18_Time_series_${now.toLocaleString('se-SE').replace(' ','_')}.csv`,
     });
   }
 
   exportCharts() {
+    const now = new Date();
     exportSVG({
       nodes: [this.legendContainer, this.charts.vizContainer],
-      name: 'charts.svg'
+      name: `TOFLIT18_Time_series_${now.toLocaleString('se-SE').replace(' ','_')}.svg`
     });
   }
 
