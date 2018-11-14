@@ -1081,8 +1081,8 @@ async.series({
         .slice(1)
         .map(line => ({
           original: cleanText(line[0]),
-          orthographic: cleanText(line[1]),
-          note: cleanText(line[2])
+          orthographic: cleanText(line[2]),
+          note: cleanText(line[4])
         }))
         .forEach(orthographicCountry);
       return next();
@@ -1098,8 +1098,8 @@ async.series({
         .slice(1)
         .map(line => ({
           orthographic: cleanText(line[0]),
-          simplified: cleanText(line[1]),
-          note: cleanText(line[2])
+          simplified: cleanText(line[2]),
+          note: cleanText(line[4])
         }))
         .forEach(simplifiedCountry);
       return next();
@@ -1115,8 +1115,8 @@ async.series({
         .slice(1)
         .map(line => ({
           simplified: cleanText(line[0]),
-          grouped: cleanText(line[1]),
-          note: cleanText(line[2])
+          grouped: cleanText(line[2]),
+          note: cleanText(line[4])
         }))
         .forEach(groupedCountry);
       return next();
@@ -1132,8 +1132,8 @@ async.series({
         .slice(1)
         .map(line => ({
           simplified: cleanText(line[0]),
-          obrien: cleanText(line[1]),
-          note: cleanText(line[2])
+          obrien: cleanText(line[2]),
+          note: cleanText(line[4])
         }))
         .forEach(obrienCountry);
       return next();
