@@ -13,7 +13,6 @@ import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
 import {exportCSV} from '../../lib/exports';
-import {buildDateMin} from '../../lib/helpers';
 import {
   selectTerms,
   selectNodeSize,
@@ -28,6 +27,8 @@ import {Link} from 'react-router';
 import Icon from '../misc/Icon.jsx';
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
 import { checkDefaultValues } from './utils';
+
+import specs from '../../../specs.json';
 
 
 /**
@@ -155,20 +156,12 @@ class TermsPanel extends Component {
     let dateMaxOptions, dateMinOptions;
 
     dateMin = actions.updateDate('dateMin');
-    if (dateMin) {
-      dateMaxOptions = dateMax ? dateMax : buildDateMin(dateMin.id, dateMax);
-    }
-    else {
-      dateMaxOptions = dateMax ? dateMax : buildDateMin(dateMin, dateMax);
-    }
+    dateMaxOptions = range((dateMin&&dateMin.id)||specs.limits.minYear, specs.limits.maxYear).map(d => {return {name: d, id: d}});
+    
 
     dateMax = actions.updateDate('dateMax');
-    if (dateMax) {
-      dateMinOptions = dateMin ? dateMin : buildDateMin(dateMin, dateMax.id);
-    }
-    else {
-      dateMinOptions = dateMin ? dateMin : buildDateMin(dateMin, dateMax);
-    }
+    dateMinOptions = range(specs.limits.minYear, (dateMax&&dateMax.id)||specs.limits.maxYear).map(d => {return {name: d, id: d}});
+    
 
     let childClassifications = [];
 
