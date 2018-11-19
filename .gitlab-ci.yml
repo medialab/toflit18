@@ -13,7 +13,7 @@ build_client_staging:
   stage: build
   script:
     - docker build -t $CLIENT_IMAGE_NAME -f ./client/Dockerfile .
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
     - docker push $CLIENT_IMAGE_NAME
   environment:
     name: staging
@@ -25,7 +25,7 @@ build_api_staging:
   stage: build
   script:
     - docker build -t $API_IMAGE_NAME -f Dockerfile .
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
     - docker push $API_IMAGE_NAME
   environment:
     name: staging
