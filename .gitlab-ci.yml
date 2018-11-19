@@ -6,8 +6,8 @@ stages:
 
 variables:
   STAGING_BASEURL: http://toflit18-pprd.medialab.sciences-po.fr
-  CLIENT_IMAGE_NAME: $CI_REGISTRY/toflit18-client:$CI_COMMIT_REF_SLUG
-  API_IMAGE_NAME: $CI_REGISTRY/toflit18-api:$CI_COMMIT_REF_SLUG
+  CLIENT_IMAGE_NAME: $CI_REGISTRY/scpomedialab/toflit18-client:$CI_COMMIT_REF_SLUG
+  API_IMAGE_NAME: $CI_REGISTRY/scpomedialab/toflit18-api:$CI_COMMIT_REF_SLUG
 
 build_client_staging:
   stage: build
