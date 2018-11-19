@@ -1,0 +1,46 @@
+image: docker:stable
+
+stages:
+  - build
+  - deploy
+
+variables:
+  STAGING_BASEURL: http://toflit18-pprd.medialab.sciences-po.fr
+  CLIENT_IMAGE_NAME: $CI_REGISTRY/toflit18-client:$CI_COMMIT_REF_SLUG
+  API_IMAGE_NAME: $CI_REGISTRY/toflit18-api:$CI_COMMIT_REF_SLUG
+
+build_client_staging:
+  stage: build
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build -t $CLIENT_IMAGE_NAME -f ./client/Dockerfile .
+    - docker push $CLIENT_IMAGE_NAME
+  environment:
+    name: staging
+    url: $STAGING_BASEURL
+  only:
+    - master
+
+build_api_staging:
+  stage: build
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build -t $API_IMAGE_NAME -f Dockerfile .
+    - docker push $API_IMAGE_NAME
+  environment:
+    name: staging
+    url: $STAGING_BASEURL
+  only:
+    - master
+
+deploy_staging:
+  stage: deploy
+  image: cdrx/rancher-gitlab-deploy
+  script:
+    - upgrade --rancher-key $RANCHER_ACCESS_KEY --rancher-secret $RANCHER_SECRET_KEY --rancher-url $RANCHER_URL --environment $RANCHER_STAGING_ENV --stack $RANCHER_STACK --service $RANCHER_API_SERVICE --start-before-stopping
+    - upgrade --rancher-key $RANCHER_ACCESS_KEY --rancher-secret $RANCHER_SECRET_KEY --rancher-url $RANCHER_URL --environment $RANCHER_STAGING_ENV --stack $RANCHER_STACK --service $RANCHER_CLIENT_SERVICE --start-before-stopping
+  environment:
+    name: staging
+    url: $STAGING_BASEURL
+  only:
+    - master
