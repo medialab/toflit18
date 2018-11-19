@@ -1,14 +1,14 @@
 version: '2'
 services:
   client:
-    build: client
+    build:
+      context: .
+      dockerfile: client/Dockerfile
     restart: unless-stopped
     links:
       - api
     ports:
       - 80:80
-    volumes_from:
-      - api
   api:
     build: .
     restart: unless-stopped
