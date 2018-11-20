@@ -14,6 +14,8 @@ RUN cd /toflit18/ \
     && npm cache clean --force \
     && rm -fr /root/.npm /tmp/npm*
 
+RUN chown -R node:node /toflit18/
+
 WORKDIR /toflit18
 
 EXPOSE 4000
