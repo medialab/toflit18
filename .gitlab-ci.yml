@@ -19,7 +19,7 @@ build_client_staging:
     name: staging
     url: $STAGING_BASEURL
   only:
-    - master
+    - staging
 
 build_api_staging:
   stage: build
@@ -31,7 +31,7 @@ build_api_staging:
     name: staging
     url: $STAGING_BASEURL
   only:
-    - master
+    - staging
 
 deploy_staging:
   stage: deploy
@@ -43,4 +43,4 @@ deploy_staging:
     name: staging
     url: $STAGING_BASEURL
   only:
-    - master
+    - staging
