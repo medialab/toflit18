@@ -47,7 +47,7 @@ deploy_staging:
   only:
     - staging
 
-deploy_staging:
+deploy_production:
   stage: deploy
   image: cdrx/rancher-gitlab-deploy
   script:
