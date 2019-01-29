@@ -63,7 +63,7 @@ export default class SourcesPerDirections extends Component {
 
     // Sorting using the mean share heuristic from RICARDO
     const sums = {};
-
+    // sums contains the sum of flows by year
     unsorted.forEach(d => d.data.forEach(item => {
       if (!sums[item.year])
         sums[item.year] = 0;
@@ -73,13 +73,9 @@ export default class SourcesPerDirections extends Component {
     const means = new Array(unsorted.length);
 
     unsorted.forEach((d, i) => {
-      means[i] = 0;
-      d.data.forEach(item => {
-        means[i] += item.flows / sums[item.year];
-      });
+      means[i] = d.data.reduce(((acc, i) => acc + i.flows), 0) / d.data.length;
     });
 
-    means.forEach((d, i) => (means[i] = d / unsorted[i].data.length));
 
     const directionIndex = {};
 
