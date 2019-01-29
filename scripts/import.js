@@ -359,7 +359,7 @@ const OUTSIDER_SOURCES_NODES = {
 
 // helper
 // we want every product to have their first letter capitalized and leave the rest as in the source
-const capitalize_product = p => _.capitalize(p[0])+p.slice(1,p.length)
+const capitalizeProduct = p => _.capitalize(p[0]) + p.slice(1, p.length);
 
 /**
  * Consuming the flows.
@@ -459,11 +459,9 @@ function importer(csvLine) {
   if (originalDirection)
     nodeData.originalDirection = originalDirection;
 
-
-
-  if (csvLine.marchandises){
+  if (csvLine.marchandises) {
     // we want every product name to be have a capital on the first letter
-    nodeData.product = capitalize_product(csvLine.marchandises);
+    nodeData.product = capitalizeProduct(csvLine.marchandises);
   }
   if (csvLine.sourcetype)
     nodeData.sourceType = csvLine.sourcetype;
@@ -501,7 +499,7 @@ function importer(csvLine) {
 
   // Product
   if (csvLine.marchandises) {
-    const product = capitalize_product(csvLine.marchandises)
+    const product = capitalizeProduct(csvLine.marchandises);
     const alreadyLinked = INDEXES.products[product];
 
     const productNode = indexedNode(INDEXES.products, ['Product', 'Item'], product, {
@@ -962,7 +960,7 @@ async.series({
         .slice(1)
         .map(line => ({
           simplified: cleanText(line[0]),
-          canada: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+          canada: cleanText(line[2])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
         .forEach(canadaProduct);
 
