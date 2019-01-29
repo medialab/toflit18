@@ -10,26 +10,29 @@
 #
 
 # Variables
-TOFLIT18_NEO4J_PATH=/home/pgi/dev/toflit18/neo4j-community-3.1.7
+TOFLIT18_NEO4J_PATH=/home/pgi/dev/toflit18/neo4j
 
 npm run import -- -- --path ../toflit18_data/
 
 # Stopping the neo4j service
-$TOFLIT18_NEO4J_PATH/bin/neo4j stop
+bash $TOFLIT18_NEO4J_PATH/bin/neo4j stop
 
 # Erasing the current database
-rm -rf $TOFLIT18_NEO4J_PATH/data/graph.db &&
+rm -rf $TOFLIT18_NEO4J_PATH/data/databases/graph.db &&
 
 # Creating the new database
 rm -rf graph.db &&
-$TOFLIT18_NEO4J_PATH/bin/neo4j-import --into graph.db --nodes ./.output/nodes.csv --relationships ./.output/edges.csv &&
+bash $TOFLIT18_NEO4J_PATH/bin/neo4j-import --into graph.db --nodes ./.output/nodes.csv --relationships ./.output/edges.csv &&
 
 # Replacing the database
-sudo mv graph.db $TOFLIT18_NEO4J_PATH/data/graph.db &&
-sudo chown -R neo4j:adm $TOFLIT18_NEO4J_PATH/data/databases/graph.db &&
+sudo mv graph.db $TOFLIT18_NEO4J_PATH/data/databases/ &&
+#sudo chown -R neo4j:adm $TOFLIT18_NEO4J_PATH/data/databases/graph.db &&
 
 # Restarting the databse
-$TOFLIT18_NEO4J_PATH/bin/neo4j start
+bash $TOFLIT18_NEO4J_PATH/bin/neo4j start
 
 # Building indices
 npm run indices
+
+# quantities
+npm run quantities  -- -- --path ../toflit18_data/
