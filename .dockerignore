@@ -1,0 +1,6 @@
+neo4j_data
+Dockerfile
+*.md
+docker-compose.yml
+docs
+
