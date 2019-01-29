@@ -9,8 +9,6 @@ import filterItemsByIdsRegexps from './utils';
 
 const {Expression, Query} = decypher;
 
-
-
 const ModelCreateLine = {
 
   /**
@@ -64,7 +62,7 @@ const ModelCreateLine = {
 
 
       if (product) {
-        const productFilter = filterItemsByIdsRegexps(product, 'pci') 
+        const productFilter = filterItemsByIdsRegexps(product, 'pci');
 
         whereProduct.and(productFilter.expression);
         query.params(productFilter.params);
@@ -82,7 +80,7 @@ const ModelCreateLine = {
       query.params({countryClassification: database.int(countryClassification)});
 
       if (country) {
-        const countryFilter = filterItemsByIdsRegexps(country, 'cci')
+        const countryFilter = filterItemsByIdsRegexps(country, 'cci');
 
         whereCountry.and(countryFilter.expression);
         query.params(countryFilter.params);
