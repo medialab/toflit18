@@ -73,7 +73,7 @@ export default class SourcesPerDirections extends Component {
     const means = new Array(unsorted.length);
 
     unsorted.forEach((d, i) => {
-      means[i] = d.data.reduce(((acc, i) => acc + i.flows), 0) / d.data.length;
+      means[i] = d.data.reduce((acc, j) => acc + j.flows, 0) / d.data.length;
     });
 
 
