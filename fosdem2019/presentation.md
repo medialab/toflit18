@@ -224,6 +224,25 @@ ORDER BY year;
 ```
 ---
 
+## Actually #1  	
+An index-based memory structure  
+like ElastiSearch  
+would have done the job.  
+Because we didn't have time to implement  
+classification modification User Interface!
+
+<span class='fragment'>Which we should do</span><span class='fragment'>, one day</span>  
+
+---
+## Actually #2  
+Modifying a parent classification   
+implies to update its children.  
+We wrote an [already-sacred algorithm](https://github.com/medialab/toflit18/blob/master/scripts/rewire.js)   
+to automatically rewire the tree  
+using set theory.
+
+---
+
 > Exploratory data analysis  
 on top of the neo4J database  
 using JavaScript technologies
@@ -499,10 +518,14 @@ http://toflit18.medialab.sciences-po.fr/#/exploration/terms
 
 > To be able to change classifications without having to reindex
 
-In Social Sciences we need this feature.  
-It's hard.  
-Graph database supporting hyperedges like   
-noe4J can help.
+In *Social Sciences* we need this feature.  
+  
+It's *hard*.  
+Both on *data modeling* and  
+on *User Interface*.  
+
+Graph database with a documentation page  
+on *hyperedges* like noe4J can help.
 
 ---
 
