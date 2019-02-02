@@ -7,9 +7,9 @@ Guillaume Plique [@yomguithereal](https://twitter.com/yomguithereal)
 [FOSDEM'19, Graph dev room, February the 2nd 2019](https://fosdem.org/2019/schedule/event/graph_french_trade_study/)
 
 ---
-## 18th c. French trade statistics
 
-France started to compile **statistics about its trade in 1716**.  
+> France has started to compile **statistics about its trade<br>since 1716**.  
+
 The "Bureau de la Balance du Commerce" (Balance of Trade's Office) centralized local reports of imports/exports by commodities produced by french tax regions.  
 Many statistical manuscript volumes produced by this process have been preserved in French archives.
 
@@ -17,7 +17,7 @@ Many statistical manuscript volumes produced by this process have been preserved
 ![one TOFLIT18 source](./assets/toflit18_source.png)
 ---
 <blockquote>
-This communication will relate how and why we used network technologies to create a **research instrument**¹ based on the transcriptions of those archives in the TOFLIT18² research project. 
+How and why we used network technologies to create a **research instrument**¹ based on the transcriptions of those archives in the TOFLIT18² research project. 
 </blockquote>
 
 ¹ *To explore visually 18th century French trade*  
@@ -84,8 +84,8 @@ Articles réunis ⋅ Indigo ⋅ Mercerie ⋅ **Eau de vie** ⋅ Librairie ⋅ Vi
 
 ## Classification tree
 
-hierarchic: progressive aggregation 
-concurrent: alternative ways to aggregate
+**hierarchic**: progressive aggregation  
+**concurrent**: alternative ways to aggregate
   
 ```python
 source  
@@ -130,7 +130,7 @@ where trade flows are edges between trade partners.
 ---
 
 #### why ? 
-- trade flows actually forms a network
+- trade flows actually form a network
 - to dynamicaly aggregate flows by any classification
 - to be able to change classifications without having to reindex
 - because we used it with pleasure [see FOSDEM 2016](https://archive.fosdem.org/2016/schedule/event/graph_processing_mysql_to_graph/)
@@ -141,10 +141,11 @@ where trade flows are edges between trade partners.
 ![neo4j data model](./assets/neo4j-schema.png)
 ---
 <center>
-![CARTESIAN PRODUCT](./assets/cartesianProducts.png)
+![CARTESIAN PRODUCT](./assets/cartesianProducts.png)  
+A lot of cartesian products later...
 </center>
 ---
-
+Till November the 23rd 2016
 ```
 MATCH  (pc)-[:HAS]->(pg)-[:AGGREGATES*1..]->(pi)  
 WHERE id(pc) = 12 AND id(pg) = 657832  
@@ -160,9 +161,6 @@ WITH collect(pi.name) AS products
 		RETURN  count(f) AS count, sum(toFloat(f.value)) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType
 		ORDER BY f.year;
 ```
----
-
-screenshot git commit
 
 ---
 <blockquote>
@@ -170,12 +168,20 @@ screenshot git commit
 </blockquote>
 
 ---
-This horrible solution implies to first index in the flow nodes the values of the product's node.  
+This horrible solution implies to  
+index the product nodes' value  
+in the flow nodes.  
+      
 Thanks god only at source level  
-It's a bad workaround leveraging lucene indeces hidden inside Neo4J instead of using graph traversals.
-Traversal of what ?
-Of our flow node.
-Our top degree node in our data model graph.
+  
+It's a bad workaround leveraging lucene indices hidden inside Neo4J instead of using graph traversals.  
+  
+Traversal of what ?  
+Of our **flow node**.  
+---
+The flow node is our **top degree node** in our data model graph.
+![neo4j data model](./assets/neo4j-schema.png)
+
 ---
 <blockQuote>
 Our classification system introduces the need for hyperedges.
@@ -183,6 +189,17 @@ Our classification system introduces the need for hyperedges.
 This is the keyword which helped us find [the good path](https://neo4j.com/docs/stable/cypher-cookbook-hyperedges.html).
 ---
 
+> I learned this  
+on November the 23rd 2016  
+while preparing a talk proposal  
+to @graphdevroom 2017  
+wich I didn't submit since I felt stupid.
+
+---
+<!-- .slide: data-background-image="./assets/github_commit_hyeredges.png"-->
+
+[then this commit happenned](https://github.com/medialab/toflit18/commit/a5493ae8b399c374e043e8ba6bfa52275b9ed541#diff-bc5a4f5cd869b74189034f944b88641e)
+---
 ```
 MATCH 
 	(d:Direction)<-[:FROM|:TO]-(f:Flow), (f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification), 
@@ -220,7 +237,9 @@ Data Science
 
 http://github.com/medialab/toflit18
 
-And soon all the data on github in a datapackage format.
+And soon all the data on github  
+in a [datapackage format](https://frictionlessdata.io/specs/data-package/)  
+*\#opendata*
 
 ---
 
@@ -228,25 +247,24 @@ And soon all the data on github in a datapackage format.
 ---
 > but also a powerful visual object  
 ---
-> to explore trade geographical structures 
+> 1- to explore French trade's geographical structures 
 ---
 <!-- .slide: data-background-image="./assets/locations.png"-->
 > [Locations](http://toflit18.medialab.sciences-po.fr/#/exploration/network)
 ---
+<!-- .slide: data-background-iframe="https://shifted-maps.com/" -->
 
-> Seen recently on Twitter
-
-<p lang="en" dir="ltr">Shifted Maps - Revealing spatio-temporal topologies in movement data. Check out our <a href="https://twitter.com/visapnet?ref_src=twsrc%5Etfw">@visapnet</a> paper on this hybrid visualization technique integrating maps and network diagrams. By <a href="https://twitter.com/HeikeOtten_?ref_src=twsrc%5Etfw">@HeikeOtten_</a> <a href="https://twitter.com/len_hil?ref_src=twsrc%5Etfw">@len_hil</a> <a href="https://twitter.com/tillnm?ref_src=twsrc%5Etfw">@tillnm</a> <a href="https://twitter.com/borism?ref_src=twsrc%5Etfw">@borism</a> and <a href="https://twitter.com/nrchtct?ref_src=twsrc%5Etfw">@nrchtct</a> 
- </p>&mdash; Till Nagel (@tillnm) <a href="https://twitter.com/tillnm/status/1089994498229366784?ref_src=twsrc%5Etfw">28 janvier 2019</a>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
+<small style="margin-top:400px; background:rgba(255,255,255,0.7)">
+**Shifted Maps - Revealing spatio-temporal topologies in movement data**. Check out our <a href="https://twitter.com/visapnet?ref_src=twsrc%5Etfw">@visapnet</a> paper on this hybrid visualization technique integrating maps and network diagrams. By <a href="https://twitter.com/HeikeOtten_?ref_src=twsrc%5Etfw">@HeikeOtten_</a> <a href="https://twitter.com/len_hil?ref_src=twsrc%5Etfw">@len_hil</a> <a href="https://twitter.com/tillnm?ref_src=twsrc%5Etfw">@tillnm</a> <a href="https://twitter.com/borism?ref_src=twsrc%5Etfw">@borism</a> and <a href="https://twitter.com/nrchtct?ref_src=twsrc%5Etfw">@nrchtct</a> 
+&mdash;<br> Till Nagel (@tillnm) <a href="https://twitter.com/tillnm/status/1089994498229366784?ref_src=twsrc%5Etfw">28 janvier 2019</a>
+</small>
 ---
-> and trade products' specialization patterns.
+> 2- and trade products' specialization patterns.
 ---
 <!-- .slide: data-background-image="./assets/semicolons_in_source.png"-->
 ---
-> ; represents 
-handwritten {  
+> *;* represents 
+handwritten *{*  
 used in archive sources  
 to spare time and ink  
 by using general to specific  
@@ -261,7 +279,7 @@ reporting practices
 were not applied equally
 
 ---
-> ; have been replaced  
+> we decided to replace *;*  
 by glue-words when aggregated 
 products name in sources  
 by the **Ortographic normalization**
@@ -270,9 +288,10 @@ classification
 ---
 > Thus we compute a  
 [Product's terms](https://github.com/medialab/toflit18/blob/master/lib/tokenizer.js)  
-[Co-occurences network]()
+[Co-occurences network](https://github.com/medialab/toflit18/blob/master/api/model/terms.js)
 ---
-> we might use Stochastic Block modeling  
+> we might use  
+stochastic block modeling  
 as a clustering algorithm  
 analysing bidirectional generic-specific terms' relationships 
 ---
@@ -280,10 +299,22 @@ analysing bidirectional generic-specific terms' relationships
 discover bottom-up  
 thematic ontology
 ---
-<blockQuote>
+![Products' Terms co-occ network of La Rochelle exports 1720-1729](./assets/toflit18_term_network_LaRochelle_17201729_exports.png)<!-- .element: style="margin-top: 0;" title="Products' Terms co-occ network of La Rochelle exports 1720-1729"-->
+---
+<!-- .slide: data-background-image="./assets/product_terms_network.png" -->
+<div style="background: rgba(255,255,255,0.7)">
+<h2>Final démo time</h2>
+Which I'll not have time to do since that's my last slide.  
+http://toflit18.medialab.sciences-po.fr/#/exploration/terms
+</div>
+---
+# Merci !
 
-</blockQuote>
+> This would not have happened  
+without economic historians
 
-<blockQuote>
-We will finally show how graph model was not only a convenient way to store and query our data but also a poweful visual object to explore trade geographical structures and trade products' specialization patterns.
-</blockQuote>
+[Guillaume Daudin](https://leda.dauphine.fr/fr/membre/detail-cv/profile/guillaume-daudin.html) - Paris Dauphine  
+[Loïc Charles](http://univ-paris8.academia.edu/LoicCharles/CurriculumVitae) - Paris 8 & Ined  
+[Pierre Gervais](http://savoirs.ens.fr/conferencier.php?id=295) - Paris 8 & EHESS  
+[and more](http://toflit18.medialab.sciences-po.fr/#/about)...  
+

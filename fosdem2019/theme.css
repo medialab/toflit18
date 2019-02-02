@@ -325,3 +325,8 @@ body {
 .reveal p.smaller {
   font-size: 0.8em;
 }
+
+
+.smaller > strong {
+  color: #CB0015; 
+}
