@@ -437,7 +437,7 @@ in a [datapackage format](https://frictionlessdata.io/specs/data-package/)
 ---
 > 1- to explore French trade's geographical structures 
 ---
-<!-- .slide: data-background-image="./assets/locations.png"-->
+<!-- .slide: data-background-image="./assets/Locations_grouping_Local_Canada_exclu_total.png"-->
 > [Locations](http://toflit18.medialab.sciences-po.fr/#/exploration/network)
 ---
 <!-- .slide: data-background-iframe="https://shifted-maps.com/" -->
