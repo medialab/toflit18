@@ -478,16 +478,16 @@ classification
 [Product's terms](https://github.com/medialab/toflit18/blob/master/lib/tokenizer.js)  
 [Co-occurences network](https://github.com/medialab/toflit18/blob/master/api/model/terms.js)
 ---
-> we might use  
-stochastic block modeling  
-as a clustering algorithm  
-analysing bidirectional generic-specific terms' relationships 
+![Products' Terms co-occ network of La Rochelle exports 1720-1729](./assets/toflit18_term_network_LaRochelle_17201729_exports.png)<!-- .element: style="margin-top: 0;" title="Products' Terms co-occ network of La Rochelle exports 1720-1729"-->
 ---
 > A great way to  
 discover bottom-up  
 thematic ontology
 ---
-![Products' Terms co-occ network of La Rochelle exports 1720-1729](./assets/toflit18_term_network_LaRochelle_17201729_exports.png)<!-- .element: style="margin-top: 0;" title="Products' Terms co-occ network of La Rochelle exports 1720-1729"-->
+> we might use  
+stochastic block modeling  
+as a clustering algorithm  
+analysing bidirectional generic-specific terms' relationships 
 ---
 <!-- .slide: data-background-image="./assets/product_terms_network.png" -->
 <div style="background: rgba(255,255,255,0.7)">
