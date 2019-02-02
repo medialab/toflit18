@@ -52,7 +52,7 @@ French cities *<⋅⋅⋅⋅ flow ⋅⋅⋅⋅>* countries<br>
 
 </p>
 ---
-<span class="fragment"></span>
+
 <blockQuote>
 We had to design  
 a classification system  
@@ -117,6 +117,11 @@ With more content related findings
 at Digital Humanities 2019, Rotterdam, NL  
   
 *I hope, paper under review.*
+
+Note: 
+1- classification view, product orthographic, simplification, canada, canada on source 
+2- metadata view: Direction, Canada (exclusivement Canada), Total
+3- time series: Local, Canada (exclusivement Canada), La Rochelle | Marseille
 ---
 
 
@@ -140,8 +145,9 @@ where trade flows are edges between trade partners.
 
 ![neo4j data model](./assets/neo4j-schema.png)
 ---
+Till somewhere in 2015-6
 <center>
-![CARTESIAN PRODUCT](./assets/cartesianProducts.png)  
+![CARTESIAN PRODUCT](./assets/cartesianProducts.png)<!-- .element: style="width:100%;margin-top: 0;" title="warning:  This query builds a cartesian product between disconnected patterns.If a part of a query contains multiple disconnected patterns, this will build a cartesian product between all those parts. This may produce a large amount of data and slow down query processing. While occasionally intended, it may often be possible to reformulate the query that avoids the use of this cross product, perhaps by adding a relationship between the different parts or by using OPTIONAL MATCH (identifiers are: ())"-->  
 A lot of cartesian products later...
 </center>
 ---
@@ -158,6 +164,7 @@ WITH collect(pi.name) AS products
 			f.sourceType = "Local"  
 			AND f.country IN countries   
 			AND f.product IN products  
+			AND f.direction = 'Nantes'  
 		RETURN  count(f) AS count, sum(toFloat(f.value)) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType
 		ORDER BY f.year;
 ```
@@ -202,15 +209,16 @@ wich I didn't submit since I felt stupid.
 ---
 ```
 MATCH 
-	(d:Direction)<-[:FROM|:TO]-(f:Flow), (f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification), 
-	(f:Flow)-[:FROM|:TO]->(c:Country), 
-	(c:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification),
+	(d:Direction)<-[:FROM|:TO]-(f:Flow),  
+	(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification),  
+	(f:Flow)-[:FROM|:TO]->(c:Country),  
+	(c:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification),  
 	(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)
 WHERE 
 	id(d) = 23124 AND (id(pc) = 12 AND (id(pci) IN [657832])) AND (id(cc) = 16 AND (id(cci) IN [658498])) AND s.type = "Local"
 RETURN 
 	count(f) AS count, sum(toFloat(f.value)) AS value, f.year AS year,  collect(distinct(f.direction)) as nb_direction
-ORDER BY f.year;
+ORDER BY year;
 ```
 ---
 
@@ -309,7 +317,7 @@ http://toflit18.medialab.sciences-po.fr/#/exploration/terms
 </div>
 ---
 
-> to be able to change classifications without having to reindex
+> To be able to change classifications without having to reindex
 
 In Social Sciences we need this feature.  
 It's hard.  
@@ -318,7 +326,7 @@ noe4J can help.
 
 ---
 
-# Merci !
+## Merci !
 
 > This would not have happened  
 without economic historians
