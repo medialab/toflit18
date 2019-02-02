@@ -308,6 +308,16 @@ Which I'll not have time to do since that's my last slide.
 http://toflit18.medialab.sciences-po.fr/#/exploration/terms
 </div>
 ---
+
+> to be able to change classifications without having to reindex
+
+In Social Sciences we need this feature.  
+It's hard.  
+Graph database supporting hyperedges like   
+noe4J can help.
+
+---
+
 # Merci !
 
 > This would not have happened  
