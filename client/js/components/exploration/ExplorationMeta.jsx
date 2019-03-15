@@ -301,7 +301,7 @@ export default class ExplorationMeta extends Component {
               <ClassificationSelector
                 type="product"
                 loading={!classifications.product.length}
-                data={(state.dataType && state.dataType.model === 'country') ? childClassifications : classifications.product.filter(c => !c.source)}
+                data={(state.dataType && state.dataType.model === 'product') ? childClassifications : classifications.product.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification}
                 onUpdate={v => actions.update('productClassification', v)}
