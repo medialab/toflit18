@@ -924,7 +924,7 @@ async.series({
         .slice(1)
         .map(line => ({
           simplified: cleanText(line[0]),
-          medicinal: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+          medicinal: cleanText(line[2])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
         .forEach(medicinalProduct);
 
@@ -942,7 +942,7 @@ async.series({
         .slice(1)
         .map(line => ({
           simplified: cleanText(line[0]),
-          hamburg: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+          hamburg: cleanText(line[2])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
         .forEach(hamburgProduct);
 
@@ -977,7 +977,7 @@ async.series({
         .slice(1)
         .map(line => ({
           simplified: cleanText(line[0]),
-          edentreaty: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+          edentreaty: cleanText(line[2])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
         .forEach(edentreatyProduct);
 
@@ -994,7 +994,7 @@ async.series({
         .slice(1)
         .map(line => ({
           simplified: cleanText(line[0]),
-          grain: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+          grain: cleanText(line[2])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
         .forEach(grainProduct);
 
@@ -1011,7 +1011,7 @@ async.series({
         .slice(1)
         .map(line => ({
           simplified: cleanText(line[0]),
-          coton: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+          coton: cleanText(line[2])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
         .forEach(cotonProduct);
 
@@ -1028,7 +1028,7 @@ async.series({
         .slice(1)
         .map(line => ({
           simplified: cleanText(line[0]),
-          sitc: cleanText(line[1])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
+          sitc: cleanText(line[2])//+cleanText(line[1]) > 0 ? cleanText(line[1]) : null
         }))
         .forEach(sitcProduct);
 
