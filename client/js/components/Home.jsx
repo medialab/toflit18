@@ -160,7 +160,7 @@ export default class Home extends Component {
                   <p>The source code of this application is available on github under license AGPLv3 <a href="https://github.com/medialab/toflit18">https://github.com/medialab/toflit18</a></p>
                   <b>TOFLIT18 corpus</b>
                   <p>The data you can extract from this webside are under ODbL license. <a href="http://opendatacommons.org/licenses/odbl/1.0/">http://opendatacommons.org/licenses/odbl/1.0/</a></p>
-                  <p>To access the full data collected by the project, please contact Guillaume Daudin guillaume.daudin@dauphine.fr</p>
+                  <p>To access the full data collected by the project, please contact Guillaume Daudin guillaume.daudin@dauphine.psl.eu</p>
               </div>
             </div>
           </div>

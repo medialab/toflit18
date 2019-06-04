@@ -74,7 +74,7 @@ export default class Legal extends Component {
               </p>
               <p>
                 To access the full data collected by the project, please contact
-                Guillaume Daudin (guillaume.daudin@dauphine.fr).
+                Guillaume Daudin (guillaume.daudin@dauphine.psl.eu).
               </p>
               <p className="lead">misc</p>
               <p>
