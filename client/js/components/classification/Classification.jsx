@@ -115,7 +115,7 @@ export default class Classification extends Component {
     return (
       <VizLayout
         title="Classifications"
-        description="Select a type of data (locations or products) and check the content of each classification. If you spot an error or want to create another classification, please send an email to guillaume.daudin@dauphine.fr"
+        description="Select a type of data (locations or products) and check the content of each classification. If you spot an error or want to create another classification, please send an email to guillaume.daudin@dauphine.psl.eu"
         leftPanelName="Filters"
         rightPanelName="Caption" >
         { /* Top of the left panel */ }

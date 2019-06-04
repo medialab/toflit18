@@ -196,11 +196,11 @@ export default class About extends Component {
               <p>
                 For history related issues, ask Loïc Charles
                 (lcharles02@univ-paris8.fr) and Guillaume Daudin
-                (guillaume.daudin@dauphine.fr)
+                (guillaume.daudin@dauphine.psl.eu)
               </p>
               <p>
                 For basic guidance in using this website, ask Guillaume Daudin
-                (guillaume.daudin@dauphine.fr)
+                (guillaume.daudin@dauphine.psl.eu)
               </p>
               <p>
                 For advanced technical issues, ask Paul Girard
