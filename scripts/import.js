@@ -194,21 +194,44 @@ const EDGE_INDEXES = {
 
 // loading classification index
 const csvData = fs.readFileSync(DATA_PATH + INDEX_CLASSIFICATIONS, 'utf-8');
-const classificationsIndex = parseSync(csvData, {delimiter: ',', columns: true});
+let classificationsIndex = parseSync(csvData, {delimiter: ',', columns: true});
 
 const slugifyClassif = classification => `${classification.model}_${classification.slug}`;
 
 const CLASSIFICATION_NODES = {};
+// building the tree to set the right process order
+const children = {};
+const roots = [];
+const classificationBySlug = {};
 classificationsIndex.forEach(classification => {
-
-  CLASSIFICATION_NODES[slugifyClassif(classification)] = BUILDER.save({
+    CLASSIFICATION_NODES[slugifyClassif(classification)] = BUILDER.save({
     name: classification.name,
     model: classification.model,
     slug: classification.slug,
     description: classification.description,
     source: classification.slug === 'source' ? 'true' : ''
   }, 'Classification');
+  if (classification.slug === 'source')
+    roots.push(slugifyClassif(classification));
+  else
+    children[`${classification.model}_${classification.parentSlug}`] = (children[`${classification.model}_${classification.parentSlug}`] || []).concat(slugifyClassif(classification));
+  classificationBySlug[slugifyClassif(classification)] = classification;
 });
+
+// reorder classifications by depth from root to leaf order in the classif tree.
+classificationsIndex = _.flatten(roots.map(r => {
+  let cs = children[r];
+  const orderedClassif = [];
+  // iterate through the tree by depth
+  while (cs && cs.length > 0) {
+    // store current children
+    orderedClassif.push(cs);
+    // get grand children if exist
+    cs = cs.reduce((acc, c) => acc.concat(children[c]), []).filter(e => e);
+  }
+  return [r].concat(_.flatten(orderedClassif)).map(s => classificationBySlug[s]);
+}));
+
 
 // create authors
 const CLASSIFICATION_AUTHORS = {};
@@ -613,7 +636,7 @@ async.series({
 
   classification(next) {
     console.log('Processing classifications...');
-    async.parallel(classificationsIndex.filter(c => c.slug !== 'source').map(c => {
+    async.series(classificationsIndex.filter(c => c.slug !== 'source').map(c => {
       return cb => {
         console.log(`  --  ${c.model} ${c.name}`);
         const consumer = makeClassificationConsumer(
