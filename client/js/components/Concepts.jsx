@@ -70,10 +70,9 @@ export default class Concepts extends Component {
                       </li>
                       <li>
                         The <b>orthographic normalization</b> normalizes the
-                        spelling of commodities and partners. The formal rules
-                        used it TOFLIT18 were designed by Pierre Gervais (who
-                        did most of the work) METTRE LE LIEN VERS LE MANUEL DE
-                        PIERRE GERVAIS SUR LA NORMALISATION ORTHOGRAPHIQUE
+                        spelling of commodities and partners. <a href="./assets/doc/ReglesNormalisationOrtho.pdf">The formal rules
+                        used it TOFLIT18</a> were designed by Pierre Gervais (who
+                        did most of the work)
                       </li>
                       <li>
                         The <b>simplification</b> brings together different
@@ -87,9 +86,8 @@ export default class Concepts extends Component {
                   <li>
                     <b>Thematic classifications</b> are taxonomies created by
                     the team and individual researchers for specific purposes:
-                    e.g. the SITC classification. The classification rules were
-                    designed by Pierre Gervais METTRE LE MANUEL DE PIERRE
-                    GERVAIS SUR SITC
+                    e.g. the SITC classification. <a href="./assets/doc/Definitions_sitc18_rev3.pdf">The classification rules were
+                    designed by Pierre Gervais</a>
                   </li>
                 </ul>
               </p>

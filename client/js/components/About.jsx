@@ -158,12 +158,13 @@ export default class About extends Component {
                   <li>D’Onofrio, Federico</li>
                   <li>Hervelin, Jérémy</li>
                   <li>Hollegien, Pierre</li>
+                  <li>Jackson, Stephen</li>
                   <li>Loise, Matthias</li>
                   <li>Mouton, Cyril</li>
                   <li>Perret, Florence</li>
                   <li>Ponton, Corentin</li>
                   <li>Stricot, Maëlle</li>
-                  <li>Tirindell,i Elisa Maria</li>
+                  <li>Tirindelli, Elisa Maria</li>
                   <li>Vidal, Quentin</li>
                 </ul>
               </p>
@@ -175,6 +176,7 @@ export default class About extends Component {
                   <li>Hanzaoui, Chaker</li>
                   <li>Konaté, Demba</li>
                   <li>Mai, Saadia</li>
+                  <li>Maneuvrier-Hervieu, Paul</li>
                   <li>Milewski, Sophie</li>
                   <li>Moutou, Laura</li>
                   <li>Nahoudha, Ahmed</li>

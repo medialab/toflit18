@@ -32,13 +32,17 @@ export default class Sources extends Component {
               <p className="lead">
                 This autoselects the best source about trade by product x
                 partner for the whole of France in each year.
+                This is "National toutes directions tous partenaires" for 1750,
+                "Objet Général" from 1754 to 1782, "Résumé" in 1787-1789 and 1797-1821.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Local best guess</h2>
               <p className="lead">
                 This autoselects the best source about trade by product x
-                partner x direction in each year.
+                partner x direction in each year. The selected sources are mostly of the
+                "Local" (1714-1780), except for 1750 when we use "National toutes directions
+                tous partenaires".
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
@@ -48,6 +52,9 @@ export default class Sources extends Component {
                 partner for the whole of France. They always include the value
                 of the flows. From 1771, they include quantities and / or unit
                 prices.
+                The 1752 Objet Général does not include imports from the West Indies.
+                We have added to the Objet Général imports through 
+                the French East Indian Company when available on the same year (up to 1771)
               </p>
               <p>
                 <ul>
@@ -59,18 +66,16 @@ export default class Sources extends Component {
                   <li>AN F12 247</li>
                   <li>AN F12 248</li>
                   <li>AN F12 249</li>
-                  <li>BM Rouen, Fonds Montbret, 155-1 (2e partie)</li>
+                  <li>BM Rouen, Fonds Montbret, 155-1</li>
                   <li>BM Rouen, Fonds Montbret, 155-2</li>
+                  <li>BNF Ms. 6431 (Compagnie des Indes)</li>
                   <li>IIHS-122A</li>
+                  <li>IIHS-122B</li>
                   <li>IIHS-122C</li>
+                  <li>IIHS-122D</li>
                   <li>IIHS-122E</li>
+                  <li>IIHS-122F</li>
                   <li>IIHS-122G</li>
-                  <li>Montbret 155-1</li>
-                  <li>Montbret 155-2</li>
-                  <li>Montbret 849</li>
-                  <li>NEHA 122B</li>
-                  <li>NEHA 122D</li>
-                  <li>NEHA 122F</li>
                 </ul>
               </p>
             </div>
@@ -323,19 +328,6 @@ export default class Sources extends Component {
               <p>AN F12 252</p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
-              <h2>Divers</h2>
-              <p className="lead">????</p>
-              <p>
-                <ul>
-                  <li>AD44 C706</li>
-                  <li>AN F12 1834A</li>
-                  <li>Fond Montyon 101FOSS/25</li>
-                  <li>Tableau décennal</li>
-                  <li>Tableau Général 1839</li>
-                </ul>
-              </p>
-            </div>
-            <div className="col-sm-10 col-sm-offset-1">
               <h2>National partenaires manquants</h2>
               <p className="lead">
                 contain trade by product x partner for the whole of France and a
@@ -387,8 +379,9 @@ export default class Sources extends Component {
               <h2>Tableau Général</h2>
               <p className="lead">
                 include bilateral trade from 1716. We have completed the
-                original ""Tableau Général"" with various other sources giving
-                the same information up to 1792.
+                original "Tableau Général" with various other sources giving
+                the same information at various date (up to 1792) or for the
+                French East India Compagny.
               </p>
               <p>
                 <ul>
