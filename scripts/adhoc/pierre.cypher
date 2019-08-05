@@ -1,6 +1,6 @@
 // name: ortho
 MATCH (c:Classification)
-WHERE c.model = "product" AND c.slug = "orthographic_normalization"
+WHERE c.model = "product" AND c.slug = "orthographic"
 WITH c
 MATCH
   (f:Flow),
@@ -42,7 +42,7 @@ ORDER BY bureau, import, year, product;
 
 // name: sitc
 MATCH (c:Classification)
-WHERE c.model = "product" AND c.slug = "sitc_fr"
+WHERE c.model = "product" AND c.slug = "sitc_FR"
 WITH c
 MATCH
   (f:Flow),
@@ -65,7 +65,7 @@ ORDER BY bureau, import, year, product;
 
 // name: other-ortho
 MATCH (c:Classification)
-WHERE c.model = "product" AND c.slug = "orthographic_normalization"
+WHERE c.model = "product" AND c.slug = "orthographic"
 WITH c
 MATCH
   (f:Flow),
@@ -109,7 +109,7 @@ ORDER BY bureau, import, year, product;
 
 // name: other-sitc
 MATCH (c:Classification)
-WHERE c.model = "product" AND c.slug = "sitc_fr"
+WHERE c.model = "product" AND c.slug = "sitc_FR"
 WITH c
 MATCH
   (f:Flow),
