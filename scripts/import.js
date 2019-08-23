@@ -221,13 +221,13 @@ classificationsIndex.forEach(classification => {
 // reorder classifications by depth from root to leaf order in the classif tree.
 classificationsIndex = _.flatten(roots.map(r => {
   let cs = children[r];
-  const orderedClassif = [];
+  let orderedClassif = [];
   // iterate through the tree by depth
   while (cs && cs.length > 0) {
     // store current children
-    orderedClassif.push(cs);
+    orderedClassif = orderedClassif.concat(cs);
     // get grand children if exist
-    cs = cs.reduce((acc, c) => acc.concat(children[c]), []).filter(e => e);
+    cs = cs ? _.flatten(cs.map(c => children[c]).filter(e => e)) : undefined;
   }
   return [r].concat(_.flatten(orderedClassif)).map(s => classificationBySlug[s]);
 }));
