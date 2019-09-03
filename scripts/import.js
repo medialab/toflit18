@@ -316,7 +316,11 @@ function importer(csvLine) {
       nodeData.year = normalizeYear(csvLine.year);
     }
   }
-
+  if (isNaN(nodeData.year)) {
+    console.error(`${csvLine.year} is not a year`);
+    console.error(csvLine);
+    return;
+  }
   // Unit
   if (csvLine.quantity_unit) {
     nodeData.rawUnit = csvLine.quantity_unit;
