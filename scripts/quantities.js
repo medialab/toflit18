@@ -15,6 +15,7 @@ import FuzzyMap from 'mnemonist/fuzzy-map'
 import {parse as parseCSV} from 'csv';
 import database from '../api/connection';
 import {cleanText, cleanNumber} from '../lib/clean';
+import {some, values} from 'lodash';
 
 /**
  * Reading arguments.
@@ -123,6 +124,10 @@ async.series({
             return callback(err);
 
           lines.forEach(line => {
+
+            if (some(values(line), e => e.trim().toLowerCase() === '[vide]'))
+              return;
+
             const data = {
               name: cleanText(line.quantity_unit),
               ortho: cleanText(line.quantity_unit_ortho)
@@ -147,7 +152,7 @@ async.series({
           lines.forEach(line => {
 
             // Filtering empty lines
-            if (!line.u_conv || !line.q_conv)
+            if (!line.u_conv || !line.q_conv || some(values(line), e => e.trim().toLowerCase() === '[vide]'))
               return;
 
             const data = {
@@ -179,7 +184,7 @@ async.series({
           lines.forEach(line => {
 
             // Filtering empty lines
-            if (!line.u_conv || !line.q_conv)
+            if (!line.u_conv || !line.q_conv || some(values(line), e => e.trim().toLowerCase() === '[vide]'))
               return;
 
             const data = {
