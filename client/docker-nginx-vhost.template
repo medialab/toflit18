@@ -15,6 +15,7 @@ server {
     location /api/ {
         rewrite ^/api/(.*) /$1  break;
         proxy_pass $api$uri$is_args$args;
+        proxy_read_timeout 190s;
     }
 
 ### Static HTML5/JS
