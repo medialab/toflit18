@@ -136,7 +136,9 @@ export default class About extends Component {
               </p>
               <p>
                 <b>Project leader:</b>
-                Daudin, Guillaume
+                 <ul>
+                  <li>Daudin, Guillaume</li>
+                </ul>
               </p>
               <p>
                 <b>Work package leaders:</b>
@@ -147,7 +149,7 @@ export default class About extends Component {
                 </ul>
               </p>
               <p>
-                <b>Developers and designers</b>
+                <b>Developers and designers:</b>
                 <ul>
                   <li>Jacomy, Alexis</li>
                   <li>Plique, Guillaume</li>
