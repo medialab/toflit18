@@ -33,6 +33,10 @@ export default class About extends Component {
                 However, you can consult an user guide for the first version of
                 the datascape. Many concepts have not changed. https://toflit18.hypotheses.org/695
               </p>
+              <p>
+                Searching in partner or product list can be enhanced by using Regular Expressions.
+                To learn how to use this query system please read [the JavaScript Regexp specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) and or play with the [Regexp 101 tool](https://regex101.com/) with the ECMAScript (JavaScript) flavor.
+              </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Github</h2>
@@ -132,7 +136,9 @@ export default class About extends Component {
               </p>
               <p>
                 <b>Project leader:</b>
-                Daudin, Guillaume
+                 <ul>
+                  <li>Daudin, Guillaume</li>
+                </ul>
               </p>
               <p>
                 <b>Work package leaders:</b>
@@ -143,7 +149,7 @@ export default class About extends Component {
                 </ul>
               </p>
               <p>
-                <b>Developers and designers</b>
+                <b>Developers and designers:</b>
                 <ul>
                   <li>Jacomy, Alexis</li>
                   <li>Plique, Guillaume</li>
