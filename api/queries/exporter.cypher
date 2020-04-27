@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 MATCH (flow:Flow)
 
-WITH flow SKIP {offset}
+WITH flow SKIP $offset
 
 OPTIONAL MATCH (flow)-[:OF]->(product:Product)
 OPTIONAL MATCH (flow)-[transcription:TRANSCRIBED_FROM]->(source:Source)
@@ -24,13 +24,13 @@ RETURN
   country.name AS country,
   origin.name AS origin
 
-LIMIT {limit};
+LIMIT $limit;
 
 // name: classifications
 // Get all the classification for the given model.
 //------------------------------------------------------------------------------
 MATCH (c:Classification)-[:BASED_ON]->(p:Classification)
-WHERE not(exists(c.source)) AND c.model IN {models}
+WHERE not(exists(c.source)) AND c.model IN $models
 RETURN c AS classification, p.slug AS parent;
 
 // name: products
@@ -49,8 +49,8 @@ RETURN c.name AS country;
 // name: classifiedItemsToSource
 // Retrieving groups from a classification and mapping them to the sources.
 //------------------------------------------------------------------------------
-START c=node({id})
 MATCH (c)-[:HAS]->(group:ClassifiedItem)
+WHERE id(c)=$id
 OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Item)
 RETURN
   group.name AS group,
@@ -59,8 +59,8 @@ RETURN
 // name: classifiedItems
 // Retrieving groups from a classification and mapping them to the matching items.
 //------------------------------------------------------------------------------
-START c=node({id})
 MATCH (c)-[:BASED_ON]->(:Classification)-[:HAS]->(item)
+WHERE id(c)=$id
 OPTIONAL MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item)
 RETURN
   group.name AS group,
@@ -69,8 +69,8 @@ RETURN
 
 UNION ALL
 
-START c=node({id})
 MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item:OutsiderItem)-[:TRANSCRIBED_FROM]->(source:ExternalSource)
+WHERE id(c)=$id
 RETURN
   group.name AS group,
   item.name AS item,
