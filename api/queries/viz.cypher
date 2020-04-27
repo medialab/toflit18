@@ -1,8 +1,8 @@
 // name: network
 // Building a network between directions and classified countries.
 //------------------------------------------------------------------------------
-START n=node({classification})
 MATCH (n)-[:HAS]->(gc)-[:AGGREGATES*0..]->(c:Country)
+WHERE id(n)=$classification
 WITH gc.name AS country, c.name AS sc
 MATCH (f:Flow)
 WHERE f.country = sc AND exists(f.direction)
