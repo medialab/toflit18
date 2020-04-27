@@ -40,7 +40,7 @@ const ModelNetwork = {
     else if (kind === 'export')
       exportImportFilter = ':TO';
     match.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
-    const whereCountry = new Expression('id(cc) = {classification}');
+    const whereCountry = new Expression('id(cc) = $classification');
     query.params({classification: database.int(classification)});
 
     where.and(whereCountry);
@@ -48,11 +48,11 @@ const ModelNetwork = {
     //-- Do we need to match a product?
     if (productClassification) {
       match.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
-      const whereProduct = new Expression('id(pc) = {productClassification}');
+      const whereProduct = new Expression('id(pc) = $productClassification');
       query.params({productClassification: database.int(productClassification)});
 
       if (product) {
-        const productFilter = filterItemsByIdsRegexps(product, 'pci') 
+        const productFilter = filterItemsByIdsRegexps(product, 'pci')
 
         whereProduct.and(productFilter.expression);
         query.params(productFilter.params);
@@ -65,7 +65,7 @@ const ModelNetwork = {
       match.push('(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)');
 
       if (sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
-       where.and('s.type = {sourceType}');
+       where.and('s.type = $sourceType');
        query.params({sourceType});
       }
       else if (sourceType === 'National best guess') {

@@ -36,7 +36,7 @@ const ModelTerms = {
       //-- Do we need to match a product?
       match.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
 
-      const whereProduct = new Expression('id(pc) = {classification}');
+      const whereProduct = new Expression('id(pc) = $classification');
 
       query.params({classification: database.int(classification)});
 
@@ -51,7 +51,7 @@ const ModelTerms = {
         else if (kind === 'export')
           exportImportFilter = ':FROM';
         match.push(`(d:Direction)<-[${exportImportFilter}]-(f:Flow)`);
-        where.and('id(d) = {direction}');
+        where.and('id(d) = $direction');
         query.params({direction: database.int(direction)});
       }
 
@@ -66,7 +66,7 @@ const ModelTerms = {
           exportImportFilter = ':TO';
         match.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
 
-        const whereCountry = new Expression('id(cc) = {countryClassification}');
+        const whereCountry = new Expression('id(cc) = $countryClassification');
         query.params({countryClassification: database.int(countryClassification)});
 
 
@@ -96,7 +96,7 @@ const ModelTerms = {
         match.push('(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)');
 
         if (sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
-         where.and('s.type = {sourceType}');
+         where.and('s.type = $sourceType');
          query.params({sourceType});
         }
         else if (sourceType === 'National best guess') {

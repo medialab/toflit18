@@ -50,14 +50,14 @@ const ModelCreateLine = {
     //-- Should we match a precise direction?
     if (direction && direction !== '$all$') {
       match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
-      where.and('id(d) = {direction}');
+      where.and('id(d) = $direction');
       query.params({direction: database.int(direction)});
     }
 
     //-- Do we need to match a product?
     if (productClassification) {
       match.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
-      const whereProduct = new Expression('id(pc) = {productClassification}');
+      const whereProduct = new Expression('id(pc) = $productClassification');
       query.params({productClassification: database.int(productClassification)});
 
 
@@ -76,7 +76,7 @@ const ModelCreateLine = {
       match.push(`(f:Flow)-[${exportImportFilterCountry}]->(c:Country)`);
       match.push('(c:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)');
 
-      const whereCountry = new Expression('id(cc) = {countryClassification}');
+      const whereCountry = new Expression('id(cc) = $countryClassification');
       query.params({countryClassification: database.int(countryClassification)});
 
       if (country) {
@@ -94,7 +94,7 @@ const ModelCreateLine = {
       match.push('(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)');
 
       if (sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
-       where.and('s.type = {sourceType}');
+       where.and('s.type = $sourceType');
        query.params({sourceType});
       }
       else if (sourceType === 'National best guess') {
