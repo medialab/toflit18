@@ -65,11 +65,12 @@ const ModelNetwork = {
       match.push('(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)');
 
       if (sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
-       where.and('s.type = $sourceType');
-       query.params({sourceType});
+       where.and('s.type IN $sourceType');
+       query.params({sourceType: [sourceType]});
       }
       else if (sourceType === 'National best guess') {
-       where.and('s.type IN ["Objet Général", "Résumé", "National toutes directions tous partenaires", "Tableau des quantités"]');
+        where.and('s.type IN $sourceType');
+        query.params({sourceType: ["Objet Général", "Résumé", "National toutes directions tous partenaires", "Tableau des quantités"]});
       }
       else if (sourceType === 'Local best guess') {
        where.and('s.type IN ["Local","National toutes directions tous partenaires"] and f.year <> 1749 and f.year <> 1751');
@@ -81,11 +82,15 @@ const ModelNetwork = {
     //restrict flows to those which has direction
     where.and('exists(f.direction)');
 
-    if (dateMin)
-        where.and('f.year >= ' + dateMin);
+    if (dateMin) {
+      where.and('f.year >= $flowYearMin');
+      query.params({flowYearMin:dateMin});
+    }
 
-    if (dateMax)
-        where.and('f.year <= ' + dateMax);
+    if (dateMax){
+        where.and('f.year <= $flowYearMax');
+        query.params({flowYearMax:dateMax});
+    }
 
     if (!where.isEmpty())
         query.where(where);
