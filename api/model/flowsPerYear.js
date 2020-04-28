@@ -70,7 +70,7 @@ const ModelFlowsPerYear = {
         query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow)');
 
         const whereProduct = new Expression('id(pc) = $productClassification');
-        query.params({productClassification});
+        query.params({productClassification:database.int(productClassification)});
 
 
         if (product) {
@@ -97,7 +97,7 @@ const ModelFlowsPerYear = {
         query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow), (ppg)-[:AGGREGATES*0..]->(pg)');
 
         const whereProduct = new Expression('id(pc) = $productClassification');
-        query.params({productClassification});
+        query.params({productClassification:database.int(productClassification)});
 
         if (product) {
           const productFilter = filterItemsByIdsRegexps(product, 'ppg')
@@ -122,7 +122,7 @@ const ModelFlowsPerYear = {
       if (countryClassification && !twofoldCountry) {
         query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow)');
         const whereCountry = new Expression('id(cc) = $countryClassification');
-        query.params({countryClassification});
+        query.params({countryClassification:database.int(countryClassification)});
 
         if (country) {
           const countryFilter = filterItemsByIdsRegexps(country, 'cg')
@@ -146,7 +146,7 @@ const ModelFlowsPerYear = {
       if (countryClassification && twofoldCountry) {
         query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow), (ccg)-[:AGGREGATES*0..]->(cg)');
         const whereCountry = new Expression('id(cc) = $countryClassification');
-        query.params({countryClassification});
+        query.params({countryClassification:database.int(countryClassification)});
 
 
         if (country) {
@@ -177,7 +177,7 @@ const ModelFlowsPerYear = {
         query.match('(d:Direction)');
         where.and('id(d) = $direction');
         where.and('f.direction = d.name');
-        query.params({direction});
+        query.params({direction:database.int(direction)});
       }
 
       //-- Import/Export
@@ -190,7 +190,7 @@ const ModelFlowsPerYear = {
         where.and(`exists(f.${dataType})`);
 
       where.and(`f.year >= $limitMinYear`);
-      query.params({limitMinYear:limits.minYear});
+      query.params({limitMinYear:database.int(limits.minYear)});
 
       // manage special sourceType
       if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {

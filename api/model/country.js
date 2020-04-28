@@ -84,12 +84,12 @@ const ModelNetwork = {
 
     if (dateMin) {
       where.and('f.year >= $flowYearMin');
-      query.params({flowYearMin:dateMin});
+      query.params({flowYearMin:database.int(dateMin)});
     }
 
     if (dateMax){
         where.and('f.year <= $flowYearMax');
-        query.params({flowYearMax:dateMax});
+        query.params({flowYearMax:database.int(dateMax)});
     }
 
     if (!where.isEmpty())
