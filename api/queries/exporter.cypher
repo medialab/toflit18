@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 MATCH (flow:Flow)
 
-WITH flow SKIP $offset
+WITH flow SKIP $offset LIMIT $limit
 
 OPTIONAL MATCH (flow)-[:OF]->(product:Product)
 OPTIONAL MATCH (flow)-[transcription:TRANSCRIBED_FROM]->(source:Source)
@@ -22,9 +22,7 @@ RETURN
   direction.name AS direction,
   office.name AS office,
   country.name AS country,
-  origin.name AS origin
-
-LIMIT $limit;
+  origin.name AS origin;
 
 // name: classifications
 // Get all the classification for the given model.
@@ -37,8 +35,7 @@ RETURN c AS classification, p.slug AS parent;
 // Retrieving every source product.
 //------------------------------------------------------------------------------
 MATCH (p:Product)
-OPTIONAL MATCH (p)-[:TRANSCRIBED_FROM]->(source)
-RETURN p.name AS product, ["toflit18"] + collect(source.name) AS sources;
+RETURN p.name AS product, ["toflit18"] + [(p)-[:TRANSCRIBED_FROM]->(source)|source.name] AS sources;
 
 // name: countries
 // Retrieving every source country.
@@ -51,7 +48,7 @@ RETURN c.name AS country;
 //------------------------------------------------------------------------------
 MATCH (c)-[:HAS]->(group:ClassifiedItem)
 WHERE id(c)=$id
-OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Item)
+OPTIONAL MATCH (group)-[:AGGREGATES*]->(item:Item)
 RETURN
   group.name AS group,
   item.name AS item;
