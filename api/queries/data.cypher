@@ -5,11 +5,11 @@ MATCH (d:Direction)
 RETURN
   id(d) AS id,
   d.name AS name
-ORDER BY d.name;
+ORDER BY d.name
 
 // name: sourceTypes
 // Retrieving the list of the distinct source types.
 //------------------------------------------------------------------------------
 MATCH (s:Source)
 RETURN DISTINCT s.type AS type
-ORDER BY s.type;
+ORDER BY s.type

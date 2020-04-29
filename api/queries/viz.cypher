@@ -8,4 +8,4 @@ WHERE id(n)=$classification AND f.country = c.name AND exists(f.direction)
 RETURN
 	gc.name AS country,
     f.direction AS direction,
-  	count(f) AS count;
+  	count(f) AS count
