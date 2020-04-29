@@ -33,13 +33,34 @@ const ModelTerms = {
             where = new Expression(),
             match = [];
 
+      //-- Do we need to match a country?
+      if (countryClassification) {
+        // define import export edge type filter
+        let exportImportFilter = ':FROM|:TO';
+        if (kind === 'import')
+          exportImportFilter = ':FROM';
+        else if (kind === 'export')
+          exportImportFilter = ':TO';
+        // Adding the country filter in the main query
+        match.push(`(f:Flow)-[${exportImportFilter}]->(country)`);
+        where.and(new Expression('country IN countries'));
+
+        query.match(`(country:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
+        const whereCountry = new Expression('id(cc) = $countryClassification');
+        query.params({countryClassification: database.int(countryClassification)});
+        if (country) {
+          const countryFilter = filterItemsByIdsRegexps(country, 'cci')
+          whereCountry.and(countryFilter.expression);
+          query.params(countryFilter.params);
+        }
+        query.where(whereCountry);
+        query.with('collect(country) AS countries');
+      }
+
       //-- Do we need to match a product?
       match.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
-
       const whereProduct = new Expression('id(pc) = $classification');
-
       query.params({classification: database.int(classification)});
-
       where.and(whereProduct);
 
       //-- Should we match a precise direction?
@@ -53,31 +74,6 @@ const ModelTerms = {
         match.push(`(d:Direction)<-[${exportImportFilter}]-(f:Flow)`);
         where.and('id(d) = $direction');
         query.params({direction: database.int(direction)});
-      }
-
-
-      //-- Do we need to match a country?
-      if (countryClassification) {
-        // define import export edge type filter
-        let exportImportFilter = ':FROM|:TO';
-        if (kind === 'import')
-          exportImportFilter = ':FROM';
-        else if (kind === 'export')
-          exportImportFilter = ':TO';
-        match.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
-
-        const whereCountry = new Expression('id(cc) = $countryClassification');
-        query.params({countryClassification: database.int(countryClassification)});
-
-
-        if (country) {
-          const countryFilter = filterItemsByIdsRegexps(country, 'cci')
-
-          whereCountry.and(countryFilter.expression);
-          query.params(countryFilter.params);
-        }
-
-        where.and(whereCountry);
       }
 
       //-- Do we need to match a child classification item?
