@@ -32,6 +32,24 @@ const ModelNetwork = {
           where = new Expression(),
           match = [];
 
+    //-- Do we need to match a product?
+    if (productClassification) {
+      // Adding the product filter in the main query
+      match.push('(f:Flow)-[:OF]->(product)');
+      where.and(new Expression('product IN products'));
+
+      query.match('(product:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)')
+      const whereProduct = new Expression('id(pc) = $productClassification');
+      query.params({productClassification: database.int(productClassification)});
+      if (product) {
+        const productFilter = filterItemsByIdsRegexps(product, 'pci')
+        whereProduct.and(productFilter.expression);
+        query.params(productFilter.params);
+      }
+      query.where(whereProduct);
+      query.with('collect(product) AS products');
+    }
+
     // start query from country classification
     // define import export edge type filter
     let exportImportFilter = ':FROM|:TO';
@@ -44,21 +62,6 @@ const ModelNetwork = {
     query.params({classification: database.int(classification)});
 
     where.and(whereCountry);
-
-    //-- Do we need to match a product?
-    if (productClassification) {
-      match.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
-      const whereProduct = new Expression('id(pc) = $productClassification');
-      query.params({productClassification: database.int(productClassification)});
-
-      if (product) {
-        const productFilter = filterItemsByIdsRegexps(product, 'pci')
-
-        whereProduct.and(productFilter.expression);
-        query.params(productFilter.params);
-      }
-      where.and(whereProduct);
-    }
 
     //-- Do we need to match a source type?
     if (sourceType) {
