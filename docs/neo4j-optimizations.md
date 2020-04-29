@@ -48,7 +48,7 @@ Or le plus filtrant est de d'abord filtrer les noeuds `Flux` sur l'un de ses att
 puis de regarder s'ils sont liés aux noeuds de classification.
 
 
-## Analyse du package queries
+## Indexes et containts
 
 ### Users
 
@@ -60,3 +60,13 @@ Mettre en place une contrainte d'unicité sur le nom de l'utilisateur permettra 
 ```
 CREATE CONSTRAINT ON (u:User) ASSERT u.name IS UNIQUE;
 ```
+
+### Source
+
+Il faut créer un indexe sur la propriété `type` du noeud `Source` :
+
+```
+CREATE INDEX ON :Source(type);
+```
+
+Ceci aidera les query du time series.
