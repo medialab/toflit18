@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 MATCH (flow:Flow)
 
-WITH flow SKIP {offset}
+WITH flow SKIP $offset LIMIT $limit
 
 OPTIONAL MATCH (flow)-[:OF]->(product:Product)
 OPTIONAL MATCH (flow)-[transcription:TRANSCRIBED_FROM]->(source:Source)
@@ -24,43 +24,40 @@ RETURN
   country.name AS country,
   origin.name AS origin
 
-LIMIT {limit};
-
 // name: classifications
 // Get all the classification for the given model.
 //------------------------------------------------------------------------------
 MATCH (c:Classification)-[:BASED_ON]->(p:Classification)
-WHERE not(exists(c.source)) AND c.model IN {models}
-RETURN c AS classification, p.slug AS parent;
+WHERE not(exists(c.source)) AND c.model IN $models
+RETURN c AS classification, p.slug AS parent
 
 // name: products
 // Retrieving every source product.
 //------------------------------------------------------------------------------
 MATCH (p:Product)
-OPTIONAL MATCH (p)-[:TRANSCRIBED_FROM]->(source)
-RETURN p.name AS product, ["toflit18"] + collect(source.name) AS sources;
+RETURN p.name AS product, ["toflit18"] + [(p)-[:TRANSCRIBED_FROM]->(source)|source.name] AS sources
 
 // name: countries
 // Retrieving every source country.
 //------------------------------------------------------------------------------
 MATCH (c:Country)
-RETURN c.name AS country;
+RETURN c.name AS country
 
 // name: classifiedItemsToSource
 // Retrieving groups from a classification and mapping them to the sources.
 //------------------------------------------------------------------------------
-START c=node({id})
 MATCH (c)-[:HAS]->(group:ClassifiedItem)
-OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item:Item)
+WHERE id(c)=$id
+OPTIONAL MATCH (group)-[:AGGREGATES*]->(item:Item)
 RETURN
   group.name AS group,
-  item.name AS item;
+  item.name AS item
 
 // name: classifiedItems
 // Retrieving groups from a classification and mapping them to the matching items.
 //------------------------------------------------------------------------------
-START c=node({id})
 MATCH (c)-[:BASED_ON]->(:Classification)-[:HAS]->(item)
+WHERE id(c)=$id
 OPTIONAL MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item)
 RETURN
   group.name AS group,
@@ -69,9 +66,9 @@ RETURN
 
 UNION ALL
 
-START c=node({id})
 MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item:OutsiderItem)-[:TRANSCRIBED_FROM]->(source:ExternalSource)
+WHERE id(c)=$id
 RETURN
   group.name AS group,
   item.name AS item,
-  group.note AS note;
+  group.note AS note
