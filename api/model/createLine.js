@@ -63,7 +63,6 @@ const ModelCreateLine = {
       query.where(whereProduct);
       query.with('collect(product) AS products');
 
-      const whereProduct = new Expression('id(pc) = $productClassification');
       query.params({productClassification: database.int(productClassification)});
     }
 
