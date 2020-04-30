@@ -10,7 +10,7 @@ import async from 'async';
 
 console.log('Creating indices in the Neo4j database...');
 
-const schema = [
+const indices = [
   {type:'index', label:'Flow', property:'direction'},
   {type:'index', label:'Flow', property:'country'},
   {type:'index', label:'Flow', property:'sourceType'},
@@ -21,9 +21,9 @@ const schema = [
   {type:'unique', label:'User', property:'name'},
 ];
 
-async.eachSeries(indices, function(index, next) {
-  const query = `CREATE INDEX ON :${schema.label}(${schema.property});`;
-  if(shema.type === 'unique') {
+async.eachSeries(indices, function(schema, next) {
+  let query = `CREATE INDEX ON :${schema.label}(${schema.property});`;
+  if(schema.type === 'unique') {
     query = `CREATE CONSTRAINT ON (n:${schema.label}) ASSERT n.${schema.property} IS UNIQUE;`;
   }
 
@@ -32,7 +32,7 @@ async.eachSeries(indices, function(index, next) {
     function(err) {
       if (err) return next(err);
 
-      console.log(`  -- Index on :flow(${prop}) created!`);
+      console.log(`  -- Index on :flow(${schema.property}) created!`);
 
       return next();
     }
