@@ -11,23 +11,28 @@ import async from 'async';
 console.log('Creating indices in the Neo4j database...');
 
 const indices = [
-  'direction',
-  'country',
-  'sourceType',
-  'product',
-  'year',
-  'import'
+  {type:'index', label:'Flow', property:'direction'},
+  {type:'index', label:'Flow', property:'country'},
+  {type:'index', label:'Flow', property:'sourceType'},
+  {type:'index', label:'Flow', property:'product'},
+  {type:'index', label:'Flow', property:'year'},
+  {type:'index', label:'Flow', property:'import'},
+  {type:'index', label:'Source', property:'type'},
+  {type:'unique', label:'User', property:'name'},
 ];
 
-async.eachSeries(indices, function(prop, next) {
+async.eachSeries(indices, function(schema, next) {
+  let query = `CREATE INDEX ON :${schema.label}(${schema.property});`;
+  if(schema.type === 'unique') {
+    query = `CREATE CONSTRAINT ON (n:${schema.label}) ASSERT n.${schema.property} IS UNIQUE;`;
+  }
+
   database.cypher(
-    {
-      query: `CREATE INDEX ON :Flow(${prop});`,
-    },
+    { query },
     function(err) {
       if (err) return next(err);
 
-      console.log(`  -- Index on :flow(${prop}) created!`);
+      console.log(`  -- Index on :flow(${schema.property}) created!`);
 
       return next();
     }

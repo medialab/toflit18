@@ -47,46 +47,54 @@ const ModelCreateLine = {
       where.and('NOT f.import');
     }
 
-    //-- Should we match a precise direction?
-    if (direction && direction !== '$all$') {
-      match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
-      where.and('id(d) = {direction}');
-      query.params({direction: database.int(direction)});
-    }
-
     //-- Do we need to match a product?
     if (productClassification) {
-      match.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
-      const whereProduct = new Expression('id(pc) = {productClassification}');
+      match.push('(f:Flow)-[:OF]->(product)');
+      where.and(new Expression('product IN products'));
+
+      query.match('(product:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)')
+      const whereProduct = new Expression('id(pc) = $productClassification');
       query.params({productClassification: database.int(productClassification)});
-
-
       if (product) {
-        const productFilter = filterItemsByIdsRegexps(product, 'pci');
-
+        const productFilter = filterItemsByIdsRegexps(product, 'pci')
         whereProduct.and(productFilter.expression);
         query.params(productFilter.params);
       }
-      where.and(whereProduct);
+      query.where(whereProduct);
+      query.with('collect(product) AS products');
+
+      query.params({productClassification: database.int(productClassification)});
     }
 
     //-- Do we need to match a country?
     if (countryClassification) {
-      // define import export edge type filter
-      match.push(`(f:Flow)-[${exportImportFilterCountry}]->(c:Country)`);
-      match.push('(c:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)');
+      // Adding the country filter in the main query
+      match.push(`(f:Flow)-[${exportImportFilterCountry}]->(country)`);
+      where.and(new Expression('country IN countries'));
 
-      const whereCountry = new Expression('id(cc) = {countryClassification}');
+      query.match(`(country:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
+      const whereCountry = new Expression('id(cc) = $countryClassification');
       query.params({countryClassification: database.int(countryClassification)});
-
       if (country) {
-        const countryFilter = filterItemsByIdsRegexps(country, 'cci');
-
+        const countryFilter = filterItemsByIdsRegexps(country, 'cci')
         whereCountry.and(countryFilter.expression);
         query.params(countryFilter.params);
       }
+      query.where(whereCountry);
 
-      where.and(whereCountry);
+      if(productClassification) {
+        query.with('collect(country) AS countries, products');
+      }
+      else {
+        query.with('collect(country) AS countries');
+      }
+    }
+
+    //-- Should we match a precise direction?
+    if (direction && direction !== '$all$') {
+      match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
+      where.and('id(d) = $direction');
+      query.params({direction: database.int(direction)});
     }
 
     //-- Do we need to match a source type
@@ -94,11 +102,12 @@ const ModelCreateLine = {
       match.push('(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)');
 
       if (sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
-       where.and('s.type = {sourceType}');
-       query.params({sourceType});
+       where.and('s.type IN $sourceType');
+       query.params({sourceType:[sourceType]});
       }
       else if (sourceType === 'National best guess') {
-       where.and('s.type IN ["Objet Général", "Résumé", "National toutes directions tous partenaires", "Tableau des quantités"]');
+       where.and('s.type IN $sourceType');
+       query.params({sourceType:["Objet Général", "Résumé", "National toutes directions tous partenaires", "Tableau des quantités"]});
       }
       else if (sourceType === 'Local best guess') {
        where.and('s.type IN ["Local","National toutes directions tous partenaires"] and f.year <> 1749 and f.year <> 1751');
