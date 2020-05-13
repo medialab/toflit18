@@ -64,7 +64,8 @@ const POSSIBLE_NODE_PROPERTIES = [
   'originalDirection',
   'country',
   'sourceType',
-  'product'
+  'product',
+  'id'
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -152,11 +153,17 @@ const BUILDER = new Builder();
 /**
  * Index creation function
  */
-function indexedNode(index, label, key, data) {
+function indexedNode(index, label, key, data, idIndex) {
   let node = index[key];
   if (!node) {
     node = BUILDER.save(data, label);
     index[key] = node;
+    if (data.id && idIndex)
+      if (!idIndex[data.id])
+        idIndex[data.id] = data.name;
+      else
+        if (idIndex[data.id] !== data.name)
+          throw new Error(`id colision id:"${data.id}" label:${label} names:"${idIndex[data.id]}" "${data.name}"`);
   }
 
   return node;
@@ -171,13 +178,21 @@ function indexedNode(index, label, key, data) {
 
 // Indexes
 const INDEXES = {
-  directions: {},
+  direction: {},
   country: {},
-  offices: {},
-  operators: {},
-  origins: {},
+  office: {},
+  operator: {},
+  origin: {},
   product: {},
-  sources: {}
+  source: {}
+};
+
+const ID_INDEXES = {
+  direction: {},
+  country: {},
+  product: {},
+  classifiedItem: {},
+  outsider: {}
 };
 
 const DIRECTIONS_INDEX = {};
@@ -192,11 +207,15 @@ const EDGE_INDEXES = {
   offices: new Set()
 };
 
+const slugifyDirection = name => `${name.replace(/[\s-]/g, '_')}`;
+
 // loading classification index
 const csvData = fs.readFileSync(DATA_PATH + INDEX_CLASSIFICATIONS, 'utf-8');
 let classificationsIndex = parseSync(csvData, {delimiter: ',', columns: true});
 
-const slugifyClassif = classification => `${classification.model}_${classification.slug}`;
+const slugifyClassification = classification => `${classification.model}_${classification.slug}`;
+const slugifyClassifiedItem = (name, classification) => `${name.replace(/[\s]/g, '_')}~${slugifyClassification(classification)}`;
+
 
 const CLASSIFICATION_NODES = {};
 // building the tree to set the right process order
@@ -204,18 +223,24 @@ const children = {};
 const roots = [];
 const classificationBySlug = {};
 classificationsIndex.forEach(classification => {
-    CLASSIFICATION_NODES[slugifyClassif(classification)] = BUILDER.save({
+    // check classif slug unicity
+    if (CLASSIFICATION_NODES[slugifyClassification(classification)]) {
+      console.error(`duplicate classifications slugs ${slugifyClassification(classification)}`);
+      throw new Error('classification slugs must be unique');
+    }
+    CLASSIFICATION_NODES[slugifyClassification(classification)] = BUILDER.save({
     name: classification.name,
     model: classification.model,
     slug: classification.slug,
+    id: slugifyClassification(classification),
     description: classification.description,
     source: classification.slug === 'source' ? 'true' : ''
   }, 'Classification');
   if (classification.slug === 'source')
-    roots.push(slugifyClassif(classification));
+    roots.push(slugifyClassification(classification));
   else
-    children[`${classification.model}_${classification.parentSlug}`] = (children[`${classification.model}_${classification.parentSlug}`] || []).concat(slugifyClassif(classification));
-  classificationBySlug[slugifyClassif(classification)] = classification;
+    children[`${classification.model}_${classification.parentSlug}`] = (children[`${classification.model}_${classification.parentSlug}`] || []).concat(slugifyClassification(classification));
+  classificationBySlug[slugifyClassification(classification)] = classification;
 });
 
 // reorder classifications by depth from root to leaf order in the classif tree.
@@ -246,10 +271,10 @@ _.uniq(classificationsIndex.map(c => c.author)).forEach(a => {
 const CLASSIFICATION_INDEXES = {};
 
 classificationsIndex.forEach(c => {
-  BUILDER.relate(CLASSIFICATION_NODES[slugifyClassif(c)], 'CREATED_BY', CLASSIFICATION_AUTHORS[c.author]);
-  CLASSIFICATION_INDEXES[slugifyClassif(c)] = {};
+  BUILDER.relate(CLASSIFICATION_NODES[slugifyClassification(c)], 'CREATED_BY', CLASSIFICATION_AUTHORS[c.author]);
+  CLASSIFICATION_INDEXES[slugifyClassification(c)] = {};
   if (c.slug !== 'source') {
-    BUILDER.relate(CLASSIFICATION_NODES[slugifyClassif(c)], 'BASED_ON', CLASSIFICATION_NODES[`${c.model}_${c.parentSlug}`]);
+    BUILDER.relate(CLASSIFICATION_NODES[slugifyClassification(c)], 'BASED_ON', CLASSIFICATION_NODES[`${c.model}_${c.parentSlug}`]);
   }
 });
 
@@ -388,7 +413,7 @@ function importer(csvLine) {
 
   // Operator
   if (csvLine.dataentryby) {
-    const operatorNode = indexedNode(INDEXES.operators, 'Operator', csvLine.dataentryby, {
+    const operatorNode = indexedNode(INDEXES.operator, 'Operator', csvLine.dataentryby, {
       name: csvLine.dataentryby
     });
 
@@ -399,7 +424,7 @@ function importer(csvLine) {
   if (csvLine.source) {
     const hashedKey = [csvLine.source, csvLine.sourcepath].join('|||');
 
-    const sourceNode = indexedNode(INDEXES.sources, 'Source', hashedKey, {
+    const sourceNode = indexedNode(INDEXES.source, 'Source', hashedKey, {
       name: csvLine.source,
       path: csvLine.sourcepath,
       type: csvLine.sourcetype
@@ -415,10 +440,12 @@ function importer(csvLine) {
   if (csvLine.marchandises) {
     const product = capitalizeProduct(csvLine.marchandises);
     const alreadyLinked = INDEXES.product[product];
+    const id = slugifyClassifiedItem(product, classificationBySlug.product_source);
 
     const productNode = indexedNode(INDEXES.product, ['Product', 'Item'], product, {
-      name: product
-    });
+      name: product,
+      id
+    }, ID_INDEXES.product);
 
     BUILDER.relate(flowNode, 'OF', productNode);
 
@@ -428,7 +455,7 @@ function importer(csvLine) {
 
   // Origin
   if (csvLine.origine) {
-    const originNode = indexedNode(INDEXES.origins, 'Origin', csvLine.origine, {
+    const originNode = indexedNode(INDEXES.origin, 'Origin', csvLine.origine, {
       name: csvLine.origine
     });
 
@@ -437,7 +464,7 @@ function importer(csvLine) {
 
   // Office
   if (csvLine.bureaux) {
-    const officeNode = indexedNode(INDEXES.offices, 'Office', csvLine.bureaux, {
+    const officeNode = indexedNode(INDEXES.office, 'Office', csvLine.bureaux, {
       name: csvLine.bureaux
     });
 
@@ -447,9 +474,11 @@ function importer(csvLine) {
       BUILDER.relate(flowNode, 'TO', officeNode);
 
     if (direction && !EDGE_INDEXES.offices.has(csvLine.bureaux)) {
-      const directionNode = indexedNode(INDEXES.directions, 'Direction', direction, {
-        name: direction
-      });
+
+      const directionNode = indexedNode(INDEXES.direction, 'Direction', slugifyDirection(direction), {
+        name: direction,
+        id: slugifyDirection(direction)
+      }, ID_INDEXES.direction);
 
       BUILDER.relate(directionNode, 'GATHERS', officeNode);
       EDGE_INDEXES.offices.add(csvLine.bureaux);
@@ -458,9 +487,10 @@ function importer(csvLine) {
 
   // Direction
   if (direction) {
-    const directionNode = indexedNode(INDEXES.directions, 'Direction', direction, {
-      name: direction
-    });
+    const directionNode = indexedNode(INDEXES.direction, 'Direction', slugifyDirection(direction), {
+      name: direction,
+      id: slugifyDirection(direction)
+    }, ID_INDEXES.direction);
 
     if (!isImport)
       BUILDER.relate(flowNode, 'FROM', directionNode);
@@ -471,10 +501,10 @@ function importer(csvLine) {
   // Country
   if (csvLine.pays) {
     const alreadyLinked = INDEXES.country[csvLine.pays];
-
     const countryNode = indexedNode(INDEXES.country, ['Country', 'Item'], csvLine.pays, {
-      name: csvLine.pays
-    });
+      name: csvLine.pays,
+      id: slugifyClassifiedItem(csvLine.pays, classificationBySlug.country_source)
+    }, ID_INDEXES.country);
 
     if (isImport)
       BUILDER.relate(flowNode, 'FROM', countryNode);
@@ -489,6 +519,7 @@ function importer(csvLine) {
 /**
  * Consuming products coming from external sources.
  */
+const slugifyOutsider = (name, outsider) => `${name.replace(/[ -]/g, '_')}~outsider_${outsider.replace(/[ -]/g, '_')}`;
 function outsiderProduct(line) {
   const name = line.name,
         nodeData = {name};
@@ -502,12 +533,13 @@ function outsiderProduct(line) {
         return;
 
       const preexisting = !!INDEXES.product[name];
-
+      nodeData.id = slugifyOutsider(name, source);
       const node = indexedNode(
         INDEXES.product,
         ['Item', 'Product', 'OutsiderItem', 'OutsiderProduct'],
         name,
-        nodeData
+        nodeData,
+        ID_INDEXES.outsider
       );
 
       // Linking to the source only if not preexisting
@@ -525,7 +557,7 @@ function outsiderProduct(line) {
 /**
  * Consuming the classifications.
  */
-function makeClassificationConsumer(groupIndex, classificationNode, parentNode, itemIndex, groupKey, itemKey, opts = {}) {
+function makeClassificationConsumer(groupIndex, classificationNode, parentNode, itemIndex, groupKey, itemKey, classification, opts = {}) {
 
   const linkedItemIndex = new Set(),
         linkedGroupIndex = new Set();
@@ -543,9 +575,9 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
 
     // Building the group node
     const nodeData = {
-      name: group
+      name: group,
+      id: slugifyClassifiedItem(group, classification)
     };
-
     // Adding the note only if required
     if (opts.shouldTakeNote && line.note)
       nodeData.note = line.note;
@@ -554,7 +586,8 @@ function makeClassificationConsumer(groupIndex, classificationNode, parentNode, 
       groupIndex,
       'ClassifiedItem',
       group,
-      nodeData
+      nodeData,
+      ID_INDEXES.classifiedItem
     );
 
     // Linking the group to the classification on first run
@@ -647,12 +680,13 @@ async.series({
       return cb => {
         console.log(`  --  ${c.model} ${c.name}`);
         const consumer = makeClassificationConsumer(
-          CLASSIFICATION_INDEXES[slugifyClassif(c)],
-          CLASSIFICATION_NODES[slugifyClassif(c)],
+          CLASSIFICATION_INDEXES[slugifyClassification(c)],
+          CLASSIFICATION_NODES[slugifyClassification(c)],
           CLASSIFICATION_NODES[`${c.model}_${c.parentSlug}`],
           c.parentSlug === 'source' ? INDEXES[c.model] : CLASSIFICATION_INDEXES[`${c.model}_${c.parentSlug}`],
           'group', // column name for group
           'entity', // column name for entities
+          c,
           {shouldTakeNote: true}
         );
         const csvClassification = fs.readFileSync(path.join(DATA_PATH, ROOT_PATH, `classification_${c.model}_${c.slug}.csv`), 'utf-8');
