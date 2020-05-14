@@ -53,8 +53,8 @@ const ModelCreateLine = {
       where.and(new Expression('product IN products'));
 
       query.match('(product:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)')
-      const whereProduct = new Expression('id(pc) = $productClassification');
-      query.params({productClassification: database.int(productClassification)});
+      const whereProduct = new Expression('pc.id = $productClassification');
+      query.params({productClassification: productClassification});
       if (product) {
         const productFilter = filterItemsByIdsRegexps(product, 'pci')
         whereProduct.and(productFilter.expression);
@@ -63,7 +63,7 @@ const ModelCreateLine = {
       query.where(whereProduct);
       query.with('collect(product) AS products');
 
-      query.params({productClassification: database.int(productClassification)});
+      query.params({productClassification: productClassification});
     }
 
     //-- Do we need to match a country?
@@ -73,8 +73,8 @@ const ModelCreateLine = {
       where.and(new Expression('country IN countries'));
 
       query.match(`(country:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
-      const whereCountry = new Expression('id(cc) = $countryClassification');
-      query.params({countryClassification: database.int(countryClassification)});
+      const whereCountry = new Expression('cc.id = $countryClassification');
+      query.params({countryClassification: countryClassification});
       if (country) {
         const countryFilter = filterItemsByIdsRegexps(country, 'cci')
         whereCountry.and(countryFilter.expression);
@@ -93,8 +93,8 @@ const ModelCreateLine = {
     //-- Should we match a precise direction?
     if (direction && direction !== '$all$') {
       match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
-      where.and('id(d) = $direction');
-      query.params({direction: database.int(direction)});
+      where.and('d.id = $direction');
+      query.params({direction: direction});
     }
 
     //-- Do we need to match a source type

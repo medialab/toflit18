@@ -7,7 +7,7 @@ const filterItemsByIdsRegexps = (items,variable) => {
   let idsExpression = null;
   let regexpsExpression = null;
   if (items.ids && items.ids.length>0){
-    idsExpression = new Expression(`id(${variable}) IN \$${variable}Ids`);
+    idsExpression = new Expression(`${variable}.id IN \$${variable}Ids`);
     params[`${variable}Ids`] = items.ids;
   }
 

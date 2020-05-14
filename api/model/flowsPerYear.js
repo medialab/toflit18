@@ -39,7 +39,6 @@ const ModelFlowsPerYear = {
       const query = new Query(),
             where = new Expression(),
             withs = new Set();
-
       // handle clasification dataType
       if (dataType !== 'direction' && dataType !== 'sourceType') {
       // a classification
@@ -47,7 +46,7 @@ const ModelFlowsPerYear = {
           ,
           classificationType,
           classificationId
-        ] = dataType.match(/(\w+)_(\d+)/) || [];
+        ] = dataType.match(/([A-Za-z]+)_(\w+)/) || [];
 
         if (classificationType === 'product') {
           productClassification = classificationId;
@@ -67,10 +66,10 @@ const ModelFlowsPerYear = {
 
       //-- Do we need to match a product?
       if (productClassification && !twofoldProduct) {
-        query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow)');
+        query.match('(pc:Classification)-[:HAS]->(pg:ClassifiedItem)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow)');
 
-        const whereProduct = new Expression('id(pc) = $productClassification');
-        query.params({productClassification:database.int(productClassification)});
+        const whereProduct = new Expression('pc.id = $productClassification');
+        query.params({productClassification:productClassification});
 
 
         if (product) {
@@ -94,10 +93,10 @@ const ModelFlowsPerYear = {
 
       // NOTE: twofold classification
       if (productClassification && twofoldProduct) {
-        query.match('(pc)-[:HAS]->(pg)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow), (ppg)-[:AGGREGATES*0..]->(pg)');
+        query.match('(pc:Classification)-[:HAS]->(pg:ClassifiedItem)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow), (ppg:ClassifiedItem)-[:AGGREGATES*0..]->(pg)');
 
-        const whereProduct = new Expression('id(pc) = $productClassification');
-        query.params({productClassification:database.int(productClassification)});
+        const whereProduct = new Expression('pc.id = $productClassification');
+        query.params({productClassification:productClassification});
 
         if (product) {
           const productFilter = filterItemsByIdsRegexps(product, 'ppg')
@@ -120,9 +119,9 @@ const ModelFlowsPerYear = {
 
       //-- Do we need to match a country?
       if (countryClassification && !twofoldCountry) {
-        query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow)');
-        const whereCountry = new Expression('id(cc) = $countryClassification');
-        query.params({countryClassification:database.int(countryClassification)});
+        query.match('(cc)-[:HAS]->(cg:ClassifiedItem)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow)');
+        const whereCountry = new Expression('cc.id = $countryClassification');
+        query.params({countryClassification:countryClassification});
 
         if (country) {
           const countryFilter = filterItemsByIdsRegexps(country, 'cg')
@@ -144,9 +143,9 @@ const ModelFlowsPerYear = {
 
       // NOTE: twofold classification
       if (countryClassification && twofoldCountry) {
-        query.match('(cc)-[:HAS]->(cg)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow), (ccg)-[:AGGREGATES*0..]->(cg)');
-        const whereCountry = new Expression('id(cc) = $countryClassification');
-        query.params({countryClassification:database.int(countryClassification)});
+        query.match('(cc:Classification)-[:HAS]->(cg:ClassifiedItem)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow), (ccg:ClassifiedItem)-[:AGGREGATES*0..]->(cg)');
+        const whereCountry = new Expression('cc.id = $countryClassification');
+        query.params({countryClassification:countryClassification});
 
 
         if (country) {
@@ -175,9 +174,9 @@ const ModelFlowsPerYear = {
       //-- direction
       if (direction && direction !== '$all$') {
         query.match('(d:Direction)');
-        where.and('id(d) = $direction');
+        where.and('d.id = $direction');
         where.and('f.direction = d.name');
-        query.params({direction:database.int(direction)});
+        query.params({direction:direction});
       }
 
       //-- Import/Export

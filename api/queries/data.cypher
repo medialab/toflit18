@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 MATCH (d:Direction)
 RETURN
-  id(d) AS id,
+  d.id AS id,
   d.name AS name
 ORDER BY d.name
 

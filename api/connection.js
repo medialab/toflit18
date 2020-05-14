@@ -26,7 +26,7 @@ driver.onError = err => {
 // Helpers
 function nodeToObject(node) {
   return {
-    _id: node.identity.toNumber(),
+    id: node.properties['id'],
     properties: node.properties,
     labels: node.labels
   };

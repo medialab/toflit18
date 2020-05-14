@@ -46,8 +46,8 @@ const ModelTerms = {
         where.and(new Expression('country IN countries'));
 
         query.match(`(country:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
-        const whereCountry = new Expression('id(cc) = $countryClassification');
-        query.params({countryClassification: database.int(countryClassification)});
+        const whereCountry = new Expression('cc.id = $countryClassification');
+        query.params({countryClassification: countryClassification});
         if (country) {
           const countryFilter = filterItemsByIdsRegexps(country, 'cci')
           whereCountry.and(countryFilter.expression);
@@ -59,8 +59,8 @@ const ModelTerms = {
 
       //-- Do we need to match a product?
       match.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
-      const whereProduct = new Expression('id(pc) = $classification');
-      query.params({classification: database.int(classification)});
+      const whereProduct = new Expression('pc.id = $classification');
+      query.params({classification: classification});
       where.and(whereProduct);
 
       //-- Should we match a precise direction?
@@ -72,8 +72,8 @@ const ModelTerms = {
         else if (kind === 'export')
           exportImportFilter = ':FROM';
         match.push(`(d:Direction)<-[${exportImportFilter}]-(f:Flow)`);
-        where.and('id(d) = $direction');
-        query.params({direction: database.int(direction)});
+        where.and('d.id = $direction');
+        query.params({direction: direction});
       }
 
       //-- Do we need to match a child classification item?
@@ -83,8 +83,8 @@ const ModelTerms = {
 
         where.and(childFilter.expression);
         query.params(childFilter.params);
-        where.and('id(chc) = {childClassification}');
-        query.params({childClassification: database.int(childClassification)});
+        where.and('chc.id = {childClassification}');
+        query.params({childClassification: childClassification});
       }
 
       //-- Do we need to match a source type?

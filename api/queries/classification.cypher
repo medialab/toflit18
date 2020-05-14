@@ -1,7 +1,7 @@
 // name: info
 // Retrieving basic information about the desired classification.
 //------------------------------------------------------------------------------
-MATCH (c) WHERE id(c)=$id
+MATCH (c:Classification) WHERE c.id=$id
 RETURN c AS classification
 
 // name: getAll
@@ -10,25 +10,25 @@ RETURN c AS classification
 MATCH (c:Classification)-[:CREATED_BY]->(a:User)
 OPTIONAL MATCH (c)-[:BASED_ON]->(p:Classification)
 RETURN
-	c AS classification,
+	  c AS classification,
   	a.name AS author,
-    id(p) AS parent,
+    p.id AS parent,
     size((p)-[:HAS]->()) AS itemsCount,
     size((c)-[:HAS]->()) AS groupsCount,
     size([(c)-[:HAS]->()-[:AGGREGATES]->()]) AS unclassifiedItemsCount
-ORDER BY id(c)
+ORDER BY c.id
 
 // name: rawGroups
 // Retrieving every groups for the given classification.
 //------------------------------------------------------------------------------
-MATCH (c)-[:HAS]->(group) WHERE id(c)=$id
-RETURN id(group) AS id, group.name AS name
+MATCH (c:Classification)-[:HAS]->(group) WHERE c.id=$id
+RETURN group.id AS id, group.name AS name
 ORDER BY lower(group.name)
 
 // name: group
 // Retrieving every items for a given group in a classification
 //------------------------------------------------------------------------------
-MATCH  (group)-[:AGGREGATES]->(item) WHERE id(group)=$id
+MATCH  (group:ClassifiedItem)-[:AGGREGATES]->(item) WHERE group.id=$id
 WITH group, item.name AS name, item.name =~$queryItem AS matched
 ORDER BY matched, name
 WITH group, collect({name:name, matched:matched}) AS items
@@ -37,8 +37,8 @@ RETURN group, items, size(items) as nbItems, size(filter(item in items where ite
 // name: groupFrom
 // Retrieving every items for a given group in a classification but listing items from an upper classification
 //------------------------------------------------------------------------------
-MATCH  (group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci)
-WHERE id(group)=$id AND id(ci)=$queryItemFrom
+MATCH  (group:ClassifiedItem)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci:Classification)
+WHERE group.id=$id AND ci.id=$queryItemFrom
 WITH group, item.name AS name, item.name =~$queryItem AS matched
 ORDER BY matched, name
 WITH group, collect({name:name, matched:matched}) AS items
@@ -47,8 +47,8 @@ RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, s
 // name: groups
 // Retrieving a sample of groups for the given classification.
 //------------------------------------------------------------------------------
-MATCH (cg)-[:HAS]->(group)-[:AGGREGATES]->(item)
-WHERE  id(cg)=$id AND group.name =~ $queryGroup
+MATCH (cg:Classification)-[:HAS]->(group)-[:AGGREGATES]->(item)
+WHERE  cg.id=$id AND group.name =~ $queryGroup
 WITH group, item
 ORDER BY item.name
 RETURN group, collect({name:item.name})[$offsetItem..$limitItem] as items, size((group)-[:AGGREGATES]->()) as nbItems
@@ -56,8 +56,8 @@ RETURN group, collect({name:item.name})[$offsetItem..$limitItem] as items, size(
 // name: groupsFrom
 // Retrieving a sample of groups for the given classification but listing items from an upper classification.
 //------------------------------------------------------------------------------
-MATCH (cg)-[:HAS]->(group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci)
-WHERE  id(cg)=$id AND group.name =~ $queryGroup AND id(ci)=$queryItemFrom
+MATCH (cg:Classification)-[:HAS]->(group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci:Classification)
+WHERE  cg.id=$id AND group.name =~ $queryGroup AND ci.id=$queryItemFrom
 WITH group, item
 ORDER BY group.name, item.name
 RETURN group, collect({name:item.name})[$offsetItem..$limitItem] as items, size(collect(item)) as nbItems
@@ -65,12 +65,11 @@ RETURN group, collect({name:item.name})[$offsetItem..$limitItem] as items, size(
 // name: searchGroups
 // Searching a sample of groups for the given classification.
 //------------------------------------------------------------------------------
-MATCH (cg)-[:HAS]->(group)-[:AGGREGATES]->(item)
+MATCH (cg:Classification)-[:HAS]->(group)-[:AGGREGATES]->(item)
 WHERE
-	id(cg)=$id AND
+	cg.id=$id AND
 	group.name =~ $queryGroup  AND
-    item.name =~ $queryGroup
-
+  item.name =~ $queryGroup
 WITH distinct group
 SKIP $offset
 LIMIT $limit
@@ -84,17 +83,17 @@ RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, s
 // name: searchGroupsFrom
 // Searching a sample of groups for the given classification but listing items from an upper classification.
 //------------------------------------------------------------------------------
-MATCH (cg)-[:HAS]->(group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci)
-WHERE id(cg)=$id AND
+MATCH (cg:Classification)-[:HAS]->(group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ciClassification)
+WHERE cg.id=$id AND
 	    group.name =~ $queryGroup AND
       item.name =~ $queryItem AND
-      id(ci)=$queryItemFrom
+      ci.id=$queryItemFrom
 WITH distinct group
 SKIP $offset
 LIMIT $limit
 
-OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci)
-WHERE id(ci)=$queryItemFrom
+OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci:Classification)
+WHERE ci.id=$queryItemFrom
 WITH group, item.name AS name, item.name =~$queryItem AS matched
 ORDER BY matched, name
 WITH group, collect({name:name,matched:matched}) AS items
@@ -104,8 +103,8 @@ RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, s
 // name: searchGroupsSource
 // Searching a sample of groups for the given source classification.
 //------------------------------------------------------------------------------
-MATCH (c)-[:HAS]->(group)
-WHERE id(c)=$id AND  group.name =~ $queryGroup
+MATCH (c:Classification)-[:HAS]->(group)
+WHERE c.id=$id AND  group.name =~ $queryGroup
 WITH group
 ORDER BY group.name
 SKIP $offset
@@ -116,47 +115,47 @@ RETURN group, [] as items, 0 as nbItems
 // name: allGroups
 // Retrieving every groups for the given classification.
 //------------------------------------------------------------------------------
-MATCH (c)-[:BASED_ON]->(:Classification)-[:HAS]->(item)
-WHERE id(c)=$id
+MATCH (c:Classification)-[:BASED_ON]->(:Classification)-[:HAS]->(item)
+WHERE c.id=$id
 OPTIONAL MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item)
 RETURN
   group.name AS group,
-  id(group) AS groupId,
+  group.id AS groupId,
   item.name AS item,
-  id(item) AS itemId
+  item.id AS itemId
 
 // name: allGroupsToSource
 // Retrieving every groups for the given classification but mapped to the
 // source products themselves.
 //------------------------------------------------------------------------------
 MATCH (item:Product)
-OPTIONAL MATCH (item)<-[:AGGREGATES*1..]-(group:ClassifiedItem)<-[:HAS]-(c)
-WHERE id(c) = $id
+OPTIONAL MATCH (item)<-[:AGGREGATES*1..]-(group:ClassifiedItem)<-[:HAS]-(c:Classification)
+WHERE c.id = $id
 RETURN
   group.name AS group,
-  id(group) AS groupId,
+  group.id AS groupId,
   item.name AS item,
-  id(item) AS itemId
+  item.id AS itemId
 
 // name: upper
 // Retrieving every classifications based on the given one.
 //------------------------------------------------------------------------------
-MATCH (c)<-[:BASED_ON]-(upper)
-WHERE id(c)=$id
+MATCH (c:Classification)<-[:BASED_ON]-(upper)
+WHERE c.id=$id
 RETURN upper
 
 // name: upperGroups
 // Retrieving upper groups of a classification with the associated items.
 //------------------------------------------------------------------------------
-MATCH (c)-[:HAS]->(group)
-WHERE id(c)=$id
+MATCH (c:Classification)-[:HAS]->(group)
+WHERE c.id=$id
 RETURN group.name AS group, [(group)-[:AGGREGATES]->(item) | item.name] AS items
 
 // name: export
 // Exporting data about the given classification in order to produce a CSV file.
 //------------------------------------------------------------------------------
-MATCH (c)-[:BASED_ON]->(p:Classification)-[:HAS]->(item)
-WHERE id(c)=$id
+MATCH (c:Classification)-[:BASED_ON]->(p:Classification)-[:HAS]->(item)
+WHERE c.id=$id
 OPTIONAL MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item)
 RETURN
   c.slug AS name,

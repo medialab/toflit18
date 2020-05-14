@@ -22,9 +22,9 @@ const indices = [
   {type: 'unique', label: 'Product', property: 'id'},
   {type: 'unique', label: 'Country', property: 'id'},
   {type: 'unique', label: 'ClassifiedItem', property: 'id'},
-  {type: 'unique', label: 'OutsiderProduct', property: 'id'},
-  {type: 'unique', label: 'OutsiderItem', property: 'id'},
+  {type: 'unique', label: 'Item', property: 'id'},
   {type: 'unique', label: 'Classification', property: 'id'},
+  {type: 'unique', label: 'Direction', property: 'id'},
 ];
 
 async.eachSeries(indices, function(schema, next) {

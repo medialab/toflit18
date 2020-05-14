@@ -39,8 +39,8 @@ const ModelNetwork = {
       where.and(new Expression('product IN products'));
 
       query.match('(product:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)')
-      const whereProduct = new Expression('id(pc) = $productClassification');
-      query.params({productClassification: database.int(productClassification)});
+      const whereProduct = new Expression('pc.id = $productClassification');
+      query.params({productClassification: productClassification});
       if (product) {
         const productFilter = filterItemsByIdsRegexps(product, 'pci')
         whereProduct.and(productFilter.expression);
@@ -58,8 +58,8 @@ const ModelNetwork = {
     else if (kind === 'export')
       exportImportFilter = ':TO';
     match.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
-    const whereCountry = new Expression('id(cc) = $classification');
-    query.params({classification: database.int(classification)});
+    const whereCountry = new Expression('cc.id = $classification');
+    query.params({classification: classification});
 
     where.and(whereCountry);
 

@@ -25,7 +25,7 @@ const controller = [
     url: '/:id/groups',
     method: 'GET',
     action(req, res) {
-      return model.groups(+req.params.id, function(err, groups) {
+      return model.groups(req.params.id, function(err, groups) {
         if (err) return res.serverError(err);
         if (!groups) return res.notFound();
 
@@ -52,7 +52,7 @@ const controller = [
         offsetItem: +(req.query.offsetItem || 0)
       };
 
-      return model.group(+req.params.id, opts, function(err, group) {
+      return model.group(req.params.id, opts, function(err, group) {
         if (err) return res.serverError(err);
         if (!group) return res.notFound();
 
@@ -89,7 +89,7 @@ const controller = [
         orderBy: req.query.orderBy || null
       };
 
-      return model.search(+req.params.id, opts, function(err, groups) {
+      return model.search(req.params.id, opts, function(err, groups) {
         if (err) return res.serverError(err);
 
         return res.ok(groups);
@@ -103,7 +103,7 @@ const controller = [
       params: ({ext}) => ext === 'json' || ext === 'csv'
     },
     action(req, res) {
-      return model.export(+req.params.id, function(err, result) {
+      return model.export(req.params.id, function(err, result) {
         if (err) return res.serverError(err);
         if (!result) return res.notFound();
 
@@ -132,7 +132,7 @@ const controller = [
       }
     },
     action(req, res) {
-      return model.review(+req.params.id, req.body.patch, function(err, result) {
+      return model.review(req.params.id, req.body.patch, function(err, result) {
         if (err) return res.serverError(err);
         if (!result) return res.notFound();
 
@@ -149,7 +149,7 @@ const controller = [
       }
     },
     action(req, res) {
-      return model.commit(+req.params.id, req.body.operations, function(err, result) {
+      return model.commit(req.params.id, req.body.operations, function(err, result) {
         if (err) return res.serverError(err);
         if (!result) return res.notFound();
 

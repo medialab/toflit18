@@ -46,8 +46,8 @@ RETURN c.name AS country
 // name: classifiedItemsToSource
 // Retrieving groups from a classification and mapping them to the sources.
 //------------------------------------------------------------------------------
-MATCH (c)-[:HAS]->(group:ClassifiedItem)
-WHERE id(c)=$id
+MATCH (c:Classification)-[:HAS]->(group:ClassifiedItem)
+WHERE c.id=$id
 OPTIONAL MATCH (group)-[:AGGREGATES*]->(item:Item)
 RETURN
   group.name AS group,
@@ -56,8 +56,8 @@ RETURN
 // name: classifiedItems
 // Retrieving groups from a classification and mapping them to the matching items.
 //------------------------------------------------------------------------------
-MATCH (c)-[:BASED_ON]->(:Classification)-[:HAS]->(item)
-WHERE id(c)=$id
+MATCH (c:Classification)-[:BASED_ON]->(:Classification)-[:HAS]->(item)
+WHERE c.id=$id
 OPTIONAL MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item)
 RETURN
   group.name AS group,
@@ -66,8 +66,8 @@ RETURN
 
 UNION ALL
 
-MATCH (c)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item:OutsiderItem)-[:TRANSCRIBED_FROM]->(source:ExternalSource)
-WHERE id(c)=$id
+MATCH (c:Classification)-[:HAS]->(group:ClassifiedItem)-[:AGGREGATES]->(item:OutsiderItem)-[:TRANSCRIBED_FROM]->(source:ExternalSource)
+WHERE c.id=$id
 RETURN
   group.name AS group,
   item.name AS item,
