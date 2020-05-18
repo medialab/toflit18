@@ -13,7 +13,6 @@ import LineChart from './viz/LineChart.jsx';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import {capitalize, isEqual, mapValues, pick} from 'lodash';
 import Icon from '../misc/Icon.jsx';
-import {Link} from 'react-router';
 import VizLayout from '../misc/VizLayout.jsx';
 import {exportCSV, exportSVG} from '../../lib/exports';
 import {
@@ -200,7 +199,7 @@ export default class ExplorationIndicators extends Component {
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="sourceType" className="control-label">Source Type</label>
-              <small className="help-block">Type of sources the data comes from. <Link to="/exploration/sources"><Icon name="icon-info" /></Link></small>
+              <small className="help-block">Type of sources the data comes from. <a href="#/exploration/sources"><Icon name="icon-info" /></a></small>
               <ItemSelector
                 type="sourceType"
                 data={sourceTypesOptions}
@@ -212,7 +211,7 @@ export default class ExplorationIndicators extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
-              <small className="help-block">The type of product being shipped. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
+              <small className="help-block">The type of product being shipped. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
                 type="product"
                 loading={!classifications.product.length}
@@ -233,7 +232,7 @@ export default class ExplorationIndicators extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">Location</label>
-              <small className="help-block">Whence products are exchanged. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
+              <small className="help-block">Whence products are exchanged. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
                 type="country"
                 loading={!classifications.country.length}
@@ -254,7 +253,7 @@ export default class ExplorationIndicators extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
-              <small className="help-block">Where, in France, the transactions were recorded. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
+              <small className="help-block">Where, in France, the transactions were recorded. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ItemSelector
                 type="direction"
                 loading={!directions}
@@ -355,9 +354,9 @@ export default class ExplorationIndicators extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
-    
+
     // default network rendering
-    // only if : 
+    // only if :
     // - there is no graph already
     if (this.props.state.lines.length === 0) {
       console.log("checking default")

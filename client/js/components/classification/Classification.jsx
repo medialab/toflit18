@@ -9,7 +9,6 @@ import {compact} from 'lodash';
 import Select from 'react-select';
 import React, {Component} from 'react';
 import {branch} from 'baobab-react/decorators';
-import {Link} from 'react-router';
 
 import Icon from '../misc/Icon.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
@@ -145,7 +144,7 @@ export default class Classification extends Component {
                     className="control-label">
                     Classifications
                   </label>
-                  <small className="help-block">Choose a classification and search its group names <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
+                  <small className="help-block">Choose a classification and search its group names <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
                   <ClassificationSelector
                     type={kind.value}
                     loading={!classifications[kind.value]}
@@ -164,7 +163,7 @@ export default class Classification extends Component {
                     className="control-label">
                     Classifications parent
                   </label>
-                  <small className="help-block">Choose a parent classification and explore its item names <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
+                  <small className="help-block">Choose a parent classification and explore its item names <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
                   <ClassificationSelector
                     type={kind.value}
                     loading={false}

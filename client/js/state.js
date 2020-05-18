@@ -11,6 +11,9 @@ import {
 } from './monkeys';
 
 const defaultState = {
+  // View (strongly bound to the router):
+  view: null,
+  viewGroup: null,
 
   // Data
   data: {

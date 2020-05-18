@@ -6,7 +6,6 @@
  * its various features.
  */
 import React, {Component} from 'react';
-import {Link} from 'react-router';
 
 export default class Home extends Component {
   render() {
@@ -31,8 +30,8 @@ export default class Home extends Component {
             <div className="row">
               <div className="col-sm-12"><h2>Explore Trade</h2></div>
               <div className="col-sm-4">
-                <Link
-                  to="/exploration/indicators"
+                <a
+                  href="#/exploration/indicators"
                   className="btn btn-link" >
                   <figure>
                     <img
@@ -45,12 +44,12 @@ export default class Home extends Component {
                       <span>Time series</span>
                     </figcaption>
                   </figure>
-                </Link>
+                </a>
                 <p>Here, you can vizualize the evolutions of particular branches of French trade through time.</p>
               </div>
               <div className="col-sm-4">
-                <Link
-                  to="/exploration/terms"
+                <a
+                  href="#/exploration/terms"
                   className="btn btn-link" >
                   <figure>
                     <img
@@ -63,12 +62,12 @@ export default class Home extends Component {
                       <span>Products</span>
                     </figcaption>
                   </figure>
-                </Link>
+                </a>
                 <p>Here, you can vizualize lexicographic networks of commodities traded by France.</p>
               </div>
               <div className="col-sm-4">
-                <Link
-                  to="/exploration/network"
+                <a
+                  href="#/exploration/network"
                   className="btn btn-link" >
                   <figure>
                     <img
@@ -81,15 +80,15 @@ export default class Home extends Component {
                       <span>Countries</span>
                     </figcaption>
                   </figure>
-                </Link>
+                </a>
                 <p>Here, you can vizualize geographical networks of French international trade.</p>
               </div>
             </div>
             <div className="row">
               <div className="col-sm-12"><h2>Data</h2></div>
               <div className="col-sm-4">
-                <Link
-                  to="/sources"
+                <a
+                  href="#/sources"
                   className="btn btn-link" >
                   <figure>
                     <img
@@ -102,12 +101,12 @@ export default class Home extends Component {
                       <span>Sources</span>
                     </figcaption>
                   </figure>
-                </Link>
+                </a>
                 <p>Provides information on the sources and the methods used to create the TOFLIT18 database.</p>
               </div>
               <div className="col-sm-4">
-                <Link
-                  to="/exploration/meta"
+                <a
+                  href="#/exploration/meta"
                   className="btn btn-link" >
                   <figure>
                     <img
@@ -121,12 +120,12 @@ export default class Home extends Component {
                       <span>Metadata</span>
                     </figcaption>
                   </figure>
-                </Link>
+                </a>
                 <p>Provides visual tools to explore the coverage of the database (years, products, partners, locations...).</p>
               </div>
               <div className="col-sm-4">
-                <Link
-                  to="/classification/browser"
+                <a
+                  href="#/classification/browser"
                   className="btn btn-link" >
                   <figure>
                     <img
@@ -140,7 +139,7 @@ export default class Home extends Component {
                       <span>Classifications</span>
                     </figcaption>
                   </figure>
-                </Link>
+                </a>
                 <p>Provides tools to access and understand the product and partner classifications used in the TOFLIT18 database.</p>
               </div>
             </div>

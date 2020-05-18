@@ -23,7 +23,6 @@ import {
   addNetwork,
   updateDate
 } from '../../actions/network';
-import {Link} from 'react-router';
 import Icon from '../misc/Icon.jsx';
 
 import specs from '../../../specs.json';
@@ -121,11 +120,11 @@ class NetworkPanel extends Component {
     let dateMaxOptions, dateMinOptions;
     dateMin = actions.updateDate('dateMin');
     dateMaxOptions = range((dateMin&&dateMin.id)||specs.limits.minYear, specs.limits.maxYear).map(d => {return {name: d, id: d}});
-    
+
 
     dateMax = actions.updateDate('dateMax');
     dateMinOptions = range(specs.limits.minYear, (dateMax&&dateMax.id)||specs.limits.maxYear).map(d => {return {name: d, id: d}});
-    
+
 
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
@@ -137,7 +136,7 @@ class NetworkPanel extends Component {
 
     const directed = selectors.kind && selectors.kind.id !== 'total';
 
-    
+
     return (
       <VizLayout
         title="Locations"
@@ -155,7 +154,7 @@ class NetworkPanel extends Component {
             loading={!classifications.country.length}
             data={classifications.country}
             onChange={actions.selectClassification}
-            selected={classification} 
+            selected={classification}
             onUpdate={actions.selectClassification}
             defaultValue={defaultSelectors.network.classification} />
         </div>
@@ -166,26 +165,26 @@ class NetworkPanel extends Component {
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="sourceType" className="control-label">Source Type</label>
-              <small className="help-block">Type of sources the data comes from. <Link to="/exploration/sources"><Icon name="icon-info" /></Link></small>
+              <small className="help-block">Type of sources the data comes from. <a href="#/exploration/sources"><Icon name="icon-info" /></a></small>
               <ItemSelector
                 type="sourceType"
                 data={sourceTypesOptions}
                 loading={!sourceTypesOptions.length}
                 onChange={val => actions.updateSelector('sourceType', val)}
-                selected={selectors.sourceType} 
+                selected={selectors.sourceType}
                 onUpdate={val => actions.updateSelector('sourceType', val)}
                 defaultValue={defaultSelectors.network['selectors.sourceType']} />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
-              <small className="help-block">The type of product being shipped. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
+              <small className="help-block">The type of product being shipped. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
                 type="product"
                 placeholder="Child classification..."
                 loading={!classifications.product.length}
                 data={classifications.product.filter(c => !c.source)}
                 onChange={val => actions.updateSelector('productClassification', val)}
-                selected={selectors.productClassification} 
+                selected={selectors.productClassification}
                 onUpdate={val => actions.updateSelector('productClassification', val)}
                 defaultValue={defaultSelectors.network['selectors.productClassification']} />
               <ItemSelector
@@ -211,7 +210,7 @@ class NetworkPanel extends Component {
             <div className="form-group">
               <label htmlFor="dates" className="control-label">Dates</label>
               <small className="help-block">Choose one date or a range data</small>
-              <div className="row">   
+              <div className="row">
                 <div className="col-xs-6">
                   <ItemSelector
                     type="dateMin"

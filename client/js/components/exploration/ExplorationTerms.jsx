@@ -23,7 +23,6 @@ import {
   addChart,
   updateDate
 } from '../../actions/terms';
-import {Link} from 'react-router';
 import Icon from '../misc/Icon.jsx';
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
 import { checkDefaultValues } from './utils';
@@ -158,18 +157,18 @@ class TermsPanel extends Component {
 
     dateMin = actions.updateDate('dateMin');
     dateMaxOptions = range((dateMin&&dateMin.id)||specs.limits.minYear, specs.limits.maxYear).map(d => {return {name: d, id: d}});
-    
+
 
     dateMax = actions.updateDate('dateMax');
     dateMinOptions = range(specs.limits.minYear, (dateMax&&dateMax.id)||specs.limits.maxYear).map(d => {return {name: d, id: d}});
-    
+
 
     let childClassifications = [];
 
     if (classification)
       childClassifications = getChildClassifications(classificationIndex, classification);
 
-    
+
     return (
       <VizLayout
         title="Product terms"
@@ -197,7 +196,7 @@ class TermsPanel extends Component {
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="sourceType" className="control-label">Source Type</label>
-              <small className="help-block">Type of sources the data comes from. <Link to="/exploration/sources"><Icon name="icon-info" /></Link></small>
+              <small className="help-block">Type of sources the data comes from. <a href="#/exploration/sources"><Icon name="icon-info" /></a></small>
               <ItemSelector
                 type="sourceType"
                 data={sourceTypesOptions}
@@ -209,7 +208,7 @@ class TermsPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">Product</label>
-              <small className="help-block">The type of product being shipped. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
+              <small className="help-block">The type of product being shipped. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
                 type="product"
                 placeholder="Child classification..."
@@ -217,7 +216,7 @@ class TermsPanel extends Component {
                 loading={!classifications.product.length}
                 data={childClassifications}
                 onChange={actions.update.bind(null, 'childClassification')}
-                selected={selectors.childClassification} 
+                selected={selectors.childClassification}
                 onUpdate={v => actions.update('childClassification', v)}
                 defaultValue={defaultSelectors.terms['selectors.childClassification']}/>
               <ItemSelector
@@ -232,7 +231,7 @@ class TermsPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">Country</label>
-              <small className="help-block">Whence products are exchanged. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
+              <small className="help-block">Whence products are exchanged. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
                 type="country"
                 loading={!classifications.country.length}
@@ -253,13 +252,13 @@ class TermsPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
-              <small className="help-block">Where, in France, the transactions were recorded. <Link to="/glossary/concepts"><Icon name="icon-info" /></Link></small>
+              <small className="help-block">Where, in France, the transactions were recorded. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ItemSelector
                 type="direction"
                 loading={!directions}
                 data={directions || []}
                 onChange={actions.update.bind(null, 'direction')}
-                selected={selectors.direction} 
+                selected={selectors.direction}
                 onUpdate={v => actions.update('direction', v)}
                 defaultValue={defaultSelectors.terms['selectors.direction']} />
             </div>
@@ -430,9 +429,9 @@ class TermsPanel extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
-    
+
     // default network rendering
-    // only if : 
+    // only if :
     // - there is no graph already
     if (!this.props.state.graph && !this.props.state.creating) {
       // - default values are set

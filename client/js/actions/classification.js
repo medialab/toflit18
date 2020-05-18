@@ -177,6 +177,11 @@ export function download(tree, id) {
 
 /**
  * Triggering a modal.
+ * ****
+ * [jacomyal] WARNING:
+ * This action does not work properly, since #/classification/modal seems not to
+ * link to any specific view. I leave the code here, though, since there would
+ * be an actual lot to remove (history.js, patch.js).
  */
 export function modal(tree, type) {
   const cursor = tree.select('states', 'classification', 'modal');

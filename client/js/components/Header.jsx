@@ -4,7 +4,6 @@
  *
  */
 import React, {Component, PropTypes} from 'react';
-import {Link} from 'react-router';
 import cls from 'classnames';
 import Icon from './misc/Icon.jsx';
 
@@ -86,10 +85,9 @@ export default class Header extends Component {
       deployedMenu,
       deployedBurger
     } = this.state;
-    const router = this.context.router;
-
     function isActive(urls) {
-      return (Array.isArray(urls) ? urls : [urls]).some(url => router.isActive(url));
+      const fragmentPathname = ((location.hash || '#').match(/#([^\?]*)(?:\?|$)/) || [])[1] || '';
+      return (Array.isArray(urls) ? urls : [urls]).some(url => url === fragmentPathname);
     }
 
     return (
@@ -110,12 +108,12 @@ export default class Header extends Component {
                 <span className="icon-bar" />
                 <span className="icon-bar" />
               </button>
-              <Link className="navbar-brand" to="/home">
+              <a className="navbar-brand" href="#/home">
                 <span className="sr-only">TOFLIT18</span>
                 <Icon
                   source="logotype"
                   name="icon-logotype" />
-              </Link>
+              </a>
             </div>
             <div
               className={cls('navbar-collapse', deployedBurger ? 'in' : 'collapse')}
@@ -144,13 +142,13 @@ export default class Header extends Component {
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      <Link to="/exploration/indicators">Time Series</Link>
+                      <a href="#/exploration/indicators">Time Series</a>
                     </li>
                     <li>
-                      <Link to="/exploration/network">Locations Network</Link>
+                      <a href="#/exploration/network">Locations Network</a>
                     </li>
                     <li>
-                      <Link to="/exploration/terms">Product Terms Network</Link>
+                      <a href="#/exploration/terms">Product Terms Network</a>
                     </li>
                   </ul>
                 </li>
@@ -176,13 +174,13 @@ export default class Header extends Component {
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      <Link to="/exploration/meta">Metadata</Link>
+                      <a href="#/exploration/meta">Metadata</a>
                     </li>
                     <li>
-                      <Link to="/classification/browser">Classifications</Link>
+                      <a href="#/classification/browser">Classifications</a>
                     </li>
                     <li>
-                      <Link to="/exploration/sources">Sources</Link>
+                      <a href="#/exploration/sources">Sources</a>
                     </li>
                   </ul>
                 </li>
@@ -208,20 +206,20 @@ export default class Header extends Component {
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      <Link to="/glossary/products">Products</Link>
+                      <a href="#/glossary/products">Products</a>
                     </li>
                     <li>
-                      <Link to="/glossary/concepts">Concepts</Link>
+                      <a href="#/glossary/concepts">Concepts</a>
                     </li>
                   </ul>
                 </li>
                 <li className={cls(isActive(LINKS.about) && 'active')}>
-                  <Link to="/about">About</Link>
+                  <a href="#/about">About</a>
                 </li>
               </ul>
               <ul className="nav navbar-nav navbar-right">
                 <li className={cls(isActive(LINKS.legal) && 'active')}>
-                  <Link to="/legal">Legal notice</Link>
+                  <a href="#/legal">Legal notice</a>
                 </li>
               </ul>
             </div>
