@@ -69,11 +69,11 @@ const ModelFlowsPerYear = {
         query.match('(pc:Classification)-[:HAS]->(pg:ClassifiedItem)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow)');
 
         const whereProduct = new Expression('pc.id = $productClassification');
-        query.params({productClassification:productClassification});
+        query.params({productClassification});
 
 
         if (product) {
-          const productFilter = filterItemsByIdsRegexps(product, 'pg')
+          const productFilter = filterItemsByIdsRegexps(product, 'pg');
 
           whereProduct.and(productFilter.expression);
           query.params(productFilter.params);
@@ -96,10 +96,10 @@ const ModelFlowsPerYear = {
         query.match('(pc:Classification)-[:HAS]->(pg:ClassifiedItem)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow), (ppg:ClassifiedItem)-[:AGGREGATES*0..]->(pg)');
 
         const whereProduct = new Expression('pc.id = $productClassification');
-        query.params({productClassification:productClassification});
+        query.params({productClassification});
 
         if (product) {
-          const productFilter = filterItemsByIdsRegexps(product, 'ppg')
+          const productFilter = filterItemsByIdsRegexps(product, 'ppg');
 
           whereProduct.and(productFilter.expression);
           query.params(productFilter.params);
@@ -121,21 +121,21 @@ const ModelFlowsPerYear = {
       if (countryClassification && !twofoldCountry) {
         query.match('(cc)-[:HAS]->(cg:ClassifiedItem)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow)');
         const whereCountry = new Expression('cc.id = $countryClassification');
-        query.params({countryClassification:countryClassification});
+        query.params({countryClassification});
 
         if (country) {
-          const countryFilter = filterItemsByIdsRegexps(country, 'cg')
+          const countryFilter = filterItemsByIdsRegexps(country, 'cg');
 
           whereCountry.and(countryFilter.expression);
           query.params(countryFilter.params);
         }
 
         query.where(whereCountry);
-        withs.add('f')
+        withs.add('f');
 
-        if (dataType === 'country'){
-          query.with([...withs].concat('cg.name as classificationGroupName').join(', '))
-          withs.add('classificationGroupName')
+        if (dataType === 'country') {
+          query.with([...withs].concat('cg.name as classificationGroupName').join(', '));
+          withs.add('classificationGroupName');
         }
         else
           query.with([...withs].join(', '));
@@ -145,11 +145,11 @@ const ModelFlowsPerYear = {
       if (countryClassification && twofoldCountry) {
         query.match('(cc:Classification)-[:HAS]->(cg:ClassifiedItem)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow), (ccg:ClassifiedItem)-[:AGGREGATES*0..]->(cg)');
         const whereCountry = new Expression('cc.id = $countryClassification');
-        query.params({countryClassification:countryClassification});
+        query.params({countryClassification});
 
 
         if (country) {
-          const countryFilter = filterItemsByIdsRegexps(country, 'ccg')
+          const countryFilter = filterItemsByIdsRegexps(country, 'ccg');
 
           whereCountry.and(countryFilter.expression);
           query.params(countryFilter.params);
@@ -157,26 +157,26 @@ const ModelFlowsPerYear = {
 
         query.where(whereCountry);
 
-        withs.add('f')
+        withs.add('f');
 
-        if (dataType === 'country'){
-          query.with([...withs].concat('cg.name as classificationGroupName').join(', '))
-          withs.add('classificationGroupName')
+        if (dataType === 'country') {
+          query.with([...withs].concat('cg.name as classificationGroupName').join(', '));
+          withs.add('classificationGroupName');
         }
         else
           query.with([...withs].join(', '));
       }
 
       // Add a  match flow if not only done
-      if(dataType === 'direction' || dataType === 'sourceType')
-        query.match('(f:Flow)')
+      if (dataType === 'direction' || dataType === 'sourceType')
+        query.match('(f:Flow)');
 
       //-- direction
       if (direction && direction !== '$all$') {
         query.match('(d:Direction)');
         where.and('d.id = $direction');
         where.and('f.direction = d.name');
-        query.params({direction:direction});
+        query.params({direction});
       }
 
       //-- Import/Export
@@ -188,13 +188,13 @@ const ModelFlowsPerYear = {
       if (dataType === 'sourceType' || dataType === 'direction')
         where.and(`exists(f.${dataType})`);
 
-      where.and(`f.year >= $limitMinYear`);
-      query.params({limitMinYear:database.int(limits.minYear)});
+      where.and('f.year >= $limitMinYear');
+      query.params({limitMinYear: database.int(limits.minYear)});
 
       // manage special sourceType
       if (sourceType && sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
-        where.and("f.sourceType IN $sourceType");
-        query.params({sourceType:[sourceType]});
+        where.and('f.sourceType IN $sourceType');
+        query.params({sourceType: [sourceType]});
       }
 
       if (sourceType === 'National best guess') {
@@ -203,7 +203,7 @@ const ModelFlowsPerYear = {
 
       if (sourceType === 'Local best guess') {
         where.and('f.sourceType IN $sourceType');
-        query.params({sourceType:["Local","National toutes directions tous partenaires"]});
+        query.params({sourceType: ['Local', 'National toutes directions tous partenaires']});
       }
 
       if (!where.isEmpty())

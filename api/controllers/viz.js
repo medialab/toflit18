@@ -15,8 +15,8 @@ const formatItemsParams = (items) => {
     return items.length > 0 ? {
       ids: items.filter(e => e.id !== -1).map(e => +e.id),
       regexps: items.filter(e => e.id === -1).map(e => e.value)
-    } : null
-}
+    } : null;
+};
 
 const controller = [
   {
@@ -35,9 +35,9 @@ const controller = [
     // },
     action(req, res) {
       const payloadFlows = mapValues(req.body, (v, k) => {
-        if (k === 'product' || k === 'country'){
+        if (k === 'product' || k === 'country') {
           // separate filters on id from those on name trhough regexp
-          return formatItemsParams(v)
+          return formatItemsParams(v);
         }
         if (v !== 'null') {
           return k !== 'kind' && k !== 'sourceType' ? +v : v;
@@ -59,13 +59,13 @@ const controller = [
     action(req, res) {
       const payload = mapValues(req.body, (v, k) => {
 
-        if (k === 'product' || k === 'country'){
+        if (k === 'product' || k === 'country') {
           // separate filters on id from those on name trhough regexp
-          return formatItemsParams(v)
+          return formatItemsParams(v);
         }
 
         if (k !== 'kind' && k !== 'sourceType')
-          return +v
+          return +v;
 
         return v;
       });
@@ -93,9 +93,9 @@ const controller = [
     // },
     action(req, res) {
       const payloadNetwork = mapValues(req.body, (v, k) => {
-        if (k === 'product' || k === 'country'){
+        if (k === 'product' || k === 'country') {
           // separate filters on id from those on name trhough regexp
-          return formatItemsParams(v)
+          return formatItemsParams(v);
         }
 
         if (v !== 'null') {
@@ -133,9 +133,9 @@ const controller = [
     // },
     action(req, res) {
       const payloadTerms = mapValues(req.body, (v, k) => {
-        if (k === 'child' || k === 'country'){
+        if (k === 'child' || k === 'country') {
           // separate filters on id from those on name trhough regexp
-          return formatItemsParams(v)
+          return formatItemsParams(v);
         }
         if (v !== 'null') {
           return k !== 'kind' && k !== 'sourceType' ? +v : v;

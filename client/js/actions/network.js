@@ -53,7 +53,7 @@ export function addNetwork(tree) {
 
   // keep only params !== null for request
   forIn(params, (v, k) => {
-     switch(k){
+     switch (k) {
         case 'sourceType':
           paramsRequest[k] = v.value;
           break;
@@ -63,7 +63,7 @@ export function addNetwork(tree) {
           break;
         default:
           paramsRequest[k] = v.id;
-      } 
+      }
   });
 
   const classification = cursor.get('classification');
@@ -162,7 +162,7 @@ function fetchGroups(tree, cursor, id) {
   tree.client.groups({params: {id}}, function(err, data) {
     if (err) return;
 
-    cursor.set(data.result.map(d => {return {...d, value:d.id}}));
+    cursor.set(data.result.map(d => ({...d, value: d.id})));
   });
 }
 

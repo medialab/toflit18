@@ -28,7 +28,7 @@ import Icon from '../misc/Icon.jsx';
 import specs from '../../../specs.json';
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
-import { checkDefaultValues } from './utils';
+import {checkDefaultValues} from './utils';
 
 const NUMBER_FIXED_FORMAT = format(',.2f'),
       NUMBER_FORMAT = format(',');
@@ -70,11 +70,22 @@ class NetworkPanel extends Component {
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
   }
 
+  componentDidUpdate() {
+    if (!this.props.state.graph && !this.props.state.loading) {
+      // - default values are set
+      // console.log('checking default');
+      if (checkDefaultValues(defaultSelectors.network, this.props.state) && !this.props.state.loading) {
+        // console.log('trigering default addNetwork');
+        this.props.actions.addNetwork();
+      }
+    }
+  }
+
   export() {
     const now = new Date();
     exportCSV({
       data: this.props.state.data,
-      name: `TOFLIT18_Locations_${now.toLocaleString('se-SE').replace(' ','_')}.csv`
+      name: `TOFLIT18_Locations_${now.toLocaleString('se-SE').replace(' ', '_')}.csv`
     });
   }
 
@@ -105,27 +116,16 @@ class NetworkPanel extends Component {
       }
     } = this.props;
 
-    let {
-      state: {
-        dateMin,
-        dateMax
-      }
-    } = this.props;
-
     const {
       selectedNode,
       fullscreen
     } = this.state;
 
-    let dateMaxOptions, dateMinOptions;
-    dateMin = actions.updateDate('dateMin');
-    dateMaxOptions = range((dateMin&&dateMin.id)||specs.limits.minYear, specs.limits.maxYear).map(d => {return {name: d, id: d}});
+    const dateMin = actions.updateDate('dateMin');
+    const dateMaxOptions = range((dateMin && dateMin.id) || specs.limits.minYear, specs.limits.maxYear).map(d => ({name: d, id: d}));
 
-
-    dateMax = actions.updateDate('dateMax');
-    dateMinOptions = range(specs.limits.minYear, (dateMax&&dateMax.id)||specs.limits.maxYear).map(d => {return {name: d, id: d}});
-
-
+    const dateMax = actions.updateDate('dateMax');
+    const dateMinOptions = range(specs.limits.minYear, (dateMax && dateMax.id) || specs.limits.maxYear).map(d => ({name: d, id: d}));
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
@@ -370,18 +370,5 @@ class NetworkPanel extends Component {
         </div>
       </VizLayout>
     );
-  }
-
-  componentDidUpdate(){
-
-     if (!this.props.state.graph && !this.props.state.loading) {
-      // - default values are set
-      console.log('checking default')
-      if (checkDefaultValues(defaultSelectors.network, this.props.state) && !this.props.state.loading){
-        console.log("trigering default addNetwork")
-        this.props.actions.addNetwork();
-      }
-    }
-
   }
 }

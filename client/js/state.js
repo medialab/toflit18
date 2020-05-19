@@ -40,7 +40,7 @@ const defaultState = {
 
       // Classification browser
       browser: {
-        kind: { name: "Products", value: "product" },
+        kind: {name: 'Products', value: 'product'},
         loading: false,
         selected: 2,
         selectedParent: 1,

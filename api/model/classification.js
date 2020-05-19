@@ -58,7 +58,7 @@ const Model = {
 
         return {
           ...row.classification.properties,
-          id: row.classification.properties['id'],
+          id: row.classification.properties.id,
           author: row.author,
           parent: !source ? row.parent : null,
           groupsCount: row.groupsCount,
@@ -83,7 +83,7 @@ const Model = {
    * Retrieving every one of the classification's groups.
    */
   groups(id, callback) {
-    return database.cypher({query: queries.rawGroups, params: {id: id}}, function(err, result) {
+    return database.cypher({query: queries.rawGroups, params: {id}}, function(err, result) {
       if (err) return callback(err);
       if (!result.length) return callback(null, null);
 
@@ -116,7 +116,7 @@ const Model = {
         ...row.group.properties,
         items: row.items,
         nbItems: row.nbItems,
-        id: row.group.properties['id']
+        id: row.group.properties.id
       };
 
       if (opts.queryItem)
@@ -197,7 +197,7 @@ const Model = {
             ...row.group.properties,
             items: row.items,
             nbItems: row.nbItems,
-            id: row.group.properties['id']
+            id: row.group.properties.id
           };
           if (opts.queryItem)
             group.nbMatchedItems = row.nbMatchedItems;
@@ -213,7 +213,7 @@ const Model = {
    * Exporting to csv.
    */
   export(id, callback) {
-    return database.cypher({query: queries.export, params: {id: id}}, function(err, results) {
+    return database.cypher({query: queries.export, params: {id}}, function(err, results) {
       if (err) return callback(err);
       if (!results.length) return callback(null, null);
 
@@ -242,7 +242,7 @@ const Model = {
    * Review the given patch for the given classification.
    */
   review(id, patch, callback) {
-    return database.cypher({query: queries.allGroups, params: {id: id}}, function(err1, classification) {
+    return database.cypher({query: queries.allGroups, params: {id}}, function(err1, classification) {
       if (err1) return callback(err1);
       if (!classification.length) return callback(null, null);
 
@@ -259,10 +259,10 @@ const Model = {
       const updatedClassification = applyOperations(classification, operations);
 
       // Retrieving upper classifications
-      return database.cypher({query: queries.upper, params: {id: id}}, function(err2, upper) {
+      return database.cypher({query: queries.upper, params: {id}}, function(err2, upper) {
         if (err2) return callback(err2);
 
-        const ids = map(upper, c => c.upper.properties['id']);
+        const ids = map(upper, c => c.upper.properties.id);
 
         // Rewiring each upper classification
         return async.map(ids, function(upperId, next) {
@@ -300,7 +300,7 @@ const Model = {
     async.waterfall([
 
       function getData(next) {
-        return database.cypher({query: queries.info, params: {id: id}}, next);
+        return database.cypher({query: queries.info, params: {id}}, next);
       },
 
       function computeBatch(result, next) {
@@ -308,7 +308,7 @@ const Model = {
           return next(null, null);
 
         const batch = new Batch(database),
-              classificationId = result[0].classification.properties['id'],
+              classificationId = result[0].classification.properties.id,
               newGroupsIndex = {};
 
         // Iterating through the patch's operations

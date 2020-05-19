@@ -170,7 +170,7 @@ export default class Network extends Component {
       this.setState({layoutRunning: true});
 
       this.layoutTimeout = setTimeout(() => {
-        if (this.sigma){
+        if (this.sigma) {
           this.sigma.stopForceAtlas2();
           this.setState({layoutRunning: false});
         }

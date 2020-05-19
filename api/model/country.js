@@ -38,11 +38,11 @@ const ModelNetwork = {
       match.push('(f:Flow)-[:OF]->(product)');
       where.and(new Expression('product IN products'));
 
-      query.match('(product:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)')
+      query.match('(product:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
       const whereProduct = new Expression('pc.id = $productClassification');
-      query.params({productClassification: productClassification});
+      query.params({productClassification});
       if (product) {
-        const productFilter = filterItemsByIdsRegexps(product, 'pci')
+        const productFilter = filterItemsByIdsRegexps(product, 'pci');
         whereProduct.and(productFilter.expression);
         query.params(productFilter.params);
       }
@@ -59,7 +59,7 @@ const ModelNetwork = {
       exportImportFilter = ':TO';
     match.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
     const whereCountry = new Expression('cc.id = $classification');
-    query.params({classification: classification});
+    query.params({classification});
 
     where.and(whereCountry);
 
@@ -73,7 +73,7 @@ const ModelNetwork = {
       }
       else if (sourceType === 'National best guess') {
         where.and('s.type IN $sourceType');
-        query.params({sourceType: ["Objet Général", "Résumé", "National toutes directions tous partenaires", "Tableau des quantités"]});
+        query.params({sourceType: ['Objet Général', 'Résumé', 'National toutes directions tous partenaires', 'Tableau des quantités']});
       }
       else if (sourceType === 'Local best guess') {
        where.and('s.type IN ["Local","National toutes directions tous partenaires"] and f.year <> 1749 and f.year <> 1751');
@@ -87,12 +87,12 @@ const ModelNetwork = {
 
     if (dateMin) {
       where.and('f.year >= $flowYearMin');
-      query.params({flowYearMin:database.int(dateMin)});
+      query.params({flowYearMin: database.int(dateMin)});
     }
 
-    if (dateMax){
+    if (dateMax) {
         where.and('f.year <= $flowYearMax');
-        query.params({flowYearMax:database.int(dateMax)});
+        query.params({flowYearMax: database.int(dateMax)});
     }
 
     if (!where.isEmpty())

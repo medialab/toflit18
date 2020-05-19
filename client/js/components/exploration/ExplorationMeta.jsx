@@ -29,7 +29,7 @@ import {
 } from '../../actions/metadata';
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
-import { checkDefaultValues } from './utils';
+import {checkDefaultValues} from './utils';
 
 /**
  * Helper used to get the child classifications of the given classification.
@@ -39,7 +39,7 @@ function getChildClassifications(index, target) {
 
   // target can only contain an id (default settings)
   // in that case copy children from index
-  if(index[target.id])
+  if (index[target.id])
     target = index[target.id];
 
   if (!target.children || !target.children.length)
@@ -100,6 +100,17 @@ function formatArrayToCSV(data) {
   }
 })
 export default class ExplorationMeta extends Component {
+  componentDidUpdate() {
+    if (!this.props.state.flowsPerYear && !!this.props.state.dataModel && !this.props.state.loading) {
+      // - default values are set
+      // console.log('checking default');
+      if (checkDefaultValues(defaultSelectors.metadata, this.props.state) && !this.props.state.loading) {
+        // console.log('trigering default addNetwork');
+        this.props.actions.addChart();
+      }
+    }
+  }
+
   getUnit() {
     const {state} = this.props;
     if (state.dataModel) {
@@ -470,18 +481,5 @@ export default class ExplorationMeta extends Component {
         </div>
       </VizLayout>
     );
-  }
-
-  componentDidUpdate(){
-
-     if (!this.props.state.flowsPerYear && !!this.props.state.dataModel && !this.props.state.loading) {
-      // - default values are set
-      console.log('checking default')
-      if (checkDefaultValues(defaultSelectors.metadata, this.props.state) && !this.props.state.loading){
-        console.log("trigering default addNetwork")
-        this.props.actions.addChart();
-      }
-    }
-
   }
 }

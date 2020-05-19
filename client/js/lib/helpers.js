@@ -5,7 +5,6 @@
  * Miscellaneous client helper functions.
  */
 import {chunk} from 'lodash';
-import specs from '../../specs.json';
 
 /**
  * Flatten a recursive classification tree.

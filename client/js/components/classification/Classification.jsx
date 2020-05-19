@@ -63,6 +63,15 @@ const ClassificationWell = ({groupsCount, itemsCount, unclassifiedItemsCount, co
 export default class Classification extends Component {
   componentDidMount() {
     this.handleScroll();
+
+    const {
+      rows
+    } = this.props;
+    // default value refresh trigger
+    if (rows.length === 0) {
+      // console.log('submit');
+      this.props.actions.search();
+    }
   }
 
 
@@ -362,18 +371,6 @@ export default class Classification extends Component {
       </VizLayout>
 
     );
-  }
-
-  componentDidMount(){
-    const {
-      rows
-    } = this.props
-    // default value refresh trigger
-    if(rows.length===0){
-      console.log('submit')
-      this.props.actions.search()
-    }
-
   }
 
 

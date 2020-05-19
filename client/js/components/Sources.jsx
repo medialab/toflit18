@@ -53,7 +53,7 @@ export default class Sources extends Component {
                 of the flows. From 1771, they include quantities and / or unit
                 prices.
                 The 1752 Objet Général does not include imports from the West Indies.
-                We have added to the Objet Général imports through 
+                We have added to the Objet Général imports through
                 the French East Indian Company when available on the same year (up to 1771)
               </p>
               <p>
@@ -92,7 +92,7 @@ export default class Sources extends Component {
                 </ul>
               </p>
             </div>
-        	<div className="col-sm-10 col-sm-offset-1">
+            <div className="col-sm-10 col-sm-offset-1">
               <h2>National toutes directions partenaires manquant</h2>
               <p className="lead">
                 They contain trade by product x partner x direction for the

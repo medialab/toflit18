@@ -22,7 +22,7 @@ import {
 } from '../../actions/indicators';
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
-import { checkDefaultValues } from './utils';
+import {checkDefaultValues} from './utils';
 
 // TODO: move branching to sub component for optimized rendering logic
 // TODO: better use pure rendering logic
@@ -31,18 +31,18 @@ import { checkDefaultValues } from './utils';
  * Lines summary.
  */
 function buildDescription(params, data) {
+  const selectors = mapValues(params, (v, k) => {
+    if (v && (k === 'product' || k === 'country')) {
+      return v.map(p => p.name).join(', ');
+    }
 
-  const selectors = mapValues(params, (v,k) => {
-      if (v && (k === 'product' || k === 'country')){
-        return v.map(p => p.name).join(", ")
-      }
+    if (v)
+      return v.name;
+  });
 
-      if (v)
-        return v.name});
   let content = [
     <strong key="flows">{capitalize(selectors.kind || 'total') + ' flows'}</strong>,
   ];
-
 
   if (selectors.product) {
     if (data.length)
@@ -103,6 +103,20 @@ function buildDescription(params, data) {
   }
 })
 export default class ExplorationIndicators extends Component {
+  componentDidUpdate() {
+    // default network rendering
+    // only if :
+    // - there is no graph already
+    if (this.props.state.lines.length === 0) {
+      // console.log('checking default');
+      // - default values are set
+      if (checkDefaultValues(defaultSelectors.indicators, this.props.state)) {
+        // console.log('trigering default addLine');
+        this.props.actions.addLine();
+      }
+    }
+  }
+
   exportCSV() {
     // create an array with all lines, add a column with name of country selected
     // create csv only with indicators selected
@@ -148,7 +162,7 @@ export default class ExplorationIndicators extends Component {
     const now = new Date();
     exportCSV({
       data: arrayDataLines,
-      name: `TOFLIT18_Time_series_${now.toLocaleString('se-SE').replace(' ','_')}.csv`,
+      name: `TOFLIT18_Time_series_${now.toLocaleString('se-SE').replace(' ', '_')}.csv`,
     });
   }
 
@@ -156,7 +170,7 @@ export default class ExplorationIndicators extends Component {
     const now = new Date();
     exportSVG({
       nodes: [this.legendContainer, this.charts.vizContainer],
-      name: `TOFLIT18_Time_series_${now.toLocaleString('se-SE').replace(' ','_')}.svg`
+      name: `TOFLIT18_Time_series_${now.toLocaleString('se-SE').replace(' ', '_')}.svg`
     });
   }
 
@@ -192,7 +206,7 @@ export default class ExplorationIndicators extends Component {
         title="Time series"
         description="By selecting the following criteria, you'll be able to add the line you need on the graph that will be created for you below."
         leftPanelName="Filters"
-        rightPanelName="Curves" >
+        rightPanelName="Curves">
         { /* Left panel */ }
         <div className="aside-filters">
           <h3>Filters</h3>
@@ -302,7 +316,7 @@ export default class ExplorationIndicators extends Component {
             this.legendContainer = el;
           }}>
           <ul className="list-unstyled list-labels">
-            {lines.map(function(line, i) {
+            {lines.map(function (line, i) {
               const style = {
                 color: 'white',
                 backgroundColor: line.color
@@ -351,21 +365,6 @@ export default class ExplorationIndicators extends Component {
 
       </VizLayout>
     );
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot){
-
-    // default network rendering
-    // only if :
-    // - there is no graph already
-    if (this.props.state.lines.length === 0) {
-      console.log("checking default")
-      // - default values are set
-      if (checkDefaultValues(defaultSelectors.indicators, this.props.state)){
-        console.log("trigering default addLine")
-        this.props.actions.addLine();
-      }
-    }
   }
 }
 

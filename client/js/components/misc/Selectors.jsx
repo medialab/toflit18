@@ -5,11 +5,10 @@
  * Series of various selectors used throughout the app.
  */
 import React, {Component, PropTypes} from 'react';
-import Select, {AsyncCreatable, Creatable} from 'react-select';
+import Select, {AsyncCreatable} from 'react-select';
 import {prettyPrint} from '../../lib/helpers';
 import {debounce, identity} from 'lodash';
 import cls from 'classnames';
-
 
 
 /**
@@ -21,11 +20,11 @@ export class ClassificationSelector extends Component {
     type: PropTypes.string.isRequired
   };
 
-  componentWillUpdate(nextProps, nextState){
+  componentWillUpdate(nextProps) {
     // we might have default selection to initialize
     // test if we have new data
-   if (!this.defaultTriggered && this.props.defaultValue && !this.props.selected && nextProps.data.length > 0){
-      nextProps.onUpdate(nextProps.data.filter(d => d.name === this.props.defaultValue)[0])
+   if (!this.defaultTriggered && this.props.defaultValue && !this.props.selected && nextProps.data.length > 0) {
+      nextProps.onUpdate(nextProps.data.filter(d => d.name === this.props.defaultValue)[0]);
       this.defaultTriggered = true;
     }
   }
@@ -119,46 +118,39 @@ export class ItemSelector extends Component {
     this.compulsoryOptions = (TEMPLATES[type] || []).map(o => ({...o, special: true}));
   }
 
-  componentWillUpdate(nextProps, nextState){
+  componentDidMount() {
+    // we might have default selection to initialize
+    // once we got the props ready we test if we can find the name of the default value
+    if (this.props.defaultValue && !this.props.selected && this.props.data.length > 0) {
+        if (['product', 'country'].indexOf(this.props.type) !== -1) {
+          // products and country are multiple selectors, let's iterate trough selection
+          this.props.onUpdate(this.props.defaultValue.map(s => this.props.data.filter(d => d.name === s)[0]));
+        }
+        else {
+          this.props.onUpdate(this.props.data.filter(d => d.name === this.props.defaultValue)[0]);
+        }
+      }
+  }
+
+  componentWillUpdate(nextProps) {
     // we might have default selection to initialize
     // once we got the props ready we test if we can find the name of the default value
 
-    if (!this.defaultTriggered && nextProps.defaultValue && !nextProps.selected && nextProps.data.length > 0){
-        if (['product', 'country'].indexOf(nextProps.type) != -1 ) {
-          // products and country are multiple selectors, let's iterate trough selection
-          nextProps.onUpdate(nextProps.defaultValue.map(s => nextProps.data.filter(d => d.name === s)[0]))
-        }
-        else {
-          nextProps.onUpdate(nextProps.data.filter(d => d.name === nextProps.defaultValue)[0])
-        }
-        this.defaultTriggered = true;
-      }    
+    if (!this.defaultTriggered && nextProps.defaultValue && !nextProps.selected && nextProps.data.length > 0) {
+      if (['product', 'country'].indexOf(nextProps.type) !== -1) {
+        // products and country are multiple selectors, let's iterate trough selection
+        nextProps.onUpdate(nextProps.defaultValue.map(s => nextProps.data.filter(d => d.name === s)[0]));
+      }
+      else {
+        nextProps.onUpdate(nextProps.data.filter(d => d.name === nextProps.defaultValue)[0]);
+      }
+      this.defaultTriggered = true;
+    }
   }
-
-  componentDidMount(){
-    // we might have default selection to initialize
-    // once we got the props ready we test if we can find the name of the default value
-    if (this.props.defaultValue && !this.props.selected && this.props.data.length > 0){
-        if (['product', 'country'].indexOf(this.props.type) != -1 ) {
-          // products and country are multiple selectors, let's iterate trough selection
-          this.props.onUpdate(this.props.defaultValue.map(s => this.props.data.filter(d => d.name === s)[0]))
-        }
-        else {
-          this.props.onUpdate(this.props.data.filter(d => d.name === this.props.defaultValue)[0])
-        }
-      }    
-  }
-
 
   search(input, callback) {
-    const warning = {
-      id: '$warning$',
-      disabled: true,
-      name: 'This list contains too many elements. Try searching...'
-    };
+    let options = [];
 
-    let options = []
-    
     if (!input.trim())
       options = this.props.data;
     else {
@@ -199,8 +191,6 @@ export class ItemSelector extends Component {
       defaultValue
     } = this.props;
 
-    const isTooLong = data.length > MAX_LIST_SIZE;
-
     const trulyDisabled = disabled || loading;
 
     const commonProps = {
@@ -217,7 +207,7 @@ export class ItemSelector extends Component {
       defaultValue
     };
 
-    if (type!='product' && type != 'country')
+    if (type !== 'product' && type !== 'country')
       return <Select {...commonProps} options={this.compulsoryOptions.concat(data)} />;
 
     return (
@@ -228,12 +218,11 @@ export class ItemSelector extends Component {
         ignoreAccents={false}
         cache={false}
         isValidNewOption={() => true}
-        multi={true}
-        joinValues={true}
+        multi
+        joinValues
         deliminter="##"
         promptTextCreator={(label) => label}
-        newOptionCreator={(p) => { return {value:p.label, name:`${type} matching '${p.label}'`, id:-1}}} 
-        />
+        newOptionCreator={(p) => ({value: p.label, name: `${type} matching '${p.label}'`, id: -1})} />
     );
   }
 }

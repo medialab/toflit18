@@ -45,11 +45,11 @@ const ModelTerms = {
         match.push(`(f:Flow)-[${exportImportFilter}]->(country)`);
         where.and(new Expression('country IN countries'));
 
-        query.match(`(country:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
+        query.match('(country:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)');
         const whereCountry = new Expression('cc.id = $countryClassification');
-        query.params({countryClassification: countryClassification});
+        query.params({countryClassification});
         if (country) {
-          const countryFilter = filterItemsByIdsRegexps(country, 'cci')
+          const countryFilter = filterItemsByIdsRegexps(country, 'cci');
           whereCountry.and(countryFilter.expression);
           query.params(countryFilter.params);
         }
@@ -60,7 +60,7 @@ const ModelTerms = {
       //-- Do we need to match a product?
       match.push('(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)');
       const whereProduct = new Expression('pc.id = $classification');
-      query.params({classification: classification});
+      query.params({classification});
       where.and(whereProduct);
 
       //-- Should we match a precise direction?
@@ -73,18 +73,18 @@ const ModelTerms = {
           exportImportFilter = ':FROM';
         match.push(`(d:Direction)<-[${exportImportFilter}]-(f:Flow)`);
         where.and('d.id = $direction');
-        query.params({direction: direction});
+        query.params({direction});
       }
 
       //-- Do we need to match a child classification item?
       if (childClassification && child) {
         match.push('(pci)<-[:AGGREGATES*1..]-(chci:ClassifiedItem)<-[:HAS]-(chc:Classification)');
-        const childFilter = filterItemsByIdsRegexps(child, 'chci')
+        const childFilter = filterItemsByIdsRegexps(child, 'chci');
 
         where.and(childFilter.expression);
         query.params(childFilter.params);
         where.and('chc.id = {childClassification}');
-        query.params({childClassification: childClassification});
+        query.params({childClassification});
       }
 
       //-- Do we need to match a source type?
@@ -93,25 +93,25 @@ const ModelTerms = {
 
         if (sourceType !== 'National best guess' && sourceType !== 'Local best guess') {
          where.and('s.type IN $sourceType');
-         query.params({sourceType:[sourceType]});
+         query.params({sourceType: [sourceType]});
         }
         else if (sourceType === 'National best guess') {
           where.and('s.type IN $sourceType');
-          query.params({sourceType:["Objet Général", "Résumé", "National toutes directions tous partenaires", "Tableau des quantités"]});
+          query.params({sourceType: ['Objet Général', 'Résumé', 'National toutes directions tous partenaires', 'Tableau des quantités']});
         }
         else if (sourceType === 'Local best guess') {
          where.and('s.type IN ["Local","National toutes directions tous partenaires"] and f.year <> 1749 and f.year <> 1751');
         }
       }
 
-      if (dateMin){
+      if (dateMin) {
         where.and('f.year >= $flowYearMin');
-        query.params({flowYearMin:dateMin})
+        query.params({flowYearMin: dateMin});
       }
 
-      if (dateMax){
+      if (dateMax) {
         where.and('f.year <= $flowYearMax');
-        query.params({flowYearMax:dateMax})
+        query.params({flowYearMax: dateMax});
       }
 
       if (match.length > 0)

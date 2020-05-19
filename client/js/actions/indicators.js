@@ -17,7 +17,7 @@ function fetchGroups(tree, cursor, id) {
   tree.client.groups({params: {id}}, function(err, data) {
     if (err) return;
 
-    cursor.set(data.result.map(d => {return {...d, value:d.id}}));
+    cursor.set(data.result.map(d => ({...d, value: d.id})));
   });
 }
 
@@ -80,7 +80,7 @@ export function addLine(tree) {
 
   for (const k in selectors)
     if (!!selectors[k]) {
-      switch(k){
+      switch (k) {
         case 'sourceType':
           payload[k] = selectors[k].value;
           break;
@@ -90,8 +90,8 @@ export function addLine(tree) {
           break;
         default:
           payload[k] = selectors[k].id;
-      } 
-    
+      }
+
     }
 
   tree.client.viz({params: {name: 'line'}, data: payload}, function(err, data) {

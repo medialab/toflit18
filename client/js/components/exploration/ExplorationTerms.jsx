@@ -25,7 +25,7 @@ import {
 } from '../../actions/terms';
 import Icon from '../misc/Icon.jsx';
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
-import { checkDefaultValues } from './utils';
+import {checkDefaultValues} from './utils';
 
 import specs from '../../../specs.json';
 
@@ -38,7 +38,7 @@ function getChildClassifications(index, target) {
 
   // target can only contain an id (default settings)
   // in that case copy children from index
-  if(index[target.id])
+  if (index[target.id])
     target = index[target.id];
 
   if (!target.children || !target.children.length)
@@ -104,11 +104,25 @@ class TermsPanel extends Component {
     this.setSelectedNode = this.setSelectedNode.bind(this);
   }
 
+  componentDidUpdate() {
+    // default network rendering
+    // only if :
+    // - there is no graph already
+    if (!this.props.state.graph && !this.props.state.creating) {
+      // - default values are set
+      if (checkDefaultValues(defaultSelectors.terms, this.props.state) && !this.props.state.creating) {
+        // console.log('trigering default addChart');
+        this.props.actions.addChart();
+      }
+    }
+  }
+
+
   export() {
     const now = new Date();
     exportCSV({
       data: this.props.state.data,
-      name: `TOFLIT18_Product_terms_${now.toLocaleString('se-SE').replace(' ','_')}.csv`
+      name: `TOFLIT18_Product_terms_${now.toLocaleString('se-SE').replace(' ', '_')}.csv`
     });
   }
 
@@ -137,13 +151,6 @@ class TermsPanel extends Component {
       }
     } = this.props;
 
-    let {
-      state: {
-        dateMin,
-        dateMax
-      }
-    } = this.props;
-
     const {selectedNode} = this.state;
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
@@ -153,14 +160,11 @@ class TermsPanel extends Component {
       };
     });
 
-    let dateMaxOptions, dateMinOptions;
+    const dateMin = actions.updateDate('dateMin');
+    const dateMaxOptions = range((dateMin && dateMin.id) || specs.limits.minYear, specs.limits.maxYear).map(d => ({name: d, id: d}));
 
-    dateMin = actions.updateDate('dateMin');
-    dateMaxOptions = range((dateMin&&dateMin.id)||specs.limits.minYear, specs.limits.maxYear).map(d => {return {name: d, id: d}});
-
-
-    dateMax = actions.updateDate('dateMax');
-    dateMinOptions = range(specs.limits.minYear, (dateMax&&dateMax.id)||specs.limits.maxYear).map(d => {return {name: d, id: d}});
+    const dateMax = actions.updateDate('dateMax');
+    const dateMinOptions = range(specs.limits.minYear, (dateMax && dateMax.id) || specs.limits.maxYear).map(d => ({name: d, id: d}));
 
 
     let childClassifications = [];
@@ -218,7 +222,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'childClassification')}
                 selected={selectors.childClassification}
                 onUpdate={v => actions.update('childClassification', v)}
-                defaultValue={defaultSelectors.terms['selectors.childClassification']}/>
+                defaultValue={defaultSelectors.terms['selectors.childClassification']} />
               <ItemSelector
                 type="product"
                 disabled={!selectors.childClassification || !groups.child.length}
@@ -227,7 +231,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'child')}
                 selected={selectors.child}
                 onUpdate={v => actions.update('child', v)}
-                defaultValue={defaultSelectors.terms['selectors.child']}/>
+                defaultValue={defaultSelectors.terms['selectors.child']} />
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">Country</label>
@@ -239,7 +243,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'countryClassification')}
                 selected={selectors.countryClassification}
                 onUpdate={v => actions.update('countryClassification', v)}
-                defaultValue={defaultSelectors.terms['selectors.countryClassification']}/>
+                defaultValue={defaultSelectors.terms['selectors.countryClassification']} />
               <ItemSelector
                 type="country"
                 disabled={!selectors.countryClassification || !groups.country.length}
@@ -248,7 +252,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'country')}
                 selected={selectors.country}
                 onUpdate={v => actions.update('country', v)}
-                defaultValue={defaultSelectors.terms['selectors.country']}/>
+                defaultValue={defaultSelectors.terms['selectors.country']} />
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
@@ -426,19 +430,5 @@ class TermsPanel extends Component {
         </div>
       </VizLayout>
     );
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot){
-
-    // default network rendering
-    // only if :
-    // - there is no graph already
-    if (!this.props.state.graph && !this.props.state.creating) {
-      // - default values are set
-      if (checkDefaultValues(defaultSelectors.terms, this.props.state) && !this.props.state.creating){
-        console.log("trigering default addChart")
-        this.props.actions.addChart();
-      }
-    }
   }
 }

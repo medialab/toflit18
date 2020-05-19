@@ -11,7 +11,7 @@ import {argv} from 'yargs';
 import async from 'async';
 import path from 'path';
 import fs from 'fs';
-import FuzzyMap from 'mnemonist/fuzzy-map'
+import FuzzyMap from 'mnemonist/fuzzy-map';
 import {parse as parseCSV} from 'csv';
 import database from '../api/connection';
 import {cleanText, cleanNumber} from '../lib/clean';
