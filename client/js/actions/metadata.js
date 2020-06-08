@@ -5,9 +5,9 @@
  * Actions related to the indicators' view.
  */
 import specs from '../../specs.json';
-import _, {forIn} from 'lodash';
+import _, {forIn, compact} from 'lodash';
 
-const ROOT = ['states', 'exploration', 'metadata'];
+const ROOT = ['metadataState'];
 
 function fetchGroups(tree, cursor, id) {
   tree.client.groups({params: {id}}, function(err, data) {
@@ -32,7 +32,7 @@ export function updateSelector(tree, name, item) {
     groups.set(model, []);
 
     if (item)
-      fetchGroups(tree, groups.select(model), item.id);
+      fetchGroups(tree, groups.select(model), item);
   }
 }
 
@@ -40,25 +40,14 @@ export function selectType(tree, selected) {
   const cursor = tree.select(ROOT),
         selectors = tree.select([...ROOT, 'selectors']),
         groups = tree.select([...ROOT, 'groups']),
-        model = tree.get(...ROOT, 'dataModel', 'value');
+        model = tree.get(...ROOT, 'dataModel');
 
   if (selected) {
-    if (model === 'country') {
-      selectors.set('countryClassification', null);
-      selectors.set('country', null);
-      groups.set('country', []);
+    selectors.set(model + 'Classification', null);
+    selectors.set(model, null);
+    groups.set(model, []);
 
-      if (selected)
-        fetchGroups(tree, groups.select('country'), selected.id);
-    }
-    else {
-      selectors.set('productClassification', null);
-      selectors.set('product', null);
-      groups.set('product', []);
-
-      if (selected)
-        fetchGroups(tree, groups.select('product'), selected.id);
-    }
+    fetchGroups(tree, groups.select(model), selected);
   }
 
   cursor.set('perYear', null);
@@ -94,18 +83,21 @@ export function addChart(tree) {
   cursor.set('loading', true);
 
   const dataType = cursor.get('dataType'),
-        dataModel = cursor.get('dataModel');
+        dataModel = cursor.get('dataModel'),
+        groups = cursor.get('groups'),
+        classifications = tree.get('data', 'classifications', 'flat'),
+        fullDataType = dataModel && dataType && classifications[dataModel].find(o => o.slug === dataType);
 
   if (!dataModel) {
     return;
   }
 
   // Loading data from server
-  const type = (dataType && dataType.id) ?
-    `${dataModel.value}_${dataType.id}` :
-    dataModel.value;
+  const type = fullDataType ?
+    `${dataModel}_${fullDataType.id}` :
+    dataModel;
 
-  // set params for request
+    // set params for request
   const params = {},
         paramsRequest = {};
 
@@ -119,15 +111,12 @@ export function addChart(tree) {
   // keep only params !== null for request
   forIn(params, (v, k) => {
      switch (k) {
-        case 'sourceType':
-          paramsRequest[k] = v.value;
-          break;
         case 'product':
         case 'country':
-          paramsRequest[k] = v;
+          paramsRequest[k] = compact((v || []).map(id => groups[k].find(o => o.id === id)));
           break;
         default:
-          paramsRequest[k] = v.id;
+          paramsRequest[k] = v;
       }
   });
 
@@ -150,7 +139,7 @@ export function addChart(tree) {
     cursor.set('perYear', perYear);
 
     // Don't ask for data we don't need
-    if (dataType && dataType.id && data.result.length > specs.metadataGroupMax)
+    if (dataType && data.result.length > specs.metadataGroupMax)
       return;
 
     cursor.set('flowsPerYear', data.result);
@@ -161,7 +150,7 @@ export function addChart(tree) {
 
   forIn(params, (v) => {
     if (v)
-      fileName = fileName + v.name + ' - ';
+      fileName = fileName + v + ' - ';
   });
 
   cursor.set('fileName', fileName);

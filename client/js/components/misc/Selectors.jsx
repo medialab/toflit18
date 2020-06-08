@@ -10,6 +10,24 @@ import {prettyPrint} from '../../lib/helpers';
 import {debounce, identity} from 'lodash';
 import cls from 'classnames';
 
+const DEFAULT_VALUE_KEY = 'value';
+
+/**
+ * Helpers to transform full data object to ID, in both directions.
+ */
+function _dataToId(value, valueKey = DEFAULT_VALUE_KEY) {
+  if (!value) return value;
+  if (Array.isArray(value)) return value.map(v => _dataToId(v, valueKey));
+  if (typeof value === 'object') return value[valueKey];
+  return value;
+}
+function _idToData(id, values, valueKey = DEFAULT_VALUE_KEY) {
+  if (!id) return id;
+  if (Array.isArray(id)) return id.map(s => _idToData(s, values, valueKey)).filter(identity);
+  if (Array.isArray(values)) return values.find(o => o[valueKey] === id);
+  if (typeof values === 'object') return values[id];
+  return null;
+}
 
 /**
  * Classification selector.
@@ -24,7 +42,7 @@ export class ClassificationSelector extends Component {
     // we might have default selection to initialize
     // test if we have new data
    if (!this.defaultTriggered && this.props.defaultValue && !this.props.selected && nextProps.data.length > 0) {
-      nextProps.onUpdate(nextProps.data.filter(d => d.name === this.props.defaultValue)[0]);
+      nextProps.onUpdate(_dataToId(nextProps.data.filter(d => d.name === this.props.defaultValue)[0], this.props.valueKey));
       this.defaultTriggered = true;
     }
   }
@@ -65,13 +83,14 @@ export class ClassificationSelector extends Component {
         className="selector selector-classification"
         labelKey="name"
         isLoading={this.props.loading}
+        valueKey={this.props.valueKey}
         disabled={this.props.loading || this.props.disabled}
         placeholder={placeholder}
         clearable={this.props.clearable}
         options={classifications}
         optionRenderer={this.renderOption}
-        onChange={this.props.onChange}
-        onUpdate={this.props.onUpdate}
+        onChange={this.props.onChange && (v => this.props.onChange(_dataToId(v, this.props.valueKey)))}
+        onUpdate={this.props.onUpdate && (v => this.props.onUpdate(_dataToId(v, this.props.valueKey)))}
         value={this.props.selected}
         valueRenderer={this.renderOption}
         defaultValue={this.props.defaultValue} />
@@ -107,7 +126,8 @@ const MAX_LIST_SIZE = 200;
 export class ItemSelector extends Component {
 
   static propTypes = {
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
+    selected: PropTypes.any
   };
 
   constructor(props, context) {
@@ -119,30 +139,22 @@ export class ItemSelector extends Component {
   }
 
   componentDidMount() {
-    // we might have default selection to initialize
-    // once we got the props ready we test if we can find the name of the default value
-    if (this.props.defaultValue && !this.props.selected && this.props.data.length > 0) {
-        if (['product', 'country'].indexOf(this.props.type) !== -1) {
-          // products and country are multiple selectors, let's iterate trough selection
-          this.props.onUpdate(this.props.defaultValue.map(s => this.props.data.filter(d => d.name === s)[0]));
-        }
-        else {
-          this.props.onUpdate(this.props.data.filter(d => d.name === this.props.defaultValue)[0]);
-        }
-      }
+    this.componentWillUpdate(this.props);
   }
 
   componentWillUpdate(nextProps) {
+    const valueKey = this.props.valueKey || DEFAULT_VALUE_KEY;
+
     // we might have default selection to initialize
     // once we got the props ready we test if we can find the name of the default value
 
     if (!this.defaultTriggered && nextProps.defaultValue && !nextProps.selected && nextProps.data.length > 0) {
       if (['product', 'country'].indexOf(nextProps.type) !== -1) {
         // products and country are multiple selectors, let's iterate trough selection
-        nextProps.onUpdate(nextProps.defaultValue.map(s => nextProps.data.filter(d => d.name === s)[0]));
+        nextProps.onUpdate(_dataToId(nextProps.defaultValue.map(s => nextProps.data.filter(d => d[valueKey] === s)[0]), valueKey));
       }
       else {
-        nextProps.onUpdate(nextProps.data.filter(d => d.name === nextProps.defaultValue)[0]);
+        nextProps.onUpdate(_dataToId(nextProps.data.filter(d => d[valueKey] === nextProps.defaultValue)[0], valueKey));
       }
       this.defaultTriggered = true;
     }
@@ -182,34 +194,34 @@ export class ItemSelector extends Component {
   render() {
     const {
       data = [],
+      valueKey = DEFAULT_VALUE_KEY,
       disabled,
       loading,
       onChange,
       onUpdate,
       selected,
-      type,
-      defaultValue
+      type
     } = this.props;
 
     const trulyDisabled = disabled || loading;
+    const allData = this.compulsoryOptions.concat(data);
 
     const commonProps = {
       className: 'selector',
       isLoading: loading,
       disabled: trulyDisabled,
       labelKey: 'name',
-      value: selected || !trulyDisabled && this.compulsoryOptions[0],
-      onChange,
-      onUpdate,
+      value: _idToData(selected || !trulyDisabled && this.compulsoryOptions[0], allData, valueKey),
+      onChange: onChange && (v => onChange(_dataToId(v, valueKey))),
+      onUpdate: onUpdate && (v => onUpdate(_dataToId(v, valueKey))),
       placeholder: PLACEHOLDERS[type],
       optionRenderer: this.renderOption,
       valueRenderer: this.renderOption,
-      defaultValue
+      valueKey
     };
 
     if (type !== 'product' && type !== 'country')
       return <Select {...commonProps} options={this.compulsoryOptions.concat(data)} />;
-
     return (
       <AsyncCreatable
         {...commonProps}
@@ -220,9 +232,9 @@ export class ItemSelector extends Component {
         isValidNewOption={() => true}
         multi
         joinValues
-        deliminter="##"
+        delimiter="##"
         promptTextCreator={(label) => label}
-        newOptionCreator={(p) => ({value: p.label, name: `${type} matching '${p.label}'`, id: -1})} />
+        newOptionCreator={p => ({value: p.label, name: `${type} matching '${p.label}'`, id: -1})} />
     );
   }
 }

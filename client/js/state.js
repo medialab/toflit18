@@ -32,6 +32,29 @@ const defaultState = {
     alert: null
   },
 
+  // Specific states:
+  metadataState: {
+    dataModel: null,
+    dataType: null,
+    perYear: null,
+    flowsPerYear: null,
+    fileName: null,
+    loading: false,
+    selectors: {
+      productClassification: null,
+      countryClassification: null,
+      product: null,
+      country: null,
+      direction: null,
+      kind: null,
+      sourceType: null
+    },
+    groups: {
+      country: [],
+      product: []
+    },
+  },
+
   // Specific states
   states: {
 
@@ -59,44 +82,11 @@ const defaultState = {
         ),
         rows: [],
         reachedBottom: false,
-      },
-
-      // Classification modal
-      modal: {
-        loading: false,
-        patch: null,
-        type: null,
-        step: 'upload',
-        inconsistencies: null,
-        review: null
       }
     },
 
     // Exploration section
     exploration: {
-
-      // Metadata view
-      metadata: {
-        dataModel: null,
-        dataType: null,
-        perYear: null,
-        flowsPerYear: null,
-        fileName: null,
-        loading: false,
-        selectors: {
-          productClassification: null,
-          countryClassification: null,
-          product: null,
-          country: null,
-          direction: null,
-          kind: null,
-          sourceType: null
-        },
-        groups: {
-          country: [],
-          product: []
-        },
-      },
 
       // Indicators view
       indicators: {

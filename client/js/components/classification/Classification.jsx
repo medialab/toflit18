@@ -155,9 +155,9 @@ export default class Classification extends Component {
                   </label>
                   <small className="help-block">Choose a classification and search its group names <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
                   <ClassificationSelector
-                    type={kind.value}
-                    loading={!classifications[kind.value]}
-                    data={classifications[kind.value].filter(o => !!o.parent)}
+                    type={kind}
+                    loading={!classifications[kind]}
+                    data={classifications[kind].filter(o => !!o.parent)}
                     onChange={o => actions.select(o ? o.id : null)}
                     selected={current} />
                 </div>
@@ -174,7 +174,7 @@ export default class Classification extends Component {
                   </label>
                   <small className="help-block">Choose a parent classification and explore its item names <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
                   <ClassificationSelector
-                    type={kind.value}
+                    type={kind}
                     loading={false}
                     clearable={false}
                     data={parents}

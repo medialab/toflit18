@@ -11,7 +11,7 @@ const LINKS = {
   data: [
     '/exploration/meta',
     '/classification/browser',
-    '/sources',
+    '/exploration/sources',
   ],
   view: [
     '/exploration/indicators',
@@ -19,8 +19,8 @@ const LINKS = {
     '/exploration/terms',
   ],
   glossary: [
-    '/glossary',
-    '/concepts',
+    '/glossary/products',
+    '/glossary/concepts',
   ],
   sources: '/sources',
   about: '/about',

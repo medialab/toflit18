@@ -5,7 +5,7 @@
  * Displaying a collection of visualizations dealing with the sources
  * themselves and how they interact with each other.
  */
-import {compact} from 'lodash';
+import {compact, capitalize} from 'lodash';
 import React, {Component} from 'react';
 import {Waiter} from '../misc/Loaders.jsx';
 import {ExportButton} from '../misc/Button.jsx';
@@ -96,12 +96,16 @@ function formatArrayToCSV(data) {
     classificationIndex: ['data', 'classifications', 'index'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
-    state: ['states', 'exploration', 'metadata']
+    state: ['metadataState']
   }
 })
 export default class ExplorationMeta extends Component {
+  componentDidMount() {
+    setTimeout(this.props.actions.addChart, 0);
+  }
+
   componentDidUpdate() {
-    if (!this.props.state.flowsPerYear && !!this.props.state.dataModel && !this.props.state.loading) {
+    if (!this.props.state.flowsPerYear && this.props.state.dataModel && !this.props.state.loading) {
       // - default values are set
       // console.log('checking default');
       if (checkDefaultValues(defaultSelectors.metadata, this.props.state) && !this.props.state.loading) {
@@ -113,29 +117,30 @@ export default class ExplorationMeta extends Component {
 
   getUnit() {
     const {state} = this.props;
-    if (state.dataModel) {
-      if (state.dataModel.value === 'sourceType') return 'source types';
-      if (state.dataModel.value === 'direction') return 'directions';
-      if (state.dataModel.value === 'product') return 'products';
-      if (state.dataModel.value === 'country') return 'countries';
-    }
+
+    if (state.dataModel === 'sourceType') return 'source types';
+    if (state.dataModel === 'direction') return 'directions';
+    if (state.dataModel === 'product') return 'products';
+    if (state.dataModel === 'country') return 'countries';
+
     return '...';
   }
   canDisplaySecondViz() {
-    const {state} = this.props;
+    const {state, classifications} = this.props;
+    const dataType = state.dataModel && state.dataType && classifications[state.dataModel].find(o => o.slug === state.dataType);
     return (
       state.dataModel &&
       (
         (state.flowsPerYear && state.flowsPerYear.length < specs.metadataGroupMax) ||
-        state.dataType && state.dataType.special
+        dataType && dataType.special
       )
     );
   }
   exportPerYear() {
     const {state} = this.props;
     const name = compact([
-      state.dataModel.name,
-      state.dataType && state.dataType.name,
+      state.dataModel,
+      state.dataType,
       state.filename
     ]).join(' - ');
 
@@ -147,8 +152,8 @@ export default class ExplorationMeta extends Component {
   exportFlows() {
     const {state} = this.props;
     const name = compact([
-      state.dataModel.name,
-      state.dataType && state.dataType.name,
+      state.dataModel,
+      state.dataType,
       state.filename
     ]).join(' - ');
 
@@ -160,8 +165,8 @@ export default class ExplorationMeta extends Component {
   exportCharts() {
     const {state} = this.props;
     const name = compact([
-      state.dataModel.name,
-      state.dataType && state.dataType.name,
+      state.dataModel,
+      state.dataType,
       state.filename
     ]).join(' - ');
 
@@ -194,8 +199,7 @@ export default class ExplorationMeta extends Component {
     let canUpdate = !!state.dataModel;
 
     if (
-      state.dataModel
-      && (state.dataModel.value === 'country' || state.dataModel.value === 'product')
+      (state.dataModel === 'country' || state.dataModel === 'product')
       && !state.dataType
     ) {
       canUpdate = false;
@@ -231,12 +235,10 @@ export default class ExplorationMeta extends Component {
 
     let unit = 'classified items';
 
-    if (state.dataModel) {
-      if (state.dataModel.value === 'sourceType') unit = 'source types';
-      if (state.dataModel.value === 'direction') unit = 'directions';
-      if (state.dataModel.value === 'product') unit = 'products';
-      if (state.dataModel.value === 'country') unit = 'countries';
-    }
+    if (state.dataModel === 'sourceType') unit = 'source types';
+    if (state.dataModel === 'direction') unit = 'directions';
+    if (state.dataModel === 'product') unit = 'products';
+    if (state.dataModel === 'country') unit = 'countries';
 
     let childClassifications;
 
@@ -255,6 +257,7 @@ export default class ExplorationMeta extends Component {
           <div className="form-group">
             <label htmlFor="classifications" className="control-label sr-only">Type of data</label>
             <ItemSelector
+              valueKey="value"
               type="dataModel"
               data={metadataSelectors}
               onChange={val => {
@@ -269,33 +272,20 @@ export default class ExplorationMeta extends Component {
               defaultValue={defaultSelectors.metadata.dataModel} />
           </div>
           {
-            /* eslint-disable no-nested-ternary */
-            (state.dataModel && state.dataModel.value === 'product') ?
+            (state.dataModel === 'product' || state.dataModel === 'country') ?
               <div className="form-group">
-                <label htmlFor="classifications" className="control-label sr-only">Product</label>
+                <label htmlFor="classifications" className="control-label sr-only">{capitalize(state.dataModel)}</label>
                 <ItemSelector
+                  valueKey="slug"
                   type="dataType"
-                  data={classifications.product}
-                  loading={!classifications.product.length}
+                  data={classifications[state.dataModel]}
+                  loading={!classifications[state.dataModel].length}
                   onChange={actions.selectType}
                   selected={state.dataType}
                   onUpdate={actions.selectType}
-                  defaultValue={defaultSelectors.metadata['selectors.product']} />
-              </div> :
-            (state.dataModel && state.dataModel.value === 'country') ?
-              <div className="form-group">
-                <label htmlFor="classifications" className="control-label sr-only">Country</label>
-                <ItemSelector
-                  type="dataType"
-                  data={classifications.country}
-                  loading={!classifications.country.length}
-                  onChange={actions.selectType}
-                  selected={state.dataType}
-                  onUpdate={actions.selectType}
-                  defaultValue={defaultSelectors.metadata['selectors.country']} />
+                  defaultValue={defaultSelectors.metadata['selectors.' + state.dataModel]} />
               </div> :
               undefined
-              /* eslint-enable no-nested-ternary */
           }
         </div>
 
@@ -305,18 +295,20 @@ export default class ExplorationMeta extends Component {
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="product" className="control-label">{
-                (state.dataType && state.dataType.model === 'product') ? 'Child product' : 'Product'
+                (state.dataModel === 'product') ? 'Child product' : 'Product'
               }</label>
               <small className="help-block">The type of product being shipped.<a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
                 type="product"
+                valueKey="id"
                 loading={!classifications.product.length}
-                data={(state.dataType && state.dataType.model === 'product') ? childClassifications : classifications.product.filter(c => !c.source)}
+                data={(state.dataType === 'product') ? childClassifications : classifications.product.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification}
                 onUpdate={v => actions.update('productClassification', v)}
                 defaultValue={defaultSelectors.metadata['selectors.productClassification']} />
               <ItemSelector
+                valueKey="value"
                 type="product"
                 disabled={!selectors.productClassification || !groups.product.length}
                 loading={selectors.productClassification && !groups.product.length}
@@ -328,18 +320,20 @@ export default class ExplorationMeta extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">{
-                (state.dataType && state.dataType.model === 'country') ? 'Child country' : 'Country'
+                (state.dataType === 'country') ? 'Child country' : 'Country'
               }</label>
               <small className="help-block">The country whence we got the products or wither we are sending them.<a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
                 type="country"
+                valueKey="id"
                 loading={!classifications.country.length}
-                data={(state.dataType && state.dataType.model === 'country') ? childClassifications : classifications.country.filter(c => !c.source)}
+                data={(state.dataType === 'country') ? childClassifications : classifications.country.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'countryClassification')}
                 selected={selectors.countryClassification}
                 onUpdate={v => actions.update('countryClassification', v)}
                 defaultValue={defaultSelectors.metadata['selectors.countryClassification']} />
               <ItemSelector
+                valueKey="value"
                 type="country"
                 disabled={!selectors.countryClassification || !groups.country.length}
                 loading={selectors.countryClassification && !groups.country.length}
@@ -353,9 +347,10 @@ export default class ExplorationMeta extends Component {
               <label htmlFor="direction" className="control-label">Sources</label>
               <small className="help-block">The type of source from which the data are extracted. <a href="#/data/sources"><Icon name="icon-info" /></a></small>
               <ItemSelector
+                valueKey="value"
                 type="sourceType"
                 data={sourceTypesOptions}
-                disabled={state.dataModel && state.dataModel.value === 'sourceType'}
+                disabled={state.dataModel === 'sourceType'}
                 loading={!sourceTypesOptions.length}
                 onChange={actions.update.bind(null, 'sourceType')}
                 selected={selectors.sourceType}
@@ -366,9 +361,10 @@ export default class ExplorationMeta extends Component {
               <label htmlFor="direction" className="control-label">Direction</label>
               <small className="help-block">The French harbor where the transactions were recorded. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ItemSelector
+                valueKey="id"
                 type="direction"
                 loading={!directions}
-                disabled={state.dataModel && state.dataModel.value === 'direction'}
+                disabled={state.dataModel === 'direction'}
                 data={directions || []}
                 onChange={actions.update.bind(null, 'direction')}
                 selected={selectors.direction}
@@ -379,6 +375,7 @@ export default class ExplorationMeta extends Component {
               <label htmlFor="kind" className="control-label">Kind</label>
               <small className="help-block">Should we look at import, export, or total?</small>
               <ItemSelector
+                valueKey="id"
                 type="kind"
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}

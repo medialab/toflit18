@@ -43,7 +43,33 @@ export default function bindRoutes(tree) {
         routes: [
           {
             path: '/meta',
-            state: {view: 'explorationMeta'}
+            query: {
+              model: ':dataModel',
+              dataType: ':dataType',
+              productClassification: ':productClassification',
+              countryClassification: ':countryClassification',
+              products: {match: ':product', cast: 'json'},
+              countries: {match: ':country', cast: 'json'},
+              direction: ':direction',
+              kind: ':kind',
+              sourceType: ':sourceType',
+            },
+            state: {
+              view: 'explorationMeta',
+              metadataState: {
+                dataModel: ':dataModel',
+                dataType: ':dataType',
+                selectors: {
+                  productClassification: ':productClassification',
+                  countryClassification: ':countryClassification',
+                  product: ':product',
+                  country: ':country',
+                  direction: ':direction',
+                  kind: ':kind',
+                  sourceType: ':sourceType'
+                }
+              }
+            }
           },
           {
             path: '/indicators',
@@ -59,7 +85,7 @@ export default function bindRoutes(tree) {
           },
           {
             path: '/sources',
-            state: {view: 'sources'}
+            state: {view: 'explorationSources'}
           }
         ]
       },

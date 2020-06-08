@@ -5,9 +5,6 @@
  * Actions related to the classification browser.
  */
 import {saveAs} from 'browser-filesaver';
-import history from '../history';
-
-import {reset as resetModal} from './patch';
 
 import {uniq} from 'lodash';
 
@@ -173,52 +170,4 @@ export function download(tree, id) {
 
     return saveAs(blob, filename);
   });
-}
-
-/**
- * Triggering a modal.
- * ****
- * [jacomyal] WARNING:
- * This action does not work properly, since #/classification/modal seems not to
- * link to any specific view. I leave the code here, though, since there would
- * be an actual lot to remove (history.js, patch.js).
- */
-export function modal(tree, type) {
-  const cursor = tree.select('states', 'classification', 'modal');
-
-  cursor.set('type', type);
-  resetModal(tree);
-
-  history.replace({pathname: '/classification/modal'});
-}
-
-/**
- * Reset filters
- */
-export function resetFilters(tree, id) {
-  const loading = tree.select(PATH.concat('loading'));
-
-  loading.set(true);
-
-  // reset input fields
-  if (document.getElementById('searchGroup').value !== null)
-    document.getElementById('searchGroup').value = '';
-  if (id !== 1 && id !== 10 && document.getElementById('searchItem').value !== null)
-    document.getElementById('searchItem').value = '';
-
-  // reset tree fields
-  tree.set(['states', 'classification', 'browser', 'reachedBottom'], false);
-  tree.set(['states', 'classification', 'browser', 'queryGroup'], '');
-  tree.set(['states', 'classification', 'browser', 'queryItem'], '');
-
-  return tree.client.search(
-    {params: {id}, data: ''},
-    function(err, data) {
-
-      loading.set(false);
-      if (err) return;
-
-      tree.set(['states', 'classification', 'browser', 'rows'], data.result);
-    }
-  );
 }

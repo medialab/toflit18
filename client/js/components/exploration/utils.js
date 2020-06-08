@@ -31,7 +31,7 @@ export function checkDefaultValues(defaults, state) {
     // case not in state.selectors but in state directly
     else {
       // cancel trigger is no currentValue or not the default
-      if (currentValue.name !== defaults[selector]) {
+      if (currentValue !== defaults[selector]) {
         return false;
       }
     }

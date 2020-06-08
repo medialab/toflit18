@@ -1,22 +1,22 @@
 {
-	"terms":{
-      "classification": "Simplification",
-      "selectors.childClassification": "SITC EN",
-      "selectors.child": ["Raw materials, inedible, except fuels"],
-      "selectors.sourceType": "National best guess",
-      "selectors.dateMin": 1750,
-      "selectors.dateMax": 1750
-    },
-    "network":{
-      "classification": "Grouping",
-      "selectors.sourceType": "National best guess",
-      "selectors.dateMin": 1750,
-      "selectors.dateMax": 1750
-    },
-    "indicators":{
-      "selectors.sourceType": "National best guess"
-    },
-    "metadata":{
-      "dataModel": "Direction"
-  	}
+  "terms":{
+    "classification": "Simplification",
+    "selectors.childClassification": "SITC EN",
+    "selectors.child": ["Raw materials, inedible, except fuels"],
+    "selectors.sourceType": "National best guess",
+    "selectors.dateMin": 1750,
+    "selectors.dateMax": 1750
+  },
+  "network":{
+    "classification": "Grouping",
+    "selectors.sourceType": "National best guess",
+    "selectors.dateMin": 1750,
+    "selectors.dateMax": 1750
+  },
+  "indicators":{
+    "selectors.sourceType": "National best guess"
+  },
+  "metadata":{
+    "dataModel": "direction"
+  }
 }
