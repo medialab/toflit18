@@ -19,6 +19,7 @@ build_client_staging:
     name: staging
     url: $STAGING_BASEURL
   only:
+    - master
     - staging
     - prod
 
@@ -32,6 +33,7 @@ build_api_staging:
     name: staging
     url: $STAGING_BASEURL
   only:
+    - master
     - staging
     - prod
 
