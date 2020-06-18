@@ -8,6 +8,11 @@ variables:
   STAGING_BASEURL: http://toflit18-pprd.medialab.sciences-po.fr
   CLIENT_IMAGE_NAME: $CI_REGISTRY/scpomedialab/toflit18-client:$CI_COMMIT_REF_SLUG
   API_IMAGE_NAME: $CI_REGISTRY/scpomedialab/toflit18-api:$CI_COMMIT_REF_SLUG
+  DOCKER_HOST: tcp://127.0.0.1:2375
+  DOCKER_TLS_CERTDIR: ""
+
+services:
+    - docker:stable-dind
 
 build_client_staging:
   stage: build
