@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: api
+  template:
+    metadata:
+      labels:
+        component: api
+    spec:
+      containers:
+        - name: api
+          image: scpomedialab/toflit18-api:latest
+          env:
+            - name: NEO4J_HOST
+              value: toflit18-db
+            - name: NEO4J_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: neo4j
+                  key: user_password
+            - name: NEO4J_USER
+              valueFrom:
+                secretKeyRef:
+                  name: neo4j
+                  key: user_name
+            - name: API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: toflit18
+                  key: api_secret
+            - name: API_PORT
+              value: '4000'
+          imagePullPolicy: Always

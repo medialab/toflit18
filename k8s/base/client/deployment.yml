@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: client
+  template:
+    metadata:
+      labels:
+        component: client
+    spec:
+      containers:
+        - name: client
+          image: scpomedialab/toflit18-client:latest
+          env:
+            - name: API_HOST
+              value: toflit18-api.toflit18.svc.cluster.local
+            - name: API_PORT
+              value: '4000'
+          imagePullPolicy: Always
