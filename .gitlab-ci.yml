@@ -45,7 +45,8 @@ deploy:
     entrypoint: [""]
   stage: deploy
   dependencies:
-    - build
+    - build_client
+    - build_api
   script:
     - kubectl config set-cluster k8s --server="$KUBE_URL" --certificate-authority="$KUBE_CA_PEM_FILE"
     - kubectl config set-credentials gitlab-admin --token="$KUBE_TOKEN"
