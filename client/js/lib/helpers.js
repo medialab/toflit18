@@ -4,7 +4,7 @@
  *
  * Miscellaneous client helper functions.
  */
-import {chunk} from 'lodash';
+import {chunk, union} from 'lodash';
 
 /**
  * Flatten a recursive classification tree.
@@ -35,3 +35,34 @@ export function prettyPrint(nb) {
   return pretty + (afterDecimal ? '.' + afterDecimal.slice(0, 2) : '');
 }
 
+/**
+ * Returns the deep difference between two objects.
+ * Example:
+ * > diff(
+ * >   {a: {b: 1, c: 2}, d: 3, e: 4},
+ * >   {a: {b: 1, c: 'abc', G: 'def'}, e: 4}
+ * > )
+ * would return:
+ * > {a: {c: 'abc', G: 'def'}, d: undefined}
+ */
+export function diff(o1, o2) {
+  if (!o1 || !o2) return o2;
+
+  return union(Object.keys(o1), Object.keys(o2))
+    .filter(key => o1[key] !== o2[key])
+    .reduce(
+      (iter, key) => {
+        const v1 = o1[key];
+        const v2 = o2[key];
+        return {
+          ...iter,
+          [key]: (
+            v1 && v2 &&
+            typeof v1 === 'object' && typeof v2 === 'object' &&
+            !Array.isArray(v1) && !Array.isArray(v2)
+          ) ? diff(v1, v2) : v2
+        };
+      },
+      {}
+    );
+}

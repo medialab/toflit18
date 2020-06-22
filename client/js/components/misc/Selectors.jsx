@@ -148,7 +148,7 @@ export class ItemSelector extends Component {
     // we might have default selection to initialize
     // once we got the props ready we test if we can find the name of the default value
 
-    if (!this.defaultTriggered && nextProps.defaultValue && !nextProps.selected && nextProps.data.length > 0) {
+    if (!this.defaultTriggered && nextProps.defaultValue && !nextProps.selected && (nextProps.data || []).length > 0) {
       if (['product', 'country'].indexOf(nextProps.type) !== -1) {
         // products and country are multiple selectors, let's iterate trough selection
         nextProps.onUpdate(_dataToId(nextProps.defaultValue.map(s => nextProps.data.filter(d => d[valueKey] === s)[0]), valueKey));

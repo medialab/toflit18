@@ -9,17 +9,24 @@ import _, {forIn, compact} from 'lodash';
 
 const ROOT = ['metadataState'];
 
-function fetchGroups(tree, cursor, id) {
+function fetchGroups(tree, cursor, id, callback) {
   tree.client.groups({params: {id}}, function(err, data) {
     if (err) return;
 
     cursor.set(data.result.map(d => ({...d, value: d.id})));
+
+    if (callback) callback();
   });
 }
 
-export function updateSelector(tree, name, item) {
+export function updateSelector(tree, name, item, callback) {
+
+  // If `item` is an empty array, use `null` instead, for routing purpose:
+  if (Array.isArray(item) && !item.length) item = null;
+
   const selectors = tree.select([...ROOT, 'selectors']),
-        groups = tree.select([...ROOT, 'groups']);
+        groups = tree.select([...ROOT, 'groups']),
+        previousItem = selectors.get(name);
 
   // Updating the correct selector
   selectors.set(name, item);
@@ -28,11 +35,13 @@ export function updateSelector(tree, name, item) {
   if (/classification/i.test(name)) {
     const model = name.match(/(.*?)Classification/)[1];
 
-    selectors.set(model, null);
-    groups.set(model, []);
+    if (item !== previousItem) {
+      selectors.set(model, null);
+      groups.set(model, []);
+    }
 
     if (item)
-      fetchGroups(tree, groups.select(model), item);
+      fetchGroups(tree, groups.select(model), item, callback);
   }
 }
 
@@ -77,20 +86,22 @@ export function selectModel(tree, selected) {
 export function addChart(tree) {
   const cursor = tree.select(ROOT);
 
-  cursor.set('perYear', null);
-  cursor.set('flowsPerYear', null);
-  cursor.set('fileName', null);
-  cursor.set('loading', true);
-
   const dataType = cursor.get('dataType'),
         dataModel = cursor.get('dataModel'),
         groups = cursor.get('groups'),
         classifications = tree.get('data', 'classifications', 'flat'),
         fullDataType = dataModel && dataType && classifications[dataModel].find(o => o.slug === dataType);
 
-  if (!dataModel) {
-    return;
-  }
+  // Can't load data without a selected model:
+  if (!dataModel) return;
+
+  // Can't load data when there is a model and a type, but the full data type hasn't been loaded yet:
+  if (dataType && !fullDataType) return;
+
+  cursor.set('perYear', null);
+  cursor.set('flowsPerYear', null);
+  cursor.set('fileName', null);
+  cursor.set('loading', true);
 
   // Loading data from server
   const type = fullDataType ?

@@ -29,7 +29,6 @@ import {
 } from '../../actions/metadata';
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
-import {checkDefaultValues} from './utils';
 
 /**
  * Helper used to get the child classifications of the given classification.
@@ -92,6 +91,7 @@ function formatArrayToCSV(data) {
   },
   cursors: {
     alert: ['ui', 'alert'],
+    classificationsRaw: ['data', 'classifications', 'raw'],
     classifications: ['data', 'classifications', 'flat'],
     classificationIndex: ['data', 'classifications', 'index'],
     directions: ['data', 'directions'],
@@ -101,17 +101,37 @@ function formatArrayToCSV(data) {
 })
 export default class ExplorationMeta extends Component {
   componentDidMount() {
-    setTimeout(this.props.actions.addChart, 0);
+    if (this.props.classificationsRaw) this.bootstrap();
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.classificationsRaw && !prevProps.classificationsRaw) this.bootstrap();
   }
 
-  componentDidUpdate() {
-    if (!this.props.state.flowsPerYear && this.props.state.dataModel && !this.props.state.loading) {
-      // - default values are set
-      // console.log('checking default');
-      if (checkDefaultValues(defaultSelectors.metadata, this.props.state) && !this.props.state.loading) {
-        // console.log('trigering default addNetwork');
+  /**
+   * This method loads potential initial missing data and adds charts. It must be called after the initial
+   * classifications data have been loaded:
+   */
+  bootstrap() {
+    let waiting = 0;
+    const callback = () => {
+      waiting--;
+      if (!waiting) {
         this.props.actions.addChart();
       }
+    };
+
+    const {productClassification, countryClassification} = this.props.state.selectors;
+    if (productClassification) {
+      waiting++;
+      this.props.actions.update('productClassification', productClassification, callback);
+    }
+    if (countryClassification) {
+      waiting++;
+      this.props.actions.update('countryClassification', countryClassification, callback);
+    }
+
+    if (!productClassification && !countryClassification) {
+      this.props.actions.addChart();
     }
   }
 
@@ -302,7 +322,7 @@ export default class ExplorationMeta extends Component {
                 type="product"
                 valueKey="id"
                 loading={!classifications.product.length}
-                data={(state.dataType === 'product') ? childClassifications : classifications.product.filter(c => !c.source)}
+                data={((state.dataModel === 'product') ? childClassifications : classifications.product.filter(c => !c.source)) || []}
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification}
                 onUpdate={v => actions.update('productClassification', v)}
@@ -320,14 +340,14 @@ export default class ExplorationMeta extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="country" className="control-label">{
-                (state.dataType === 'country') ? 'Child country' : 'Country'
+                (state.dataModel === 'country') ? 'Child country' : 'Country'
               }</label>
               <small className="help-block">The country whence we got the products or wither we are sending them.<a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
                 type="country"
                 valueKey="id"
                 loading={!classifications.country.length}
-                data={(state.dataType === 'country') ? childClassifications : classifications.country.filter(c => !c.source)}
+                data={((state.dataModel === 'country') ? childClassifications : classifications.country.filter(c => !c.source)) || []}
                 onChange={actions.update.bind(null, 'countryClassification')}
                 selected={selectors.countryClassification}
                 onUpdate={v => actions.update('countryClassification', v)}

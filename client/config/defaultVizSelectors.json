@@ -16,7 +16,9 @@
   "indicators":{
     "selectors.sourceType": "National best guess"
   },
-  "metadata":{
-    "dataModel": "direction"
+  "metadata": {
+    "dataModel": "direction",
+    "selectors.direction": "$all$",
+    "selectors.kind": "total"
   }
 }
