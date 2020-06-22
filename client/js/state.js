@@ -54,36 +54,31 @@ const defaultState = {
       product: []
     },
   },
+  classificationsState: {
+    kind: '',
+    loading: false,
+    selected: '',
+    selectedParent: '',
+    orderBy: '',
+    queryGroup: '',
+    queryItem: '',
+    fullSelected: monkey(
+      ['.', 'selected'],
+      ['data', 'classifications', 'index'],
+      (selected, index) => index[selected] || null
+    ),
+    fullSelectedParent: monkey(
+      ['.', 'selectedParent'],
+      ['data', 'classifications', 'index'],
+      (selectedParent, index) => index[selectedParent] || null
+    ),
+    rows: [],
+    reachedBottom: false,
+  },
+
 
   // Specific states
   states: {
-
-    // Classification section
-    classification: {
-
-      // Classification browser
-      browser: {
-        kind: {name: 'Products', value: 'product'},
-        loading: false,
-        selected: 2,
-        selectedParent: 1,
-        orderBy: 'size',
-        queryGroup: '',
-        queryItem: '',
-        current: monkey(
-          ['.', 'selected'],
-          ['data', 'classifications', 'index'],
-          (selected, index) => index[selected] || null
-        ),
-        currentParent: monkey(
-          ['.', 'selectedParent'],
-          ['data', 'classifications', 'index'],
-          (selectedParent, index) => index[selectedParent] || null
-        ),
-        rows: [],
-        reachedBottom: false,
-      }
-    },
 
     // Exploration section
     exploration: {

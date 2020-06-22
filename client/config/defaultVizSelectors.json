@@ -16,6 +16,11 @@
   "indicators":{
     "selectors.sourceType": "National best guess"
   },
+  "classifications": {
+    "kind": "product",
+    "selected": "product_simplification",
+    "selectedParent": "product_orthographic"
+  },
   "metadata": {
     "dataModel": "direction",
     "selectors.direction": "$all$",

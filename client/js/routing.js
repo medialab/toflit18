@@ -32,7 +32,25 @@ export default function bindRoutes(tree) {
         routes: [
           {
             path: '/browser',
-            state: {view: 'classification'}
+            query: {
+              kind: ':kind',
+              selected: ':selected',
+              selectedParent: ':selectedParent',
+              orderBy: ':orderBy',
+              queryGroup: ':queryGroup',
+              queryItem: ':queryItem'
+            },
+            state: {
+              view: 'classification',
+              classificationsState: {
+                kind: ':kind',
+                selected: ':selected',
+                selectedParent: ':selectedParent',
+                orderBy: ':orderBy',
+                queryGroup: ':queryGroup',
+                queryItem: ':queryItem'
+              }
+            }
           }
         ]
       },

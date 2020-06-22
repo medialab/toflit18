@@ -83,7 +83,7 @@ RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, s
 // name: searchGroupsFrom
 // Searching a sample of groups for the given classification but listing items from an upper classification.
 //------------------------------------------------------------------------------
-MATCH (cg:Classification)-[:HAS]->(group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ciClassification)
+MATCH (cg:Classification)-[:HAS]->(group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci:Classification)
 WHERE cg.id=$id AND
 	    group.name =~ $queryGroup AND
       item.name =~ $queryItem AND

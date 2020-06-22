@@ -8,7 +8,7 @@ import {saveAs} from 'browser-filesaver';
 
 import {uniq} from 'lodash';
 
-const PATH = ['states', 'classification', 'browser'];
+const PATH = ['classificationsState'];
 
 /**
  * Update some selector
@@ -170,4 +170,17 @@ export function download(tree, id) {
 
     return saveAs(blob, filename);
   });
+}
+
+export function setState(tree, newState) {
+  const state = tree.select(PATH);
+  const keys = ['kind', 'selected', 'selectedParent', 'orderBy', 'queryGroup', 'queryItem'];
+
+  keys.forEach(key => {
+    if (key in newState) {
+      state.set(key, newState[key]);
+    }
+  });
+
+  search(tree);
 }

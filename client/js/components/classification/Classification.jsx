@@ -22,8 +22,11 @@ import {
   select,
   selectParent,
   expandGroup,
-  updateSelector
+  updateSelector,
+  setState
 } from '../../actions/classification';
+
+const defaultSelectors = require('../../../config/defaultVizSelectors.json');
 
 const ClassificationWell = ({groupsCount, itemsCount, unclassifiedItemsCount, completion}) => (
   <div className="well">
@@ -45,32 +48,36 @@ const ClassificationWell = ({groupsCount, itemsCount, unclassifiedItemsCount, co
     select,
     selectParent,
     expandGroup,
-    updateSelector
+    updateSelector,
+    setState
   },
   cursors: {
-    rows: ['states', 'classification', 'browser', 'rows'],
-    kind: ['states', 'classification', 'browser', 'kind'],
-    loading: ['states', 'classification', 'browser', 'loading'],
-    orderBy: ['states', 'classification', 'browser', 'orderBy'],
-    current: ['states', 'classification', 'browser', 'current'],
-    currentParent: ['states', 'classification', 'browser', 'currentParent'],
-    queryItem: ['states', 'classification', 'browser', 'queryItem'],
-    queryGroup: ['states', 'classification', 'browser', 'queryGroup'],
+    rows: ['classificationsState', 'rows'],
+    kind: ['classificationsState', 'kind'],
+    loading: ['classificationsState', 'loading'],
+    orderBy: ['classificationsState', 'orderBy'],
+    selected: ['classificationsState', 'selected'],
+    selectedParent: ['classificationsState', 'selectedParent'],
+    fullSelected: ['classificationsState', 'fullSelected'],
+    fullSelectedParent: ['classificationsState', 'fullSelectedParent'],
+    queryItem: ['classificationsState', 'queryItem'],
+    queryGroup: ['classificationsState', 'queryGroup'],
     classifications: ['data', 'classifications', 'flat'],
     classificationsIndex: ['data', 'classifications', 'index']
   }
 })
 export default class Classification extends Component {
   componentDidMount() {
-    this.handleScroll();
+    // Check inital state:
+    const {kind, selected} = this.props;
 
-    const {
-      rows
-    } = this.props;
-    // default value refresh trigger
-    if (rows.length === 0) {
-      // console.log('submit');
-      this.props.actions.search();
+    // Handle default state:
+    if (!kind && !selected) {
+      this.props.actions.setState(defaultSelectors.classifications);
+    }
+    // Handle initial rendering:
+    else {
+      this.submit();
     }
   }
 
@@ -85,9 +92,7 @@ export default class Classification extends Component {
   }
 
   submit() {
-    const {current} = this.props;
-
-    if (current)
+    if (this.props.selected)
       this.props.actions.search();
   }
 
@@ -105,8 +110,10 @@ export default class Classification extends Component {
       kind,
       actions,
       orderBy,
-      current,
-      currentParent,
+      selected,
+      selectedParent,
+      fullSelected,
+      fullSelectedParent,
       queryItem,
       queryGroup,
       classifications,
@@ -114,7 +121,7 @@ export default class Classification extends Component {
     } = this.props;
 
     const parents = [];
-    let tmp = current;
+    let tmp = fullSelected;
     while (tmp && tmp.parent) {
       tmp = classificationsIndex[tmp.parent];
       parents.unshift(tmp);
@@ -132,6 +139,7 @@ export default class Classification extends Component {
           <div className="form-group">
             <label htmlFor="classifications" className="control-label sr-only">Type of data</label>
             <ItemSelector
+              valueKey="value"
               selected={kind}
               type="dataModel"
               data={specs.classificationSelectors}
@@ -155,14 +163,15 @@ export default class Classification extends Component {
                   </label>
                   <small className="help-block">Choose a classification and search its group names <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
                   <ClassificationSelector
+                    valueKey="id"
                     type={kind}
                     loading={!classifications[kind]}
-                    data={classifications[kind].filter(o => !!o.parent)}
-                    onChange={o => actions.select(o ? o.id : null)}
-                    selected={current} />
+                    data={(classifications[kind] || []).filter(o => !!o.parent)}
+                    onChange={id => actions.select(id)}
+                    selected={selected} />
                 </div>
             }
-            { !!current && <ClassificationWell {...current} /> }
+            { !!fullSelected && <ClassificationWell {...fullSelected} /> }
 
             {
               !!parents.length &&
@@ -174,15 +183,16 @@ export default class Classification extends Component {
                   </label>
                   <small className="help-block">Choose a parent classification and explore its item names <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
                   <ClassificationSelector
+                    valueKey="id"
                     type={kind}
                     loading={false}
                     clearable={false}
                     data={parents}
-                    onChange={o => actions.selectParent(o ? o.id : null, true)}
-                    selected={currentParent} />
+                    onChange={id => actions.selectParent(id, true)}
+                    selected={selectedParent} />
                 </div>
             }
-            { !!currentParent && <ClassificationWell {...currentParent} /> }
+            { !!fullSelectedParent && <ClassificationWell {...fullSelectedParent} /> }
           </form>
         </div>
 
@@ -190,11 +200,11 @@ export default class Classification extends Component {
         <div className="col-xs-12 col-sm-6 col-md-8">
           <div className="row">
             {
-              !!current &&
+              !!fullSelected &&
                 <div className="col-sm-6">
                   <form onSubmit={e => e.preventDefault()}>
                     <legend className="text-center">{
-                      current.name
+                      fullSelected.name
                     }</legend>
                     <div className="row">
                       <div className="col-sm-6 col-lg-6">
@@ -213,7 +223,7 @@ export default class Classification extends Component {
                               placeholder="Search"
                               value={queryGroup || ''}
                               style={{borderColor: '#d9d9d9'}}
-                              onChange={e => actions.updateSelector('queryGroup', e.target.value)} />
+                              onChange={e => actions.updateSelector('queryGroup', e.target.value || null)} />
                             <div className="input-group-btn">
                               <button
                                 className="btn btn-default btn-search"
@@ -246,6 +256,7 @@ export default class Classification extends Component {
                                 label: 'Order with matching items first',
                               }
                             ])}
+                            defaultValue="size"
                             value={orderBy}
                             onChange={({value}) => {
                               actions.updateSelector('orderBy', value);
@@ -258,11 +269,11 @@ export default class Classification extends Component {
                 </div>
             }
             {
-              !!currentParent &&
+              !!fullSelectedParent &&
                 <div className="col-sm-6">
                   <form onSubmit={e => e.preventDefault()}>
                     <legend className="text-center">{
-                      currentParent.name
+                      fullSelectedParent.name
                     }</legend>
                     <div className="row">
                       <div className="col-sm-12 col-lg-8 col-lg-offset-2">
@@ -281,7 +292,7 @@ export default class Classification extends Component {
                               placeholder="Search"
                               value={queryItem || ''}
                               style={{borderColor: '#d9d9d9'}}
-                              onChange={e => actions.updateSelector('queryItem', e.target.value)} />
+                              onChange={e => actions.updateSelector('queryItem', e.target.value || null)} />
                             <div className="input-group-btn">
                               <button
                                 className="btn btn-default btn-search"
