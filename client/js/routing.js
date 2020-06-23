@@ -91,7 +91,18 @@ export default function bindRoutes(tree) {
           },
           {
             path: '/indicators',
-            state: {view: 'explorationIndicators'}
+            query: {
+              lines: {
+                match: ':lines',
+                cast: 'json'
+              }
+            },
+            state: {
+              view: 'explorationIndicators',
+              indicatorsState: {
+                lines: ':lines'
+              }
+            }
           },
           {
             path: '/network',

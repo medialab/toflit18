@@ -7,7 +7,7 @@
 import {six as palette} from '../lib/palettes';
 import {find} from 'lodash';
 
-const ROOT = ['states', 'exploration', 'indicators'],
+const ROOT = ['indicatorsState'],
       MAXIMUM_LINES = 6;
 
 /**
@@ -36,7 +36,7 @@ export function updateSelector(tree, name, item) {
     groups.set(model, []);
 
     if (item)
-      fetchGroups(tree, groups.select(model), item.id);
+      fetchGroups(tree, groups.select(model), item);
   }
 }
 
@@ -53,7 +53,7 @@ function findAvailableColor(existingLines) {
 
 export function addLine(tree) {
   const cursor = tree.select(ROOT),
-        lines = cursor.get('lines');
+        lines = cursor.get('lines') || [];
 
   // Cannot have more than the maximum lines
   if (lines.length >= MAXIMUM_LINES)
@@ -66,7 +66,7 @@ export function addLine(tree) {
 
   // Adding the line
   const color = findAvailableColor(lines);
-  cursor.push('lines', {color, params: selectors});
+  cursor.set('lines', lines.concat([{color, params: selectors}]));
 
   // Getting the index of the line
   const index = cursor.get('lines').length - 1;

@@ -76,6 +76,23 @@ const defaultState = {
     rows: [],
     reachedBottom: false,
   },
+  indicatorsState: {
+    creating: false,
+    selectors: {
+      productClassification: null,
+      countryClassification: null,
+      product: null,
+      country: null,
+      direction: null,
+      kind: null,
+      sourceType: null
+    },
+    groups: {
+      country: [],
+      product: []
+    },
+    lines: []
+  },
 
 
   // Specific states
@@ -83,26 +100,6 @@ const defaultState = {
 
     // Exploration section
     exploration: {
-
-      // Indicators view
-      indicators: {
-        creating: false,
-        selectors: {
-          productClassification: null,
-          countryClassification: null,
-          product: null,
-          country: null,
-          direction: null,
-          kind: null,
-          sourceType: null
-        },
-        groups: {
-          country: [],
-          product: []
-        },
-        lines: []
-      },
-
       // Globals views
       network: {
         graph: null,

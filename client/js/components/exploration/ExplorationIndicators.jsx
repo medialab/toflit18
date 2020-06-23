@@ -30,14 +30,20 @@ import {checkDefaultValues} from './utils';
 /**
  * Lines summary.
  */
-function buildDescription(params, data) {
+function buildDescription(params, data, index, groups) {
   const selectors = mapValues(params, (v, k) => {
     if (v && (k === 'product' || k === 'country')) {
-      return v.map(p => p.name).join(', ');
+      return v.map(id => (groups[k].find(o => id === o.id) || {}).name || id).join(', ');
     }
 
-    if (v)
-      return v.name;
+    if (v && (k === 'productClassification' || k === 'countryClassification')) {
+      return (index[v] || {}).name || v;
+    }
+
+
+    if (v) {
+      return v;
+    }
   });
 
   let content = [
@@ -97,21 +103,23 @@ function buildDescription(params, data) {
   cursors: {
     alert: ['ui', 'alert'],
     classifications: ['data', 'classifications', 'flat'],
+    classificationsIndex: ['data', 'classifications', 'index'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
-    state: ['states', 'exploration', 'indicators']
+    state: ['indicatorsState']
   }
 })
 export default class ExplorationIndicators extends Component {
+  componentDidMount() {
+    this.checkDefault();
+  }
   componentDidUpdate() {
-    // default network rendering
-    // only if :
-    // - there is no graph already
-    if (this.props.state.lines.length === 0) {
-      // console.log('checking default');
-      // - default values are set
+    this.checkDefault();
+  }
+
+  checkDefault() {
+    if (!this.props.state.lines || this.props.state.lines.length === 0) {
       if (checkDefaultValues(defaultSelectors.indicators, this.props.state)) {
-        // console.log('trigering default addLine');
         this.props.actions.addLine();
       }
     }
@@ -121,7 +129,7 @@ export default class ExplorationIndicators extends Component {
     // create an array with all lines, add a column with name of country selected
     // create csv only with indicators selected
     let arrayDataLines = [];
-    this.props.state.lines.forEach(l => {
+    (this.props.state.lines || []).forEach(l => {
       // add info about classification, product, country, direction, kind
       // add all column even if the info is not selected for the line
       // copy element to add info keys
@@ -179,6 +187,7 @@ export default class ExplorationIndicators extends Component {
       alert,
       actions,
       classifications,
+      classificationsIndex,
       directions,
       sourceTypes,
       state: {
@@ -189,8 +198,7 @@ export default class ExplorationIndicators extends Component {
       }
     } = this.props;
 
-
-    const lineAlreadyExisting = lines.some(
+    const lineAlreadyExisting = (lines || []).some(
       line => isEqual(line.params, selectors)
     );
 
@@ -215,6 +223,7 @@ export default class ExplorationIndicators extends Component {
               <label htmlFor="sourceType" className="control-label">Source Type</label>
               <small className="help-block">Type of sources the data comes from. <a href="#/exploration/sources"><Icon name="icon-info" /></a></small>
               <ItemSelector
+                valueKey="value"
                 type="sourceType"
                 data={sourceTypesOptions}
                 loading={!sourceTypesOptions.length}
@@ -228,6 +237,7 @@ export default class ExplorationIndicators extends Component {
               <small className="help-block">The type of product being shipped. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
                 type="product"
+                valueKey="id"
                 loading={!classifications.product.length}
                 data={classifications.product.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'productClassification')}
@@ -236,6 +246,7 @@ export default class ExplorationIndicators extends Component {
                 defaultValue={defaultSelectors.indicators['selectors.productClassification']} />
               <ItemSelector
                 type="product"
+                valueKey="value"
                 disabled={!selectors.productClassification || !groups.product.length}
                 loading={selectors.productClassification && !groups.product.length}
                 data={groups.product}
@@ -249,6 +260,7 @@ export default class ExplorationIndicators extends Component {
               <small className="help-block">Whence products are exchanged. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
                 type="country"
+                valueKey="id"
                 loading={!classifications.country.length}
                 data={classifications.country.filter(c => !c.source)}
                 onChange={actions.update.bind(null, 'countryClassification')}
@@ -257,6 +269,7 @@ export default class ExplorationIndicators extends Component {
                 defaultValue={defaultSelectors.indicators['selectors.countryClassification']} />
               <ItemSelector
                 type="country"
+                valueKey="value"
                 disabled={!selectors.countryClassification || !groups.country.length}
                 loading={selectors.countryClassification && !groups.country.length}
                 data={groups.country}
@@ -270,6 +283,7 @@ export default class ExplorationIndicators extends Component {
               <small className="help-block">Where, in France, the transactions were recorded. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ItemSelector
                 type="direction"
+                valueKey="id"
                 loading={!directions}
                 data={directions || []}
                 onChange={actions.update.bind(null, 'direction')}
@@ -282,6 +296,7 @@ export default class ExplorationIndicators extends Component {
               <small className="help-block">Should we look at import, export, or total?</small>
               <ItemSelector
                 type="kind"
+                valueKey="id"
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
                 onUpdate={v => actions.update('kind', v)}
@@ -304,7 +319,7 @@ export default class ExplorationIndicators extends Component {
         <Charts
           alert={alert}
           loading={creating}
-          lines={lines.filter(line => !!line.data)}
+          lines={(lines || []).filter(line => !!line.data)}
           ref={el => {
             this.charts = el;
           }} />
@@ -316,7 +331,7 @@ export default class ExplorationIndicators extends Component {
             this.legendContainer = el;
           }}>
           <ul className="list-unstyled list-labels">
-            {lines.map(function (line, i) {
+            {(lines || []).map(function (line, i) {
               const style = {
                 color: 'white',
                 backgroundColor: line.color
@@ -329,7 +344,7 @@ export default class ExplorationIndicators extends Component {
                 <li
                   key={i}
                   style={style}>
-                  {buildDescription(line.params, line.data)}
+                  {buildDescription(line.params, line.data, classificationsIndex || {}, groups || {})}
                   <button
                     type="button"
                     className="btn btn-link btn-xs btn-icon"
@@ -343,7 +358,7 @@ export default class ExplorationIndicators extends Component {
           <div className="form-group-fixed form-group-fixed-right">
             <ExportButton
               exports={
-                lines.length ?
+                (lines && lines.length) ?
                   [
                     {
                       label: 'Export CSV',
@@ -388,6 +403,8 @@ class Charts extends Component {
 
   render() {
     const {lines, alert, loading} = this.props;
+
+    if (!lines) return <div />;
 
     const quantitiesOpened = this.state.quantitiesOpened;
 
