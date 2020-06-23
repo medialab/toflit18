@@ -11,6 +11,18 @@ import {uniq} from 'lodash';
 const PATH = ['classificationsState'];
 
 /**
+ * Generates a unique string relatively to the state.
+ * Aims to know if the loaded data still fits the state.
+ */
+function getFootprint(tree) {
+  const state = tree.select(PATH);
+  const {kind, selected, selectedParent, orderBy, queryGroup, queryItem} = state.get();
+
+  return [kind, selected, selectedParent, orderBy, queryGroup, queryItem].map(v => v || '').join('|');
+}
+
+
+/**
  * Update some selector
  */
 export function updateSelector(tree, key, value) {
@@ -62,6 +74,7 @@ export function search(tree, paginate = false) {
   }
 
   loading.set(true);
+  state.set('footprint', getFootprint(tree));
 
   return tree.client.search(
     {params: {id: selected}, data},
@@ -183,4 +196,20 @@ export function setState(tree, newState) {
   });
 
   search(tree);
+}
+
+export function checkFootprint(tree) {
+  const state = tree.select(PATH);
+  const storedFootprint = state.get('footprint');
+  const actualFootprint = getFootprint(tree);
+
+  if (storedFootprint !== actualFootprint) {
+    const {kind, selected, selectedParent} = state.get();
+
+    if (!kind || !selected || !selectedParent) {
+      state.set('rows', []);
+    } else {
+      search(tree);
+    }
+  }
 }

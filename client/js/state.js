@@ -62,6 +62,7 @@ const defaultState = {
     orderBy: '',
     queryGroup: '',
     queryItem: '',
+    footprint: '',
     fullSelected: monkey(
       ['.', 'selected'],
       ['data', 'classifications', 'index'],

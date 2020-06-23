@@ -23,7 +23,8 @@ import {
   selectParent,
   expandGroup,
   updateSelector,
-  setState
+  setState,
+  checkFootprint
 } from '../../actions/classification';
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
@@ -49,7 +50,8 @@ const ClassificationWell = ({groupsCount, itemsCount, unclassifiedItemsCount, co
     selectParent,
     expandGroup,
     updateSelector,
-    setState
+    setState,
+    checkFootprint
   },
   cursors: {
     rows: ['classificationsState', 'rows'],
@@ -81,6 +83,9 @@ export default class Classification extends Component {
     }
   }
 
+  componentDidUpdate() {
+    this.props.actions.checkFootprint();
+  }
 
   handleScroll() {
     const end = this.refs.lastRow;
