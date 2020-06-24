@@ -18,7 +18,9 @@ import {exportCSV, exportSVG} from '../../lib/exports';
 import {
   updateSelector as update,
   addLine,
-  dropLine
+  dropLine,
+  checkLines,
+  getLineFootprint
 } from '../../actions/indicators';
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
@@ -30,7 +32,10 @@ import {checkDefaultValues} from './utils';
 /**
  * Lines summary.
  */
-function buildDescription(params, data, index, groups) {
+function buildDescription(line, data, index, groups) {
+  // eslint-disable-next-line no-unused-vars
+  const {color, ...params} = line;
+
   const selectors = mapValues(params, (v, k) => {
     if (v && (k === 'product' || k === 'country')) {
       return v.map(id => (groups[k].find(o => id === o.id) || {}).name || id).join(', ');
@@ -51,7 +56,7 @@ function buildDescription(params, data, index, groups) {
   ];
 
   if (selectors.product) {
-    if (data.length)
+    if (!Array.isArray(data) || data.length)
       content.push('of ');
     else
       content = ['No data for '];
@@ -98,7 +103,8 @@ function buildDescription(params, data, index, groups) {
   actions: {
     addLine,
     dropLine,
-    update
+    update,
+    checkLines
   },
   cursors: {
     alert: ['ui', 'alert'],
@@ -115,6 +121,7 @@ export default class ExplorationIndicators extends Component {
   }
   componentDidUpdate() {
     this.checkDefault();
+    this.props.actions.checkLines();
   }
 
   checkDefault() {
@@ -191,10 +198,10 @@ export default class ExplorationIndicators extends Component {
       directions,
       sourceTypes,
       state: {
-        creating,
         groups,
         lines,
-        selectors
+        selectors,
+        dataIndex
       }
     } = this.props;
 
@@ -208,6 +215,12 @@ export default class ExplorationIndicators extends Component {
         value: type
       };
     });
+
+    const dataLines = (lines || [])
+      .map(line => ({...line, data: dataIndex[getLineFootprint(line)]}))
+      .filter(({data}) => Array.isArray(data));
+
+    const isLoading = !!Object.values(dataIndex).filter(o => o.loading).length;
 
     return (
       <VizLayout
@@ -308,7 +321,7 @@ export default class ExplorationIndicators extends Component {
                 className="btn btn-default"
                 disabled={lineAlreadyExisting}
                 onClick={() => actions.addLine()}
-                data-loading={creating}>
+                data-loading={isLoading}>
                 Add line
               </button>
             </div>
@@ -318,8 +331,8 @@ export default class ExplorationIndicators extends Component {
         { /* Content panel */ }
         <Charts
           alert={alert}
-          loading={creating}
-          lines={(lines || []).filter(line => !!line.data)}
+          loading={isLoading}
+          lines={dataLines}
           ref={el => {
             this.charts = el;
           }} />
@@ -332,19 +345,20 @@ export default class ExplorationIndicators extends Component {
           }}>
           <ul className="list-unstyled list-labels">
             {(lines || []).map(function (line, i) {
-              const style = {
-                color: 'white',
-                backgroundColor: line.color
-              };
+              const data = dataIndex[getLineFootprint(line)],
+                    style = {
+                      color: 'white',
+                      backgroundColor: line.color
+                    };
 
-              if (!line.data)
+              if (!data)
                 return <li key={i}><Waiter align="left" /></li>;
 
               return (
                 <li
                   key={i}
                   style={style}>
-                  {buildDescription(line.params, line.data, classificationsIndex || {}, groups || {})}
+                  {buildDescription(line, data, classificationsIndex || {}, groups || {})}
                   <button
                     type="button"
                     className="btn btn-link btn-xs btn-icon"

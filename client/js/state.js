@@ -77,7 +77,6 @@ const defaultState = {
     reachedBottom: false,
   },
   indicatorsState: {
-    creating: false,
     selectors: {
       productClassification: null,
       countryClassification: null,
@@ -91,7 +90,8 @@ const defaultState = {
       country: [],
       product: []
     },
-    lines: []
+    lines: [],
+    dataIndex: {}
   },
 
 
