@@ -6,7 +6,7 @@
         @include position(absolute, 1em, 1em, null, null, 10);
 
         @include flexbox;
-        @include align-items(end);
+        @include align-items(start);
 
         //
         // Responsive
