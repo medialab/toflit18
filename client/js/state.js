@@ -93,6 +93,29 @@ const defaultState = {
     lines: [],
     dataIndex: {}
   },
+  explorationNetworkState: {
+    graph: null,
+    data: null,
+    classification: null,
+    nodeSize: 'flows',
+    edgeSize: 'flows',
+    labelThreshold: 5,
+    labelSizeRatio: 2,
+    loading: false,
+    selectors: {
+      productClassification: null,
+      product: null,
+      countryClassification: null,
+      kind: null,
+      sourceType: null,
+      dateMin: null,
+      dateMax: null
+    },
+    groups: {
+      country: [],
+      product: []
+    }
+  },
 
 
   // Specific states
@@ -101,29 +124,6 @@ const defaultState = {
     // Exploration section
     exploration: {
       // Globals views
-      network: {
-        graph: null,
-        data: null,
-        classification: null,
-        nodeSize: 'flows',
-        edgeSize: 'flows',
-        labelThreshold: 5,
-        labelSizeRatio: 2,
-        loading: false,
-        selectors: {
-          productClassification: null,
-          product: null,
-          countryClassification: null,
-          kind: null,
-          sourceType: null,
-          dateMin: null,
-          dateMax: null
-        },
-        groups: {
-          country: [],
-          product: []
-        }
-      },
       terms: {
         creating: false,
         graph: null,

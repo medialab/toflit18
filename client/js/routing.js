@@ -106,7 +106,40 @@ export default function bindRoutes(tree) {
           },
           {
             path: '/network',
-            state: {view: 'explorationNetwork'}
+            query: {
+              classification: ':classification',
+              sourceType: ':sourceType',
+              productClassification: ':productClassification',
+              product: {
+                match: ':product',
+                cast: 'json'
+              },
+              kind: ':kind',
+              dateMin: ':dateMin',
+              dateMax: ':dateMax',
+              nodeSize: ':nodeSize',
+              edgeSize: ':edgeSize',
+              labelThreshold: ':labelThreshold',
+              labelSizeRatio: ':labelSizeRatio'
+            },
+            state: {
+              view: 'explorationNetwork',
+              explorationNetworkState: {
+                nodeSize: ':nodeSize',
+                edgeSize: ':edgeSize',
+                labelThreshold: ':labelThreshold',
+                labelSizeRatio: ':labelSizeRatio',
+                classification: ':classification',
+                selectors: {
+                  kind: ':kind',
+                  productClassification: ':productClassification',
+                  product: ':product',
+                  sourceType: ':sourceType',
+                  dateMin: ':dateMin',
+                  dateMax: ':dateMax'
+                }
+              }
+            }
           },
           {
             path: '/terms',

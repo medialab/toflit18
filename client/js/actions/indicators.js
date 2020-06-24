@@ -25,7 +25,7 @@ export function getLineFootprint(line) {
     'sourceType'
   ];
 
-  return KEYS.map(key => line[key] || '').join('|')
+  return KEYS.map(key => line[key] || '').join('|');
 }
 
 /**

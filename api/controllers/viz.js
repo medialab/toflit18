@@ -13,7 +13,7 @@ import {mapValues} from 'lodash';
 const formatItemsParams = (items) => {
     // separate filters on id from those on name trhough regexp
     return items.length > 0 ? {
-      ids: items.filter(e => e.id !== -1).map(e => +e.id),
+      ids: items.filter(e => e.id !== -1).map(e => e.id),
       regexps: items.filter(e => e.id === -1).map(e => e.value)
     } : null;
 };

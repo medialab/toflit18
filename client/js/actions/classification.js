@@ -206,10 +206,9 @@ export function checkFootprint(tree) {
   if (storedFootprint !== actualFootprint) {
     const {kind, selected, selectedParent} = state.get();
 
-    if (!kind || !selected || !selectedParent) {
+    if (!kind || !selected || !selectedParent)
       state.set('rows', []);
-    } else {
+    else
       search(tree);
-    }
   }
 }

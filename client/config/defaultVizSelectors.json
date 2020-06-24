@@ -1,5 +1,5 @@
 {
-  "terms":{
+  "terms": {
     "classification": "Simplification",
     "selectors.childClassification": "SITC EN",
     "selectors.child": ["Raw materials, inedible, except fuels"],
@@ -7,13 +7,22 @@
     "selectors.dateMin": 1750,
     "selectors.dateMax": 1750
   },
-  "network":{
-    "classification": "Grouping",
-    "selectors.sourceType": "National best guess",
-    "selectors.dateMin": 1750,
-    "selectors.dateMax": 1750
+  "network": {
+    "defaultValues": {
+      "labelSizeRatio": 2,
+      "labelThreshold": 5,
+      "nodeSize": "flows",
+      "edgeSize": "flows"
+    },
+    "initialValues": {
+      "classification": "country_grouping",
+      "selectors.kind": "total",
+      "selectors.sourceType": "National best guess",
+      "selectors.dateMin": "1750",
+      "selectors.dateMax": "1750"
+    }
   },
-  "indicators":{
+  "indicators": {
     "selectors.sourceType": "National best guess"
   },
   "classifications": {

@@ -5,9 +5,9 @@
  * Actions related to the globals' view.
  */
 import {two as palette} from '../lib/palettes';
-import {values, forIn} from 'lodash';
+import {forIn, values} from 'lodash';
 
-const ROOT = ['states', 'exploration', 'network'];
+const ROOT = ['explorationNetworkState'];
 
 /**
  * Selecting a country classification.
@@ -41,29 +41,14 @@ export function addNetwork(tree) {
   cursor.set('graph', null);
 
   // set params for request
-  const params = {},
-        paramsRequest = {};
+  const paramsRequest = {};
 
   // get selectors choosen
   forIn(cursor.get('selectors'), (v, k) => {
-    if (v) {
-      params[k] = v;
-    }
-  });
-
-  // keep only params !== null for request
-  forIn(params, (v, k) => {
-     switch (k) {
-        case 'sourceType':
-          paramsRequest[k] = v.value;
-          break;
-        case 'product':
-        case 'country':
-          paramsRequest[k] = v;
-          break;
-        default:
-          paramsRequest[k] = v.id;
-      }
+    if (v && k === 'product')
+      paramsRequest[k] = v.map(id => cursor.get('groups', 'product', {id}));
+    else
+      paramsRequest[k] = v;
   });
 
   const classification = cursor.get('classification');
@@ -74,7 +59,7 @@ export function addNetwork(tree) {
   cursor.set('loading', true);
 
   // Fetching data
-  tree.client.network({params: {id: classification.id}, data: paramsRequest}, function(err, data) {
+  tree.client.network({params: {id: classification}, data: paramsRequest}, function(err, data) {
     cursor.set('loading', false);
 
     // NOTE: the API should probably return an empty array somehow
@@ -182,18 +167,9 @@ export function updateSelector(tree, name, item) {
     groups.set(model, []);
 
     if (item) {
-      fetchGroups(tree, groups.select(model), item.id);
+      fetchGroups(tree, groups.select(model), item);
     }
   }
-}
-
-export function updateDate(tree, dateChoosen) {
-  const cursor = tree.select(ROOT),
-        selectors = cursor.select('selectors');
-
-  const date = selectors.get(dateChoosen);
-
-  return date;
 }
 
 export function selectLabelSizeRatio(tree, key) {
@@ -202,4 +178,15 @@ export function selectLabelSizeRatio(tree, key) {
 
 export function selectLabelThreshold(tree, key) {
   tree.set(ROOT.concat('labelThreshold'), key);
+}
+
+export function checkDefaultState(tree, defaultState) {
+  for (const key in defaultState) {
+    const path = key.split('.');
+    const val = tree.get([...ROOT, ...path]);
+
+    if (!val) {
+      tree.set([...ROOT, ...path], defaultState[key]);
+    }
+  }
 }

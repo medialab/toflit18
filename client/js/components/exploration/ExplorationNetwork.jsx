@@ -1,4 +1,4 @@
- /**
+/**
  * TOFLIT18 Client Network Viz Display
  * ====================================
  *
@@ -14,21 +14,20 @@ import Network from './viz/Network.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
 import {exportCSV} from '../../lib/exports';
 import {
+  addNetwork,
+  checkDefaultState,
   selectClassification,
-  selectNodeSize,
   selectEdgeSize,
   selectLabelSizeRatio,
   selectLabelThreshold,
-  updateSelector,
-  addNetwork,
-  updateDate
+  selectNodeSize,
+  updateSelector
 } from '../../actions/network';
 import Icon from '../misc/Icon.jsx';
 
 import specs from '../../../specs.json';
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
-import {checkDefaultValues} from './utils';
 
 const NUMBER_FIXED_FORMAT = format(',.2f'),
       NUMBER_FORMAT = format(',');
@@ -52,14 +51,14 @@ export default class ExplorationGlobals extends Component {
     selectLabelSizeRatio,
     selectLabelThreshold,
     updateSelector,
-    updateDate
+    checkDefaultState
   },
   cursors: {
     alert: ['ui', 'alert'],
     classifications: ['data', 'classifications', 'flat'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
-    state: ['states', 'exploration', 'network']
+    state: ['explorationNetworkState']
   }
 })
 class NetworkPanel extends Component {
@@ -70,15 +69,26 @@ class NetworkPanel extends Component {
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
   }
 
-  componentDidUpdate() {
-    if (!this.props.state.graph && !this.props.state.loading) {
-      // - default values are set
-      // console.log('checking default');
-      if (checkDefaultValues(defaultSelectors.network, this.props.state) && !this.props.state.loading) {
-        // console.log('trigering default addNetwork');
-        this.props.actions.addNetwork();
-      }
+  componentDidMount() {
+    // Check for initial values:
+    const state = this.props.state;
+    const initialState = defaultSelectors.network.initialValues;
+    const hasInitialState = Object.keys(initialState)
+      .some(key => key.split('.').reduce(
+        (iter, step) => iter && iter[step],
+        state
+      ));
+
+    if (!hasInitialState) {
+      this.props.actions.checkDefaultState(defaultSelectors.network.initialValues);
     }
+
+    this.props.actions.addNetwork();
+  }
+
+  componentDidUpdate() {
+    // Check for defaults:
+    this.props.actions.checkDefaultState(defaultSelectors.network.defaultValues);
   }
 
   export() {
@@ -121,11 +131,11 @@ class NetworkPanel extends Component {
       fullscreen
     } = this.state;
 
-    const dateMin = actions.updateDate('dateMin');
-    const dateMaxOptions = range((dateMin && dateMin.id) || specs.limits.minYear, specs.limits.maxYear).map(d => ({name: d, id: d}));
+    const dateMin = selectors.dateMin;
+    const dateMaxOptions = range(dateMin || specs.limits.minYear, specs.limits.maxYear).map(d => ({name: '' + d, id: '' + d}));
 
-    const dateMax = actions.updateDate('dateMax');
-    const dateMinOptions = range(specs.limits.minYear, (dateMax && dateMax.id) || specs.limits.maxYear).map(d => ({name: d, id: d}));
+    const dateMax = selectors.dateMax;
+    const dateMinOptions = range(specs.limits.minYear, dateMax ? +dateMax + 1 : specs.limits.maxYear).map(d => ({name: '' + d, id: '' + d}));
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
@@ -135,7 +145,6 @@ class NetworkPanel extends Component {
     });
 
     const directed = selectors.kind && selectors.kind.id !== 'total';
-
 
     return (
       <VizLayout
@@ -150,6 +159,7 @@ class NetworkPanel extends Component {
             <span className="hidden-sm hidden-md">Country</span> classification
           </h2>
           <ClassificationSelector
+            valueKey="id"
             type="country"
             loading={!classifications.country.length}
             data={classifications.country}
@@ -167,6 +177,7 @@ class NetworkPanel extends Component {
               <label htmlFor="sourceType" className="control-label">Source Type</label>
               <small className="help-block">Type of sources the data comes from. <a href="#/exploration/sources"><Icon name="icon-info" /></a></small>
               <ItemSelector
+                valueKey="value"
                 type="sourceType"
                 data={sourceTypesOptions}
                 loading={!sourceTypesOptions.length}
@@ -179,6 +190,7 @@ class NetworkPanel extends Component {
               <label htmlFor="product" className="control-label">Product</label>
               <small className="help-block">The type of product being shipped. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
+                valueKey="id"
                 type="product"
                 placeholder="Child classification..."
                 loading={!classifications.product.length}
@@ -188,6 +200,7 @@ class NetworkPanel extends Component {
                 onUpdate={val => actions.updateSelector('productClassification', val)}
                 defaultValue={defaultSelectors.network['selectors.productClassification']} />
               <ItemSelector
+                valueKey="id"
                 type="product"
                 disabled={!selectors.productClassification || !groups.product.length}
                 loading={selectors.productClassification && !groups.product.length}
@@ -202,6 +215,7 @@ class NetworkPanel extends Component {
               <small className="help-block">Should we look at import, export, or total?</small>
               <ItemSelector
                 type="kind"
+                valueKey="id"
                 onChange={val => actions.updateSelector('kind', val)}
                 selected={selectors.kind}
                 onUpdate={val => actions.updateSelector('kind', val)}
@@ -213,6 +227,7 @@ class NetworkPanel extends Component {
               <div className="row">
                 <div className="col-xs-6">
                   <ItemSelector
+                    valueKey="id"
                     type="dateMin"
                     data={dateMinOptions}
                     onChange={val => actions.updateSelector('dateMin', val)}
@@ -222,6 +237,7 @@ class NetworkPanel extends Component {
                 </div>
                 <div className="col-xs-6">
                   <ItemSelector
+                    valueKey="id"
                     type="dateMax"
                     data={dateMaxOptions}
                     onChange={val => actions.updateSelector('dateMax', val)}
@@ -266,6 +282,7 @@ class NetworkPanel extends Component {
               <small className="help-block">Thickness</small>
               <Select
                 name="edgeSize"
+                valueKey="value"
                 clearable={false}
                 searchable={false}
                 options={[
@@ -285,6 +302,7 @@ class NetworkPanel extends Component {
               <small className="help-block">Size</small>
               <Select
                 name="nodeSize"
+                valueKey="value"
                 clearable={false}
                 searchable={false}
                 options={[
@@ -321,6 +339,7 @@ class NetworkPanel extends Component {
                 <div className="col-xs-6">
                   <small className="help-block">Size</small>
                   <Select
+                    valueKey="value"
                     name="labelSize"
                     clearable={false}
                     searchable={false}
@@ -334,6 +353,7 @@ class NetworkPanel extends Component {
                 <div className="col-xs-6">
                   <small className="help-block">Threshold</small>
                   <Select
+                    valueKey="value"
                     name="labelThreshold"
                     clearable={false}
                     searchable={false}
