@@ -143,7 +143,49 @@ export default function bindRoutes(tree) {
           },
           {
             path: '/terms',
-            state: {view: 'explorationTerms'}
+            query: {
+              nodeSize: ':nodeSize',
+              edgeSize: ':edgeSize',
+              labelThreshold: ':labelThreshold',
+              labelSizeRatio: ':labelSizeRatio',
+              classification: ':classification',
+              sourceType: ':sourceType',
+              childClassification: ':childClassification',
+              child: {
+                match: ':child',
+                cast: 'json'
+              },
+              countryClassification: ':countryClassification',
+              country: {
+                match: ':country',
+                cast: 'json'
+              },
+              direction: ':direction',
+              kind: ':kind',
+              dateMin: ':dateMin',
+              dateMax: ':dateMax'
+            },
+            state: {
+              view: 'explorationTerms',
+              explorationTermsState: {
+                nodeSize: ':nodeSize',
+                edgeSize: ':edgeSize',
+                labelThreshold: ':labelThreshold',
+                labelSizeRatio: ':labelSizeRatio',
+                classification: ':classification',
+                selectors: {
+                  sourceType: ':sourceType',
+                  childClassification: ':childClassification',
+                  child: ':child',
+                  countryClassification: ':countryClassification',
+                  country: ':country',
+                  direction: ':direction',
+                  kind: ':kind',
+                  dateMin: ':dateMin',
+                  dateMax: ':dateMax'
+                }
+              }
+            }
           },
           {
             path: '/sources',

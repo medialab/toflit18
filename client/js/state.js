@@ -116,41 +116,31 @@ const defaultState = {
       product: []
     }
   },
-
-
-  // Specific states
-  states: {
-
-    // Exploration section
-    exploration: {
-      // Globals views
-      terms: {
-        creating: false,
-        graph: null,
-        data: null,
-        classification: null,
-        nodeSize: 'flows',
-        edgeSize: 'flows',
-        labelThreshold: 3,
-        labelSizeRatio: 2,
-        loading: false,
-        selectors: {
-          productClassification: null,
-          countryClassification: null,
-          childClassification: null,
-          country: null,
-          child: [],
-          direction: null,
-          kind: null,
-          sourceType: null,
-          dateMin: null,
-          dateMax: null
-        },
-        groups: {
-          country: [],
-          child: []
-        }
-      }
+  explorationTermsState: {
+    creating: false,
+    graph: null,
+    data: null,
+    classification: null,
+    nodeSize: 'flows',
+    edgeSize: 'flows',
+    labelThreshold: 3,
+    labelSizeRatio: 2,
+    loading: false,
+    selectors: {
+      productClassification: null,
+      countryClassification: null,
+      childClassification: null,
+      country: null,
+      child: [],
+      direction: null,
+      kind: null,
+      sourceType: null,
+      dateMin: null,
+      dateMax: null
+    },
+    groups: {
+      country: [],
+      child: []
     }
   },
 

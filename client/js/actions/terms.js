@@ -13,7 +13,7 @@ import {uniq, forIn} from 'lodash';
 
 const scaleCategory20 = scaleOrdinal(schemeCategory20);
 
-const ROOT = ['states', 'exploration', 'terms'];
+const ROOT = ['explorationTermsState'];
 
 /**
  * Selecting a product classification.
@@ -31,11 +31,12 @@ export function selectTerms(tree, classification) {
 /**
  * Updating a selector.
  */
-function fetchGroups(tree, cursor, id) {
+function fetchGroups(tree, cursor, id, callback) {
   tree.client.groups({params: {id}}, function(err, data) {
-    if (err) return;
+    if (err) return callback ? callback(err) : null;
 
     cursor.set(data.result.map(d => ({...d, value: d.id})));
+    if (callback) callback();
   });
 }
 
@@ -54,12 +55,13 @@ export function updateSelector(tree, name, item) {
     groups.set(model, []);
 
     if (item)
-      fetchGroups(tree, groups.select(model), item.id);
+      fetchGroups(tree, groups.select(model), item);
   }
 }
 
 export function addChart(tree) {
-  const cursor = tree.select(ROOT);
+  const cursor = tree.select(ROOT),
+        groups = cursor.get('groups');
 
   cursor.set('graph', null);
 
@@ -76,17 +78,11 @@ export function addChart(tree) {
 
   // keep only params !== null for request
   forIn(params, (v, k) => {
-     switch (k) {
-        case 'sourceType':
-          paramsRequest[k] = v.value;
-          break;
-        case 'child':
-        case 'country':
-          paramsRequest[k] = v;
-          break;
-        default:
-          paramsRequest[k] = v.id;
-      }
+    if (v && (k === 'child' || k === 'country')) {
+      paramsRequest[k] = v.map(id => (groups[k] || []).find(o => o.id === id)).filter(o => o);
+    } else {
+      paramsRequest[k] = v;
+    }
   });
 
   const classification = cursor.get('classification');
@@ -96,7 +92,7 @@ export function addChart(tree) {
 
   cursor.set('loading', true);
 
-  tree.client.terms({params: {id: classification.id}, data: paramsRequest}, function(err, data) {
+  tree.client.terms({params: {id: classification}, data: paramsRequest}, function(err, data) {
     cursor.set('loading', false);
 
     if (err)
@@ -140,11 +136,33 @@ export function selectLabelThreshold(tree, key) {
   tree.set(ROOT.concat('labelThreshold'), key);
 }
 
-export function updateDate(tree, dateChoosen) {
-  const cursor = tree.select(ROOT),
-        selectors = cursor.select('selectors');
+export function checkDefaultState(tree, defaultState) {
+  for (const key in defaultState) {
+    const path = key.split('.');
+    const val = tree.get([...ROOT, ...path]);
 
-  const date = selectors.get(dateChoosen);
+    if (!val) {
+      tree.set([...ROOT, ...path], defaultState[key]);
+    }
+  }
+}
 
-  return date;
+export function checkGroups(tree, callback) {
+  const cursor = tree.select(ROOT);
+  let loading = 0;
+  const handleFetched = () => {
+    if (!(--loading) && callback) callback();
+  };
+
+  ['country', 'child'].forEach(type => {
+    const classification = cursor.get('selectors', type + 'Classification');
+    const groups = cursor.select('groups', type);
+
+    if (classification && !(groups.get() || []).length) {
+      loading++;
+      fetchGroups(tree, groups, classification, handleFetched);
+    }
+  });
+
+  if (!loading && callback) callback();
 }

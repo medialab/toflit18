@@ -21,11 +21,11 @@ import {
   selectLabelThreshold,
   updateSelector as update,
   addChart,
-  updateDate
+  checkDefaultState,
+  checkGroups
 } from '../../actions/terms';
 import Icon from '../misc/Icon.jsx';
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
-import {checkDefaultValues} from './utils';
 
 import specs from '../../../specs.json';
 
@@ -33,15 +33,11 @@ import specs from '../../../specs.json';
 /**
  * Helper used to get the child classifications of the given classification.
  */
-function getChildClassifications(index, target) {
+function getChildClassifications(index, targetId) {
   const children = [];
+  const target = index[targetId];
 
-  // target can only contain an id (default settings)
-  // in that case copy children from index
-  if (index[target.id])
-    target = index[target.id];
-
-  if (!target.children || !target.children.length)
+  if (!target || !target.children || !target.children.length)
     return children;
 
   const stack = target.children.slice();
@@ -86,7 +82,8 @@ export default class ExplorationGlobalsTerms extends Component {
     selectLabelThreshold,
     update,
     addChart,
-    updateDate
+    checkDefaultState,
+    checkGroups
   },
   cursors: {
     alert: ['ui', 'alert'],
@@ -94,7 +91,7 @@ export default class ExplorationGlobalsTerms extends Component {
     classificationIndex: ['data', 'classifications', 'index'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
-    state: ['states', 'exploration', 'terms']
+    state: ['explorationTermsState']
   }
 })
 class TermsPanel extends Component {
@@ -104,19 +101,27 @@ class TermsPanel extends Component {
     this.setSelectedNode = this.setSelectedNode.bind(this);
   }
 
-  componentDidUpdate() {
-    // default network rendering
-    // only if :
-    // - there is no graph already
-    if (!this.props.state.graph && !this.props.state.creating) {
-      // - default values are set
-      if (checkDefaultValues(defaultSelectors.terms, this.props.state) && !this.props.state.creating) {
-        // console.log('trigering default addChart');
-        this.props.actions.addChart();
-      }
+  componentDidMount() {
+    // Check for initial values:
+    const state = this.props.state;
+    const initialState = defaultSelectors.terms.initialValues;
+    const hasInitialState = Object.keys(initialState)
+      .some(key => key.split('.').reduce(
+        (iter, step) => iter && iter[step],
+        state
+      ));
+
+    if (!hasInitialState) {
+      this.props.actions.checkDefaultState(defaultSelectors.terms.initialValues);
     }
+
+    this.props.actions.checkGroups(this.props.actions.addChart);
   }
 
+  componentDidUpdate() {
+    // Check for defaults:
+    this.props.actions.checkDefaultState(defaultSelectors.terms.defaultValues);
+  }
 
   export() {
     const now = new Date();
@@ -160,18 +165,16 @@ class TermsPanel extends Component {
       };
     });
 
-    const dateMin = actions.updateDate('dateMin');
-    const dateMaxOptions = range((dateMin && dateMin.id) || specs.limits.minYear, specs.limits.maxYear).map(d => ({name: d, id: d}));
+    const dateMin = selectors.dateMin;
+    const dateMaxOptions = range(dateMin || specs.limits.minYear, specs.limits.maxYear).map(d => ({name: '' + d, id: '' + d}));
 
-    const dateMax = actions.updateDate('dateMax');
-    const dateMinOptions = range(specs.limits.minYear, (dateMax && dateMax.id) || specs.limits.maxYear).map(d => ({name: d, id: d}));
-
+    const dateMax = selectors.dateMax;
+    const dateMinOptions = range(specs.limits.minYear, dateMax ? +dateMax + 1 : specs.limits.maxYear).map(d => ({name: '' + d, id: '' + d}));
 
     let childClassifications = [];
 
     if (classification)
       childClassifications = getChildClassifications(classificationIndex, classification);
-
 
     return (
       <VizLayout
@@ -185,6 +188,7 @@ class TermsPanel extends Component {
             <span className="hidden-sm hidden-md">Product</span> classification
           </h2>
           <ClassificationSelector
+            valueKey="id"
             type="product"
             loading={!classifications.product.length}
             data={classifications.product}
@@ -202,6 +206,7 @@ class TermsPanel extends Component {
               <label htmlFor="sourceType" className="control-label">Source Type</label>
               <small className="help-block">Type of sources the data comes from. <a href="#/exploration/sources"><Icon name="icon-info" /></a></small>
               <ItemSelector
+                valueKey="value"
                 type="sourceType"
                 data={sourceTypesOptions}
                 loading={!sourceTypesOptions.length}
@@ -214,6 +219,7 @@ class TermsPanel extends Component {
               <label htmlFor="product" className="control-label">Product</label>
               <small className="help-block">The type of product being shipped. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
+                valueKey="id"
                 type="product"
                 placeholder="Child classification..."
                 disabled={!childClassifications.length}
@@ -224,6 +230,7 @@ class TermsPanel extends Component {
                 onUpdate={v => actions.update('childClassification', v)}
                 defaultValue={defaultSelectors.terms['selectors.childClassification']} />
               <ItemSelector
+                valueKey="id"
                 type="product"
                 disabled={!selectors.childClassification || !groups.child.length}
                 loading={selectors.childClassification && !groups.child.length}
@@ -237,6 +244,7 @@ class TermsPanel extends Component {
               <label htmlFor="country" className="control-label">Country</label>
               <small className="help-block">Whence products are exchanged. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
+                valueKey="id"
                 type="country"
                 loading={!classifications.country.length}
                 data={classifications.country.filter(c => !c.source)}
@@ -245,6 +253,7 @@ class TermsPanel extends Component {
                 onUpdate={v => actions.update('countryClassification', v)}
                 defaultValue={defaultSelectors.terms['selectors.countryClassification']} />
               <ItemSelector
+                valueKey="id"
                 type="country"
                 disabled={!selectors.countryClassification || !groups.country.length}
                 loading={selectors.countryClassification && !groups.country.length}
@@ -258,6 +267,7 @@ class TermsPanel extends Component {
               <label htmlFor="direction" className="control-label">Direction</label>
               <small className="help-block">Where, in France, the transactions were recorded. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ItemSelector
+                valueKey="id"
                 type="direction"
                 loading={!directions}
                 data={directions || []}
@@ -270,6 +280,7 @@ class TermsPanel extends Component {
               <label htmlFor="kind" className="control-label">Kind</label>
               <small className="help-block">Should we look at import, export, or total?</small>
               <ItemSelector
+                valueKey="id"
                 type="kind"
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
@@ -282,6 +293,7 @@ class TermsPanel extends Component {
               <div className="row">
                 <div className="col-xs-6">
                   <ItemSelector
+                    valueKey="id"
                     type="dateMin"
                     data={dateMinOptions}
                     onChange={actions.update.bind(null, 'dateMin')}
@@ -291,6 +303,7 @@ class TermsPanel extends Component {
                 </div>
                 <div className="col-xs-6">
                   <ItemSelector
+                    valueKey="id"
                     type="dateMax"
                     data={dateMaxOptions}
                     onChange={actions.update.bind(null, 'dateMax')}
