@@ -78,11 +78,10 @@ export function addChart(tree) {
 
   // keep only params !== null for request
   forIn(params, (v, k) => {
-    if (v && (k === 'child' || k === 'country')) {
+    if (v && (k === 'child' || k === 'country'))
       paramsRequest[k] = v.map(id => (groups[k] || []).find(o => o.id === id)).filter(o => o);
-    } else {
+    else
       paramsRequest[k] = v;
-    }
   });
 
   const classification = cursor.get('classification');

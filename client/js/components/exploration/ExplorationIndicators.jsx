@@ -32,15 +32,11 @@ import {checkDefaultValues} from './utils';
 /**
  * Lines summary.
  */
-function buildDescription(line, data, index, groups) {
+function buildDescription(line, data, index) {
   // eslint-disable-next-line no-unused-vars
   const {color, ...params} = line;
 
   const selectors = mapValues(params, (v, k) => {
-    if (v && (k === 'product' || k === 'country')) {
-      return v.map(id => (groups[k].find(o => id === o.id) || {}).name || id).join(', ');
-    }
-
     if (v && (k === 'productClassification' || k === 'countryClassification')) {
       return (index[v] || {}).name || v;
     }
@@ -62,14 +58,14 @@ function buildDescription(line, data, index, groups) {
       content = ['No data for '];
 
     content = content.concat([
-      <strong key="product">{selectors.product}</strong>,
+      <strong key="product">{(selectors.product || []).map(o => o.name)}</strong>,
       ' (',
       <em key="product-classes">{selectors.productClassification}</em>,
       ')',
     ]);
   }
 
-  if (selectors.direction && selectors.direction !== '$all')
+  if (selectors.direction && selectors.direction !== '$all$')
     content = content.concat([
       ' from ',
       <strong key="direction">{selectors.direction}</strong>
@@ -78,7 +74,7 @@ function buildDescription(line, data, index, groups) {
   if (selectors.country)
     content = content.concat([
       ' to ',
-      <strong key="country">{selectors.country}</strong>,
+      <strong key="country">{(selectors.country || []).map(o => o.name)}</strong>,
       ' (',
       <em key="country-classes">{selectors.countryClassification}</em>,
       ')',
@@ -358,7 +354,7 @@ export default class ExplorationIndicators extends Component {
                 <li
                   key={i}
                   style={style}>
-                  {buildDescription(line, data, classificationsIndex || {}, groups || {})}
+                  {buildDescription(line, data, classificationsIndex || {})}
                   <button
                     type="button"
                     className="btn btn-link btn-xs btn-icon"

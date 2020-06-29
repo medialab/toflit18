@@ -71,23 +71,13 @@ function findAvailableColor(existingLines) {
  */
 export function loadLine(tree, line) {
   const cursor = tree.select(ROOT),
-    footprint = getLineFootprint(line);
+        footprint = getLineFootprint(line);
 
   // Building payload
   const payload = {};
 
   for (const k in line) {
-    switch (k) {
-      case 'sourceType':
-        payload[k] = line[k].value;
-        break;
-      case 'product':
-      case 'country':
-        payload[k] = line[k];
-        break;
-      default:
-        payload[k] = line[k].id;
-    }
+    payload[k] = line[k];
   }
 
   cursor.set(['dataIndex', footprint], {loading: true});
@@ -104,6 +94,7 @@ export function loadLine(tree, line) {
  */
 export function addLine(tree) {
   const cursor = tree.select(ROOT),
+        groups = cursor.get('groups'),
         lines = cursor.get('lines') || [];
 
   // Cannot have more than the maximum lines
@@ -111,10 +102,21 @@ export function addLine(tree) {
     return;
 
   const selectors = cursor.get('selectors');
-
-  // Adding the line
   const color = findAvailableColor(lines);
-  const line = pickBy({color, ...selectors});
+  const line = pickBy({
+    color,
+    ...selectors
+  });
+
+  ['product', 'country'].forEach(key => {
+    if (!line[key] || !line[key].length) return;
+
+    line[key] = line[key].map(id => ({
+      id,
+      name: (groups[key] || []).find(o => o.id === id).name
+    }));
+  });
+
   cursor.set('lines', lines.concat([line]));
 
   loadLine(tree, line);

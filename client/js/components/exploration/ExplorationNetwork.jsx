@@ -144,7 +144,7 @@ class NetworkPanel extends Component {
       };
     });
 
-    const directed = selectors.kind && selectors.kind.id !== 'total';
+    const directed = selectors.kind !== 'total';
 
     return (
       <VizLayout

@@ -39,12 +39,8 @@ const controller = [
           // separate filters on id from those on name trhough regexp
           return formatItemsParams(v);
         }
-        if (v !== 'null') {
-          return k !== 'kind' && k !== 'sourceType' ? +v : v;
-        }
-        else {
-          console.log(v, k);
-        }
+
+        return v;
       });
       return modelFlowsPerYear.flowsPerYearPerDataType(req.params.type, payloadFlows, function(err, data) {
         if (err) return res.serverError(err);
@@ -58,14 +54,10 @@ const controller = [
     method: 'POST',
     action(req, res) {
       const payload = mapValues(req.body, (v, k) => {
-
         if (k === 'product' || k === 'country') {
           // separate filters on id from those on name trhough regexp
           return formatItemsParams(v);
         }
-
-        if (k !== 'kind' && k !== 'sourceType')
-          return +v;
 
         return v;
       });
@@ -98,12 +90,7 @@ const controller = [
           return formatItemsParams(v);
         }
 
-        if (v !== 'null') {
-          return k !== 'kind' && k !== 'sourceType' ? +v : v;
-        }
-        else {
-          console.log(v, k);
-        }
+        return v;
       });
 
       return modelNetwork.network(req.params.id, payloadNetwork, function(err, data) {
@@ -137,13 +124,14 @@ const controller = [
           // separate filters on id from those on name trhough regexp
           return formatItemsParams(v);
         }
-        if (v !== 'null') {
-          return k !== 'kind' && k !== 'sourceType' ? +v : v;
+
+        if (v && k === 'dateMin' || k === 'dateMax') {
+          return +v;
         }
-        else {
-          console.log(v, k);
-        }
+
+        return v;
       });
+
       return modelTerms.terms(req.params.id, payloadTerms, function(err, terms) {
         if (err) return res.serverError(err);
         if (!terms) return res.notFound();
