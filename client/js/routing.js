@@ -1,4 +1,7 @@
-import Router from 'baobab-router';
+// [jacomyal]
+// For some reason, the current build process does not understand ES6 code in
+// default baobab-router file, so we have to explicitly load this one instead :
+import Router from 'baobab-router/dist/tmp';
 
 export default function bindRoutes(tree) {
   return new Router(tree, {
