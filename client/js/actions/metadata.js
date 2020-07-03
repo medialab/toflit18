@@ -90,7 +90,7 @@ export function addChart(tree) {
         dataModel = cursor.get('dataModel'),
         groups = cursor.get('groups'),
         classifications = tree.get('data', 'classifications', 'flat'),
-        fullDataType = dataModel && dataType && classifications[dataModel].find(o => o.slug === dataType);
+        fullDataType = dataModel && dataType && classifications[dataModel].find(o => o.id === dataType);
 
   // Can't load data without a selected model:
   if (!dataModel) return;

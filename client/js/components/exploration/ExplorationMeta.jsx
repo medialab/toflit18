@@ -33,15 +33,11 @@ const defaultSelectors = require('../../../config/defaultVizSelectors.json');
 /**
  * Helper used to get the child classifications of the given classification.
  */
-function getChildClassifications(index, target) {
+function getChildClassifications(index, id) {
   const children = [];
+  const target = index[id];
 
-  // target can only contain an id (default settings)
-  // in that case copy children from index
-  if (index[target.id])
-    target = index[target.id];
-
-  if (!target.children || !target.children.length)
+  if (!target || !target.children || !target.children.length)
     return children;
 
   const stack = target.children.slice();
@@ -147,7 +143,7 @@ export default class ExplorationMeta extends Component {
   }
   canDisplaySecondViz() {
     const {state, classifications} = this.props;
-    const dataType = state.dataModel && state.dataType && classifications[state.dataModel].find(o => o.slug === state.dataType);
+    const dataType = state.dataModel && state.dataType && classifications[state.dataModel].find(o => o.id === state.dataType);
     return (
       state.dataModel &&
       (
@@ -262,7 +258,7 @@ export default class ExplorationMeta extends Component {
 
     let childClassifications;
 
-    if (state.dataType && !!state.dataType.model)
+    if (state.dataType)
       childClassifications = getChildClassifications(classificationIndex, state.dataType);
 
     return (
@@ -296,7 +292,7 @@ export default class ExplorationMeta extends Component {
               <div className="form-group">
                 <label htmlFor="classifications" className="control-label sr-only">{capitalize(state.dataModel)}</label>
                 <ItemSelector
-                  valueKey="slug"
+                  valueKey="id"
                   type="dataType"
                   data={classifications[state.dataModel]}
                   loading={!classifications[state.dataModel].length}
