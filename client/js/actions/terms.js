@@ -10,6 +10,7 @@ import {
 } from 'd3-scale';
 
 import {uniq, forIn} from 'lodash';
+import {regexIdToString, stringToRegexLabel} from '../lib/helpers';
 
 const scaleCategory20 = scaleOrdinal(schemeCategory20);
 
@@ -79,7 +80,18 @@ export function addChart(tree) {
   // keep only params !== null for request
   forIn(params, (v, k) => {
     if (v && (k === 'child' || k === 'country'))
-      paramsRequest[k] = v.map(id => (groups[k] || []).find(o => o.id === id)).filter(o => o);
+      paramsRequest[k] = v.map(id => {
+        // Detect custom regex values:
+        const regex = regexIdToString(id);
+        if (regex) {
+          return {
+            id: -1,
+            name: stringToRegexLabel(regex, 'country'),
+            value: regex
+          };
+        }
+        return (groups[k] || []).find(o => o.id === id);
+      }).filter(o => o);
     else
       paramsRequest[k] = v;
   });

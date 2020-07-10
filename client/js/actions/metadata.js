@@ -6,6 +6,7 @@
  */
 import specs from '../../specs.json';
 import _, {forIn, compact} from 'lodash';
+import {regexIdToString} from '../lib/helpers';
 
 const ROOT = ['metadataState'];
 
@@ -124,7 +125,18 @@ export function addChart(tree) {
      switch (k) {
         case 'product':
         case 'country':
-          paramsRequest[k] = compact((v || []).map(id => groups[k].find(o => o.id === id)));
+          paramsRequest[k] = compact((v || []).map(id => {
+            // Detect custom regex values:
+            const regex = regexIdToString(id);
+            if (regex) {
+              return {
+                id: -1,
+                value: regex,
+                name: id
+              };
+            }
+            return groups[k].find(o => o.id === id);
+          }));
           break;
         default:
           paramsRequest[k] = v;

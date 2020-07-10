@@ -66,3 +66,24 @@ export function diff(o1, o2) {
       {}
     );
 }
+
+
+/**
+ * Helpers to manipulate regex select values (when the user uses a custom string
+ * rather than an existing product or country in some selector):
+ */
+export function stringToRegexId(str) {
+  return 're::' + str;
+}
+export function stringToRegexLabel(str, type) {
+  return `${type} matching '${str}'`;
+}
+export function regexIdToString(str) {
+  return (str.match(/^re::(.*)/) || [])[1];
+}
+export function getValueFromString(str, type, valueKey) {
+  return {
+    [valueKey]: stringToRegexId(str),
+    name: stringToRegexLabel(str, type)
+  };
+}

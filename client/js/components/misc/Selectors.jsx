@@ -6,7 +6,11 @@
  */
 import React, {Component, PropTypes} from 'react';
 import Select, {AsyncCreatable} from 'react-select';
-import {prettyPrint} from '../../lib/helpers';
+import {
+  getValueFromString,
+  prettyPrint,
+  regexIdToString
+} from '../../lib/helpers';
 import {debounce, identity} from 'lodash';
 import cls from 'classnames';
 
@@ -21,9 +25,13 @@ function _dataToId(value, valueKey = DEFAULT_VALUE_KEY) {
   if (typeof value === 'object') return value[valueKey];
   return value;
 }
-function _idToData(id, values, valueKey = DEFAULT_VALUE_KEY) {
+function _idToData(id, values, valueKey, type) {
   if (!id) return id;
-  if (Array.isArray(id)) return id.map(s => _idToData(s, values, valueKey)).filter(identity);
+  if (typeof id === 'string') {
+    const isRegexId = regexIdToString(id);
+    if (isRegexId) return getValueFromString(isRegexId, type, valueKey);
+  }
+  if (Array.isArray(id)) return id.map(s => _idToData(s, values, valueKey, type)).filter(identity);
   if (Array.isArray(values)) return values.find(o => o[valueKey] === id);
   if (typeof values === 'object') return values[id];
   return null;
@@ -211,7 +219,7 @@ export class ItemSelector extends Component {
       isLoading: loading,
       disabled: trulyDisabled,
       labelKey: 'name',
-      value: _idToData(selected || !trulyDisabled && this.compulsoryOptions[0], allData, valueKey),
+      value: _idToData(selected || !trulyDisabled && this.compulsoryOptions[0], allData, valueKey, type),
       onChange: onChange && (v => onChange(_dataToId(v, valueKey))),
       onUpdate: onUpdate && (v => onUpdate(_dataToId(v, valueKey))),
       placeholder: PLACEHOLDERS[type],
@@ -234,7 +242,7 @@ export class ItemSelector extends Component {
         joinValues
         delimiter="##"
         promptTextCreator={(label) => label}
-        newOptionCreator={p => ({value: p.label, name: `${type} matching '${p.label}'`, id: -1})} />
+        newOptionCreator={p => getValueFromString(p.label, type, valueKey)} />
     );
   }
 }

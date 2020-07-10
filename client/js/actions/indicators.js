@@ -6,6 +6,7 @@
  */
 import {six as palette} from '../lib/palettes';
 import {find, pickBy} from 'lodash';
+import {regexIdToString, stringToRegexLabel} from '../lib/helpers';
 
 const ROOT = ['indicatorsState'],
       MAXIMUM_LINES = 6;
@@ -111,10 +112,21 @@ export function addLine(tree) {
   ['product', 'country'].forEach(key => {
     if (!line[key] || !line[key].length) return;
 
-    line[key] = line[key].map(id => ({
-      id,
-      name: (groups[key] || []).find(o => o.id === id).name
-    }));
+    line[key] = line[key].map(id => {
+      // Detect custom regex values:
+      const regex = regexIdToString(id);
+      if (regex) {
+        return {
+          id: -1,
+          name: stringToRegexLabel(regex, key),
+          value: regex
+        };
+      }
+      return {
+        id,
+        name: (groups[key] || []).find(o => o.id === id).name
+      };
+    });
   });
 
   cursor.set('lines', lines.concat([line]));

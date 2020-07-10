@@ -6,6 +6,7 @@
  */
 import {two as palette} from '../lib/palettes';
 import {forIn, values} from 'lodash';
+import {regexIdToString, stringToRegexLabel} from '../lib/helpers';
 
 const ROOT = ['explorationNetworkState'];
 
@@ -46,7 +47,18 @@ export function addNetwork(tree) {
   // get selectors choosen
   forIn(cursor.get('selectors'), (v, k) => {
     if (v && k === 'product')
-      paramsRequest[k] = v.map(id => cursor.get('groups', 'product', {id}));
+      paramsRequest[k] = v.map(id => {
+        // Detect custom regex values:
+        const regex = regexIdToString(id);
+        if (regex) {
+          return {
+            id: -1,
+            name: stringToRegexLabel(regex, k),
+            value: regex
+          };
+        }
+        return cursor.get('groups', 'product', {id});
+      });
     else
       paramsRequest[k] = v;
   });
