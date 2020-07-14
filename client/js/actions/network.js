@@ -86,7 +86,7 @@ export function addNetwork(tree) {
     const nodes = {},
           edges = [];
 
-    const kind = cursor.get('selectors', 'kind', 'id');
+    const kind = cursor.get('selectors', 'kind');
 
     result.forEach(function(row) {
 
