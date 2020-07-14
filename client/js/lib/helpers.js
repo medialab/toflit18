@@ -76,14 +76,19 @@ export function stringToRegexId(str) {
   return 're::' + str;
 }
 export function stringToRegexLabel(str, type) {
-  return `${type} matching '${str}'`;
+  let query = ` '${str}'`;
+  if (str === ''){
+    query = '...'
+  }
+  return `${type} matching${query}`;
 }
 export function regexIdToString(str) {
   return (str.match(/^re::(.*)/) || [])[1];
 }
 export function getValueFromString(str, type, valueKey) {
-  return {
+  return  {
     [valueKey]: stringToRegexId(str),
-    name: stringToRegexLabel(str, type)
+    name: stringToRegexLabel(str, type),
+    disabled: str === ''
   };
 }
