@@ -33,3 +33,4 @@ spec:
                 secretKeyRef:
                   name: neo4j
                   key: auth
+          imagePullPolicy: Always
