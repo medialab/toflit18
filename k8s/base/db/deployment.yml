@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: db
+  template:
+    metadata:
+      labels:
+        component: db
+    spec:
+      imagePullSecrets:
+        - name: gitlab
+      containers:
+        - name: db
+          image: gitlab.sciences-po.fr:4567/medialab/toflit18_data/neo4j_toflit18:latest
+          env:
+            - name: NEO4J_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: neo4j
+                  key: user_password
+            - name: NEO4J_USER
+              valueFrom:
+                secretKeyRef:
+                  name: neo4j
+                  key: user_name
+            - name: NEO4J_AUTH
+              valueFrom:
+                secretKeyRef:
+                  name: neo4j
+                  key: auth

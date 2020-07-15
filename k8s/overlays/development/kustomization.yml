@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: toflit18
+
+namePrefix: toflit18-
+
+bases:
+  - ../../base/
+
+resources:
+  - ingress.yml
+
+patchesStrategicMerge:
+  - env.yml
+
+commonLabels:
+  stage: development
+
+secretGenerator:
+- name: neo4j
+  literals:
+    - user_name=neo4j
+    - user_password=M3D14148
+    - auth=neo4j/M3D14148
+
+- name: toflit18
+  literals:
+    - api_secret=douelle
+
+images:
+  - name: scpomedialab/toflit18-api
+    newTag: 'master'
+  - name: scpomedialab/toflit18-client
+    newTag: 'master'
+  - name: gitlab.sciences-po.fr:4567/medialab/toflit18_data/neo4j_toflit18
+    newTag: 'dev'
