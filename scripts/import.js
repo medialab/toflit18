@@ -629,8 +629,6 @@ async.series({
     parseCsv(csvDirections, {delimiter: ','}, function(err, data) {
 
       data.forEach(row => {
-        if (_.some(row, e => e.trim().toLowerCase() === '[vide]'))
-          return;
         const sourceDirection = cleanText(row[0]),
               targetDirection = cleanText(row[1]);
 
