@@ -310,7 +310,7 @@ function importer(csvLine) {
 
   let direction = DIRECTIONS_INDEX[originalDirection];
 
-  if (!!originalDirection && !direction) {
+  if (!!originalDirection && direction === undefined) {
     direction = originalDirection;
     console.log('  !! Could not find simplified direction for:', originalDirection, 'In file:', csvLine.sourcepath);
   }
