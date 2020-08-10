@@ -27,15 +27,26 @@ export default class About extends Component {
           <div className="row">
             <div className="col-sm-10 col-sm-offset-1">
               <h2>User Guide</h2>
-              <p className="lead">RTFM</p>
               <p>
                 Alas, we could not find the time yet to do an user guide.
                 However, you can consult an user guide for the first version of
-                the datascape. Many concepts have not changed. https://toflit18.hypotheses.org/695
+                the datascape: <a href="https://toflit18.hypotheses.org/695">https://toflit18.hypotheses.org/695</a>. Many concepts have not changed. 
               </p>
+              <p className="lead">Use Regular Expressions</p>
+              <p style={{overflow:"auto"}}>
+                <img src="./assets/images/regexp_example.png" style={{float:"left", marginLeft:"10px"}} height="200px" alt="using '^fil de.*' as a regular expression in Product selection"></img>
+                <span>
+                  Searching in partner or product list can be enhanced by using Regular Expressions.
+                  To learn how to use this query system please read <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">the JavaScript Regexp specification</a> and or play with the <a href="https://regex101.com/">Regexp 101 tool</a> with the ECMAScript (JavaScript) flavor.
+                  <br></br>
+                  As illustrated in this figure, you could type '^fil de.*' to filter products that begin by 'fil de'. 
+                </span>
+              </p>
+              <p className="lead">Permalinks</p>
               <p>
-                Searching in partner or product list can be enhanced by using Regular Expressions.
-                To learn how to use this query system please read [the JavaScript Regexp specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) and or play with the [Regexp 101 tool](https://regex101.com/) with the ECMAScript (JavaScript) flavor.
+                Each vizualization can be referenced with a permalink. The permalink is updated in the URL bar of your web browser seamlessly while using the datascape.
+                All the filters choices made are stored in the permalink so that you can share the precise figure you have built.
+                We tried to make permalinks human readable. That was not possible for vizualizations that embed many choices (Time Serie notably). If you want to learn more on the different parameters used for each vizualization, see the query settings in each route in <a href="https://github.com/medialab/toflit18/blob/master/client/js/routing.js">the source code</a>.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
