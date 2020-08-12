@@ -30,7 +30,7 @@ ORDER BY lower(group.name)
 //------------------------------------------------------------------------------
 MATCH  (group:ClassifiedItem)-[:AGGREGATES]->(item) WHERE group.id=$id
 WITH group, item.name AS name, item.name =~$queryItem AS matched
-ORDER BY matched, name
+ORDER BY matched DESC, name
 WITH group, collect({name:name, matched:matched}) AS items
 RETURN group, items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
 
@@ -40,7 +40,7 @@ RETURN group, items, size(items) as nbItems, size(filter(item in items where ite
 MATCH  (group:ClassifiedItem)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci:Classification)
 WHERE group.id=$id AND ci.id=$queryItemFrom
 WITH group, item.name AS name, item.name =~$queryItem AS matched
-ORDER BY matched, name
+ORDER BY matched DESC, name
 WITH group, collect({name:name, matched:matched}) AS items
 RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
 
@@ -76,7 +76,7 @@ LIMIT $limit
 
 MATCH (group)-[:AGGREGATES]->(item)
 WITH group, item.name AS name, item.name =~$queryItem AS matched
-ORDER BY matched, name
+ORDER BY matched DESC, name
 WITH group, collect({name:name,matched:matched}) AS items
 RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
 
@@ -95,7 +95,7 @@ LIMIT $limit
 OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci:Classification)
 WHERE ci.id=$queryItemFrom
 WITH group, item.name AS name, item.name =~$queryItem AS matched
-ORDER BY matched, name
+ORDER BY matched DESC, name
 WITH group, collect({name:name,matched:matched}) AS items
 RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
 
