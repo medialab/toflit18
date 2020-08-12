@@ -21,8 +21,8 @@ const ModelCreateLine = {
       kind,
       productClassification,
       product,
-      countryClassification,
-      country
+      partnerClassification,
+      partner
     } = params;
 
     // Building the query
@@ -33,17 +33,17 @@ const ModelCreateLine = {
     // import export
     // define import export edge type filter
     let exportImportFilterDirection = ':FROM|:TO';
-    let exportImportFilterCountry = ':FROM|:TO';
+    let exportImportFilterPartner = ':FROM|:TO';
     if (kind === 'import') {
       exportImportFilterDirection = ':TO';
-      exportImportFilterCountry = ':FROM';
-      // add a where clause an flow import index to match flows which doesn't have a country or direction link
+      exportImportFilterPartner = ':FROM';
+      // add a where clause an flow import index to match flows which doesn't have a partner or direction link
       where.and('f.import');
     }
     else if (kind === 'export') {
       exportImportFilterDirection = ':FROM';
-      exportImportFilterCountry = ':TO';
-      // add a where clause an flow import index to match flows which doesn't have a country or direction link
+      exportImportFilterPartner = ':TO';
+      // add a where clause an flow import index to match flows which doesn't have a partner or direction link
       where.and('NOT f.import');
     }
 
@@ -66,27 +66,27 @@ const ModelCreateLine = {
       query.params({productClassification});
     }
 
-    //-- Do we need to match a country?
-    if (countryClassification) {
-      // Adding the country filter in the main query
-      match.push(`(f:Flow)-[${exportImportFilterCountry}]->(country)`);
-      where.and(new Expression('country IN countries'));
+    //-- Do we need to match a partner?
+    if (partnerClassification) {
+      // Adding the partner filter in the main query
+      match.push(`(f:Flow)-[${exportImportFilterPartner}]->(partner)`);
+      where.and(new Expression('partner IN partners'));
 
-      query.match('(country:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)');
-      const whereCountry = new Expression('cc.id = $countryClassification');
-      query.params({countryClassification});
-      if (country) {
-        const countryFilter = filterItemsByIdsRegexps(country, 'cci');
-        whereCountry.and(countryFilter.expression);
-        query.params(countryFilter.params);
+      query.match('(partner:Partner)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)');
+      const wherePartner = new Expression('cc.id = $partnerClassification');
+      query.params({partnerClassification});
+      if (partner) {
+        const partnerFilter = filterItemsByIdsRegexps(partner, 'cci');
+        wherePartner.and(partnerFilter.expression);
+        query.params(partnerFilter.params);
       }
-      query.where(whereCountry);
+      query.where(wherePartner);
 
       if (productClassification) {
-        query.with('collect(country) AS countries, products');
+        query.with('collect(partner) AS partners, products');
       }
       else {
-        query.with('collect(country) AS countries');
+        query.with('collect(partner) AS partners');
       }
     }
 

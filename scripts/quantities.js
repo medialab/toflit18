@@ -38,9 +38,9 @@ const QUERY_GET_FLOWS = `
   WITH f
   MATCH
     (pc:Classification {model: "product", slug: "simplification"}),
-    (cc:Classification {model: "country", slug: "grouping"}),
-    (f)-[:OF]->(p:Product)<-[:AGGREGATES*2]-()<-[:HAS]-(pc),
-    (f)-[:FROM|:TO]->(c:Country)<-[:AGGREGATES*3]-()<-[:HAS]-(cc)
+    (cc:Classification {model: "partner", slug: "grouping"}),
+    (f)-[:OF]->(:Product)<-[:AGGREGATES*2]-(p:ClassifiedItem)<-[:HAS]-(pc),
+    (f)-[:FROM|:TO]->(:Partner)<-[:AGGREGATES*3]-(c:ClassifiedItem)<-[:HAS]-(cc)
   RETURN
     id(f) AS id,
     f.rawUnit AS rawUnit,
@@ -48,7 +48,7 @@ const QUERY_GET_FLOWS = `
     f.direction AS direction,
     f.import AS import,
     p.name AS simplifiedProduct,
-    c.name AS countryGrouping;
+    c.name AS partnerGrouping;
 `;
 
 const QUERY_UPDATE_FLOWS = `
@@ -61,9 +61,10 @@ const QUERY_UPDATE_FLOWS = `
 /**
  * Constants.
  */
-const METRICS_FILE_LEVEL1 = path.join(DATA_PATH, 'base', 'Units_Normalisation_Orthographique.csv'),
-      METRICS_FILE_LEVEL2 = path.join(DATA_PATH, 'base', 'Units_Normalisation_Metrique1.csv'),
-      METRICS_FILE_LEVEL3 = path.join(DATA_PATH, 'base', 'Units_Normalisation_Metrique2.csv');
+const METRICS_FILE_ORTHOGRAPHIC = path.join(DATA_PATH, 'base', 'classification_quantityunit_orthographic.csv'),
+      METRICS_FILE_SIMPLIFICATION = path.join(DATA_PATH, 'base', 'classification_quantityunit_simplification.csv'),
+      METRICS_FILE_METRIC1 = path.join(DATA_PATH, 'base', 'classification_quantityunit_metric1.csv'),
+      METRICS_FILE_METRIC2 = path.join(DATA_PATH, 'base', 'classification_quantityunit_metric2.csv');
 
 const PARSING_OPTIONS = {
   delimiter: ',',
@@ -72,29 +73,30 @@ const PARSING_OPTIONS = {
 
 const NONE = '[&NONE&]';
 
-const HASH_LEVEL3_ADD = data => {
+const HASH_METRIC2_ADD = data => {
   return [
     data.import,
-    data.ortho,
-    data.countryGrouping || NONE,
+    data.simplification,
+    data.partnerGrouping || NONE,
     data.simplifiedProduct || NONE,
     data.direction || NONE
   ].join('§|§').toLowerCase();
 };
 
-const HASH_LEVEL3_GET = data => {
+const HASH_METRIC2_GET = data => {
   return [
     data.import,
     data.unit,
-    data.countryGrouping,
+    data.partnerGrouping,
     data.simplifiedProduct,
     data.direction || NONE
   ].join('§|§').toLowerCase();
 };
 
-const INDEX_LEVEL1 = new Map(),
-      INDEX_LEVEL2 = new Map(),
-      INDEX_LEVEL3 = new FuzzyMap([HASH_LEVEL3_ADD, HASH_LEVEL3_GET]);
+const INDEX_ORTHOGRAPHIC = new Map(),
+      INDEX_SIMPLIFICATION = new Map(),
+      INDEX_METRIC1 = new Map(),
+      INDEX_METRIC2 = new FuzzyMap([HASH_METRIC2_ADD, HASH_METRIC2_GET]);
 
 const UPDATE_BATCH = [];
 
@@ -103,9 +105,10 @@ const IMPORT_REGEX = /imp/i;
 /**
  * State.
  */
-let LEVEL1_MATCHES = 0,
-    LEVEL2_MATCHES = 0,
-    LEVEL3_MATCHES = 0;
+let ORTHOGRAPHIC_MATCHES = 0,
+    SIMPLIFICATION_MATCHES = 0,
+    METRIC1_MATCHES = 0,
+    METRIC2_MATCHES = 0;
 
 /**
  * Process outline.
@@ -114,10 +117,10 @@ async.series({
   readCsvFiles: next => {
     return async.parallel({
 
-      // First level: only normalize unit name
-      level1: callback => {
+      // First normalization of unit name
+      orthographic: callback => {
 
-        const csvString = fs.readFileSync(METRICS_FILE_LEVEL1, 'utf-8');
+        const csvString = fs.readFileSync(METRICS_FILE_ORTHOGRAPHIC, 'utf-8');
 
         return parseCSV(csvString, PARSING_OPTIONS, (err, lines) => {
           if (err)
@@ -129,21 +132,46 @@ async.series({
               return;
 
             const data = {
-              name: cleanText(line.quantity_unit),
-              ortho: cleanText(line.quantity_unit_ortho)
+              name: cleanText(line.source),
+              orthographic: cleanText(line.orthographic)
             };
 
-            INDEX_LEVEL1.set(data.name, data);
+            INDEX_ORTHOGRAPHIC.set(data.name, data);
+          });
+
+          return callback();
+        });
+      },
+      // Second normalization of unit name
+      simplification: callback => {
+
+        const csvString = fs.readFileSync(METRICS_FILE_SIMPLIFICATION, 'utf-8');
+
+        return parseCSV(csvString, PARSING_OPTIONS, (err, lines) => {
+          if (err)
+            return callback(err);
+
+          lines.forEach(line => {
+
+            if (some(values(line), e => e.trim().toLowerCase() === '[vide]'))
+              return;
+
+            const data = {
+              name: cleanText(line.orthographic),
+              simplification: cleanText(line.simplification)
+            };
+
+            INDEX_SIMPLIFICATION.set(data.name, data);
           });
 
           return callback();
         });
       },
 
-      // Second level: unit name + product name
-      level2: callback => {
+      // Metric 1: unit name + product name
+      metric1: callback => {
 
-        const csvString = fs.readFileSync(METRICS_FILE_LEVEL2, 'utf-8');
+        const csvString = fs.readFileSync(METRICS_FILE_METRIC1, 'utf-8');
 
         return parseCSV(csvString, PARSING_OPTIONS, (err, lines) => {
           if (err)
@@ -152,13 +180,13 @@ async.series({
           lines.forEach(line => {
 
             // Filtering empty lines
-            if (!line.u_conv || !line.q_conv || some(values(line), e => e.trim().toLowerCase() === '[vide]'))
+            if (!line.conv_simplification_to_metric || !line.metric || some(values(line), e => e.trim().toLowerCase() === '[vide]'))
               return;
 
             const data = {
-              ortho: cleanText(line.quantity_unit_ortho),
-              normalized: cleanText(line.u_conv),
-              factor: cleanNumber(line.q_conv)
+              simplification: cleanText(line.simplification),
+              normalized: cleanText(line.metric),
+              factor: cleanNumber(line.conv_simplification_to_metric)
             };
 
             if (!data.factor) {
@@ -166,16 +194,16 @@ async.series({
               throw new Error('Error while processing factor.');
             }
 
-            INDEX_LEVEL2.set(data.ortho, data);
+            INDEX_METRIC1.set(data.simplification, data);
           });
 
           return callback();
         });
       },
 
-      // Third level: unit name + product name + location
-      level3: callback => {
-        const csvString = fs.readFileSync(METRICS_FILE_LEVEL3, 'utf-8');
+      // Metric 2 : unit name + product name + location
+      metric2: callback => {
+        const csvString = fs.readFileSync(METRICS_FILE_METRIC2, 'utf-8');
 
         return parseCSV(csvString, PARSING_OPTIONS, (err, lines) => {
           if (err)
@@ -184,17 +212,17 @@ async.series({
           lines.forEach(line => {
 
             // Filtering empty lines
-            if (!line.u_conv || !line.q_conv || some(values(line), e => e.trim().toLowerCase() === '[vide]'))
+            if (!line.conv_simplification_to_metric || !line.metric || some(values(line), e => e.trim().toLowerCase() === '[vide]'))
               return;
 
             const data = {
-              ortho: cleanText(line.quantity_unit_ortho),
-              normalized: cleanText(line.u_conv),
-              factor: cleanNumber(line.q_conv),
-              import: IMPORT_REGEX.test(line.exportsimports),
-              countryGrouping: cleanText(line.pays_grouping),
-              direction: cleanText(line.direction),
-              simplifiedProduct: cleanText(line.marchandises_simplification)
+              simplification: cleanText(line.simplification), 
+              normalized: cleanText(line.metric),
+              factor: cleanNumber(line.conv_simplification_to_metric),
+              import: IMPORT_REGEX.test(line.exportsimports), 
+              partnerGrouping: cleanText(line.partner_grouping),
+              direction: cleanText(line.tax_department),
+              simplifiedProduct: cleanText(line.product_simplification)
             };
 
             if (!data.factor) {
@@ -202,7 +230,7 @@ async.series({
               throw new Error('Error while processing factor.');
             }
 
-            INDEX_LEVEL3.add(data);
+            INDEX_METRIC2.add(data);
           });
 
           return callback();
@@ -225,18 +253,25 @@ async.series({
           console.log(`  Processed ${i} out of ${l} flows.`);
 
         // 1) First we need to normalize the unit
-        const level1Data = INDEX_LEVEL1.get(row.rawUnit);
-        row.unit = level1Data ? level1Data.ortho : row.rawUnit;
+        row.unit = row.rawUnit
+        const normalize_ortho = INDEX_ORTHOGRAPHIC.get(row.rawUnit);
+        let normalize_simpl = undefined;
+        if (normalize_ortho){
+          row.unit = normalize_ortho.orthographic
+          normalize_simpl = INDEX_SIMPLIFICATION.get(normalize_ortho.orthographic);
+          if (normalize_simpl)
+            row.unit = normalize_simpl.simplification
+        }
         row.normalizedUnit = row.unit;
 
-        // 2) We try to solve level 3
-        const level3Data = INDEX_LEVEL3.get(row);
+        // 2) We try to solve metric2        
+        const metric2Data = INDEX_METRIC2.get(row);
 
-        if (level3Data) {
-          LEVEL3_MATCHES++;
+        if (metric2Data) {
+          METRIC2_MATCHES++;
 
           // Updating normalized unit
-          row.normalizedUnit = level3Data.normalized;
+          row.normalizedUnit = metric2Data.normalized;
 
           const update = {
             id: database.int(row.id),
@@ -248,13 +283,13 @@ async.series({
 
           // Special values
           if (row.normalizedUnit === 'kg') {
-            update.properties.quantity_kg = row.quantity * level3Data.factor;
+            update.properties.quantity_kg = row.quantity * metric2Data.factor;
           }
           else if (row.normalizedUnit === 'pièces') {
-            update.properties.quantity_nbr = row.quantity * level3Data.factor;
+            update.properties.quantity_nbr = row.quantity * metric2Data.factor;
           }
           else if (row.normalizedUnit === 'litres') {
-            update.properties.quantity_litre = row.quantity * level3Data.factor;
+            update.properties.quantity_litre = row.quantity * metric2Data.factor;
           }
 
           UPDATE_BATCH.push(update);
@@ -263,13 +298,13 @@ async.series({
         }
 
         // 3) We try to solve level 2
-        const level2Data = INDEX_LEVEL2.get(row.unit);
+        const metric1Data = INDEX_METRIC1.get(row.unit);
 
-        if (level2Data) {
-          LEVEL2_MATCHES++;
+        if (metric1Data) {
+          METRIC1_MATCHES++;
 
           // Updating normalized unit
-          row.normalizedUnit = level2Data.normalized;
+          row.normalizedUnit = metric1Data.normalized;
 
           const update = {
             id: database.int(row.id),
@@ -281,13 +316,13 @@ async.series({
 
           // Special values
           if (row.normalizedUnit === 'kg') {
-            update.properties.quantity_kg = row.quantity * level2Data.factor;
+            update.properties.quantity_kg = row.quantity * metric1Data.factor;
           }
           else if (row.normalizedUnit === 'pièces') {
-            update.properties.quantity_nbr = row.quantity * level2Data.factor;
+            update.properties.quantity_nbr = row.quantity * metric1Data.factor;
           }
           else if (row.normalizedUnit === 'litres') {
-            update.properties.quantity_litre = row.quantity * level2Data.factor;
+            update.properties.quantity_litre = row.quantity * metric1Data.factor;
           }
 
           UPDATE_BATCH.push(update);
@@ -295,8 +330,11 @@ async.series({
           continue;
         }
 
-        if (level1Data && !level2Data && !level3Data) {
-          LEVEL1_MATCHES++;
+        if ((normalize_simpl || normalize_ortho) && !metric2Data && !metric1Data) {
+          if (normalize_simpl)
+            SIMPLIFICATION_MATCHES++;
+          else
+            ORTHOGRAPHIC_MATCHES++;
 
           UPDATE_BATCH.push({
             id: database.int(row.id),
@@ -326,8 +364,9 @@ async.series({
   if (err)
     return console.error(err);
 
-  console.log(`${LEVEL1_MATCHES} level 1 matches.`);
-  console.log(`${LEVEL2_MATCHES} level 2 matches.`);
-  console.log(`${LEVEL3_MATCHES} level 3 matches.`);
+  console.log(`${METRIC2_MATCHES} metric 2 matches.`);
+  console.log(`${METRIC1_MATCHES} metric 1 matches.`);
+  console.log(`${SIMPLIFICATION_MATCHES} simplification matches.`);
+  console.log(`${ORTHOGRAPHIC_MATCHES} orthographic matches.`);
   console.log('Done!');
 });

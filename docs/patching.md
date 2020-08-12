@@ -4,7 +4,7 @@
 
 Let's consider a classification as a list of item/group pairs. One item can only exist once in such a list, while groups may gather several items. When an item is not linked to a group (`null`), such item is said to float in limbo.
 
-Classifications, as such, are reducers (max `n->n`) over a precise dataset (in TOFLIT18's case, over products and countries) and can recurse as many times as needed.
+Classifications, as such, are reducers (max `n->n`) over a precise dataset (in TOFLIT18's case, over products and parnters) and can recurse as many times as needed.
 
 So, at level 0, a classification will aggregate items from the sources itself, while a classification at level 1 will simply aggregates groups from a lower classification.
 

@@ -25,7 +25,7 @@
       "edgeSize": "flows"
     },
     "initialValues": {
-      "classification": "country_grouping",
+      "classification": "partner_grouping",
       "selectors.kind": "total",
       "selectors.sourceType": "National best guess",
       "selectors.dateMin": "1750",

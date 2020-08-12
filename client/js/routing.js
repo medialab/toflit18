@@ -68,9 +68,9 @@ export default function bindRoutes(tree) {
               model: ':dataModel',
               dataType: ':dataType',
               productClassification: ':productClassification',
-              countryClassification: ':countryClassification',
+              partnerClassification: ':partnerClassification',
               products: {match: ':product', cast: 'json'},
-              countries: {match: ':country', cast: 'json'},
+              partners: {match: ':partner', cast: 'json'},
               direction: ':direction',
               kind: ':kind',
               sourceType: ':sourceType',
@@ -82,9 +82,9 @@ export default function bindRoutes(tree) {
                 dataType: ':dataType',
                 selectors: {
                   productClassification: ':productClassification',
-                  countryClassification: ':countryClassification',
+                  partnerClassification: ':partnerClassification',
                   product: ':product',
-                  country: ':country',
+                  partner: ':partner',
                   direction: ':direction',
                   kind: ':kind',
                   sourceType: ':sourceType'
@@ -158,9 +158,9 @@ export default function bindRoutes(tree) {
                 match: ':child',
                 cast: 'json'
               },
-              countryClassification: ':countryClassification',
-              country: {
-                match: ':country',
+              partnerClassification: ':partnerClassification',
+              partner: {
+                match: ':partner',
                 cast: 'json'
               },
               direction: ':direction',
@@ -180,8 +180,8 @@ export default function bindRoutes(tree) {
                   sourceType: ':sourceType',
                   childClassification: ':childClassification',
                   child: ':child',
-                  countryClassification: ':countryClassification',
-                  country: ':country',
+                  partnerClassification: ':partnerClassification',
+                  partner: ':partner',
                   direction: ':direction',
                   kind: ':kind',
                   dateMin: ':dateMin',

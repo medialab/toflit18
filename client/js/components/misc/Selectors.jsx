@@ -84,7 +84,7 @@ export class ClassificationSelector extends Component {
     if (!placeholder)
       placeholder = this.props.type === 'product' ?
         'Product classification...' :
-        'Country classification...';
+        'Partner classification...';
 
     return (
       <Select
@@ -111,7 +111,7 @@ export class ClassificationSelector extends Component {
  */
 const TEMPLATES = {
   product: [],
-  country: [],
+  partner: [],
   direction: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
   kind: [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}],
   sourceType: [],
@@ -121,7 +121,7 @@ const TEMPLATES = {
 
 const PLACEHOLDERS = {
   product: 'Product...',
-  country: 'Country...',
+  partner: 'Partner...',
   direction: 'Direction...',
   kind: 'Import/Export...',
   sourceType: 'Source type...',
@@ -157,8 +157,8 @@ export class ItemSelector extends Component {
     // once we got the props ready we test if we can find the name of the default value
 
     if (!this.defaultTriggered && nextProps.defaultValue && !nextProps.selected && (nextProps.data || []).length > 0) {
-      if (['product', 'country'].indexOf(nextProps.type) !== -1) {
-        // products and country are multiple selectors, let's iterate trough selection
+      if (['product', 'partner'].indexOf(nextProps.type) !== -1) {
+        // products and partner are multiple selectors, let's iterate trough selection
         nextProps.onUpdate(_dataToId(nextProps.defaultValue.map(s => nextProps.data.filter(d => d[valueKey] === s)[0]), valueKey));
       }
       else {
@@ -228,7 +228,7 @@ export class ItemSelector extends Component {
       valueKey
     };
 
-    if (type !== 'product' && type !== 'country')
+    if (type !== 'product' && type !== 'partner')
       return <Select {...commonProps} options={this.compulsoryOptions.concat(data)} />;
     return (
       <AsyncCreatable

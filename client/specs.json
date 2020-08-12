@@ -14,8 +14,8 @@
       "value": "product"
     },
     {
-      "name": "Countries",
-      "value": "country"
+      "name": "Partners",
+      "value": "partner"
     }
   ],
   "classificationSelectors": [
@@ -24,8 +24,8 @@
       "value": "product"
     },
     {
-      "name": "Countries",
-      "value": "country"
+      "name": "Partners",
+      "value": "partner"
     }
   ],
   "limits": {

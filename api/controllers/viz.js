@@ -7,7 +7,7 @@
 import modelFlowsPerYear from '../model/flowsPerYear';
 import modelCreateLine from '../model/createLine';
 import modelTerms from '../model/terms';
-import modelNetwork from '../model/country';
+import modelNetwork from '../model/partner';
 import {mapValues} from 'lodash';
 
 const formatItemsParams = (items) => {
@@ -27,15 +27,15 @@ const controller = [
     //     sourceType: '?string',
     //     productClassification: '?string',
     //     product: '?string',
-    //     countryClassification: '?string',
-    //     country: '?string',
+    //     partnerClassification: '?string',
+    //     partner: '?string',
     //     direction: '?string',
     //     kind: '?string'
     //   }
     // },
     action(req, res) {
       const payloadFlows = mapValues(req.body, (v, k) => {
-        if (k === 'product' || k === 'country') {
+        if (k === 'product' || k === 'partner') {
           // separate filters on id from those on name trhough regexp
           return formatItemsParams(v);
         }
@@ -54,7 +54,7 @@ const controller = [
     method: 'POST',
     action(req, res) {
       const payload = mapValues(req.body, (v, k) => {
-        if (k === 'product' || k === 'country') {
+        if (k === 'product' || k === 'partner') {
           // separate filters on id from those on name trhough regexp
           return formatItemsParams(v);
         }
@@ -77,7 +77,7 @@ const controller = [
     //     sourceType: '?string',
     //     productClassification: '?string',
     //     product: '?string',
-    //     countryClassification: '?string',
+    //     partnerClassification: '?string',
     //     kind: '?string',
     //     dateMin: '?string',
     //     dateMax: '?string'
@@ -85,7 +85,7 @@ const controller = [
     // },
     action(req, res) {
       const payloadNetwork = mapValues(req.body, (v, k) => {
-        if (k === 'product' || k === 'country') {
+        if (k === 'product' || k === 'partner') {
           // separate filters on id from those on name trhough regexp
           return formatItemsParams(v);
         }
@@ -108,8 +108,8 @@ const controller = [
     //     sourceType: '?string',
     //     productClassification: '?string',
     //     product: '?string',
-    //     countryClassification: '?string',
-    //     country: '?string',
+    //     partnerClassification: '?string',
+    //     partner: '?string',
     //     childClassification: '?string',
     //     child: '?string',
     //     direction: '?string',
@@ -120,7 +120,7 @@ const controller = [
     // },
     action(req, res) {
       const payloadTerms = mapValues(req.body, (v, k) => {
-        if (k === 'child' || k === 'country') {
+        if (k === 'child' || k === 'partner') {
           // separate filters on id from those on name trhough regexp
           return formatItemsParams(v);
         }

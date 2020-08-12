@@ -37,7 +37,7 @@ const SOURCES_HEADERS = [
   'year',
   'direction',
   'bureau',
-  'country',
+  'partner',
   'origin',
   'note'
 ];
@@ -78,7 +78,7 @@ async.series([
                 source = data[i].source.properties,
                 operator = data[i].operator,
                 transcription = data[i].transcription.properties,
-                country = data[i].country,
+                partner = data[i].partner,
                 direction = data[i].direction,
                 office = data[i].office,
                 origin = data[i].origin;
@@ -102,7 +102,7 @@ async.series([
             flow.year,
             direction,
             office,
-            country,
+            partner,
             origin,
             flow.note
           ]);
@@ -196,25 +196,25 @@ async.series([
   },
 
   /**
-   * Retrieving the countries' classification.
+   * Retrieving the partners' classification.
    */
-  function retrieveCountriesClassifications(callback) {
+  function retrievePartnersClassifications(callback) {
     let classifications,
         rows;
 
-    console.log('Building countries\' classifications...');
+    console.log('Building partners\' classifications...');
 
     async.series([
       function(next) {
-        database.cypher(queries.countries, function(err, data) {
+        database.cypher(queries.partners, function(err, data) {
           if (err) return next(err);
 
-          rows = data.map(e => [e.country]);
+          rows = data.map(e => [e.partner]);
           return next();
         });
       },
       function(next) {
-        database.cypher({query: queries.classifications, params: {models: ['country']}}, function(err, data) {
+        database.cypher({query: queries.classifications, params: {models: ['partner']}}, function(err, data) {
           if (err) return next(err);
 
           classifications = data.map(e => e.classification);
@@ -241,7 +241,7 @@ async.series([
       },
       function(next) {
         const stream = h(),
-              writer = fs.createWriteStream('./.output/bdd_countries.csv', 'utf-8');
+              writer = fs.createWriteStream('./.output/bdd_partners.csv', 'utf-8');
 
         stream
           .pipe(stringify({delimiter: ','}))
@@ -249,7 +249,7 @@ async.series([
 
         writer.on('finish', () => next());
 
-        stream.write(['country'].concat(classifications.map(c => c.properties.slug)));
+        stream.write(['partner'].concat(classifications.map(c => c.properties.slug)));
 
         for (let i = 0, l = rows.length; i < l; i++)
           stream.write(rows[i]);
@@ -265,7 +265,7 @@ async.series([
   function oneByOneClassification(callback) {
     console.log('Creating one file per classification');
 
-    database.cypher({query: queries.classifications, params: {models: ['country', 'product']}}, function(err1, data) {
+    database.cypher({query: queries.classifications, params: {models: ['partner', 'product']}}, function(err1, data) {
       if (err1) return callback(err1);
 
       const classifications = data.map(e => (e.classification.properties.parent = e.parent) && e.classification);
@@ -310,21 +310,21 @@ async.series([
     console.log('Composing bdd_courante.csv...');
 
     const productsCsv = fs.readFileSync('./.output/bdd_products.csv', 'utf-8'),
-          countriesCsv = fs.readFileSync('./.output/bdd_countries.csv', 'utf-8');
+          partnersCsv = fs.readFileSync('./.output/bdd_partners.csv', 'utf-8');
 
     async.parallel({
       products: next => parse(productsCsv, {delimiter: ','}, next),
-      countries: next => parse(countriesCsv, {delimiter: ','}, next)
+      partners: next => parse(partnersCsv, {delimiter: ','}, next)
     }, function(err, classifications) {
       if (err) return callback(err);
 
       const indexes = {
         products: keyBy(classifications.products.slice(1), e => e[1]),
-        countries: keyBy(classifications.countries.slice(1), e => e[0]),
+        partners: keyBy(classifications.partners.slice(1), e => e[0]),
       };
 
       const productPadding = fill(Array(classifications.products[0].length - 1), ''),
-            countryPadding = fill(Array(classifications.countries[0].length), '');
+            partnerPadding = fill(Array(classifications.partners[0].length), '');
 
       const writeStream = h();
 
@@ -345,14 +345,14 @@ async.series([
           if (head) {
             writeStream.write(line
               .concat(classifications.products[0].slice(2).map(n => 'product_' + n))
-              .concat(classifications.countries[0].slice(1).map(n => 'country_' + n))
+              .concat(classifications.partners[0].slice(1).map(n => 'partner_' + n))
             );
             head = false;
           }
           else {
             writeStream.write(line
               .concat((indexes.products[line[6]] || productPadding).slice(2))
-              .concat((indexes.countries[line[18]] || countryPadding).slice(1))
+              .concat((indexes.partners[line[18]] || partnerPadding).slice(1))
             );
           }
         })

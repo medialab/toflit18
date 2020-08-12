@@ -42,15 +42,15 @@ const defaultState = {
     loading: false,
     selectors: {
       productClassification: null,
-      countryClassification: null,
+      partnerClassification: null,
       product: null,
-      country: null,
+      partner: null,
       direction: null,
       kind: null,
       sourceType: null
     },
     groups: {
-      country: [],
+      partner: [],
       product: []
     },
   },
@@ -79,15 +79,15 @@ const defaultState = {
   indicatorsState: {
     selectors: {
       productClassification: null,
-      countryClassification: null,
+      partnerClassification: null,
       product: null,
-      country: null,
+      partner: null,
       direction: null,
       kind: null,
       sourceType: null
     },
     groups: {
-      country: [],
+      partner: [],
       product: []
     },
     lines: [],
@@ -105,14 +105,14 @@ const defaultState = {
     selectors: {
       productClassification: null,
       product: null,
-      countryClassification: null,
+      partnerClassification: null,
       kind: null,
       sourceType: null,
       dateMin: null,
       dateMax: null
     },
     groups: {
-      country: [],
+      partner: [],
       product: []
     }
   },
@@ -128,9 +128,9 @@ const defaultState = {
     loading: false,
     selectors: {
       productClassification: null,
-      countryClassification: null,
+      partnerClassification: null,
       childClassification: null,
-      country: null,
+      partner: null,
       child: [],
       direction: null,
       kind: null,
@@ -139,7 +139,7 @@ const defaultState = {
       dateMax: null
     },
     groups: {
-      country: [],
+      partner: [],
       child: []
     }
   },

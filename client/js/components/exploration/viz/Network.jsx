@@ -3,7 +3,7 @@
  * ===========================
  *
  * Component displaying a sigma.js network showing the relations between
- * countries and directions.
+ * partners and directions.
  */
 import React, {Component} from 'react';
 import Select from 'react-select';

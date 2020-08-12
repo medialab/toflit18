@@ -8,15 +8,15 @@ import {flattenTree} from './lib/helpers';
 import {keyBy} from 'lodash';
 
 export function classificationsIndex(data) {
-  const {product = [], country = []} = (data || {});
-  return keyBy(product.concat(country), 'id');
+  const {product = [], partner = []} = (data || {});
+  return keyBy(product.concat(partner), 'id');
 }
 
 export function flatClassifications(data) {
-  const {product, country} = (data || {});
+  const {product, partner} = (data || {});
 
   return {
     product: flattenTree(product || {}),
-    country: flattenTree(country || {})
+    partner: flattenTree(partner || {})
   };
 }

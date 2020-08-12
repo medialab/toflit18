@@ -241,27 +241,27 @@ class TermsPanel extends Component {
                 defaultValue={defaultSelectors.terms['selectors.child']} />
             </div>
             <div className="form-group">
-              <label htmlFor="country" className="control-label">Country</label>
+              <label htmlFor="partner" className="control-label">Partner</label>
               <small className="help-block">Whence products are exchanged. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
                 valueKey="id"
-                type="country"
-                loading={!classifications.country.length}
-                data={classifications.country.filter(c => !c.source)}
-                onChange={actions.update.bind(null, 'countryClassification')}
-                selected={selectors.countryClassification}
-                onUpdate={v => actions.update('countryClassification', v)}
-                defaultValue={defaultSelectors.terms['selectors.countryClassification']} />
+                type="partner"
+                loading={!classifications.partner.length}
+                data={classifications.partner.filter(c => !c.source)}
+                onChange={actions.update.bind(null, 'partnerClassification')}
+                selected={selectors.partnerClassification}
+                onUpdate={v => actions.update('partnerClassification', v)}
+                defaultValue={defaultSelectors.terms['selectors.partnerClassification']} />
               <ItemSelector
                 valueKey="id"
-                type="country"
-                disabled={!selectors.countryClassification || !groups.country.length}
-                loading={selectors.countryClassification && !groups.country.length}
-                data={groups.country}
-                onChange={actions.update.bind(null, 'country')}
-                selected={selectors.country}
-                onUpdate={v => actions.update('country', v)}
-                defaultValue={defaultSelectors.terms['selectors.country']} />
+                type="partner"
+                disabled={!selectors.partnerClassification || !groups.partner.length}
+                loading={selectors.partnerClassification && !groups.partner.length}
+                data={groups.partner}
+                onChange={actions.update.bind(null, 'partner')}
+                selected={selectors.partner}
+                onUpdate={v => actions.update('partner', v)}
+                defaultValue={defaultSelectors.terms['selectors.partner']} />
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>
