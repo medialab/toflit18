@@ -221,7 +221,7 @@ async.series({
               factor: cleanNumber(line.conv_simplification_to_metric),
               import: IMPORT_REGEX.test(line.exportsimports), 
               partnerGrouping: cleanText(line.partner_grouping),
-              direction: cleanText(line.direction),
+              direction: cleanText(line.tax_department),
               simplifiedProduct: cleanText(line.product_simplification)
             };
 
