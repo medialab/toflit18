@@ -72,7 +72,7 @@ const Model = {
 
       const tree = {
         product: makeTree(groupedByModel.product),
-        country: makeTree(groupedByModel.country)
+        partner: makeTree(groupedByModel.partner)
       };
 
       return callback(null, tree);

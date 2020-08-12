@@ -79,14 +79,14 @@ export function addChart(tree) {
 
   // keep only params !== null for request
   forIn(params, (v, k) => {
-    if (v && (k === 'child' || k === 'country'))
+    if (v && (k === 'child' || k === 'partner'))
       paramsRequest[k] = v.map(id => {
         // Detect custom regex values:
         const regex = regexIdToString(id);
         if (regex) {
           return {
             id: -1,
-            name: stringToRegexLabel(regex, 'country'),
+            name: stringToRegexLabel(regex, 'partner'),
             value: regex
           };
         }
@@ -165,7 +165,7 @@ export function checkGroups(tree, callback) {
     if (!(--loading) && callback) callback();
   };
 
-  ['country', 'child'].forEach(type => {
+  ['partner', 'child'].forEach(type => {
     const classification = cursor.get('selectors', type + 'Classification');
     const groups = cursor.select('groups', type);
 

@@ -32,7 +32,7 @@ import _ from 'lodash';
 const ROOT_PATH = '/base',
       BDD_CENTRALE_PATH = path.join(ROOT_PATH, '/bdd_centrale.csv'),
       BDD_OUTSIDERS = path.join(ROOT_PATH, '/marchandises_sourcees.csv'),
-      BDD_DIRECTIONS = path.join(ROOT_PATH, '/bdd_directions.csv'),
+      BDD_TAX_DEPARTMENTS = path.join(ROOT_PATH, '/bdd_tax_departments.csv'),
       // classifications index
       INDEX_CLASSIFICATIONS = path.join(ROOT_PATH, '/classifications_index.csv');
 
@@ -62,7 +62,7 @@ const POSSIBLE_NODE_PROPERTIES = [
   'source:boolean',
   'direction',
   'originalDirection',
-  'country',
+  'partner',
   'sourceType',
   'product',
   'id'
@@ -179,7 +179,7 @@ function indexedNode(index, label, key, data, idIndex) {
 // Indexes
 const INDEXES = {
   direction: {},
-  country: {},
+  partner: {},
   office: {},
   operator: {},
   origin: {},
@@ -189,7 +189,7 @@ const INDEXES = {
 
 const ID_INDEXES = {
   direction: {},
-  country: {},
+  partner: {},
   product: {},
   classifiedItem: {},
   outsider: {}
@@ -302,21 +302,25 @@ const capitalizeProduct = p => _.capitalize(p[0]) + p.slice(1, p.length);
 function importer(csvLine) {
 
   // Handling double accounts
-  if (csvLine.doubleaccounts && +csvLine.doubleaccounts > 1)
+  if (csvLine.value_part_of_bundle && +csvLine.value_part_of_bundle > 1)
+    return;
+  
+  // filter source in Out
+  if (csvLine.source_type === 'Out')
     return;
 
   //Patching directions names
-  const originalDirection = csvLine.direction;
+  const originalDirection = csvLine.tax_department;
 
   let direction = DIRECTIONS_INDEX[originalDirection];
 
   if (!!originalDirection && direction === undefined) {
     direction = originalDirection;
-    console.log('  !! Could not find simplified direction for:', originalDirection, 'In file:', csvLine.sourcepath);
+    console.log('  !! Could not find simplified direction for:', originalDirection, 'In file:', csvLine.filepath);
   }
 
   // Import or Export
-  const isImport = /(imp|sortie)/i.test(csvLine.exportsimports);
+  const isImport = /(imp|sortie)/i.test(csvLine.export_import);
 
   // Creating a flow node
   const nodeData = {
@@ -368,42 +372,42 @@ function importer(csvLine) {
   }
 
   // Quantity
-  if (csvLine.quantit) {
-    const realQuantity = cleanNumber(csvLine.quantit);
+  if (csvLine.quantity) {
+    const realQuantity = cleanNumber(csvLine.quantity);
 
     if (realQuantity)
       nodeData.quantity = realQuantity;
     else if (realQuantity !== 0)
-      console.log('  !! Weird quantity:', csvLine.quantit);
+      console.log('  !! Weird quantity:', csvLine.quantity);
   }
 
   // Unit price
-  if (csvLine.prix_unitaire) {
-    const realPrice = cleanNumber(csvLine.prix_unitaire);
+  if (csvLine.value_per_unit) {
+    const realPrice = cleanNumber(csvLine.value_per_unit);
 
     if (realPrice)
       nodeData.unitPrice = realPrice;
     else if (realPrice !== 0)
-      console.log('  !! Weird unit price:', csvLine.prix_unitaire);
+      console.log('  !! Weird unit price:', csvLine.value_per_unit);
   }
 
   if (csvLine.remarks)
     nodeData.note = csvLine.remarks;
 
   // Additional static indexed properties for convenience
-  if (csvLine.pays)
-    nodeData.country = csvLine.pays;
+  if (csvLine.partner)
+    nodeData.partner = csvLine.partner;
   if (direction)
     nodeData.direction = direction;
   if (originalDirection)
     nodeData.originalDirection = originalDirection;
 
-  if (csvLine.marchandises) {
+  if (csvLine.product) {
     // we want every product name to be have a capital on the first letter
-    nodeData.product = capitalizeProduct(csvLine.marchandises);
+    nodeData.product = capitalizeProduct(csvLine.product);
   }
-  if (csvLine.sourcetype)
-    nodeData.sourceType = csvLine.sourcetype;
+  if (csvLine.source_type)
+    nodeData.sourceType = csvLine.source_type;
 
   // Here, we filter some lines deemed irrelevant
   if (!nodeData.value && !nodeData.quantity && !nodeData.unitPrice)
@@ -412,9 +416,9 @@ function importer(csvLine) {
   const flowNode = BUILDER.save(nodeData, 'Flow');
 
   // Operator
-  if (csvLine.dataentryby) {
-    const operatorNode = indexedNode(INDEXES.operator, 'Operator', csvLine.dataentryby, {
-      name: csvLine.dataentryby
+  if (csvLine.data_collector) {
+    const operatorNode = indexedNode(INDEXES.operator, 'Operator', csvLine.data_collector, {
+      name: csvLine.data_collector
     });
 
     BUILDER.relate(flowNode, 'TRANSCRIBED_BY', operatorNode);
@@ -422,23 +426,23 @@ function importer(csvLine) {
 
   // Source
   if (csvLine.source) {
-    const hashedKey = [csvLine.source, csvLine.sourcepath].join('|||');
+    const hashedKey = [csvLine.source, csvLine.filepath].join('|||');
 
     const sourceNode = indexedNode(INDEXES.source, 'Source', hashedKey, {
       name: csvLine.source,
-      path: csvLine.sourcepath,
-      type: csvLine.sourcetype
+      path: csvLine.filepath,
+      type: csvLine.source_type
     });
 
     BUILDER.relate(flowNode, 'TRANSCRIBED_FROM', sourceNode, {
-      line: '' + csvLine.numrodeligne,
+      line: '' + csvLine.line_number,
       sheet: +csvLine.sheet
     });
   }
 
   // Product
-  if (csvLine.marchandises) {
-    const product = capitalizeProduct(csvLine.marchandises);
+  if (csvLine.product) {
+    const product = capitalizeProduct(csvLine.product);
     const alreadyLinked = INDEXES.product[product];
     const id = slugifyClassifiedItem(product, classificationBySlug.product_source);
 
@@ -454,18 +458,18 @@ function importer(csvLine) {
   }
 
   // Origin
-  if (csvLine.origine) {
-    const originNode = indexedNode(INDEXES.origin, 'Origin', csvLine.origine, {
-      name: csvLine.origine
+  if (csvLine.origin) {
+    const originNode = indexedNode(INDEXES.origin, 'Origin', csvLine.origin, {
+      name: csvLine.origin
     });
 
     BUILDER.relate(flowNode, 'ORIGINATES_FROM', originNode);
   }
 
   // Office
-  if (csvLine.bureaux) {
-    const officeNode = indexedNode(INDEXES.office, 'Office', csvLine.bureaux, {
-      name: csvLine.bureaux
+  if (csvLine.tax_office) {
+    const officeNode = indexedNode(INDEXES.office, 'Office', csvLine.tax_office, {
+      name: csvLine.tax_office
     });
 
     if (!isImport)
@@ -473,7 +477,7 @@ function importer(csvLine) {
     else
       BUILDER.relate(flowNode, 'TO', officeNode);
 
-    if (direction && !EDGE_INDEXES.offices.has(csvLine.bureaux)) {
+    if (direction && !EDGE_INDEXES.offices.has(csvLine.tax_office)) {
 
       const directionNode = indexedNode(INDEXES.direction, 'Direction', slugifyDirection(direction), {
         name: direction,
@@ -481,7 +485,7 @@ function importer(csvLine) {
       }, ID_INDEXES.direction);
 
       BUILDER.relate(directionNode, 'GATHERS', officeNode);
-      EDGE_INDEXES.offices.add(csvLine.bureaux);
+      EDGE_INDEXES.offices.add(csvLine.tax_office);
     }
   }
 
@@ -498,28 +502,28 @@ function importer(csvLine) {
       BUILDER.relate(flowNode, 'TO', directionNode);
   }
 
-  // Country
-  if (csvLine.pays) {
-    const alreadyLinked = INDEXES.country[csvLine.pays];
-    const countryNode = indexedNode(INDEXES.country, ['Country', 'Item'], csvLine.pays, {
-      name: csvLine.pays,
-      id: slugifyClassifiedItem(csvLine.pays, classificationBySlug.country_source)
-    }, ID_INDEXES.country);
+  // Partner
+  if (csvLine.partner) {
+    const alreadyLinked = INDEXES.partner[csvLine.partner];
+    const partnerNode = indexedNode(INDEXES.partner, ['Partner', 'Item'], csvLine.partner, {
+      name: csvLine.partner,
+      id: slugifyClassifiedItem(csvLine.partner, classificationBySlug.partner_source)
+    }, ID_INDEXES.partner);
 
     if (isImport)
-      BUILDER.relate(flowNode, 'FROM', countryNode);
+      BUILDER.relate(flowNode, 'FROM', partnerNode);
     else
-      BUILDER.relate(flowNode, 'TO', countryNode);
+      BUILDER.relate(flowNode, 'TO', partnerNode);
 
     if (!alreadyLinked)
-      BUILDER.relate(CLASSIFICATION_NODES.country_source, 'HAS', countryNode);
+      BUILDER.relate(CLASSIFICATION_NODES.partner_source, 'HAS', partnerNode);
   }
 }
 
 /**
  * Consuming products coming from external sources.
  */
-const slugifyOutsider = (name, outsider) => `${name.replace(/[ -]/g, '_')}~outsider_${outsider.replace(/[ -]/g, '_')}`;
+const slugifyOutsider = (name, outsider) => `${name.replace(/[ ]/g, '_')}~outsider_${outsider.replace(/[ -]/g, '_')}`;
 function outsiderProduct(line) {
   const name = line.name,
         nodeData = {name};
@@ -625,7 +629,7 @@ async.series({
   directions(next) {
     console.log('Processing directions...');
 
-    const csvDirections = fs.readFileSync(DATA_PATH + BDD_DIRECTIONS, 'utf-8');
+    const csvDirections = fs.readFileSync(DATA_PATH + BDD_TAX_DEPARTMENTS, 'utf-8');
     parseCsv(csvDirections, {delimiter: ','}, function(err, data) {
 
       data.forEach(row => {

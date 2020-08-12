@@ -70,8 +70,8 @@ export function selectModel(tree, selected) {
         classifications = tree.get('data', 'classifications', 'flat');
 
   if (selected) {
-    if (selected.value === 'country') {
-      selectType(tree, classifications.country[0]);
+    if (selected.value === 'partner') {
+      selectType(tree, classifications.partner[0]);
     }
     else if (selected.value === 'product') {
       selectType(tree, classifications.product[0]);
@@ -124,7 +124,7 @@ export function addChart(tree) {
   forIn(params, (v, k) => {
      switch (k) {
         case 'product':
-        case 'country':
+        case 'partner':
           paramsRequest[k] = compact((v || []).map(id => {
             // Detect custom regex values:
             const regex = regexIdToString(id);

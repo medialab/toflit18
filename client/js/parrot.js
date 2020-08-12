@@ -15,7 +15,7 @@ export default function(state, client) {
         path: ['data', 'classifications', 'flat'],
         expect: data => {
           return Object.keys(data.product).length ||
-                 Object.keys(data.country).length;
+                 Object.keys(data.partner).length;
         },
         get() {
           return client.classifications(function(err, data) {

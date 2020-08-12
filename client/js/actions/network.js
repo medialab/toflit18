@@ -11,7 +11,7 @@ import {regexIdToString, stringToRegexLabel} from '../lib/helpers';
 const ROOT = ['explorationNetworkState'];
 
 /**
- * Selecting a country classification.
+ * Selecting a partner classification.
  */
 export function selectClassification(tree, classification) {
   const cursor = tree.select(ROOT);
@@ -91,7 +91,7 @@ export function addNetwork(tree) {
     result.forEach(function(row) {
 
       const directionId = '$d$' + row.direction,
-            countryId = '$c$' + row.country;
+            partnerId = '$c$' + row.partner;
 
       if (!nodes[directionId]) {
         nodes[directionId] = {
@@ -114,11 +114,11 @@ export function addNetwork(tree) {
         nodes[directionId].value += row.value;
       }
 
-      if (!nodes[countryId]) {
-        nodes[countryId] = {
-          id: countryId,
-          label: row.country,
-          community: 'country',
+      if (!nodes[partnerId]) {
+        nodes[partnerId] = {
+          id: partnerId,
+          label: row.partner,
+          community: 'partner',
           color: palette[1],
           size: row.count,
           flows: row.count,
@@ -129,10 +129,10 @@ export function addNetwork(tree) {
         };
       }
       else {
-        nodes[countryId].degree++;
-        nodes[countryId].size += row.count;
-        nodes[countryId].flows += row.count;
-        nodes[countryId].value += row.value;
+        nodes[partnerId].degree++;
+        nodes[partnerId].size += row.count;
+        nodes[partnerId].flows += row.count;
+        nodes[partnerId].value += row.value;
       }
 
       edges.push({
@@ -140,8 +140,8 @@ export function addNetwork(tree) {
         size: row.count,
         flows: row.count,
         value: row.value,
-        source: kind === 'import' ? countryId : directionId,
-        target: kind === 'import' ? directionId : countryId
+        source: kind === 'import' ? partnerId : directionId,
+        target: kind === 'import' ? directionId : partnerId
       });
     });
 

@@ -37,7 +37,7 @@ function buildDescription(line, data, index) {
   const {color, ...params} = line;
 
   const selectors = mapValues(params, (v, k) => {
-    if (v && (k === 'productClassification' || k === 'countryClassification')) {
+    if (v && (k === 'productClassification' || k === 'partnerClassification')) {
       return (index[v] || {}).name || v;
     }
 
@@ -71,12 +71,12 @@ function buildDescription(line, data, index) {
       <strong key="direction">{selectors.direction}</strong>
     ]);
 
-  if (selectors.country)
+  if (selectors.partner)
     content = content.concat([
       ' to ',
-      <strong key="country">{(selectors.country || []).map(o => o.name)}</strong>,
+      <strong key="partner">{(selectors.partner || []).map(o => o.name)}</strong>,
       ' (',
-      <em key="country-classes">{selectors.countryClassification}</em>,
+      <em key="partner-classes">{selectors.partnerClassification}</em>,
       ')',
     ]);
 
@@ -129,11 +129,11 @@ export default class ExplorationIndicators extends Component {
   }
 
   exportCSV() {
-    // create an array with all lines, add a column with name of country selected
+    // create an array with all lines, add a column with name of partner selected
     // create csv only with indicators selected
     let arrayDataLines = [];
     (this.props.state.lines || []).forEach(l => {
-      // add info about classification, product, country, direction, kind
+      // add info about classification, product, partner, direction, kind
       // add all column even if the info is not selected for the line
       // copy element to add info keys
       const dataLines = [];
@@ -147,8 +147,8 @@ export default class ExplorationIndicators extends Component {
         [
           'sourceType',
           'productClassification',
-          'countryClassification',
-          'country',
+          'partnerClassification',
+          'partner',
           'product',
           'kind',
           'direction',
@@ -265,27 +265,27 @@ export default class ExplorationIndicators extends Component {
                 defaultValue={defaultSelectors.indicators['selectors.product']} />
             </div>
             <div className="form-group">
-              <label htmlFor="country" className="control-label">Location</label>
+              <label htmlFor="partner" className="control-label">Location</label>
               <small className="help-block">Whence products are exchanged. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
-                type="country"
+                type="partner"
                 valueKey="id"
-                loading={!classifications.country.length}
-                data={classifications.country.filter(c => !c.source)}
-                onChange={actions.update.bind(null, 'countryClassification')}
-                selected={selectors.countryClassification}
-                onUpdate={v => actions.update('countryClassification', v)}
-                defaultValue={defaultSelectors.indicators['selectors.countryClassification']} />
+                loading={!classifications.partner.length}
+                data={classifications.partner.filter(c => !c.source)}
+                onChange={actions.update.bind(null, 'partnerClassification')}
+                selected={selectors.partnerClassification}
+                onUpdate={v => actions.update('partnerClassification', v)}
+                defaultValue={defaultSelectors.indicators['selectors.partnerClassification']} />
               <ItemSelector
-                type="country"
+                type="partner"
                 valueKey="value"
-                disabled={!selectors.countryClassification || !groups.country.length}
-                loading={selectors.countryClassification && !groups.country.length}
-                data={groups.country}
-                onChange={actions.update.bind(null, 'country')}
-                selected={selectors.country}
-                onUpdate={v => actions.update('country', v)}
-                defaultValue={defaultSelectors.indicators['selectors.country']} />
+                disabled={!selectors.partnerClassification || !groups.partner.length}
+                loading={selectors.partnerClassification && !groups.partner.length}
+                data={groups.partner}
+                onChange={actions.update.bind(null, 'partner')}
+                selected={selectors.partner}
+                onUpdate={v => actions.update('partner', v)}
+                defaultValue={defaultSelectors.indicators['selectors.partner']} />
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Direction</label>

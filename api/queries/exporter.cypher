@@ -7,7 +7,7 @@ WITH flow SKIP $offset LIMIT $limit
 
 OPTIONAL MATCH (flow)-[:OF]->(product:Product)
 OPTIONAL MATCH (flow)-[transcription:TRANSCRIBED_FROM]->(source:Source)
-OPTIONAL MATCH (flow)-[:FROM|:TO]-(country:Country)
+OPTIONAL MATCH (flow)-[:FROM|:TO]-(partner:Partner)
 OPTIONAL MATCH (flow)-[:FROM|:TO]-(direction:Direction)
 OPTIONAL MATCH (flow)-[:FROM|:TO]-(office:Office)
 OPTIONAL MATCH (flow)-[:TRANSCRIBED_BY]->(operator:Operator)
@@ -21,7 +21,7 @@ RETURN
   operator.name AS operator,
   direction.name AS direction,
   office.name AS office,
-  country.name AS country,
+  partner.name AS partner,
   origin.name AS origin
 
 // name: classifications
@@ -37,11 +37,11 @@ RETURN c AS classification, p.slug AS parent
 MATCH (p:Product)
 RETURN p.name AS product, ["toflit18"] + [(p)-[:TRANSCRIBED_FROM]->(source)|source.name] AS sources
 
-// name: countries
-// Retrieving every source country.
+// name: partners
+// Retrieving every source partner.
 //------------------------------------------------------------------------------
-MATCH (c:Country)
-RETURN c.name AS country
+MATCH (c:Partner)
+RETURN c.name AS partner
 
 // name: classifiedItemsToSource
 // Retrieving groups from a classification and mapping them to the sources.

@@ -15,7 +15,7 @@ const {Expression, Query} = decypher;
 const ModelNetwork = {
 
   /**
-   * Building the (directions)--(country) network.
+   * Building the (directions)--(partner) network.
    */
   network(classification, params, callback) {
 
@@ -50,18 +50,18 @@ const ModelNetwork = {
       query.with('collect(product) AS products');
     }
 
-    // start query from country classification
+    // start query from partner classification
     // define import export edge type filter
     let exportImportFilter = ':FROM|:TO';
     if (kind === 'import')
       exportImportFilter = ':FROM';
     else if (kind === 'export')
       exportImportFilter = ':TO';
-    match.push(`(f:Flow)-[${exportImportFilter}]->(:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
-    const whereCountry = new Expression('cc.id = $classification');
+    match.push(`(f:Flow)-[${exportImportFilter}]->(:Partner)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)`);
+    const wherePartner = new Expression('cc.id = $classification');
     query.params({classification});
 
-    where.and(whereCountry);
+    where.and(wherePartner);
 
     //-- Do we need to match a source type?
     if (sourceType) {
@@ -98,7 +98,7 @@ const ModelNetwork = {
     if (!where.isEmpty())
         query.where(where);
 
-    query.return('cci.name as country, f.direction AS direction, count(f) AS count, sum(f.value) AS value');
+    query.return('cci.name as partner, f.direction AS direction, count(f) AS count, sum(f.value) AS value');
 
     database.cypher(query.build(), function(err, data) {
       if (err) return callback(err);

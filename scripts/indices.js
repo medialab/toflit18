@@ -12,7 +12,7 @@ console.log('Creating indices in the Neo4j database...');
 
 const indices = [
   {type: 'index', label: 'Flow', property: 'direction'},
-  {type: 'index', label: 'Flow', property: 'country'},
+  {type: 'index', label: 'Flow', property: 'partner'},
   {type: 'index', label: 'Flow', property: 'sourceType'},
   {type: 'index', label: 'Flow', property: 'product'},
   {type: 'index', label: 'Flow', property: 'year'},
@@ -20,7 +20,7 @@ const indices = [
   {type: 'index', label: 'Source', property: 'type'},
   {type: 'unique', label: 'User', property: 'name'},
   {type: 'unique', label: 'Product', property: 'id'},
-  {type: 'unique', label: 'Country', property: 'id'},
+  {type: 'unique', label: 'Partner', property: 'id'},
   {type: 'unique', label: 'ClassifiedItem', property: 'id'},
   {type: 'unique', label: 'Item', property: 'id'},
   {type: 'unique', label: 'Classification', property: 'id'},

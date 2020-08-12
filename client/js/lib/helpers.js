@@ -70,7 +70,7 @@ export function diff(o1, o2) {
 
 /**
  * Helpers to manipulate regex select values (when the user uses a custom string
- * rather than an existing product or country in some selector):
+ * rather than an existing product or partner in some selector):
  */
 export function stringToRegexId(str) {
   return 're::' + str;

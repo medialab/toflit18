@@ -149,20 +149,20 @@ class NetworkPanel extends Component {
     return (
       <VizLayout
         title="Locations"
-        description="Choose a country classification and display a graph showing relations between countries & directions."
+        description="Choose a partner classification and display a graph showing relations between partners & directions."
         leftPanelName="Filters"
         rightPanelName="Caption"
         fullscreen={fullscreen} >
         { /* Top of the left panel */ }
         <div className="box-selection">
           <h2 className="hidden-xs">
-            <span className="hidden-sm hidden-md">Country</span> classification
+            <span className="hidden-sm hidden-md">Partner</span> classification
           </h2>
           <ClassificationSelector
             valueKey="id"
-            type="country"
-            loading={!classifications.country.length}
-            data={classifications.country}
+            type="partner"
+            loading={!classifications.partner.length}
+            data={classifications.partner}
             onChange={actions.selectClassification}
             selected={classification}
             onUpdate={actions.selectClassification}
@@ -329,7 +329,7 @@ class NetworkPanel extends Component {
                 </li>
                 <li>
                   <span style={{backgroundColor: '#049B9A'}} />
-                  <span>Country</span>
+                  <span>Partner</span>
                 </li>
               </ul>
             </div>

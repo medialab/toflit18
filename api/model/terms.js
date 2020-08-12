@@ -21,11 +21,11 @@ const ModelTerms = {
         sourceType,
         direction,
         kind,
-        country,
+        partner,
         child,
         dateMin,
         dateMax,
-        countryClassification,
+        partnerClassification,
         childClassification
       } = params;
 
@@ -33,28 +33,28 @@ const ModelTerms = {
             where = new Expression(),
             match = [];
 
-      //-- Do we need to match a country?
-      if (countryClassification) {
+      //-- Do we need to match a partner?
+      if (partnerClassification) {
         // define import export edge type filter
         let exportImportFilter = ':FROM|:TO';
         if (kind === 'import')
           exportImportFilter = ':FROM';
         else if (kind === 'export')
           exportImportFilter = ':TO';
-        // Adding the country filter in the main query
-        match.push(`(f:Flow)-[${exportImportFilter}]->(country)`);
-        where.and(new Expression('country IN countries'));
+        // Adding the partner filter in the main query
+        match.push(`(f:Flow)-[${exportImportFilter}]->(partner)`);
+        where.and(new Expression('partner IN partners'));
 
-        query.match('(country:Country)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)');
-        const whereCountry = new Expression('cc.id = $countryClassification');
-        query.params({countryClassification});
-        if (country) {
-          const countryFilter = filterItemsByIdsRegexps(country, 'cci');
-          whereCountry.and(countryFilter.expression);
-          query.params(countryFilter.params);
+        query.match('(partner:Partner)<-[:AGGREGATES*1..]-(cci:ClassifiedItem)<-[:HAS]-(cc:Classification)');
+        const wherePartner = new Expression('cc.id = $partnerClassification');
+        query.params({partnerClassification});
+        if (partner) {
+          const partnerFilter = filterItemsByIdsRegexps(partner, 'cci');
+          wherePartner.and(partnerFilter.expression);
+          query.params(partnerFilter.params);
         }
-        query.where(whereCountry);
-        query.with('collect(country) AS countries');
+        query.where(wherePartner);
+        query.with('collect(partner) AS partners');
       }
 
       //-- Do we need to match a product?

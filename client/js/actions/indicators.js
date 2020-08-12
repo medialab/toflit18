@@ -17,8 +17,8 @@ const ROOT = ['indicatorsState'],
 export function getLineFootprint(line) {
   const KEYS = [
     'color',
-    'country',
-    'countryClassification',
+    'partner',
+    'partnerClassification',
     'direction',
     'kind',
     'product',
@@ -109,7 +109,7 @@ export function addLine(tree) {
     ...selectors
   });
 
-  ['product', 'country'].forEach(key => {
+  ['product', 'partner'].forEach(key => {
     if (!line[key] || !line[key].length) return;
 
     line[key] = line[key].map(id => {

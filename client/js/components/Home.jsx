@@ -72,12 +72,12 @@ export default class Home extends Component {
                   <figure>
                     <img
                       className="img-responsive"
-                      src="./assets/images/countries.png"
-                      alt="Countries"
+                      src="./assets/images/partners.png"
+                      alt="Partners"
                       width="300"
                       height="180" />
                     <figcaption>
-                      <span>Countries</span>
+                      <span>Partners</span>
                     </figcaption>
                   </figure>
                 </a>

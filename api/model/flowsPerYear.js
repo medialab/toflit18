@@ -25,16 +25,16 @@ const ModelFlowsPerYear = {
         direction,
         kind,
         product,
-        country
+        partner
       } = params;
 
       let {
         productClassification,
-        countryClassification
+        partnerClassification
       } = params;
 
       let twofoldProduct = false,
-          twofoldCountry = false;
+          twofoldPartner = false;
 
       const query = new Query(),
             where = new Expression(),
@@ -55,10 +55,10 @@ const ModelFlowsPerYear = {
             twofoldProduct = true;
         }
         else {
-          countryClassification = classificationId;
+          partnerClassification = classificationId;
 
-          if (params.countryClassification)
-            twofoldCountry = true;
+          if (params.partnerClassification)
+            twofoldPartner = true;
         }
 
         dataType = classificationType;
@@ -117,23 +117,23 @@ const ModelFlowsPerYear = {
         }
       }
 
-      //-- Do we need to match a country?
-      if (countryClassification && !twofoldCountry) {
+      //-- Do we need to match a partner?
+      if (partnerClassification && !twofoldPartner) {
         query.match('(cc)-[:HAS]->(cg:ClassifiedItem)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow)');
-        const whereCountry = new Expression('cc.id = $countryClassification');
-        query.params({countryClassification});
+        const wherePartner = new Expression('cc.id = $partnerClassification');
+        query.params({partnerClassification});
 
-        if (country) {
-          const countryFilter = filterItemsByIdsRegexps(country, 'cg');
+        if (partner) {
+          const partnerFilter = filterItemsByIdsRegexps(partner, 'cg');
 
-          whereCountry.and(countryFilter.expression);
-          query.params(countryFilter.params);
+          wherePartner.and(partnerFilter.expression);
+          query.params(partnerFilter.params);
         }
 
-        query.where(whereCountry);
+        query.where(wherePartner);
         withs.add('f');
 
-        if (dataType === 'country') {
+        if (dataType === 'partner') {
           query.with([...withs].concat('cg.name as classificationGroupName').join(', '));
           withs.add('classificationGroupName');
         }
@@ -142,24 +142,24 @@ const ModelFlowsPerYear = {
       }
 
       // NOTE: twofold classification
-      if (countryClassification && twofoldCountry) {
+      if (partnerClassification && twofoldPartner) {
         query.match('(cc:Classification)-[:HAS]->(cg:ClassifiedItem)-[:AGGREGATES*0..]->(ci)-[:FROM|:TO]-(f:Flow), (ccg:ClassifiedItem)-[:AGGREGATES*0..]->(cg)');
-        const whereCountry = new Expression('cc.id = $countryClassification');
-        query.params({countryClassification});
+        const wherePartner = new Expression('cc.id = $partnerClassification');
+        query.params({partnerClassification});
 
 
-        if (country) {
-          const countryFilter = filterItemsByIdsRegexps(country, 'ccg');
+        if (partner) {
+          const partnerFilter = filterItemsByIdsRegexps(partner, 'ccg');
 
-          whereCountry.and(countryFilter.expression);
-          query.params(countryFilter.params);
+          wherePartner.and(partnerFilter.expression);
+          query.params(partnerFilter.params);
         }
 
-        query.where(whereCountry);
+        query.where(wherePartner);
 
         withs.add('f');
 
-        if (dataType === 'country') {
+        if (dataType === 'partner') {
           query.with([...withs].concat('cg.name as classificationGroupName').join(', '));
           withs.add('classificationGroupName');
         }

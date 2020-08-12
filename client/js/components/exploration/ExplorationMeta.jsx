@@ -116,17 +116,17 @@ export default class ExplorationMeta extends Component {
       }
     };
 
-    const {productClassification, countryClassification} = this.props.state.selectors;
+    const {productClassification, partnerClassification} = this.props.state.selectors;
     if (productClassification) {
       waiting++;
       this.props.actions.update('productClassification', productClassification, callback);
     }
-    if (countryClassification) {
+    if (partnerClassification) {
       waiting++;
-      this.props.actions.update('countryClassification', countryClassification, callback);
+      this.props.actions.update('partnerClassification', partnerClassification, callback);
     }
 
-    if (!productClassification && !countryClassification) {
+    if (!productClassification && !partnerClassification) {
       this.props.actions.addChart();
     }
   }
@@ -137,7 +137,7 @@ export default class ExplorationMeta extends Component {
     if (state.dataModel === 'sourceType') return 'source types';
     if (state.dataModel === 'direction') return 'directions';
     if (state.dataModel === 'product') return 'products';
-    if (state.dataModel === 'country') return 'countries';
+    if (state.dataModel === 'partner') return 'partners';
 
     return '...';
   }
@@ -215,7 +215,7 @@ export default class ExplorationMeta extends Component {
     let canUpdate = !!state.dataModel;
 
     if (
-      (state.dataModel === 'country' || state.dataModel === 'product')
+      (state.dataModel === 'partner' || state.dataModel === 'product')
       && !state.dataType
     ) {
       canUpdate = false;
@@ -254,7 +254,7 @@ export default class ExplorationMeta extends Component {
     if (state.dataModel === 'sourceType') unit = 'source types';
     if (state.dataModel === 'direction') unit = 'directions';
     if (state.dataModel === 'product') unit = 'products';
-    if (state.dataModel === 'country') unit = 'countries';
+    if (state.dataModel === 'partner') unit = 'partners';
 
     let childClassifications;
 
@@ -288,7 +288,7 @@ export default class ExplorationMeta extends Component {
               defaultValue={defaultSelectors.metadata.dataModel} />
           </div>
           {
-            (state.dataModel === 'product' || state.dataModel === 'country') ?
+            (state.dataModel === 'product' || state.dataModel === 'partner') ?
               <div className="form-group">
                 <label htmlFor="classifications" className="control-label sr-only">{capitalize(state.dataModel)}</label>
                 <ItemSelector
@@ -335,29 +335,29 @@ export default class ExplorationMeta extends Component {
                 defaultValue={defaultSelectors.metadata['selectors.product']} />
             </div>
             <div className="form-group">
-              <label htmlFor="country" className="control-label">{
-                (state.dataModel === 'country') ? 'Child country' : 'Country'
+              <label htmlFor="partner" className="control-label">{
+                (state.dataModel === 'partner') ? 'Child partner' : 'Partner'
               }</label>
-              <small className="help-block">The country whence we got the products or wither we are sending them.<a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
+              <small className="help-block">The partner whence we got the products or wither we are sending them.<a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
               <ClassificationSelector
-                type="country"
+                type="partner"
                 valueKey="id"
-                loading={!classifications.country.length}
-                data={((state.dataModel === 'country') ? childClassifications : classifications.country.filter(c => !c.source)) || []}
-                onChange={actions.update.bind(null, 'countryClassification')}
-                selected={selectors.countryClassification}
-                onUpdate={v => actions.update('countryClassification', v)}
-                defaultValue={defaultSelectors.metadata['selectors.countryClassification']} />
+                loading={!classifications.partner.length}
+                data={((state.dataModel === 'partner') ? childClassifications : classifications.partner.filter(c => !c.source)) || []}
+                onChange={actions.update.bind(null, 'partnerClassification')}
+                selected={selectors.partnerClassification}
+                onUpdate={v => actions.update('partnerClassification', v)}
+                defaultValue={defaultSelectors.metadata['selectors.partnerClassification']} />
               <ItemSelector
                 valueKey="value"
-                type="country"
-                disabled={!selectors.countryClassification || !groups.country.length}
-                loading={selectors.countryClassification && !groups.country.length}
-                data={groups.country}
-                onChange={actions.update.bind(null, 'country')}
-                selected={selectors.country}
-                onUpdate={v => actions.update('country', v)}
-                defaultValue={defaultSelectors.metadata['selectors.country']} />
+                type="partner"
+                disabled={!selectors.partnerClassification || !groups.partner.length}
+                loading={selectors.partnerClassification && !groups.partner.length}
+                data={groups.partner}
+                onChange={actions.update.bind(null, 'partner')}
+                selected={selectors.partner}
+                onUpdate={v => actions.update('partner', v)}
+                defaultValue={defaultSelectors.metadata['selectors.partner']} />
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">Sources</label>
