@@ -31,7 +31,7 @@ import _ from 'lodash';
  */
 const ROOT_PATH = '/base',
       BDD_CENTRALE_PATH = path.join(ROOT_PATH, '/bdd_centrale.csv'),
-      BDD_OUTSIDERS = path.join(ROOT_PATH, '/marchandises_sourcees.csv'),
+      BDD_OUTSIDERS = path.join(ROOT_PATH, '/product_sourcees.csv'),
       BDD_TAX_DEPARTMENTS = path.join(ROOT_PATH, '/bdd_tax_departments.csv'),
       // classifications index
       INDEX_CLASSIFICATIONS = path.join(ROOT_PATH, '/classifications_index.csv');
