@@ -4,39 +4,39 @@ Repository holding the source code of the TOFLIT18's datascape.
 
 ## Architecture
 
-* Neo4j database v >= 3
-* API coded for node.js using [express](http://expressjs.com/fr/) wrapped in a [dolman](https://github.com/Yomguithereal/dolman).
-* A web client coded in [React](https://github.com/facebook/react) and using [Baobab](https://github.com/Yomguithereal/baobab) as its state manager.
-* Scripts are run & built using [kotatsu](https://github.com/Yomguithereal/kotatsu).
+- Neo4j database v >= 3
+- API coded for node.js using [express](http://expressjs.com/fr/) wrapped in a [dolman](https://github.com/Yomguithereal/dolman).
+- A web client coded in [React](https://github.com/facebook/react) and using [Baobab](https://github.com/Yomguithereal/baobab) as its state manager.
+- Scripts are run & built using [kotatsu](https://github.com/Yomguithereal/kotatsu).
 
 ## Folder structure
 
-* **.output**: folder created when installing and serving as a convenient place to output/store various files such as CSV exports etc.
-* **api**: folder holding the API's sources.
-  * **controllers**: dolman controllers.
-  * **model**: model files querying the Neo4j database.
-  * **queries**: cypher queries used by the model.
-  * *app.js*: file exporting the API express app.
-  * *connection.js*: file exporting the Neo4j database connection.
-  * *middlewares.js*: various express middlewares (authentication, mostly).
-* **client**: folder holding the web client's sources.
-  * **js**
-    * **actions**: files describing the actions the UI can apply on the tree.
-    * **cards**: experimental devcards files.
-    * **components**: React components describing the UI.
-    * **external**: external library files such as `sigma.js`.
-    * **lib**: generic code used throughout the UI.
-    * *client.js*: the API client.
-    * *history.js*: file exporting the routing history.
-    * *main.jsx*: endpoint of the app.
-    * *monkeys.js*: functions used as monkeys for the Baobab tree.
-    * *parrot.js*: parrot of the app (will fecth some amount of data automagically).
-    * *state.js*: the Baobab state of the app.
-  * **style**: CSS/SASS files of the web client.
-* **docs**: miscellaneous markdown files describing some algorithms' processes.
-* **lib**: generic code used by both the API and the client.
-* **scripts**: scripts meant to be run through `npm run` in a shell.
-* **test**: unit tests.
+- **.output**: folder created when installing and serving as a convenient place to output/store various files such as CSV exports etc.
+- **api**: folder holding the API's sources.
+  - **controllers**: dolman controllers.
+  - **model**: model files querying the Neo4j database.
+  - **queries**: cypher queries used by the model.
+  - _app.js_: file exporting the API express app.
+  - _connection.js_: file exporting the Neo4j database connection.
+  - _middlewares.js_: various express middlewares (authentication, mostly).
+- **client**: folder holding the web client's sources.
+  - **js**
+    - **actions**: files describing the actions the UI can apply on the tree.
+    - **cards**: experimental devcards files.
+    - **components**: React components describing the UI.
+    - **external**: external library files such as `sigma.js`.
+    - **lib**: generic code used throughout the UI.
+    - _client.js_: the API client.
+    - _history.js_: file exporting the routing history.
+    - _main.jsx_: endpoint of the app.
+    - _monkeys.js_: functions used as monkeys for the Baobab tree.
+    - _parrot.js_: parrot of the app (will fecth some amount of data automagically).
+    - _state.js_: the Baobab state of the app.
+  - **style**: CSS/SASS files of the web client.
+- **docs**: miscellaneous markdown files describing some algorithms' processes.
+- **lib**: generic code used by both the API and the client.
+- **scripts**: scripts meant to be run through `npm run` in a shell.
+- **test**: unit tests.
 
 ## Installation
 
@@ -52,7 +52,7 @@ dbms.transaction.timeout=20s
 
 ### Node
 
-It is recommended that you use at least the fifth version of Node.js, but any version down to `0.12.x` should work anyway.
+It is recommended that you use the Node.js version `7.9`.
 
 ### Installing dependencies
 
@@ -67,16 +67,14 @@ npm install
 **Server-side**
 
 ```bash
-cp config.example.json config.json
-vi config.json
+vi default.json
 ```
 
 **Client-side**
 
 ```bash
 cd client
-cp config.example.json config.json
-vi config.json
+vi default.json
 ```
 
 ### Building files for production
@@ -222,13 +220,13 @@ npm test
 
 When one user want to modify one classification, it should :
 
-1. first export one classification through npm run export.  
+1. first export one classification through npm run export.
 2. Then modify the classification csv by hand.
 3. import the new version classification into the database (edit scripts/import.js)
 4. generate the rewire csv file
-     Using Neo4j ids.
-     ```bash
-     npm run rewire -- -- --classification 4 --patch 5 --rewire 6
-     npm run rewire -- -- --help
-     ```
+   Using Neo4j ids.
+   ```bash
+   npm run rewire -- -- --classification 4 --patch 5 --rewire 6
+   npm run rewire -- -- --help
+   ```
 5. edit this file, solve the ambigious cases and then you have a new version of the targeted classification (got to 3)
