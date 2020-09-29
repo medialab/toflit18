@@ -131,7 +131,6 @@ export default class ExplorationIndicators extends Component {
     let arrayDataLines = [];
     (this.props.state.lines || []).forEach(l => {
       const data = this.props.state.dataIndex[getLineFootprint(l)];
-      console.log(l, data);
       // add info about classification, product, partner, direction, kind
       // add all column even if the info is not selected for the line
       // copy element to add info keys
