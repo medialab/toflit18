@@ -4,11 +4,8 @@
  *
  * Creating the Baobab state tree used by the whole application to function.
  */
-import Baobab, {monkey} from 'baobab';
-import {
-  classificationsIndex,
-  flatClassifications,
-} from './monkeys';
+import Baobab, { monkey } from "baobab";
+import { classificationsIndex, flatClassifications } from "./monkeys";
 
 const defaultState = {
   // View (strongly bound to the router):
@@ -19,17 +16,17 @@ const defaultState = {
   data: {
     classifications: {
       raw: null,
-      flat: monkey(['.', 'raw'], flatClassifications),
-      index: monkey(['.', 'flat'], classificationsIndex)
+      flat: monkey([".", "raw"], flatClassifications),
+      index: monkey([".", "flat"], classificationsIndex),
     },
     directions: null,
-    sourceTypes: null
+    sourceTypes: null,
   },
 
   // Some generic UI state
   ui: {
     downloading: false,
-    alert: null
+    alert: null,
   },
 
   // Specific states:
@@ -47,31 +44,31 @@ const defaultState = {
       partner: null,
       direction: null,
       kind: null,
-      sourceType: null
+      sourceType: null,
     },
     groups: {
       partner: [],
-      product: []
+      product: [],
     },
   },
   classificationsState: {
-    kind: '',
+    kind: "",
     loading: false,
-    selected: '',
-    selectedParent: '',
-    orderBy: '',
-    queryGroup: '',
-    queryItem: '',
-    footprint: '',
+    selected: "",
+    selectedParent: "",
+    orderBy: "",
+    queryGroup: "",
+    queryItem: "",
+    footprint: "",
     fullSelected: monkey(
-      ['.', 'selected'],
-      ['data', 'classifications', 'index'],
-      (selected, index) => index[selected] || null
+      [".", "selected"],
+      ["data", "classifications", "index"],
+      (selected, index) => index[selected] || null,
     ),
     fullSelectedParent: monkey(
-      ['.', 'selectedParent'],
-      ['data', 'classifications', 'index'],
-      (selectedParent, index) => index[selectedParent] || null
+      [".", "selectedParent"],
+      ["data", "classifications", "index"],
+      (selectedParent, index) => index[selectedParent] || null,
     ),
     rows: [],
     reachedBottom: false,
@@ -84,21 +81,21 @@ const defaultState = {
       partner: null,
       direction: null,
       kind: null,
-      sourceType: null
+      sourceType: null,
     },
     groups: {
       partner: [],
-      product: []
+      product: [],
     },
     lines: [],
-    dataIndex: {}
+    dataIndex: {},
   },
   explorationNetworkState: {
     graph: null,
     data: null,
     classification: null,
-    nodeSize: 'flows',
-    edgeSize: 'flows',
+    nodeSize: "flows",
+    edgeSize: "flows",
     labelThreshold: 5,
     labelSizeRatio: 2,
     loading: false,
@@ -109,20 +106,20 @@ const defaultState = {
       kind: null,
       sourceType: null,
       dateMin: null,
-      dateMax: null
+      dateMax: null,
     },
     groups: {
       partner: [],
-      product: []
-    }
+      product: [],
+    },
   },
   explorationTermsState: {
     creating: false,
     graph: null,
     data: null,
     classification: null,
-    nodeSize: 'flows',
-    edgeSize: 'flows',
+    nodeSize: "flows",
+    edgeSize: "flows",
     labelThreshold: 3,
     labelSizeRatio: 2,
     loading: false,
@@ -136,12 +133,12 @@ const defaultState = {
       kind: null,
       sourceType: null,
       dateMin: null,
-      dateMax: null
+      dateMax: null,
     },
     groups: {
       partner: [],
-      child: []
-    }
+      child: [],
+    },
   },
 
   // User-related information

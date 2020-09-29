@@ -4,45 +4,45 @@
  *
  * Actions related to the indicators' view.
  */
-import {six as palette} from '../lib/palettes';
-import {find, pickBy} from 'lodash';
-import {regexIdToString, stringToRegexLabel} from '../lib/helpers';
+import { six as palette } from "../lib/palettes";
+import { find, pickBy } from "lodash";
+import { regexIdToString, stringToRegexLabel } from "../lib/helpers";
 
-const ROOT = ['indicatorsState'],
-      MAXIMUM_LINES = 6;
+const ROOT = ["indicatorsState"],
+  MAXIMUM_LINES = 6;
 
 /**
  * Returns an isomorphic footprint for any line.
  */
 export function getLineFootprint(line) {
   const KEYS = [
-    'color',
-    'partner',
-    'partnerClassification',
-    'direction',
-    'kind',
-    'product',
-    'productClassification',
-    'sourceType'
+    "color",
+    "partner",
+    "partnerClassification",
+    "direction",
+    "kind",
+    "product",
+    "productClassification",
+    "sourceType",
   ];
 
-  return KEYS.map(key => line[key] || '').join('|');
+  return KEYS.map(key => line[key] || "").join("|");
 }
 
 /**
  * Updating a selector.
  */
 function fetchGroups(tree, cursor, id) {
-  tree.client.groups({params: {id}}, function(err, data) {
+  tree.client.groups({ params: { id } }, function(err, data) {
     if (err) return;
 
-    cursor.set(data.result.map(d => ({...d, value: d.id})));
+    cursor.set(data.result.map(d => ({ ...d, value: d.id })));
   });
 }
 
 export function updateSelector(tree, name, item) {
-  const selectors = tree.select([...ROOT, 'selectors']),
-        groups = tree.select([...ROOT, 'groups']);
+  const selectors = tree.select([...ROOT, "selectors"]),
+    groups = tree.select([...ROOT, "groups"]);
 
   // Updating the correct selector
   selectors.set(name, item);
@@ -54,8 +54,7 @@ export function updateSelector(tree, name, item) {
     selectors.set(model, null);
     groups.set(model, []);
 
-    if (item)
-      fetchGroups(tree, groups.select(model), item);
+    if (item) fetchGroups(tree, groups.select(model), item);
   }
 }
 
@@ -72,7 +71,7 @@ function findAvailableColor(existingLines) {
  */
 export function loadLine(tree, line) {
   const cursor = tree.select(ROOT),
-        footprint = getLineFootprint(line);
+    footprint = getLineFootprint(line);
 
   // Building payload
   const payload = {};
@@ -81,12 +80,12 @@ export function loadLine(tree, line) {
     payload[k] = line[k];
   }
 
-  cursor.set(['dataIndex', footprint], {loading: true});
+  cursor.set(["dataIndex", footprint], { loading: true });
 
-  tree.client.viz({params: {name: 'line'}, data: payload}, function(err, data) {
+  tree.client.viz({ params: { name: "line" }, data: payload }, function(err, data) {
     if (err) return;
 
-    cursor.set(['dataIndex', footprint], data.result);
+    cursor.set(["dataIndex", footprint], data.result);
   });
 }
 
@@ -95,21 +94,20 @@ export function loadLine(tree, line) {
  */
 export function addLine(tree) {
   const cursor = tree.select(ROOT),
-        groups = cursor.get('groups'),
-        lines = cursor.get('lines') || [];
+    groups = cursor.get("groups"),
+    lines = cursor.get("lines") || [];
 
   // Cannot have more than the maximum lines
-  if (lines.length >= MAXIMUM_LINES)
-    return;
+  if (lines.length >= MAXIMUM_LINES) return;
 
-  const selectors = cursor.get('selectors');
+  const selectors = cursor.get("selectors");
   const color = findAvailableColor(lines);
   const line = pickBy({
     color,
-    ...selectors
+    ...selectors,
   });
 
-  ['product', 'partner'].forEach(key => {
+  ["product", "partner"].forEach(key => {
     if (!line[key] || !line[key].length) return;
 
     line[key] = line[key].map(id => {
@@ -119,17 +117,17 @@ export function addLine(tree) {
         return {
           id: -1,
           name: stringToRegexLabel(regex, key),
-          value: regex
+          value: regex,
         };
       }
       return {
         id,
-        name: (groups[key] || []).find(o => o.id === id).name
+        name: (groups[key] || []).find(o => o.id === id).name,
       };
     });
   });
 
-  cursor.set('lines', lines.concat([line]));
+  cursor.set("lines", lines.concat([line]));
 
   loadLine(tree, line);
 }
@@ -138,7 +136,7 @@ export function addLine(tree) {
  * Drop the given line.
  */
 export function dropLine(tree, index) {
-  tree.unset([...ROOT, 'lines', index]);
+  tree.unset([...ROOT, "lines", index]);
 }
 
 /**
@@ -146,11 +144,11 @@ export function dropLine(tree, index) {
  */
 export function checkLines(tree) {
   const cursor = tree.select(ROOT),
-        lines = cursor.get('lines') || [];
+    lines = cursor.get("lines") || [];
 
   lines.forEach(line => {
     const footprint = getLineFootprint(line);
 
-    if (!cursor.get('dataIndex', footprint)) loadLine(tree, line);
+    if (!cursor.get("dataIndex", footprint)) loadLine(tree, line);
   });
 }

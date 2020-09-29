@@ -15,15 +15,11 @@
  * @return {boolean}               - Is one of the path relevant?
  */
 function compare(path, gottenPath) {
-
   // Shortcut
-  if (gottenPath.length < path.length)
-    return false;
+  if (gottenPath.length < path.length) return false;
 
   // Comparing both paths
-  for (let i = 0, l = path.length; i < l; i++)
-    if (gottenPath[i] !== path[i])
-      return false;
+  for (let i = 0, l = path.length; i < l; i++) if (gottenPath[i] !== path[i]) return false;
 
   return true;
 }
@@ -47,7 +43,6 @@ function compare(path, gottenPath) {
  */
 export default class Parrot {
   constructor(tree, definition) {
-
     // Properties
     this.tree = tree;
     this.rules = [];
@@ -58,72 +53,57 @@ export default class Parrot {
     rules.forEach(rule => this.rules.push([this.rules.length, rule]));
 
     // Hooking on the tree's get event
-    this.listener = ({data: {data, solvedPath}}) => {
-
+    this.listener = ({ data: { data, solvedPath } }) => {
       // Filtering the relevant rules
       const relevantRules = this.rules.filter(([, rule]) => {
-
         // If there is no path, we skip
-        if (!rule.path)
-          return false;
+        if (!rule.path) return false;
 
         // If the condition is not passed we skip
-        if (typeof rule.condition === 'function' &&
-            !rule.condition.call(this.tree, data))
-          return false;
+        if (typeof rule.condition === "function" && !rule.condition.call(this.tree, data)) return false;
 
         // Actually comparing the paths
-        if (!compare(rule.path, solvedPath))
-          return false;
+        if (!compare(rule.path, solvedPath)) return false;
 
         // If the gotten data fulfilling expectations?
-        return !(
-          typeof rule.expect === 'function' ? rule.expect(data) : !!data
-        );
+        return !(typeof rule.expect === "function" ? rule.expect(data) : !!data);
       });
 
       // Resolving actions
       relevantRules.forEach(([i, rule]) => {
-
         // If no fetcher were defined, we just stop there
-        if (typeof rule.get !== 'function')
-          return;
+        if (typeof rule.get !== "function") return;
 
         // If said call has already been made, we don't trigger it twice
-        if (this.locks[i])
-          return;
+        if (this.locks[i]) return;
 
         // TODO: deal with synchronous & non-promise cases
         const promise = rule.get();
         this.locks[i] = promise;
 
         // Toggling flag
-        if (rule.flag)
-          this.tree.set(rule.flag, true);
+        if (rule.flag) this.tree.set(rule.flag, true);
 
         // Upon completion, we will clear the lock
         const completion = () => {
           delete this.locks[i];
 
           // Resetting flag
-          if (rule.flag)
-            this.tree.set(rule.flag, false);
+          if (rule.flag) this.tree.set(rule.flag, false);
         };
 
-        promise
-          .then(completion)
-          .fail(completion);
+        promise.then(completion).fail(completion);
       });
     };
 
-    tree.on('get', this.listener);
+    tree.on("get", this.listener);
   }
 
   /**
    * Free the parrot from memory.
    */
   release() {
-    this.tree.off('get', this.listener);
+    this.tree.off("get", this.listener);
     delete this.tree;
     delete this.rules;
   }

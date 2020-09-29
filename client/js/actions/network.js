@@ -4,11 +4,11 @@
  *
  * Actions related to the globals' view.
  */
-import {two as palette} from '../lib/palettes';
-import {forIn, values} from 'lodash';
-import {regexIdToString, stringToRegexLabel} from '../lib/helpers';
+import { two as palette } from "../lib/palettes";
+import { forIn, values } from "lodash";
+import { regexIdToString, stringToRegexLabel } from "../lib/helpers";
 
-const ROOT = ['explorationNetworkState'];
+const ROOT = ["explorationNetworkState"];
 
 /**
  * Selecting a partner classification.
@@ -16,21 +16,21 @@ const ROOT = ['explorationNetworkState'];
 export function selectClassification(tree, classification) {
   const cursor = tree.select(ROOT);
 
-  cursor.set('classification', classification);
+  cursor.set("classification", classification);
 }
 
 /**
  * Selecting a node size.
  */
 export function selectNodeSize(tree, key) {
-  tree.set(ROOT.concat('nodeSize'), key);
+  tree.set(ROOT.concat("nodeSize"), key);
 }
 
 /**
  * Selecting an edge size.
  */
 export function selectEdgeSize(tree, key) {
-  tree.set(ROOT.concat('edgeSize'), key);
+  tree.set(ROOT.concat("edgeSize"), key);
 }
 
 /**
@@ -39,14 +39,14 @@ export function selectEdgeSize(tree, key) {
 export function addNetwork(tree) {
   const cursor = tree.select(ROOT);
 
-  cursor.set('graph', null);
+  cursor.set("graph", null);
 
   // set params for request
   const paramsRequest = {};
 
   // get selectors choosen
-  forIn(cursor.get('selectors'), (v, k) => {
-    if (v && k === 'product')
+  forIn(cursor.get("selectors"), (v, k) => {
+    if (v && k === "product")
       paramsRequest[k] = v.map(id => {
         // Detect custom regex values:
         const regex = regexIdToString(id);
@@ -54,50 +54,46 @@ export function addNetwork(tree) {
           return {
             id: -1,
             name: stringToRegexLabel(regex, k),
-            value: regex
+            value: regex,
           };
         }
-        return cursor.get('groups', 'product', {id});
+        return cursor.get("groups", "product", { id });
       });
-    else
-      paramsRequest[k] = v;
+    else paramsRequest[k] = v;
   });
 
-  const classification = cursor.get('classification');
+  const classification = cursor.get("classification");
 
-  if (!classification)
-    return;
+  if (!classification) return;
 
-  cursor.set('loading', true);
+  cursor.set("loading", true);
 
   // Fetching data
-  tree.client.network({params: {id: classification}, data: paramsRequest}, function(err, data) {
-    cursor.set('loading', false);
+  tree.client.network({ params: { id: classification }, data: paramsRequest }, function(err, data) {
+    cursor.set("loading", false);
 
     // NOTE: the API should probably return an empty array somehow
     const result = data.result || [];
 
-    if (data)
-      cursor.set('data', result);
+    if (data) cursor.set("data", result);
 
     if (err) return;
 
     // Treating
     const nodes = {},
-          edges = [];
+      edges = [];
 
-    const kind = cursor.get('selectors', 'kind');
+    const kind = cursor.get("selectors", "kind");
 
     result.forEach(function(row) {
-
-      const directionId = '$d$' + row.direction,
-            partnerId = '$c$' + row.partner;
+      const directionId = "$d$" + row.direction,
+        partnerId = "$c$" + row.partner;
 
       if (!nodes[directionId]) {
         nodes[directionId] = {
           id: directionId,
           label: row.direction,
-          community: 'direction',
+          community: "direction",
           color: palette[0],
           size: row.count,
           flows: row.count,
@@ -106,8 +102,7 @@ export function addNetwork(tree) {
           x: Math.random(),
           y: Math.random(),
         };
-      }
-      else {
+      } else {
         nodes[directionId].degree++;
         nodes[directionId].size += row.count;
         nodes[directionId].flows += row.count;
@@ -118,7 +113,7 @@ export function addNetwork(tree) {
         nodes[partnerId] = {
           id: partnerId,
           label: row.partner,
-          community: 'partner',
+          community: "partner",
           color: palette[1],
           size: row.count,
           flows: row.count,
@@ -127,8 +122,7 @@ export function addNetwork(tree) {
           x: Math.random(),
           y: Math.random(),
         };
-      }
-      else {
+      } else {
         nodes[partnerId].degree++;
         nodes[partnerId].size += row.count;
         nodes[partnerId].flows += row.count;
@@ -136,18 +130,18 @@ export function addNetwork(tree) {
       }
 
       edges.push({
-        id: 'e' + edges.length,
+        id: "e" + edges.length,
         size: row.count,
         flows: row.count,
         value: row.value,
-        source: kind === 'import' ? partnerId : directionId,
-        target: kind === 'import' ? directionId : partnerId
+        source: kind === "import" ? partnerId : directionId,
+        target: kind === "import" ? directionId : partnerId,
       });
     });
 
-    const directed = kind === 'import' || kind === 'export';
+    const directed = kind === "import" || kind === "export";
 
-    cursor.set('graph', {nodes: values(nodes), edges, directed});
+    cursor.set("graph", { nodes: values(nodes), edges, directed });
   });
 }
 
@@ -155,18 +149,17 @@ export function addNetwork(tree) {
  * Updating a selector.
  */
 function fetchGroups(tree, cursor, id) {
-
-  tree.client.groups({params: {id}}, function(err, data) {
+  tree.client.groups({ params: { id } }, function(err, data) {
     if (err) return;
 
-    cursor.set(data.result.map(d => ({...d, value: d.id})));
+    cursor.set(data.result.map(d => ({ ...d, value: d.id })));
   });
 }
 
 // see meta or indicator view to change and adapt this function
 export function updateSelector(tree, name, item) {
-  const selectors = tree.select([...ROOT, 'selectors']),
-        groups = tree.select([...ROOT, 'groups']);
+  const selectors = tree.select([...ROOT, "selectors"]),
+    groups = tree.select([...ROOT, "groups"]);
 
   // Updating the correct selector
   selectors.set(name, item);
@@ -185,16 +178,16 @@ export function updateSelector(tree, name, item) {
 }
 
 export function selectLabelSizeRatio(tree, key) {
-  tree.set(ROOT.concat('labelSizeRatio'), key);
+  tree.set(ROOT.concat("labelSizeRatio"), key);
 }
 
 export function selectLabelThreshold(tree, key) {
-  tree.set(ROOT.concat('labelThreshold'), key);
+  tree.set(ROOT.concat("labelThreshold"), key);
 }
 
 export function checkDefaultState(tree, defaultState) {
   for (const key in defaultState) {
-    const path = key.split('.');
+    const path = key.split(".");
     const val = tree.get([...ROOT, ...path]);
 
     if (!val) {

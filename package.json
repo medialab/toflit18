@@ -16,7 +16,8 @@
     "quantities": "kotatsu run --babel -s ./scripts/quantities.js",
     "rewire": "kotatsu --babel run --progress --source-maps ./scripts/rewire.js",
     "start": "kotatsu run --babel ./scripts/start.js",
-    "test": "mocha -R spec --compilers js:babel-core/register ./test/endpoint.js"
+    "test": "mocha -R spec --compilers js:babel-core/register ./test/endpoint.js",
+    "prettify": "prettier --write --config .prettierrc.json ./api/**/*.js ./lib/**/*.js ./test/**/*.js ./scripts/**/*.js ./client/js/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -60,6 +61,7 @@
     "mnemonist": "^0.22.0",
     "morgan": "^1.6.1",
     "neo4j-driver": "^1.2.0",
+    "prettier": "^1.19.1",
     "session-file-store": "^1.0.0",
     "yargs": "^3.14.0"
   },

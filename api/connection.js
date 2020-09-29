@@ -5,12 +5,12 @@
  *
  * Connection to the project's Neo4j database.
  */
-import CONFIG from 'config';
-import neo4j from 'neo4j-driver/lib/v1';
-import {Node} from 'neo4j-driver/lib/v1/graph-types';
-import Integer from 'neo4j-driver/lib/v1/integer';
+import CONFIG from "config";
+import neo4j from "neo4j-driver/lib/v1";
+import { Node } from "neo4j-driver/lib/v1/graph-types";
+import Integer from "neo4j-driver/lib/v1/integer";
 
-const config = CONFIG.get('db');
+const config = CONFIG.get("db");
 
 // Authentication
 const auth = neo4j.auth.basic(config.user, config.password);
@@ -19,7 +19,7 @@ const auth = neo4j.auth.basic(config.user, config.password);
 const driver = neo4j.driver(`bolt://${config.host}:${config.port}`, auth);
 
 driver.onError = err => {
-  console.error('Neo4j driver error', err);
+  console.error("Neo4j driver error", err);
   process.exit(1);
 };
 
@@ -28,7 +28,7 @@ function nodeToObject(node) {
   return {
     id: node.properties.id,
     properties: node.properties,
-    labels: node.labels
+    labels: node.labels,
   };
 }
 
@@ -38,10 +38,8 @@ function recordToObject(record) {
   for (const k in object) {
     const value = object[k];
 
-    if (value instanceof Node)
-      object[k] = nodeToObject(value);
-    else if (value instanceof Integer)
-      object[k] = value.toNumber();
+    if (value instanceof Node) object[k] = nodeToObject(value);
+    else if (value instanceof Integer) object[k] = value.toNumber();
   }
 
   return object;
@@ -54,17 +52,16 @@ const DB = {
   },
   cypher(body, callback, sessionType) {
     let query,
-        params = {};
+      params = {};
 
-    if (typeof body === 'string') {
+    if (typeof body === "string") {
       query = body;
-    }
-    else {
+    } else {
       query = body.query;
       params = body.params;
     }
 
-    const session = driver.session(sessionType || 'READ');
+    const session = driver.session(sessionType || "READ");
 
     return session
       .run(query, params)
@@ -74,8 +71,7 @@ const DB = {
       })
       .catch(err => callback(err));
   },
-  int: neo4j.int
+  int: neo4j.int,
 };
-
 
 export default DB;

@@ -4,24 +4,26 @@
  * ===================================
  *
  */
-import modelFlowsPerYear from '../model/flowsPerYear';
-import modelCreateLine from '../model/createLine';
-import modelTerms from '../model/terms';
-import modelNetwork from '../model/partner';
-import {mapValues} from 'lodash';
+import modelFlowsPerYear from "../model/flowsPerYear";
+import modelCreateLine from "../model/createLine";
+import modelTerms from "../model/terms";
+import modelNetwork from "../model/partner";
+import { mapValues } from "lodash";
 
-const formatItemsParams = (items) => {
-    // separate filters on id from those on name trhough regexp
-    return items.length > 0 ? {
-      ids: items.filter(e => e.id !== -1).map(e => e.id),
-      regexps: items.filter(e => e.id === -1).map(e => e.value)
-    } : null;
+const formatItemsParams = items => {
+  // separate filters on id from those on name trhough regexp
+  return items.length > 0
+    ? {
+        ids: items.filter(e => e.id !== -1).map(e => e.id),
+        regexps: items.filter(e => e.id === -1).map(e => e.value),
+      }
+    : null;
 };
 
 const controller = [
   {
-    url: '/flows_per_year/:type',
-    method: 'POST',
+    url: "/flows_per_year/:type",
+    method: "POST",
     // validate: {
     //   query: {
     //     sourceType: '?string',
@@ -35,7 +37,7 @@ const controller = [
     // },
     action(req, res) {
       const payloadFlows = mapValues(req.body, (v, k) => {
-        if (k === 'product' || k === 'partner') {
+        if (k === "product" || k === "partner") {
           // separate filters on id from those on name trhough regexp
           return formatItemsParams(v);
         }
@@ -47,14 +49,14 @@ const controller = [
 
         return res.ok(data);
       });
-    }
+    },
   },
   {
-    url: '/line',
-    method: 'POST',
+    url: "/line",
+    method: "POST",
     action(req, res) {
       const payload = mapValues(req.body, (v, k) => {
-        if (k === 'product' || k === 'partner') {
+        if (k === "product" || k === "partner") {
           // separate filters on id from those on name trhough regexp
           return formatItemsParams(v);
         }
@@ -67,11 +69,11 @@ const controller = [
 
         return res.ok(data);
       });
-    }
+    },
   },
   {
-    url: '/network/:id',
-    method: 'POST',
+    url: "/network/:id",
+    method: "POST",
     // validate: {
     //   query: {
     //     sourceType: '?string',
@@ -85,7 +87,7 @@ const controller = [
     // },
     action(req, res) {
       const payloadNetwork = mapValues(req.body, (v, k) => {
-        if (k === 'product' || k === 'partner') {
+        if (k === "product" || k === "partner") {
           // separate filters on id from those on name trhough regexp
           return formatItemsParams(v);
         }
@@ -98,11 +100,11 @@ const controller = [
 
         return res.ok(data);
       });
-    }
+    },
   },
   {
-    url: '/terms/:id',
-    method: 'POST',
+    url: "/terms/:id",
+    method: "POST",
     // validate: {
     //   query: {
     //     sourceType: '?string',
@@ -120,12 +122,12 @@ const controller = [
     // },
     action(req, res) {
       const payloadTerms = mapValues(req.body, (v, k) => {
-        if (k === 'child' || k === 'partner') {
+        if (k === "child" || k === "partner") {
           // separate filters on id from those on name trhough regexp
           return formatItemsParams(v);
         }
 
-        if (v && k === 'dateMin' || k === 'dateMax') {
+        if ((v && k === "dateMin") || k === "dateMax") {
           return +v;
         }
 
@@ -138,8 +140,8 @@ const controller = [
 
         return res.ok(terms);
       });
-    }
-  }
+    },
+  },
 ];
 
 export default controller;

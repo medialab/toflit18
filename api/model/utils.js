@@ -1,5 +1,5 @@
-import decypher from 'decypher';
-const {Expression} = decypher;
+import decypher from "decypher";
+const { Expression } = decypher;
 
 // utility
 const filterItemsByIdsRegexps = (items, variable) => {
@@ -17,16 +17,13 @@ const filterItemsByIdsRegexps = (items, variable) => {
     params[`${variable}Pattern${i}`] = `(?im).*${r}.*`;
     i++;
   });
-  if (idsExpression && regexpsExpression)
-    return {expression: idsExpression.or(regexpsExpression), params};
+  if (idsExpression && regexpsExpression) return { expression: idsExpression.or(regexpsExpression), params };
 
-  if (idsExpression)
-    return {expression: idsExpression, params};
+  if (idsExpression) return { expression: idsExpression, params };
 
-  if (regexpsExpression)
-    return {expression: regexpsExpression, params};
+  if (regexpsExpression) return { expression: regexpsExpression, params };
 
-  return new Expression('true');
+  return new Expression("true");
 };
 
 export default filterItemsByIdsRegexps;

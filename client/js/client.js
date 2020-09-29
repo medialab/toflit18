@@ -4,82 +4,81 @@
  *
  * Simple abstraction used to query the datascape's API.
  */
-import Client from 'djax-client';
+import Client from "djax-client";
 
-const FORM = 'application/x-www-form-urlencoded';
+const FORM = "application/x-www-form-urlencoded";
 
 const client = new Client({
   settings: {
-    baseUrl: CONFIG.endpoint
+    baseUrl: CONFIG.endpoint,
   },
 
   defaults: {
-    contentType: 'application/json',
-    dataType: 'json',
+    contentType: "application/json",
+    dataType: "json",
     xhrFields: {
-      withCredentials: true
-    }
+      withCredentials: true,
+    },
   },
 
   services: {
-
     // Data related
-    classifications: '/classification',
+    classifications: "/classification",
 
-    groups: '/classification/:id/groups',
+    groups: "/classification/:id/groups",
 
     group: {
       contentType: FORM,
-      url: '/classification/group/:id'
+      url: "/classification/group/:id",
     },
 
-    directions: '/directions',
+    directions: "/directions",
 
-    sourceTypes: '/source_types',
+    sourceTypes: "/source_types",
 
     search: {
       contentType: FORM,
-      url: '/classification/:id/search'
+      url: "/classification/:id/search",
     },
 
-    export: '/classification/:id/export.json',
+    export: "/classification/:id/export.json",
 
     review: {
-      method: 'POST',
-      url: '/classification/:id/:type/review'
+      method: "POST",
+      url: "/classification/:id/:type/review",
     },
 
     commit: {
-      method: 'POST',
-      url: '/classification/:id/:type/commit'
+      method: "POST",
+      url: "/classification/:id/:type/commit",
     },
 
     // Viz
     viz: {
-      method: 'POST',
-      url: '/viz/:name'
+      method: "POST",
+      url: "/viz/:name",
     },
 
     perYear: {
       contentType: FORM,
-      url: '/viz/per_year/:type'
+      url: "/viz/per_year/:type",
     },
 
     flowsPerYear: {
-      method: 'POST',
-      url: '/viz/flows_per_year/:type'
+      method: "POST",
+      url: "/viz/flows_per_year/:type",
     },
 
     network: {
-      method: 'POST',
-      url: '/viz/network/:id'
+      method: "POST",
+      url: "/viz/network/:id",
     },
 
     terms: {
-      method: 'POST',
-      url: '/viz/terms/:id'
-    }
-  }
+      method: "POST",
+      url: "/viz/terms/:id",
+    },
+  },
 });
 
 export default client;
