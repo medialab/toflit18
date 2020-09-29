@@ -77,8 +77,8 @@ export function stringToRegexId(str) {
 }
 export function stringToRegexLabel(str, type) {
   let query = ` '${str}'`;
-  if (str === ''){
-    query = '...'
+  if (str === '') {
+    query = '...';
   }
   return `${type} matching${query}`;
 }
@@ -86,7 +86,7 @@ export function regexIdToString(str) {
   return (str.match(/^re::(.*)/) || [])[1];
 }
 export function getValueFromString(str, type, valueKey) {
-  return  {
+  return {
     [valueKey]: stringToRegexId(str),
     name: stringToRegexLabel(str, type),
     disabled: str === ''

@@ -304,7 +304,7 @@ function importer(csvLine) {
   // Handling double accounts
   if (csvLine.value_part_of_bundle && +csvLine.value_part_of_bundle > 1)
     return;
-  
+
   // filter source in Out
   if (csvLine.source_type === 'Out')
     return;

@@ -159,7 +159,8 @@ export default class ExplorationIndicators extends Component {
             elemCopy[param] = l[param]
               ? l[param].map(p => p.name).join(', ')
               : null;
-          } else {
+          }
+ else {
             elemCopy[param] = l[param] ? l[param] : null;
           }
         });
@@ -253,8 +254,7 @@ export default class ExplorationIndicators extends Component {
                 onUpdate={v => actions.update('sourceType', v)}
                 defaultValue={
                   defaultSelectors.indicators['selectors.sourceType']
-                }
-              />
+                } />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">
@@ -276,8 +276,7 @@ export default class ExplorationIndicators extends Component {
                 onUpdate={v => actions.update('productClassification', v)}
                 defaultValue={
                   defaultSelectors.indicators['selectors.productClassification']
-                }
-              />
+                } />
               <ItemSelector
                 type="product"
                 valueKey="value"
@@ -291,8 +290,7 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'product')}
                 selected={selectors.product}
                 onUpdate={v => actions.update('product', v)}
-                defaultValue={defaultSelectors.indicators['selectors.product']}
-              />
+                defaultValue={defaultSelectors.indicators['selectors.product']} />
             </div>
             <div className="form-group">
               <label htmlFor="partner" className="control-label">
@@ -314,8 +312,7 @@ export default class ExplorationIndicators extends Component {
                 onUpdate={v => actions.update('partnerClassification', v)}
                 defaultValue={
                   defaultSelectors.indicators['selectors.partnerClassification']
-                }
-              />
+                } />
               <ItemSelector
                 type="partner"
                 valueKey="value"
@@ -329,8 +326,7 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'partner')}
                 selected={selectors.partner}
                 onUpdate={v => actions.update('partner', v)}
-                defaultValue={defaultSelectors.indicators['selectors.partner']}
-              />
+                defaultValue={defaultSelectors.indicators['selectors.partner']} />
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">
@@ -352,8 +348,7 @@ export default class ExplorationIndicators extends Component {
                 onUpdate={v => actions.update('direction', v)}
                 defaultValue={
                   defaultSelectors.indicators['selectors.direction']
-                }
-              />
+                } />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">
@@ -368,8 +363,7 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
                 onUpdate={v => actions.update('kind', v)}
-                defaultValue={defaultSelectors.indicators['selectors.kind']}
-              />
+                defaultValue={defaultSelectors.indicators['selectors.kind']} />
             </div>
             <div className="form-group-fixed">
               <button
@@ -391,8 +385,7 @@ export default class ExplorationIndicators extends Component {
           lines={dataLines}
           ref={el => {
             this.charts = el;
-          }}
-        />
+          }} />
 
         {/* Right panel */}
         <div
@@ -447,8 +440,7 @@ export default class ExplorationIndicators extends Component {
                       }
                     ]
                   : []
-              }
-            />
+              } />
           </div>
         </div>
       </VizLayout>
@@ -573,8 +565,7 @@ class Charts extends Component {
                 <LineChart
                   shareKey="litre_share"
                   valueKey="litre"
-                  data={lines}
-                />
+                  data={lines} />
               </div>
             )}
             {quantitiesOpened && (

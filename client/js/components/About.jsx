@@ -30,16 +30,18 @@ export default class About extends Component {
               <p>
                 Alas, we could not find the time yet to do an user guide.
                 However, you can consult an user guide for the first version of
-                the datascape: <a href="https://toflit18.hypotheses.org/695">https://toflit18.hypotheses.org/695</a>. Many concepts have not changed. 
+                the datascape: <a href="https://toflit18.hypotheses.org/695">https://toflit18.hypotheses.org/695</a>. Many concepts have not changed.
               </p>
               <p className="lead">Use Regular Expressions</p>
-              <p style={{overflow:"auto"}}>
-                <img src="./assets/images/regexp_example.png" style={{float:"left", marginLeft:"10px"}} height="200px" alt="using '^fil de.*' as a regular expression in Product selection"></img>
+              <p style={{overflow: 'auto'}}>
+                <img
+                  src="./assets/images/regexp_example.png" style={{float: 'left', marginLeft: '10px'}} height="200px"
+                  alt="using '^fil de.*' as a regular expression in Product selection" />
                 <span>
                   Searching in partner or product list can be enhanced by using Regular Expressions.
                   To learn how to use this query system please read <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">the JavaScript Regexp specification</a> and or play with the <a href="https://regex101.com/">Regexp 101 tool</a> with the ECMAScript (JavaScript) flavor.
-                  <br></br>
-                  As illustrated in this figure, you could type '^fil de.*' to filter products that begin by 'fil de'. 
+                  <br />
+                  As illustrated in this figure, you could type '^fil de.*' to filter products that begin by 'fil de'.
                 </span>
               </p>
               <p className="lead">Permalinks</p>

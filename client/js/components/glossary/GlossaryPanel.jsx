@@ -41,12 +41,9 @@ export default class GlossaryPanel extends Component {
         CONFIG.glossary.path
       ].join(''),
       dataType: 'string'
-    }).then((data, error) => {
+    }).then(data => {
       const result = papaparse.parse(data, {header: true});
-      if (result.errors.length > 0) {
-        console.log(result.errors);
-      }
-      const glossary_data = result.data
+      const glossaryData = result.data
         .filter(e => e.definition)
         .map(entry => {
           return {
@@ -59,8 +56,8 @@ export default class GlossaryPanel extends Component {
           };
         });
       this.setState({
-        glossary: glossary_data,
-        entries: glossary_data
+        glossary: glossaryData,
+        entries: glossaryData
       });
     });
   }
@@ -70,7 +67,8 @@ export default class GlossaryPanel extends Component {
 
     if (!query && this.state.entries.length !== this.state.glossary) {
       this.setState({query, entries: this.state.glossary});
-    } else {
+    }
+ else {
       this.setState({query});
 
       if (query.length > 2) this.performSearch(query);
@@ -81,7 +79,8 @@ export default class GlossaryPanel extends Component {
   performSearch(query) {
     if (!query) {
       this.setState({entries: this.state.glossary.slice(0)});
-    } else {
+    }
+ else {
       const pattern = new RegExp(escapeRegexp(query));
 
       const filteredEntries = this.state.glossary.filter(entry => {
@@ -123,8 +122,7 @@ export default class GlossaryPanel extends Component {
                 className="form-control"
                 placeholder="Search products..."
                 value={query}
-                onChange={this.handleInput}
-              />
+                onChange={this.handleInput} />
             </div>
             <div className="form-group">
               <p

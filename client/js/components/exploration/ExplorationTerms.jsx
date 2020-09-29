@@ -136,7 +136,6 @@ class TermsPanel extends Component {
   }
 
   toggleFullscreen() {
-    console.log('coucou', this.state.fullscreen);
     this.setState({fullscreen: !this.state.fullscreen});
   }
 
@@ -210,8 +209,7 @@ class TermsPanel extends Component {
             onChange={actions.selectTerms}
             onUpdate={actions.selectTerms}
             selected={classification}
-            defaultValue={defaultSelectors.terms.classification}
-          />
+            defaultValue={defaultSelectors.terms.classification} />
         </div>
         {/* Left panel */}
         <div className="aside-filters">
@@ -235,8 +233,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'sourceType')}
                 selected={selectors.sourceType}
                 onUpdate={v => actions.update('sourceType', v)}
-                defaultValue={defaultSelectors.terms['selectors.sourceType']}
-              />
+                defaultValue={defaultSelectors.terms['selectors.sourceType']} />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">
@@ -260,8 +257,7 @@ class TermsPanel extends Component {
                 onUpdate={v => actions.update('childClassification', v)}
                 defaultValue={
                   defaultSelectors.terms['selectors.childClassification']
-                }
-              />
+                } />
               <ItemSelector
                 valueKey="id"
                 type="product"
@@ -273,8 +269,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'child')}
                 selected={selectors.child}
                 onUpdate={v => actions.update('child', v)}
-                defaultValue={defaultSelectors.terms['selectors.child']}
-              />
+                defaultValue={defaultSelectors.terms['selectors.child']} />
             </div>
             <div className="form-group">
               <label htmlFor="partner" className="control-label">
@@ -296,8 +291,7 @@ class TermsPanel extends Component {
                 onUpdate={v => actions.update('partnerClassification', v)}
                 defaultValue={
                   defaultSelectors.terms['selectors.partnerClassification']
-                }
-              />
+                } />
               <ItemSelector
                 valueKey="id"
                 type="partner"
@@ -311,8 +305,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'partner')}
                 selected={selectors.partner}
                 onUpdate={v => actions.update('partner', v)}
-                defaultValue={defaultSelectors.terms['selectors.partner']}
-              />
+                defaultValue={defaultSelectors.terms['selectors.partner']} />
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">
@@ -332,8 +325,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'direction')}
                 selected={selectors.direction}
                 onUpdate={v => actions.update('direction', v)}
-                defaultValue={defaultSelectors.terms['selectors.direction']}
-              />
+                defaultValue={defaultSelectors.terms['selectors.direction']} />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">
@@ -348,8 +340,7 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
                 onUpdate={v => actions.update('kind', v)}
-                defaultValue={defaultSelectors.terms['selectors.kind']}
-              />
+                defaultValue={defaultSelectors.terms['selectors.kind']} />
             </div>
             <div className="form-group">
               <label htmlFor="dates" className="control-label">
@@ -367,8 +358,7 @@ class TermsPanel extends Component {
                     onChange={actions.update.bind(null, 'dateMin')}
                     selected={selectors.dateMin}
                     onUpdate={v => actions.update('dateMin', v)}
-                    defaultValue={defaultSelectors.terms['selectors.dateMin']}
-                  />
+                    defaultValue={defaultSelectors.terms['selectors.dateMin']} />
                 </div>
                 <div className="col-xs-6">
                   <ItemSelector
@@ -378,8 +368,7 @@ class TermsPanel extends Component {
                     onChange={actions.update.bind(null, 'dateMax')}
                     selected={selectors.dateMax}
                     onUpdate={v => actions.update('dateMax', v)}
-                    defaultValue={defaultSelectors.terms['selectors.dateMax']}
-                  />
+                    defaultValue={defaultSelectors.terms['selectors.dateMax']} />
                 </div>
               </div>
             </div>
@@ -408,8 +397,7 @@ class TermsPanel extends Component {
           toggleFullscreen={this.toggleFullscreen}
           alert={alert}
           loading={loading}
-          className="col-xs-12 col-sm-6 col-md-8"
-        />
+          className="col-xs-12 col-sm-6 col-md-8" />
         {/* Right panel */}
         <div className="aside-legend">
           <form onSubmit={e => e.preventDefault()}>
@@ -433,8 +421,7 @@ class TermsPanel extends Component {
                   }
                 ]}
                 value={edgeSize}
-                onChange={({value}) => actions.selectEdgeSize(value)}
-              />
+                onChange={({value}) => actions.selectEdgeSize(value)} />
             </div>
             <div className="form-group">
               <label htmlFor="nodeSize" className="control-label">
@@ -460,8 +447,7 @@ class TermsPanel extends Component {
                   }
                 ]}
                 value={nodeSize}
-                onChange={({value}) => actions.selectNodeSize(value)}
-              />
+                onChange={({value}) => actions.selectNodeSize(value)} />
             </div>
             <div className="form-group">
               <label className="control-label">Color</label>
@@ -483,8 +469,7 @@ class TermsPanel extends Component {
                       label: num + ''
                     }))}
                     value={labelSizeRatio + ''}
-                    onChange={({value}) => actions.selectLabelSizeRatio(+value)}
-                  />
+                    onChange={({value}) => actions.selectLabelSizeRatio(+value)} />
                 </div>
                 <div className="col-xs-6">
                   <small className="help-block">Threshold</small>
@@ -497,8 +482,7 @@ class TermsPanel extends Component {
                       label: num + ''
                     }))}
                     value={labelThreshold + ''}
-                    onChange={({value}) => actions.selectLabelThreshold(+value)}
-                  />
+                    onChange={({value}) => actions.selectLabelThreshold(+value)} />
                 </div>
               </div>
             </div>
