@@ -41,27 +41,28 @@ function buildDescription(line, data, index) {
       return (index[v] || {}).name || v;
     }
 
-
     if (v) {
       return v;
     }
   });
 
   let content = [
-    <strong key="flows">{capitalize(selectors.kind || 'total') + ' flows'}</strong>,
+    <strong key="flows">
+      {capitalize(selectors.kind || 'total') + ' flows'}
+    </strong>
   ];
 
   if (selectors.product) {
-    if (!Array.isArray(data) || data.length)
-      content.push('of ');
-    else
-      content = ['No data for '];
+    if (!Array.isArray(data) || data.length) content.push('of ');
+    else content = ['No data for '];
 
     content = content.concat([
-      <strong key="product">{(selectors.product || []).map(o => o.name)}</strong>,
+      <strong key="product">
+        {(selectors.product || []).map(o => o.name)}
+      </strong>,
       ' (',
       <em key="product-classes">{selectors.productClassification}</em>,
-      ')',
+      ')'
     ]);
   }
 
@@ -74,22 +75,18 @@ function buildDescription(line, data, index) {
   if (selectors.partner)
     content = content.concat([
       ' to ',
-      <strong key="partner">{(selectors.partner || []).map(o => o.name)}</strong>,
+      <strong key="partner">
+        {(selectors.partner || []).map(o => o.name)}
+      </strong>,
       ' (',
       <em key="partner-classes">{selectors.partnerClassification}</em>,
-      ')',
+      ')'
     ]);
 
   if (selectors.sourceType)
-    content = content.concat([
-      `- (source type: ${selectors.sourceType})`,
-    ]);
+    content = content.concat([`- (source type: ${selectors.sourceType})`]);
 
-  return (
-    <span>{
-      content
-    }</span>
-  );
+  return <span>{content}</span>;
 }
 
 /**
@@ -133,16 +130,22 @@ export default class ExplorationIndicators extends Component {
     // create csv only with indicators selected
     let arrayDataLines = [];
     (this.props.state.lines || []).forEach(l => {
+      const data = this.props.state.dataIndex[getLineFootprint(l)];
+      console.log(l, data);
       // add info about classification, product, partner, direction, kind
       // add all column even if the info is not selected for the line
       // copy element to add info keys
       const dataLines = [];
 
-      for (let i = 0, len = l.data.length; i < len; i++) {
-        const elemCopy = pick(
-          l.data[i],
-          ['year', 'count', 'value', 'kg', 'litre', 'nbr']
-        );
+      for (let i = 0, len = data.length; i < len; i++) {
+        const elemCopy = pick(data[i], [
+          'year',
+          'count',
+          'value',
+          'kg',
+          'litre',
+          'nbr'
+        ]);
 
         [
           'sourceType',
@@ -151,17 +154,21 @@ export default class ExplorationIndicators extends Component {
           'partner',
           'product',
           'kind',
-          'direction',
+          'direction'
         ].forEach(param => {
-          elemCopy[param] = l.params[param] ?
-            l.params[param].name :
-            null;
+          if (param === 'product') {
+            elemCopy[param] = l[param]
+              ? l[param].map(p => p.name).join(', ')
+              : null;
+          } else {
+            elemCopy[param] = l[param] ? l[param] : null;
+          }
         });
 
-        if (l.data[i].value !== null && l.data[i].count !== 0) {
-          elemCopy.nb_direction = l.data[i].nb_direction.length ?
-            l.data[i].nb_direction :
-            null;
+        if (data[i].value !== null && data[i].count !== 0) {
+          elemCopy.nb_direction = data[i].nb_direction.length
+            ? data[i].nb_direction
+            : null;
         }
 
         dataLines.push(elemCopy);
@@ -173,7 +180,9 @@ export default class ExplorationIndicators extends Component {
     const now = new Date();
     exportCSV({
       data: arrayDataLines,
-      name: `TOFLIT18_Time_series_${now.toLocaleString('se-SE').replace(' ', '_')}.csv`,
+      name: `TOFLIT18_Time_series_${now
+        .toLocaleString('se-SE')
+        .replace(' ', '_')}.csv`
     });
   }
 
@@ -181,7 +190,9 @@ export default class ExplorationIndicators extends Component {
     const now = new Date();
     exportSVG({
       nodes: [this.legendContainer, this.charts.vizContainer],
-      name: `TOFLIT18_Time_series_${now.toLocaleString('se-SE').replace(' ', '_')}.svg`
+      name: `TOFLIT18_Time_series_${now
+        .toLocaleString('se-SE')
+        .replace(' ', '_')}.svg`
     });
   }
 
@@ -193,16 +204,11 @@ export default class ExplorationIndicators extends Component {
       classificationsIndex,
       directions,
       sourceTypes,
-      state: {
-        groups,
-        lines,
-        selectors,
-        dataIndex
-      }
+      state: {groups, lines, selectors, dataIndex}
     } = this.props;
 
-    const lineAlreadyExisting = (lines || []).some(
-      line => isEqual(line.params, selectors)
+    const lineAlreadyExisting = (lines || []).some(line =>
+      isEqual(line.params, selectors)
     );
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
@@ -224,13 +230,20 @@ export default class ExplorationIndicators extends Component {
         description="By selecting the following criteria, you'll be able to add the line you need on the graph that will be created for you below."
         leftPanelName="Filters"
         rightPanelName="Curves">
-        { /* Left panel */ }
+        {/* Left panel */}
         <div className="aside-filters">
           <h3>Filters</h3>
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
-              <label htmlFor="sourceType" className="control-label">Source Type</label>
-              <small className="help-block">Type of sources the data comes from. <a href="#/exploration/sources"><Icon name="icon-info" /></a></small>
+              <label htmlFor="sourceType" className="control-label">
+                Source Type
+              </label>
+              <small className="help-block">
+                Type of sources the data comes from.{' '}
+                <a href="#/exploration/sources">
+                  <Icon name="icon-info" />
+                </a>
+              </small>
               <ItemSelector
                 valueKey="value"
                 type="sourceType"
@@ -239,11 +252,21 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'sourceType')}
                 selected={selectors.sourceType}
                 onUpdate={v => actions.update('sourceType', v)}
-                defaultValue={defaultSelectors.indicators['selectors.sourceType']} />
+                defaultValue={
+                  defaultSelectors.indicators['selectors.sourceType']
+                }
+              />
             </div>
             <div className="form-group">
-              <label htmlFor="product" className="control-label">Product</label>
-              <small className="help-block">The type of product being shipped. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
+              <label htmlFor="product" className="control-label">
+                Product
+              </label>
+              <small className="help-block">
+                The type of product being shipped.{' '}
+                <a href="#/glossary/concepts">
+                  <Icon name="icon-info" />
+                </a>
+              </small>
               <ClassificationSelector
                 type="product"
                 valueKey="id"
@@ -252,21 +275,36 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification}
                 onUpdate={v => actions.update('productClassification', v)}
-                defaultValue={defaultSelectors.indicators['selectors.productClassification']} />
+                defaultValue={
+                  defaultSelectors.indicators['selectors.productClassification']
+                }
+              />
               <ItemSelector
                 type="product"
                 valueKey="value"
-                disabled={!selectors.productClassification || !groups.product.length}
-                loading={selectors.productClassification && !groups.product.length}
+                disabled={
+                  !selectors.productClassification || !groups.product.length
+                }
+                loading={
+                  selectors.productClassification && !groups.product.length
+                }
                 data={groups.product}
                 onChange={actions.update.bind(null, 'product')}
                 selected={selectors.product}
                 onUpdate={v => actions.update('product', v)}
-                defaultValue={defaultSelectors.indicators['selectors.product']} />
+                defaultValue={defaultSelectors.indicators['selectors.product']}
+              />
             </div>
             <div className="form-group">
-              <label htmlFor="partner" className="control-label">Location</label>
-              <small className="help-block">Whence products are exchanged. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
+              <label htmlFor="partner" className="control-label">
+                Location
+              </label>
+              <small className="help-block">
+                Whence products are exchanged.{' '}
+                <a href="#/glossary/concepts">
+                  <Icon name="icon-info" />
+                </a>
+              </small>
               <ClassificationSelector
                 type="partner"
                 valueKey="id"
@@ -275,21 +313,36 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'partnerClassification')}
                 selected={selectors.partnerClassification}
                 onUpdate={v => actions.update('partnerClassification', v)}
-                defaultValue={defaultSelectors.indicators['selectors.partnerClassification']} />
+                defaultValue={
+                  defaultSelectors.indicators['selectors.partnerClassification']
+                }
+              />
               <ItemSelector
                 type="partner"
                 valueKey="value"
-                disabled={!selectors.partnerClassification || !groups.partner.length}
-                loading={selectors.partnerClassification && !groups.partner.length}
+                disabled={
+                  !selectors.partnerClassification || !groups.partner.length
+                }
+                loading={
+                  selectors.partnerClassification && !groups.partner.length
+                }
                 data={groups.partner}
                 onChange={actions.update.bind(null, 'partner')}
                 selected={selectors.partner}
                 onUpdate={v => actions.update('partner', v)}
-                defaultValue={defaultSelectors.indicators['selectors.partner']} />
+                defaultValue={defaultSelectors.indicators['selectors.partner']}
+              />
             </div>
             <div className="form-group">
-              <label htmlFor="direction" className="control-label">Direction</label>
-              <small className="help-block">Where, in France, the transactions were recorded. <a href="#/glossary/concepts"><Icon name="icon-info" /></a></small>
+              <label htmlFor="direction" className="control-label">
+                Direction
+              </label>
+              <small className="help-block">
+                Where, in France, the transactions were recorded.{' '}
+                <a href="#/glossary/concepts">
+                  <Icon name="icon-info" />
+                </a>
+              </small>
               <ItemSelector
                 type="direction"
                 valueKey="id"
@@ -298,18 +351,26 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'direction')}
                 selected={selectors.direction}
                 onUpdate={v => actions.update('direction', v)}
-                defaultValue={defaultSelectors.indicators['selectors.direction']} />
+                defaultValue={
+                  defaultSelectors.indicators['selectors.direction']
+                }
+              />
             </div>
             <div className="form-group">
-              <label htmlFor="kind" className="control-label">Kind</label>
-              <small className="help-block">Should we look at import, export, or total?</small>
+              <label htmlFor="kind" className="control-label">
+                Kind
+              </label>
+              <small className="help-block">
+                Should we look at import, export, or total?
+              </small>
               <ItemSelector
                 type="kind"
                 valueKey="id"
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
                 onUpdate={v => actions.update('kind', v)}
-                defaultValue={defaultSelectors.indicators['selectors.kind']} />
+                defaultValue={defaultSelectors.indicators['selectors.kind']}
+              />
             </div>
             <div className="form-group-fixed">
               <button
@@ -324,36 +385,39 @@ export default class ExplorationIndicators extends Component {
           </form>
         </div>
 
-        { /* Content panel */ }
+        {/* Content panel */}
         <Charts
           alert={alert}
           loading={isLoading}
           lines={dataLines}
           ref={el => {
             this.charts = el;
-          }} />
+          }}
+        />
 
-        { /* Right panel */ }
+        {/* Right panel */}
         <div
           className="aside-legend"
           ref={el => {
             this.legendContainer = el;
           }}>
           <ul className="list-unstyled list-labels">
-            {(lines || []).map(function (line, i) {
+            {(lines || []).map(function(line, i) {
               const data = dataIndex[getLineFootprint(line)],
-                    style = {
-                      color: 'white',
-                      backgroundColor: line.color
-                    };
+                style = {
+                  color: 'white',
+                  backgroundColor: line.color
+                };
 
               if (!data)
-                return <li key={i}><Waiter align="left" /></li>;
+                return (
+                  <li key={i}>
+                    <Waiter align="left" />
+                  </li>
+                );
 
               return (
-                <li
-                  key={i}
-                  style={style}>
+                <li key={i} style={style}>
                   {buildDescription(line, data, classificationsIndex || {})}
                   <button
                     type="button"
@@ -368,26 +432,26 @@ export default class ExplorationIndicators extends Component {
           <div className="form-group-fixed form-group-fixed-right">
             <ExportButton
               exports={
-                (lines && lines.length) ?
-                  [
-                    {
-                      label: 'Export CSV',
-                      fn: () => {
-                        this.exportCSV();
+                lines && lines.length
+                  ? [
+                      {
+                        label: 'Export CSV',
+                        fn: () => {
+                          this.exportCSV();
+                        }
+                      },
+                      {
+                        label: 'Export SVG',
+                        fn: () => {
+                          this.exportCharts();
+                        }
                       }
-                    },
-                    {
-                      label: 'Export SVG',
-                      fn: () => {
-                        this.exportCharts();
-                      }
-                    }
-                  ] :
-                  []
-              } />
+                    ]
+                  : []
+              }
+            />
           </div>
         </div>
-
       </VizLayout>
     );
   }
@@ -423,8 +487,18 @@ class Charts extends Component {
 
     if (lines.some(line => !!line.data.length)) {
       /* eslint-disable no-confusing-arrow */
-      const minYear = Math.min.apply(null, lines.map(line => line.data[0] ? line.data[0].year : 9999));
-      const maxYear = Math.max.apply(null, lines.map(line => line.data[line.data.length - 1] ? line.data[line.data.length - 1].year : 0));
+      const minYear = Math.min.apply(
+        null,
+        lines.map(line => (line.data[0] ? line.data[0].year : 9999))
+      );
+      const maxYear = Math.max.apply(
+        null,
+        lines.map(line =>
+          line.data[line.data.length - 1]
+            ? line.data[line.data.length - 1].year
+            : 0
+        )
+      );
       /* eslint-enable no-confusing-arrow */
 
       barData = new Array(maxYear - minYear + 1);
@@ -451,73 +525,80 @@ class Charts extends Component {
 
     return (
       <div className="col-xs-12 col-sm-6 col-md-8">
-        {
-          (alert || loading) && (
-            <div className="progress-container progress-container-viz">
-              {alert && <div className="alert alert-danger" role="alert">{alert}</div>}
-              {
-                loading && (
-                  <div className="progress-line progress-line-viz">
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                )
-              }
-            </div>
-          )
-        }
+        {(alert || loading) && (
+          <div className="progress-container progress-container-viz">
+            {alert && (
+              <div className="alert alert-danger" role="alert">
+                {alert}
+              </div>
+            )}
+            {loading && (
+              <div className="progress-line progress-line-viz">
+                <span className="sr-only">Loading...</span>
+              </div>
+            )}
+          </div>
+        )}
 
-        {
-          !!lines.length && (
-            <div
-              className="viz-data"
-              ref={el => {
-                this.vizContainer = el;
-              }}>
+        {!!lines.length && (
+          <div
+            className="viz-data"
+            ref={el => {
+              this.vizContainer = el;
+            }}>
+            <div className="box-viz">
+              <span className="title">Total number of directions per year</span>
+              <DataQualityBarChart data={barData} syncId="indicators" yAxis />
+            </div>
+            <div className="box-viz">
+              <span className="title">Number of flows per year</span>
+              <LineChart valueKey="count" data={lines} />
+            </div>
+            <div className="box-viz">
+              <span className="title">Total value of flows per year</span>
+              <LineChart shareKey="value_share" data={lines} />
+            </div>
+            {quantitiesOpened && (
               <div className="box-viz">
-                <span className="title">Total number of directions per year</span>
-                <DataQualityBarChart
-                  data={barData}
-                  syncId="indicators"
-                  yAxis />
-              </div>
-              <div className="box-viz">
-                <span className="title">Number of flows per year</span>
-                <LineChart valueKey="count" data={lines} />
-              </div>
-              <div className="box-viz">
-                <span className="title">Total value of flows per year</span>
-                <LineChart shareKey="value_share" data={lines} />
-              </div>
-              {quantitiesOpened && <div className="box-viz">
-                <span className="title">Quantities of flows per year (kilograms)</span>
+                <span className="title">
+                  Quantities of flows per year (kilograms)
+                </span>
                 <LineChart shareKey="kg_share" valueKey="kg" data={lines} />
-              </div>}
-              {quantitiesOpened && <div className="box-viz">
-                <span className="title">Quantities of flows per year (litres)</span>
-                <LineChart shareKey="litre_share" valueKey="litre" data={lines} />
-              </div>}
-              {quantitiesOpened && <div className="box-viz">
-                <span className="title">Quantities of flows per year (pieces)</span>
+              </div>
+            )}
+            {quantitiesOpened && (
+              <div className="box-viz">
+                <span className="title">
+                  Quantities of flows per year (litres)
+                </span>
+                <LineChart
+                  shareKey="litre_share"
+                  valueKey="litre"
+                  data={lines}
+                />
+              </div>
+            )}
+            {quantitiesOpened && (
+              <div className="box-viz">
+                <span className="title">
+                  Quantities of flows per year (pieces)
+                </span>
                 <LineChart shareKey="nbr_share" valueKey="nbr" data={lines} />
-              </div>}
-            </div>
-          )
-        }
+              </div>
+            )}
+          </div>
+        )}
 
-        {
-          !!lines.length && (
-            <div className="viz-data-expand">
-              <button
-                type="submit"
-                onClick={this.toggleQuantities}
-                className="btn btn-default">{
-                quantitiesOpened ?
-                  'Collapse quantities' :
-                  'Expand quantities'
-              }</button>
-            </div>
-          )
-        }
+        {!!lines.length && (
+          <div className="viz-data-expand">
+            <button
+              type="submit"
+              onClick={this.toggleQuantities}
+              className="btn btn-default">
+              {quantitiesOpened ? 'Collapse quantities' : 'Expand quantities'}
+            </button>
+          </div>
+        )}
       </div>
     );
   }
