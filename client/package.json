@@ -54,6 +54,7 @@
     "concurrently": "^3.5.0",
     "css-loader": "^0.28.0",
     "file-loader": "^0.11.1",
+    "git-rev-sync": "^3.0.1",
     "json-loader": "^0.5.2",
     "kotatsu": "^0.15.2",
     "node-sass": "4.5.3",

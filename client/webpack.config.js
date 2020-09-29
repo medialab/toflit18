@@ -1,13 +1,9 @@
-var webpack = require('webpack'),
-    config = require('config'),
-    path = require('path');
+let webpack = require('webpack'),
+  config = require('config'),
+  path = require('path'),
+  git = require('git-rev-sync');
 
-var PRESETS = [
-  'es2015',
-  'stage-0',
-  'react',
-  'react-hmre'
-];
+const PRESETS = ['es2015', 'stage-0', 'react', 'react-hmre'];
 
 PRESETS.forEach(function(p, i) {
   PRESETS[i] = require.resolve('babel-preset-' + p);
@@ -24,16 +20,28 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      CONFIG: JSON.stringify(config)
+      CONFIG: JSON.stringify(
+        Object.assign(
+          {
+            git_branch:
+              ['prod', 'staging'].findIndex(e => e === git.branch()) > -1
+                ? git.branch()
+                : 'dev'
+          },
+          config
+        )
+      )
     })
   ],
   module: {
     rules: [
-
       // ES6 & JSX
       {
         test: /\.jsx?$/,
-        include: [path.join(__dirname, 'js'), path.resolve(__dirname, '../lib')],
+        include: [
+          path.join(__dirname, 'js'),
+          path.resolve(__dirname, '../lib')
+        ],
         loader: 'babel-loader',
         options: {
           presets: PRESETS,
@@ -44,18 +52,11 @@ module.exports = {
       // Style
       {
         test: /\.scss?$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
+        use: ['style-loader', 'css-loader']
       },
 
       // Fonts

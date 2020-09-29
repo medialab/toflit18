@@ -7,6 +7,7 @@
  */
 import React, {Component} from 'react';
 import {escapeRegexp} from 'talisman/regexp';
+import papaparse from 'papaparse';
 import cls from 'classnames';
 import ajax from 'djax';
 import VizLayout from '../misc/VizLayout.jsx';
@@ -15,18 +16,6 @@ import VizLayout from '../misc/VizLayout.jsx';
  * Constants.
  */
 const URL_REGEX = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
-
-/**
- * Component representing a single glossary entry.
- */
-function GlossaryEntry({name, html}) {
-  return (
-    <div className="well">
-      <dt>{name}</dt>
-      <dd dangerouslySetInnerHTML={{__html: html}} />
-    </div>
-  );
-}
 
 /**
  * Main component.
@@ -45,17 +34,30 @@ export default class GlossaryPanel extends Component {
   }
 
   componentDidMount() {
-    ajax({url: CONFIG.glossary_url}).then(data => {
-      const glossary_data = data.map(entry => {
-        return {
-          ...entry,
-          html: entry.definition.replace(URL_REGEX, match => {
-            let label = match;
-            if (match.length > 70) label = match.slice(0, 67) + '...';
-            return `<a href="${match}">${label}</a>`;
-          })
-        };
-      });
+    ajax({
+      url: [
+        CONFIG.glossary.repository_url,
+        CONFIG.git_branch,
+        CONFIG.glossary.path
+      ].join(''),
+      dataType: 'string'
+    }).then((data, error) => {
+      const result = papaparse.parse(data, {header: true});
+      if (result.errors.length > 0) {
+        console.log(result.errors);
+      }
+      const glossary_data = result.data
+        .filter(e => e.definition)
+        .map(entry => {
+          return {
+            name: entry.marchandises,
+            html: entry.definition.replace(URL_REGEX, match => {
+              let label = match;
+              if (match.length > 70) label = match.slice(0, 67) + '...';
+              return `<a href="${match}">${label}</a>`;
+            })
+          };
+        });
       this.setState({
         glossary: glossary_data,
         entries: glossary_data
@@ -92,9 +94,12 @@ export default class GlossaryPanel extends Component {
 
   render() {
     const {query} = this.state;
-    const entries = this.state.entries.map(entry => {
+    const entries = this.state.entries.map((entry, index) => {
       return (
-        <GlossaryEntry key={entry.name} name={entry.name} html={entry.html} />
+        <div key={index} className="well">
+          <dt>{entry.name}</dt>
+          <dd dangerouslySetInnerHTML={{__html: entry.html}} />
+        </div>
       );
     });
 
