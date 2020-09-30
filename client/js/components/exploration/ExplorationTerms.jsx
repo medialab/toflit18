@@ -9,10 +9,11 @@ import {format} from 'd3-format';
 import {range} from 'lodash';
 import Select from 'react-select';
 import {branch} from 'baobab-react/decorators';
+import {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import Network from './viz/Network.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
-import {exportCSV} from '../../lib/exports';
+import {exportCSV, exportSVG} from '../../lib/exports';
 import {
   selectTerms,
   selectNodeSize,
@@ -22,7 +23,7 @@ import {
   updateSelector as update,
   addChart,
   checkDefaultState,
-  checkGroups
+  checkGroups,
 } from '../../actions/terms';
 import Icon from '../misc/Icon.jsx';
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
@@ -80,7 +81,7 @@ export default class ExplorationGlobalsTerms extends Component {
     update,
     addChart,
     checkDefaultState,
-    checkGroups
+    checkGroups,
   },
   cursors: {
     alert: ['ui', 'alert'],
@@ -88,8 +89,8 @@ export default class ExplorationGlobalsTerms extends Component {
     classificationIndex: ['data', 'classifications', 'index'],
     directions: ['data', 'directions'],
     sourceTypes: ['data', 'sourceTypes'],
-    state: ['explorationTermsState']
-  }
+    state: ['explorationTermsState'],
+  },
 })
 class TermsPanel extends Component {
   constructor(props, context) {
@@ -104,13 +105,11 @@ class TermsPanel extends Component {
     const state = this.props.state;
     const initialState = defaultSelectors.terms.initialValues;
     const hasInitialState = Object.keys(initialState).some(key =>
-      key.split('.').reduce((iter, step) => iter && iter[step], state)
+      key.split('.').reduce((iter, step) => iter && iter[step], state),
     );
 
     if (!hasInitialState) {
-      this.props.actions.checkDefaultState(
-        defaultSelectors.terms.initialValues
-      );
+      this.props.actions.checkDefaultState(defaultSelectors.terms.initialValues);
     }
 
     this.props.actions.checkGroups(this.props.actions.addChart);
@@ -121,13 +120,22 @@ class TermsPanel extends Component {
     this.props.actions.checkDefaultState(defaultSelectors.terms.defaultValues);
   }
 
-  export() {
+  exportCsv() {
     const now = new Date();
     exportCSV({
       data: this.props.state.data,
-      name: `TOFLIT18_Product_terms_${now
-        .toLocaleString('se-SE')
-        .replace(' ', '_')}.csv`
+      name: `TOFLIT18_Product_terms_${now.toLocaleString('se-SE').replace(' ', '_')}.csv`,
+    });
+  }
+
+  exportGraph() {
+    const now = new Date();
+    const graphSvg = sigma.instances(0).toSVG({
+      labels: true,
+    });
+    exportSVG({
+      nodes: [this.legend, graphSvg],
+      name: `TOFLIT18_Product_terms_${now.toLocaleString('se-SE').replace(' ', '_')}..svg`,
     });
   }
 
@@ -147,17 +155,7 @@ class TermsPanel extends Component {
       classificationIndex,
       directions,
       sourceTypes,
-      state: {
-        graph,
-        classification,
-        nodeSize,
-        edgeSize,
-        labelSizeRatio,
-        labelThreshold,
-        loading,
-        selectors,
-        groups
-      }
+      state: {graph, classification, nodeSize, edgeSize, labelSizeRatio, labelThreshold, loading, selectors, groups},
     } = this.props;
 
     const {selectedNode, fullscreen} = this.state;
@@ -165,29 +163,25 @@ class TermsPanel extends Component {
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
         name: type,
-        value: type
+        value: type,
       };
     });
 
     const dateMin = selectors.dateMin;
-    const dateMaxOptions = range(
-      dateMin || specs.limits.minYear,
-      specs.limits.maxYear
-    ).map(d => ({name: '' + d, id: '' + d}));
+    const dateMaxOptions = range(dateMin || specs.limits.minYear, specs.limits.maxYear).map(d => ({
+      name: '' + d,
+      id: '' + d,
+    }));
 
     const dateMax = selectors.dateMax;
-    const dateMinOptions = range(
-      specs.limits.minYear,
-      dateMax ? +dateMax + 1 : specs.limits.maxYear
-    ).map(d => ({name: '' + d, id: '' + d}));
+    const dateMinOptions = range(specs.limits.minYear, dateMax ? +dateMax + 1 : specs.limits.maxYear).map(d => ({
+      name: '' + d,
+      id: '' + d,
+    }));
 
     let childClassifications = [];
 
-    if (classification)
-      childClassifications = getChildClassifications(
-        classificationIndex,
-        classification
-      );
+    if (classification) childClassifications = getChildClassifications(classificationIndex, classification);
 
     return (
       <VizLayout
@@ -209,7 +203,8 @@ class TermsPanel extends Component {
             onChange={actions.selectTerms}
             onUpdate={actions.selectTerms}
             selected={classification}
-            defaultValue={defaultSelectors.terms.classification} />
+            defaultValue={defaultSelectors.terms.classification}
+          />
         </div>
         {/* Left panel */}
         <div className="aside-filters">
@@ -233,7 +228,8 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'sourceType')}
                 selected={selectors.sourceType}
                 onUpdate={v => actions.update('sourceType', v)}
-                defaultValue={defaultSelectors.terms['selectors.sourceType']} />
+                defaultValue={defaultSelectors.terms['selectors.sourceType']}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">
@@ -255,21 +251,19 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'childClassification')}
                 selected={selectors.childClassification}
                 onUpdate={v => actions.update('childClassification', v)}
-                defaultValue={
-                  defaultSelectors.terms['selectors.childClassification']
-                } />
+                defaultValue={defaultSelectors.terms['selectors.childClassification']}
+              />
               <ItemSelector
                 valueKey="id"
                 type="product"
-                disabled={
-                  !selectors.childClassification || !groups.child.length
-                }
+                disabled={!selectors.childClassification || !groups.child.length}
                 loading={selectors.childClassification && !groups.child.length}
                 data={groups.child}
                 onChange={actions.update.bind(null, 'child')}
                 selected={selectors.child}
                 onUpdate={v => actions.update('child', v)}
-                defaultValue={defaultSelectors.terms['selectors.child']} />
+                defaultValue={defaultSelectors.terms['selectors.child']}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="partner" className="control-label">
@@ -289,23 +283,19 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'partnerClassification')}
                 selected={selectors.partnerClassification}
                 onUpdate={v => actions.update('partnerClassification', v)}
-                defaultValue={
-                  defaultSelectors.terms['selectors.partnerClassification']
-                } />
+                defaultValue={defaultSelectors.terms['selectors.partnerClassification']}
+              />
               <ItemSelector
                 valueKey="id"
                 type="partner"
-                disabled={
-                  !selectors.partnerClassification || !groups.partner.length
-                }
-                loading={
-                  selectors.partnerClassification && !groups.partner.length
-                }
+                disabled={!selectors.partnerClassification || !groups.partner.length}
+                loading={selectors.partnerClassification && !groups.partner.length}
                 data={groups.partner}
                 onChange={actions.update.bind(null, 'partner')}
                 selected={selectors.partner}
                 onUpdate={v => actions.update('partner', v)}
-                defaultValue={defaultSelectors.terms['selectors.partner']} />
+                defaultValue={defaultSelectors.terms['selectors.partner']}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">
@@ -325,30 +315,28 @@ class TermsPanel extends Component {
                 onChange={actions.update.bind(null, 'direction')}
                 selected={selectors.direction}
                 onUpdate={v => actions.update('direction', v)}
-                defaultValue={defaultSelectors.terms['selectors.direction']} />
+                defaultValue={defaultSelectors.terms['selectors.direction']}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">
                 Kind
               </label>
-              <small className="help-block">
-                Should we look at import, export, or total?
-              </small>
+              <small className="help-block">Should we look at import, export, or total?</small>
               <ItemSelector
                 valueKey="id"
                 type="kind"
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
                 onUpdate={v => actions.update('kind', v)}
-                defaultValue={defaultSelectors.terms['selectors.kind']} />
+                defaultValue={defaultSelectors.terms['selectors.kind']}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="dates" className="control-label">
                 Dates
               </label>
-              <small className="help-block">
-                Choose one date or a range data
-              </small>
+              <small className="help-block">Choose one date or a range data</small>
               <div className="row">
                 <div className="col-xs-6">
                   <ItemSelector
@@ -358,7 +346,8 @@ class TermsPanel extends Component {
                     onChange={actions.update.bind(null, 'dateMin')}
                     selected={selectors.dateMin}
                     onUpdate={v => actions.update('dateMin', v)}
-                    defaultValue={defaultSelectors.terms['selectors.dateMin']} />
+                    defaultValue={defaultSelectors.terms['selectors.dateMin']}
+                  />
                 </div>
                 <div className="col-xs-6">
                   <ItemSelector
@@ -368,7 +357,8 @@ class TermsPanel extends Component {
                     onChange={actions.update.bind(null, 'dateMax')}
                     selected={selectors.dateMax}
                     onUpdate={v => actions.update('dateMax', v)}
-                    defaultValue={defaultSelectors.terms['selectors.dateMax']} />
+                    defaultValue={defaultSelectors.terms['selectors.dateMax']}
+                  />
                 </div>
               </div>
             </div>
@@ -397,7 +387,8 @@ class TermsPanel extends Component {
           toggleFullscreen={this.toggleFullscreen}
           alert={alert}
           loading={loading}
-          className="col-xs-12 col-sm-6 col-md-8" />
+          className="col-xs-12 col-sm-6 col-md-8"
+        />
         {/* Right panel */}
         <div className="aside-legend">
           <form onSubmit={e => e.preventDefault()}>
@@ -413,15 +404,16 @@ class TermsPanel extends Component {
                 options={[
                   {
                     value: 'flows',
-                    label: 'Nb of flows.'
+                    label: 'Nb of flows.',
                   },
                   {
                     value: 'value',
-                    label: 'Value of flows.'
-                  }
+                    label: 'Value of flows.',
+                  },
                 ]}
                 value={edgeSize}
-                onChange={({value}) => actions.selectEdgeSize(value)} />
+                onChange={({value}) => actions.selectEdgeSize(value)}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="nodeSize" className="control-label">
@@ -435,21 +427,26 @@ class TermsPanel extends Component {
                 options={[
                   {
                     value: 'flows',
-                    label: 'Nb of flows.'
+                    label: 'Nb of flows.',
                   },
                   {
                     value: 'value',
-                    label: 'Value of flows.'
+                    label: 'Value of flows.',
                   },
                   {
                     value: 'degree',
-                    label: 'Degree.'
-                  }
+                    label: 'Degree.',
+                  },
                 ]}
                 value={nodeSize}
-                onChange={({value}) => actions.selectNodeSize(value)} />
+                onChange={({value}) => actions.selectNodeSize(value)}
+              />
             </div>
-            <div className="form-group">
+            <div
+              className="form-group"
+              ref={el => {
+                this.legend = el;
+              }}>
               <label className="control-label">Color</label>
               <small className="help-block">Community Louvain</small>
             </div>
@@ -466,10 +463,11 @@ class TermsPanel extends Component {
                     searchable={false}
                     options={range(1, 10).map(num => ({
                       value: num + '',
-                      label: num + ''
+                      label: num + '',
                     }))}
                     value={labelSizeRatio + ''}
-                    onChange={({value}) => actions.selectLabelSizeRatio(+value)} />
+                    onChange={({value}) => actions.selectLabelSizeRatio(+value)}
+                  />
                 </div>
                 <div className="col-xs-6">
                   <small className="help-block">Threshold</small>
@@ -479,10 +477,11 @@ class TermsPanel extends Component {
                     searchable={false}
                     options={range(0, 20).map(num => ({
                       value: num + '',
-                      label: num + ''
+                      label: num + '',
                     }))}
                     value={labelThreshold + ''}
-                    onChange={({value}) => actions.selectLabelThreshold(+value)} />
+                    onChange={({value}) => actions.selectLabelThreshold(+value)}
+                  />
                 </div>
               </div>
             </div>
@@ -497,12 +496,10 @@ class TermsPanel extends Component {
                     Flows: <strong>{NUMBER_FORMAT(selectedNode.flows)}</strong>
                   </li>
                   <li>
-                    Value:{' '}
-                    <strong>{NUMBER_FIXED_FORMAT(selectedNode.value)}</strong>
+                    Value: <strong>{NUMBER_FIXED_FORMAT(selectedNode.value)}</strong>
                   </li>
                   <li>
-                    Degree:{' '}
-                    <strong>{NUMBER_FORMAT(selectedNode.degree)}</strong>
+                    Degree: <strong>{NUMBER_FORMAT(selectedNode.degree)}</strong>
                   </li>
                 </ul>
               </div>
@@ -511,9 +508,22 @@ class TermsPanel extends Component {
             )}
           </form>
           <div className="form-group-fixed form-group-fixed-right">
-            <button className="btn btn-default" onClick={() => this.export()}>
-              Export
-            </button>
+            <ExportButton
+              exports={[
+                {
+                  label: 'Export CSV',
+                  fn: () => {
+                    this.exportCsv();
+                  },
+                },
+                {
+                  label: 'Export SVG',
+                  fn: () => {
+                    this.exportGraph();
+                  },
+                },
+              ]}
+            />
           </div>
         </div>
       </VizLayout>
