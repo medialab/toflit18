@@ -102,7 +102,7 @@ export default class Classification extends Component {
   }
 
   expandGroup(groupId, itemsFrom) {
-    this.props.actions.expandGroup(groupId, this.refs.queryGroup.value, itemsFrom);
+    this.props.actions.expandGroup(groupId, this.props.queryGroup, itemsFrom);
   }
 
   exportCsv() {
@@ -238,11 +238,14 @@ export default class Classification extends Component {
           <div className="row">
             {!!fullSelected && (
               <div className="col-sm-6">
-                <form onSubmit={e => e.preventDefault()}>
+                <div>
                   <legend className="text-center">{fullSelected.name}</legend>
                   <div className="row">
                     <div className="col-sm-6 col-lg-6">
-                      <div className="form-group">
+                      <form className="form-group" onSubmit={e => {
+                        actions.updateSelector('queryGroup', this.refs.queryGroup.value || null);
+                        e.preventDefault();
+                      }}>
                         <label className="sr-only" htmlFor="search-simplification">
                           Search
                         </label>
@@ -253,9 +256,8 @@ export default class Classification extends Component {
                             className="form-control"
                             id="search-simplification"
                             placeholder="Search"
-                            value={queryGroup || ''}
+                            defaultValue={queryGroup || ''}
                             style={{borderColor: '#d9d9d9'}}
-                            onChange={e => actions.updateSelector('queryGroup', e.target.value || null)}
                           />
                           <div className="input-group-btn">
                             <button
@@ -267,7 +269,7 @@ export default class Classification extends Component {
                             </button>
                           </div>
                         </div>
-                      </div>
+                      </form>
                     </div>
                     <div className="col-sm-6 col-lg-6">
                       <div className="form-group">
@@ -299,16 +301,19 @@ export default class Classification extends Component {
                       </div>
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
             )}
             {!!fullSelectedParent && (
               <div className="col-sm-6">
-                <form onSubmit={e => e.preventDefault()}>
+                <div>
                   <legend className="text-center">{fullSelectedParent.name}</legend>
                   <div className="row">
                     <div className="col-sm-12 col-lg-8 col-lg-offset-2">
-                      <div className="form-group">
+                      <form className="form-group" onSubmit={e => {
+                        actions.updateSelector('queryItem', this.refs.queryItem.value || null);
+                        e.preventDefault();
+                      }}>
                         <label className="sr-only" htmlFor="search-source">
                           Search
                         </label>
@@ -319,9 +324,8 @@ export default class Classification extends Component {
                             className="form-control"
                             id="search-source"
                             placeholder="Search"
-                            value={queryItem || ''}
+                            defaultValue={queryItem || ''}
                             style={{borderColor: '#d9d9d9'}}
-                            onChange={e => actions.updateSelector('queryItem', e.target.value || null)}
                           />
                           <div className="input-group-btn">
                             <button
@@ -333,10 +337,10 @@ export default class Classification extends Component {
                             </button>
                           </div>
                         </div>
-                      </div>
+                      </form>
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
             )}
             <div className="group-list-container">
