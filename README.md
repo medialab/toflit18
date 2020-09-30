@@ -129,7 +129,7 @@ npm run indices
 
 ### Using Neo4J on a Docker container
 
-You can use Neo4j on Docker by spawning a `neo4j:3.1.3` container with the `graph.db` directory mounted as following:
+You can use Neo4j on Docker by spawning a `neo4j:3.5` container with the `graph.db` directory mounted as following:
 
 ```bash
 docker run \
@@ -139,7 +139,7 @@ docker run \
   --publish 7687:7687 \
   --env NEO4J_AUTH=none \
   --volume /local/path/to/graph.db:/data/databases/graph.db \
-  neo4j:3.1.3
+  neo4j:3.5
 ```
 
 ## Serving
