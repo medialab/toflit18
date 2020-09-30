@@ -17,7 +17,7 @@
     "rewire": "kotatsu --babel run --progress --source-maps ./scripts/rewire.js",
     "start": "kotatsu run --babel ./scripts/start.js",
     "test": "mocha -R spec --compilers js:babel-core/register ./test/endpoint.js",
-    "prettify": "prettier --write --config .prettierrc.json ./api/**/*.js ./lib/**/*.js ./test/**/*.js ./scripts/**/*.js ./client/js/**/*.js"
+    "prettify": "prettier --write --config .prettierrc.json ./api/**/*.js* ./lib/**/*.js* ./test/**/*.js* ./scripts/**/*.js* ./client/js/**/*.js*"
   },
   "repository": {
     "type": "git",

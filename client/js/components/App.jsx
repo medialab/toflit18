@@ -4,21 +4,21 @@
  *
  * Root component for the application.
  */
-import React, {Component} from 'react';
-import {branch} from 'baobab-react/decorators';
+import React, { Component } from "react";
+import { branch } from "baobab-react/decorators";
 
-import Header from './Header.jsx';
-import Home from './Home.jsx';
-import About from './About.jsx';
-import Legal from './Legal.jsx';
-import Classification from './classification/Classification.jsx';
-import ExplorationMeta from './exploration/ExplorationMeta.jsx';
-import ExplorationIndicators from './exploration/ExplorationIndicators.jsx';
-import ExplorationNetwork from './exploration/ExplorationNetwork.jsx';
-import ExplorationTerms from './exploration/ExplorationTerms.jsx';
-import Sources from './Sources.jsx';
-import GlossaryPanel from './glossary/GlossaryPanel.jsx';
-import Concepts from './Concepts.jsx';
+import Header from "./Header.jsx";
+import Home from "./Home.jsx";
+import About from "./About.jsx";
+import Legal from "./Legal.jsx";
+import Classification from "./classification/Classification.jsx";
+import ExplorationMeta from "./exploration/ExplorationMeta.jsx";
+import ExplorationIndicators from "./exploration/ExplorationIndicators.jsx";
+import ExplorationNetwork from "./exploration/ExplorationNetwork.jsx";
+import ExplorationTerms from "./exploration/ExplorationTerms.jsx";
+import Sources from "./Sources.jsx";
+import GlossaryPanel from "./glossary/GlossaryPanel.jsx";
+import Concepts from "./Concepts.jsx";
 
 const COMPONENTS = {
   home: Home,
@@ -36,12 +36,12 @@ const COMPONENTS = {
 
 @branch({
   cursors: {
-    view: ['view']
-  }
+    view: ["view"],
+  },
 })
 export default class App extends Component {
   render() {
-    const {view} = this.props;
+    const { view } = this.props;
     const Comp = COMPONENTS[view];
 
     return (

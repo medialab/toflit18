@@ -3,7 +3,7 @@
  * ======================================
  *
  */
-import React, {Component} from 'react';
+import React, { Component } from "react";
 
 export default class Sources extends Component {
   render() {
@@ -17,9 +17,8 @@ export default class Sources extends Component {
               </div>
               <div className="col-sm-8 col-md-5">
                 <p className="hidden-xs">
-                  The archives of French eighteenth century trade have been
-                  preserved in many different formats. We had to integrate them
-                  into a limited number of types depending on their content.
+                  The archives of French eighteenth century trade have been preserved in many different formats. We had
+                  to integrate them into a limited number of types depending on their content.
                 </p>
               </div>
             </div>
@@ -30,31 +29,26 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National best guess</h2>
               <p className="lead">
-                This autoselects the best source about trade by product x
-                partner for the whole of France in each year.
-                This is "National toutes directions tous partenaires" for 1750,
-                "Objet Général" from 1754 to 1782, "Résumé" in 1787-1789 and 1797-1821.
+                This autoselects the best source about trade by product x partner for the whole of France in each year.
+                This is "National toutes directions tous partenaires" for 1750, "Objet Général" from 1754 to 1782,
+                "Résumé" in 1787-1789 and 1797-1821.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Local best guess</h2>
               <p className="lead">
-                This autoselects the best source about trade by product x
-                partner x direction in each year. The selected sources are mostly of the
-                "Local" (1714-1780), except for 1750 when we use "National toutes directions
+                This autoselects the best source about trade by product x partner x direction in each year. The selected
+                sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes directions
                 tous partenaires".
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Objet Général</h2>
               <p className="lead">
-                were produced from 1752 to 1788. They contain trade by product x
-                partner for the whole of France. They always include the value
-                of the flows. From 1771, they include quantities and / or unit
-                prices.
-                The 1752 Objet Général does not include imports from the West Indies.
-                We have added to the Objet Général imports through
-                the French East Indian Company when available on the same year (up to 1771)
+                were produced from 1752 to 1788. They contain trade by product x partner for the whole of France. They
+                always include the value of the flows. From 1771, they include quantities and / or unit prices. The 1752
+                Objet Général does not include imports from the West Indies. We have added to the Objet Général imports
+                through the French East Indian Company when available on the same year (up to 1771)
               </p>
               <p>
                 <ul>
@@ -82,9 +76,8 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Résumé</h2>
               <p className="lead">
-                cover the 1787-1789 and 1797-1821. They contain trade by class
-                of products x partner for the whole of France. They include the
-                value of the flows.
+                cover the 1787-1789 and 1797-1821. They contain trade by class of products x partner for the whole of
+                France. They include the value of the flows.
               </p>
               <p>
                 <ul>
@@ -95,8 +88,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National toutes directions partenaires manquant</h2>
               <p className="lead">
-                They contain trade by product x partner x direction for the
-                whole of France and some partners.
+                They contain trade by product x partner x direction for the whole of France and some partners.
               </p>
               <p>
                 <ul>
@@ -144,9 +136,8 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National toutes directions tous partenaires</h2>
               <p className="lead">
-                contain trade by product x partner x direction for the whole of
-                France. They includes values and quantities. They only exist for
-                1750 (though the 1789 year is nearly covered in the same way)
+                contain trade by product x partner x direction for the whole of France. They includes values and
+                quantities. They only exist for 1750 (though the 1789 year is nearly covered in the same way)
               </p>
               <p>
                 <ul>
@@ -160,10 +151,8 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Local</h2>
               <p className="lead">
-                sources contain data for trade by a specific direction by
-                product x partner x direction. They include unit prices and
-                quantites (and sometimes also values). They exist from 1714 to
-                1780.
+                sources contain data for trade by a specific direction by product x partner x direction. They include
+                unit prices and quantites (and sometimes also values). They exist from 1714 to 1780.
               </p>
               <p>
                 <ul>
@@ -322,17 +311,16 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>1792 first semester</h2>
               <p className="lead">
-                contains trade by product x partner for the whole of France for
-                the first semester of 1792. They include mainly quantities.
+                contains trade by product x partner for the whole of France for the first semester of 1792. They include
+                mainly quantities.
               </p>
               <p>AN F12 252</p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National partenaires manquants</h2>
               <p className="lead">
-                contain trade by product x partner for the whole of France and a
-                small number of partners (Angleterre, Barbarie, États-Unis,
-                Russie for individual years in the 1780s).
+                contain trade by product x partner for the whole of France and a small number of partners (Angleterre,
+                Barbarie, États-Unis, Russie for individual years in the 1780s).
               </p>
               <p>
                 <ul>
@@ -342,20 +330,19 @@ export default class Sources extends Component {
               </p>
             </div>
 
-                <div className="col-sm-10 col-sm-offset-1">
+            <div className="col-sm-10 col-sm-offset-1">
               <h2>1792-both semester</h2>
               <p className="lead">
-                contains trade by product x continent for the whole of Frane for
-                1792. They contain a mix of quantities and values (but never
-                both for a single flow)
+                contains trade by product x continent for the whole of Frane for 1792. They contain a mix of quantities
+                and values (but never both for a single flow)
               </p>
               <p>AN F12 252</p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Tableau des quantités</h2>
               <p className="lead">
-                covers 1822 and 1823. It contains trade by product x partner for
-                the whole of France. They include mainly quantities.
+                covers 1822 and 1823. It contains trade by product x partner for the whole of France. They include
+                mainly quantities.
               </p>
               <p>
                 <ul>
@@ -366,8 +353,8 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Tableau des marchandises</h2>
               <p className="lead">
-                covers 1819 and 1821. It contains trade by product for the whole
-                of France. They include mainly quantites and tolls paid.
+                covers 1819 and 1821. It contains trade by product for the whole of France. They include mainly
+                quantites and tolls paid.
               </p>
               <p>
                 <ul>
@@ -378,10 +365,8 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Tableau Général</h2>
               <p className="lead">
-                include bilateral trade from 1716. We have completed the
-                original "Tableau Général" with various other sources giving
-                the same information at various date (up to 1792) or for the
-                French East India Compagny.
+                include bilateral trade from 1716. We have completed the original "Tableau Général" with various other
+                sources giving the same information at various date (up to 1792) or for the French East India Compagny.
               </p>
               <p>
                 <ul>
@@ -392,7 +377,6 @@ export default class Sources extends Component {
                 </ul>
               </p>
             </div>
-
           </div>
         </div>
       </main>
