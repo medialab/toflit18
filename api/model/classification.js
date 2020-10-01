@@ -3,17 +3,17 @@
  * ==============================
  *
  */
-import async from "async";
-import decypher from "decypher";
-import database from "../connection";
-import { classification as queries } from "../queries";
-import { stringify } from "csv";
-import Batch from "../../lib/batch";
-import { groupBy, find, map } from "lodash";
-import { checkIntegrity, solvePatch, applyOperations, rewire } from "../../lib/patch";
+import async from 'async';
+import decypher from 'decypher';
+import database from '../connection';
+import {classification as queries} from '../queries';
+import {stringify} from 'csv';
+import Batch from '../../lib/batch';
+import {groupBy, find, map} from 'lodash';
+import {checkIntegrity, solvePatch, applyOperations, rewire} from '../../lib/patch';
 
 const {
-  helpers: { searchPattern },
+  helpers: {searchPattern},
 } = decypher;
 
 /**
@@ -21,8 +21,8 @@ const {
  */
 function makeTree(list, tree) {
   if (!tree) {
-    const root = find(list, { source: true });
-    tree = { ...root };
+    const root = find(list, {source: true});
+    tree = {...root};
   }
 
   tree.children = list.filter(e => e.parent === tree.id);
@@ -77,7 +77,7 @@ const Model = {
    * Retrieving every one of the classification's groups.
    */
   groups(id, callback) {
-    return database.cypher({ query: queries.rawGroups, params: { id } }, function(err, result) {
+    return database.cypher({query: queries.rawGroups, params: {id}}, function(err, result) {
       if (err) return callback(err);
       if (!result.length) return callback(null, null);
 
@@ -95,13 +95,13 @@ const Model = {
     // items limit offset are start/end slice indices
     params.limitItem = database.int(opts.limitItem + opts.offsetItem);
     params.offsetItem = database.int(opts.offsetItem);
-    params.queryItem = searchPattern(opts.queryItem || "");
+    params.queryItem = searchPattern(opts.queryItem || '');
 
     if (opts.queryItemFrom) params.queryItemFrom = opts.queryItemFrom;
 
     const query = params.queryItemFrom ? queries.groupFrom : queries.group;
 
-    return database.cypher({ query, params }, function(err, result) {
+    return database.cypher({query, params}, function(err, result) {
       if (err) return callback(err);
       if (!result.length) return callback(null, null);
       const row = result[0];
@@ -124,27 +124,27 @@ const Model = {
     let queryString, params;
 
     if (!opts.source) {
-      if (opts.queryItem) queryString = queries[opts.queryItemFrom ? "searchGroupsFrom" : "searchGroups"];
-      else queryString = queries[opts.queryItemFrom ? "groupsFrom" : "groups"];
+      if (opts.queryItem) queryString = queries[opts.queryItemFrom ? 'searchGroupsFrom' : 'searchGroups'];
+      else queryString = queries[opts.queryItemFrom ? 'groupsFrom' : 'groups'];
 
       params = {
         ...opts,
         id,
-        queryGroup: opts.queryGroup ? `(?im).*${opts.queryGroup}.*` : ".*",
-        queryItem: opts.queryItem ? `(?im).*${opts.queryItem}.*` : ".*",
+        queryGroup: opts.queryGroup ? `(?im).*${opts.queryGroup}.*` : '.*',
+        queryItem: opts.queryItem ? `(?im).*${opts.queryItem}.*` : '.*',
       };
     } else {
       queryString = queries.searchGroupsSource;
       params = {
         ...opts,
         id,
-        queryGroup: searchPattern(opts.queryGroup || ""),
+        queryGroup: searchPattern(opts.queryGroup || ''),
       };
     }
 
     // create the dynamic query
     const query = decypher.Query();
-    queryString.split("\n").forEach(line => query.add(line));
+    queryString.split('\n').forEach(line => query.add(line));
 
     // Casting
     params.id = params.id;
@@ -157,16 +157,16 @@ const Model = {
     if (params.queryItemFrom) params.queryItemFrom = params.queryItemFrom;
 
     // order by
-    if (opts.orderBy === "name") query.orderBy("group.name");
-    else if (opts.queryItem && opts.orderBy === "nbMatches") query.orderBy("nbMatchedItems DESC");
-    else query.orderBy("nbItems DESC");
+    if (opts.orderBy === 'name') query.orderBy('group.name');
+    else if (opts.queryItem && opts.orderBy === 'nbMatches') query.orderBy('nbMatchedItems DESC');
+    else query.orderBy('nbItems DESC');
 
     //skip & limit
     if (!opts.source && !opts.queryItem) {
       // dynamic skip & limit only for groupsFrom and groups queries cause the
       // limit and skip has to be after the dynamic orderBy
-      query.skip("" + params.offset);
-      query.limit("" + params.limit);
+      query.skip('' + params.offset);
+      query.limit('' + params.limit);
     }
 
     query.params(params);
@@ -185,7 +185,9 @@ const Model = {
         return group;
       });
 
-      if (opts.orderBy === "name") groups.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      if (opts.orderBy === 'name' || !opts.orderBy) {
+        groups.sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+      }
 
       return callback(null, groups);
     });
@@ -195,22 +197,22 @@ const Model = {
    * Exporting to csv.
    */
   export(id, callback) {
-    return database.cypher({ query: queries.export, params: { id } }, function(err, results) {
+    return database.cypher({query: queries.export, params: {id}}, function(err, results) {
       if (err) return callback(err);
       if (!results.length) return callback(null, null);
 
-      const { name, parent, model } = results[0];
+      const {name, parent, model} = results[0];
 
-      const headers = [name, parent, "note", "outsider"];
+      const headers = [name, parent, 'note', 'outsider'];
 
       const rows = results.slice(1).map(function(row) {
-        return [row.group, row.item, row.note, "" + row.outsider];
+        return [row.group, row.item, row.note, '' + row.outsider];
       });
 
       return stringify([headers].concat(rows), {}, function(e, csv) {
         if (e) return callback(e);
 
-        return callback(null, { csv, name, model });
+        return callback(null, {csv, name, model});
       });
     });
   },
@@ -219,12 +221,12 @@ const Model = {
    * Review the given patch for the given classification.
    */
   review(id, patch, callback) {
-    return database.cypher({ query: queries.allGroups, params: { id } }, function(err1, classification) {
+    return database.cypher({query: queries.allGroups, params: {id}}, function(err1, classification) {
       if (err1) return callback(err1);
       if (!classification.length) return callback(null, null);
 
       // Checking integrity
-      const integrity = checkIntegrity(map(classification, "item"), map(patch, "item"));
+      const integrity = checkIntegrity(map(classification, 'item'), map(patch, 'item'));
 
       // Applying the patch
       const operations = solvePatch(classification, patch);
@@ -233,7 +235,7 @@ const Model = {
       const updatedClassification = applyOperations(classification, operations);
 
       // Retrieving upper classifications
-      return database.cypher({ query: queries.upper, params: { id } }, function(err2, upper) {
+      return database.cypher({query: queries.upper, params: {id}}, function(err2, upper) {
         if (err2) return callback(err2);
 
         const ids = map(upper, c => c.upper.properties.id);
@@ -242,15 +244,12 @@ const Model = {
         return async.map(
           ids,
           function(upperId, next) {
-            return database.cypher({ query: queries.upperGroups, params: { id: upperId } }, function(
-              err3,
-              upperGroups,
-            ) {
+            return database.cypher({query: queries.upperGroups, params: {id: upperId}}, function(err3, upperGroups) {
               if (err3) return next(err3);
 
               const links = rewire(upperGroups, classification, updatedClassification, operations);
 
-              return next(null, { id: upperId, links });
+              return next(null, {id: upperId, links});
             });
           },
           function(err4, rewires) {
@@ -275,7 +274,7 @@ const Model = {
     async.waterfall(
       [
         function getData(next) {
-          return database.cypher({ query: queries.info, params: { id } }, next);
+          return database.cypher({query: queries.info, params: {id}}, next);
         },
 
         function computeBatch(result, next) {
@@ -288,21 +287,21 @@ const Model = {
           // Iterating through the patch's operations
           operations.forEach(function(operation) {
             // 1) Creating a new group
-            if (operation.type === "addGroup") {
-              const groupNode = batch.save({ name: operation.name }, "ClassifiedItem");
-              batch.relate(classificationId, "HAS", groupNode);
+            if (operation.type === 'addGroup') {
+              const groupNode = batch.save({name: operation.name}, 'ClassifiedItem');
+              batch.relate(classificationId, 'HAS', groupNode);
 
               // Indexing
               newGroupsIndex[operation.name] = groupNode;
             }
 
             // 2) Renaming a group
-            if (operation.type === "renameGroup") {
-              batch.update(operation.id, { name: operation.to });
+            if (operation.type === 'renameGroup') {
+              batch.update(operation.id, {name: operation.to});
             }
 
             // 3) Moving an item (deleting old relation before!)
-            if (operation.type === "moveItem") {
+            if (operation.type === 'moveItem') {
               const newTo = newGroupsIndex[operation.to],
                 newFrom = newGroupsIndex[operation.from];
 
@@ -310,18 +309,18 @@ const Model = {
 
               // Dropping an item from its group
               if (operation.to === null && !newTo) {
-                batch.unrelate(operation.fromId || newFrom, "AGGREGATES", operation.itemId);
+                batch.unrelate(operation.fromId || newFrom, 'AGGREGATES', operation.itemId);
               }
 
               // Adding an item from limbo to a group
               else if (operation.from === null && !newFrom) {
-                batch.relate(operation.toId || newTo, "AGGREGATES", operation.itemId);
+                batch.relate(operation.toId || newTo, 'AGGREGATES', operation.itemId);
               }
 
               // Moving an item from group to group
               else {
-                batch.unrelate(operation.fromId || newFrom, "AGGREGATES", operation.itemId);
-                batch.relate(operation.toId || newTo, "AGGREGATES", operation.itemId);
+                batch.unrelate(operation.fromId || newFrom, 'AGGREGATES', operation.itemId);
+                batch.relate(operation.toId || newTo, 'AGGREGATES', operation.itemId);
               }
             }
           });
