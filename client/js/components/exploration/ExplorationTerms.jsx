@@ -135,7 +135,7 @@ class TermsPanel extends Component {
     });
     exportSVG({
       nodes: [this.legend, graphSvg],
-      name: `TOFLIT18_Product_terms_${now.toLocaleString('se-SE').replace(' ', '_')}..svg`,
+      name: `TOFLIT18_Product_terms_${now.toLocaleString('se-SE').replace(' ', '_')}.svg`,
     });
   }
 
