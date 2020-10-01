@@ -304,7 +304,11 @@ class NetworkPanel extends Component {
         />
 
         {/* Right panel */}
-        <div className="aside-legend">
+        <div
+          className="aside-legend"
+          ref={el => {
+            this.legend = el;
+          }}>
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="edgeSize" className="control-label">
@@ -358,11 +362,7 @@ class NetworkPanel extends Component {
                 onChange={({value}) => actions.selectNodeSize(value)}
               />
             </div>
-            <div
-              className="form-group"
-              ref={el => {
-                this.legend = el;
-              }}>
+            <div className="form-group">
               <label className="control-label">Color</label>
               <ul className="list-unstyled list-legend list-legend-circle">
                 <li>

@@ -390,7 +390,11 @@ class TermsPanel extends Component {
           className="col-xs-12 col-sm-6 col-md-8"
         />
         {/* Right panel */}
-        <div className="aside-legend">
+        <div
+          className="aside-legend"
+          ref={el => {
+            this.legend = el;
+          }}>
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="edgeSize" className="control-label">
@@ -442,11 +446,7 @@ class TermsPanel extends Component {
                 onChange={({value}) => actions.selectNodeSize(value)}
               />
             </div>
-            <div
-              className="form-group"
-              ref={el => {
-                this.legend = el;
-              }}>
+            <div className="form-group">
               <label className="control-label">Color</label>
               <small className="help-block">Community Louvain</small>
             </div>
