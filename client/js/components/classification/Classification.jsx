@@ -29,11 +29,10 @@ import {
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
 
-const ClassificationWell = ({groupsCount, itemsCount, unclassifiedItemsCount, completion}) => (
+const ClassificationWell = ({description, groupsCount, itemsCount, unclassifiedItemsCount, completion}) => (
   <div className="well">
-    <p>
-      <strong>{`${groupsCount} groups for ${itemsCount} items.`}</strong>
-    </p>
+    <p>{description}</p>
+    <p>{`${groupsCount} groups for ${itemsCount} items.`}</p>
     <p>
       <small>{`${itemsCount -
         unclassifiedItemsCount} / ${itemsCount} (-${unclassifiedItemsCount}) classified items (${completion} %)`}</small>
