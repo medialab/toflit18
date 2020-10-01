@@ -185,7 +185,7 @@ const Model = {
         return group;
       });
 
-      if (opts.orderBy === "name") groups.sort((a, b) => a.localeCompare(b, "fr"));
+      if (opts.orderBy === "name") groups.sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
       return callback(null, groups);
     });
