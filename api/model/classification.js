@@ -157,7 +157,7 @@ const Model = {
     if (params.queryItemFrom) params.queryItemFrom = params.queryItemFrom;
 
     // order by
-    if (opts.orderBy === "name") query.orderBy("group.name");
+    if (opts.orderBy === "name") query.orderBy("apoc.text.clean(group.name)");
     else if (opts.queryItem && opts.orderBy === "nbMatches") query.orderBy("nbMatchedItems DESC");
     else query.orderBy("nbItems DESC");
 
@@ -184,8 +184,6 @@ const Model = {
         if (opts.queryItem) group.nbMatchedItems = row.nbMatchedItems;
         return group;
       });
-
-      if (opts.orderBy === "name") groups.sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
       return callback(null, groups);
     });

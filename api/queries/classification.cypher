@@ -23,14 +23,14 @@ ORDER BY c.id
 //------------------------------------------------------------------------------
 MATCH (c:Classification)-[:HAS]->(group) WHERE c.id=$id
 RETURN group.id AS id, group.name AS name
-ORDER BY lower(group.name)
+ORDER BY apoc.text.clean(group.name)
 
 // name: group
 // Retrieving every items for a given group in a classification
 //------------------------------------------------------------------------------
 MATCH  (group:ClassifiedItem)-[:AGGREGATES]->(item) WHERE group.id=$id
 WITH group, item.name AS name, item.name =~$queryItem AS matched
-ORDER BY matched DESC, name
+ORDER BY matched DESC, apoc.text.clean(name)
 WITH group, collect({name:name, matched:matched}) AS items
 RETURN group, items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
 
@@ -40,7 +40,7 @@ RETURN group, items, size(items) as nbItems, size(filter(item in items where ite
 MATCH  (group:ClassifiedItem)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci:Classification)
 WHERE group.id=$id AND ci.id=$queryItemFrom
 WITH group, item.name AS name, item.name =~$queryItem AS matched
-ORDER BY matched DESC, name
+ORDER BY matched DESC, apoc.text.clean(name)
 WITH group, collect({name:name, matched:matched}) AS items
 RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
 
@@ -50,7 +50,7 @@ RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, s
 MATCH (cg:Classification)-[:HAS]->(group)-[:AGGREGATES]->(item)
 WHERE  cg.id=$id AND group.name =~ $queryGroup
 WITH group, item
-ORDER BY item.name
+ORDER BY apoc.text.clean(item.name)
 RETURN group, collect({name:item.name})[$offsetItem..$limitItem] as items, size((group)-[:AGGREGATES]->()) as nbItems
 
 // name: groupsFrom
@@ -59,7 +59,7 @@ RETURN group, collect({name:item.name})[$offsetItem..$limitItem] as items, size(
 MATCH (cg:Classification)-[:HAS]->(group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci:Classification)
 WHERE  cg.id=$id AND group.name =~ $queryGroup AND ci.id=$queryItemFrom
 WITH group, item
-ORDER BY group.name, item.name
+ORDER BY apoc.text.clean(group.name), apoc.text.clean(item.name)
 RETURN group, collect({name:item.name})[$offsetItem..$limitItem] as items, size(collect(item)) as nbItems
 
 // name: searchGroups
@@ -76,7 +76,7 @@ LIMIT $limit
 
 MATCH (group)-[:AGGREGATES]->(item)
 WITH group, item.name AS name, item.name =~$queryItem AS matched
-ORDER BY matched DESC, name
+ORDER BY matched DESC, apoc.text.clean(name)
 WITH group, collect({name:name,matched:matched}) AS items
 RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
 
@@ -95,7 +95,7 @@ LIMIT $limit
 OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci:Classification)
 WHERE ci.id=$queryItemFrom
 WITH group, item.name AS name, item.name =~$queryItem AS matched
-ORDER BY matched DESC, name
+ORDER BY matched DESC, apoc.text.clean(name)
 WITH group, collect({name:name,matched:matched}) AS items
 RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, size(filter(item in items where item.matched)) as nbMatchedItems
 
@@ -106,7 +106,7 @@ RETURN group, items[$offsetItem..$limitItem] as items, size(items) as nbItems, s
 MATCH (c:Classification)-[:HAS]->(group)
 WHERE c.id=$id AND  group.name =~ $queryGroup
 WITH group
-ORDER BY group.name
+ORDER BY apoc.text.clean(group.name)
 SKIP $offset
 LIMIT $limit
 
