@@ -4,16 +4,16 @@
  *
  * Displaying a network of places linked by their trade.
  */
-import React, {Component} from 'react';
-import {format} from 'd3-format';
-import {range} from 'lodash';
-import Select from 'react-select';
-import {branch} from 'baobab-react/decorators';
-import {ExportButton} from '../misc/Button.jsx';
-import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
-import Network from './viz/Network.jsx';
-import VizLayout from '../misc/VizLayout.jsx';
-import {exportCSV, exportSVG} from '../../lib/exports';
+import React, { Component } from "react";
+import { format } from "d3-format";
+import { range } from "lodash";
+import Select from "react-select";
+import { branch } from "baobab-react/decorators";
+import { ExportButton } from "../misc/Button.jsx";
+import { ClassificationSelector, ItemSelector } from "../misc/Selectors.jsx";
+import Network from "./viz/Network.jsx";
+import VizLayout from "../misc/VizLayout.jsx";
+import { exportCSV, exportSVG } from "../../lib/exports";
 import {
   addNetwork,
   checkDefaultState,
@@ -23,15 +23,15 @@ import {
   selectLabelThreshold,
   selectNodeSize,
   updateSelector,
-} from '../../actions/network';
-import Icon from '../misc/Icon.jsx';
+} from "../../actions/network";
+import Icon from "../misc/Icon.jsx";
 
-import specs from '../../../specs.json';
+import specs from "../../../specs.json";
 
-const defaultSelectors = require('../../../config/defaultVizSelectors.json');
+const defaultSelectors = require("../../../config/defaultVizSelectors.json");
 
-const NUMBER_FIXED_FORMAT = format(',.2f'),
-  NUMBER_FORMAT = format(',');
+const NUMBER_FIXED_FORMAT = format(",.2f"),
+  NUMBER_FORMAT = format(",");
 
 export default class ExplorationGlobals extends Component {
   render() {
@@ -55,17 +55,17 @@ export default class ExplorationGlobals extends Component {
     checkDefaultState,
   },
   cursors: {
-    alert: ['ui', 'alert'],
-    classifications: ['data', 'classifications', 'flat'],
-    directions: ['data', 'directions'],
-    sourceTypes: ['data', 'sourceTypes'],
-    state: ['explorationNetworkState'],
+    alert: ["ui", "alert"],
+    classifications: ["data", "classifications", "flat"],
+    directions: ["data", "directions"],
+    sourceTypes: ["data", "sourceTypes"],
+    state: ["explorationNetworkState"],
   },
 })
 class NetworkPanel extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {selected: null, fullscreen: false};
+    this.state = { selected: null, fullscreen: false };
     this.setSelectedNode = this.setSelectedNode.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
   }
@@ -75,7 +75,7 @@ class NetworkPanel extends Component {
     const state = this.props.state;
     const initialState = defaultSelectors.network.initialValues;
     const hasInitialState = Object.keys(initialState).some(key =>
-      key.split('.').reduce((iter, step) => iter && iter[step], state),
+      key.split(".").reduce((iter, step) => iter && iter[step], state),
     );
 
     if (!hasInitialState) {
@@ -90,11 +90,18 @@ class NetworkPanel extends Component {
     this.props.actions.checkDefaultState(defaultSelectors.network.defaultValues);
   }
 
-  exportCsv() {
+  exportNodesCsv() {
     const now = new Date();
     exportCSV({
-      data: this.props.state.data,
-      name: `TOFLIT18_Locations_${now.toLocaleString('se-SE').replace(' ', '_')}.csv`,
+      data: this.props.state.graph.nodes,
+      name: `TOFLIT18_Product_terms_nodes_${now.toLocaleString("se-SE").replace(" ", "_")}.csv`,
+    });
+  }
+  exportEdgesCsv() {
+    const now = new Date();
+    exportCSV({
+      data: this.props.state.graph.edges,
+      name: `TOFLIT18_Product_terms_edges_${now.toLocaleString("se-SE").replace(" ", "_")}.csv`,
     });
   }
 
@@ -105,16 +112,16 @@ class NetworkPanel extends Component {
     });
     exportSVG({
       nodes: [this.legend, graphSvg],
-      name: `TOFLIT18_Locations_${now.toLocaleString('se-SE').replace(' ', '_')}.svg`,
+      name: `TOFLIT18_Locations_${now.toLocaleString("se-SE").replace(" ", "_")}.svg`,
     });
   }
 
   setSelectedNode(selectedNode) {
-    this.setState({selectedNode});
+    this.setState({ selectedNode });
   }
 
   toggleFullscreen() {
-    this.setState({fullscreen: !this.state.fullscreen});
+    this.setState({ fullscreen: !this.state.fullscreen });
   }
 
   render() {
@@ -123,21 +130,21 @@ class NetworkPanel extends Component {
       actions,
       classifications,
       sourceTypes,
-      state: {graph, classification, nodeSize, edgeSize, labelSizeRatio, labelThreshold, loading, selectors, groups},
+      state: { graph, classification, nodeSize, edgeSize, labelSizeRatio, labelThreshold, loading, selectors, groups },
     } = this.props;
 
-    const {selectedNode, fullscreen} = this.state;
+    const { selectedNode, fullscreen } = this.state;
 
     const dateMin = selectors.dateMin;
     const dateMaxOptions = range(dateMin || specs.limits.minYear, specs.limits.maxYear).map(d => ({
-      name: '' + d,
-      id: '' + d,
+      name: "" + d,
+      id: "" + d,
     }));
 
     const dateMax = selectors.dateMax;
     const dateMinOptions = range(specs.limits.minYear, dateMax ? +dateMax + 1 : specs.limits.maxYear).map(d => ({
-      name: '' + d,
-      id: '' + d,
+      name: "" + d,
+      id: "" + d,
     }));
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
@@ -147,7 +154,7 @@ class NetworkPanel extends Component {
       };
     });
 
-    const directed = selectors.kind !== 'total';
+    const directed = selectors.kind !== "total";
 
     return (
       <VizLayout
@@ -155,7 +162,8 @@ class NetworkPanel extends Component {
         description="Choose a partner classification and display a graph showing relations between partners & directions."
         leftPanelName="Filters"
         rightPanelName="Caption"
-        fullscreen={fullscreen}>
+        fullscreen={fullscreen}
+      >
         {/* Top of the left panel */}
         <div className="box-selection">
           <h2 className="hidden-xs">
@@ -182,7 +190,7 @@ class NetworkPanel extends Component {
                 Source Type
               </label>
               <small className="help-block">
-                Type of sources the data comes from.{' '}
+                Type of sources the data comes from.{" "}
                 <a href="#/exploration/sources">
                   <Icon name="icon-info" />
                 </a>
@@ -192,10 +200,10 @@ class NetworkPanel extends Component {
                 type="sourceType"
                 data={sourceTypesOptions}
                 loading={!sourceTypesOptions.length}
-                onChange={val => actions.updateSelector('sourceType', val)}
+                onChange={val => actions.updateSelector("sourceType", val)}
                 selected={selectors.sourceType}
-                onUpdate={val => actions.updateSelector('sourceType', val)}
-                defaultValue={defaultSelectors.network['selectors.sourceType']}
+                onUpdate={val => actions.updateSelector("sourceType", val)}
+                defaultValue={defaultSelectors.network["selectors.sourceType"]}
               />
             </div>
             <div className="form-group">
@@ -203,7 +211,7 @@ class NetworkPanel extends Component {
                 Product
               </label>
               <small className="help-block">
-                The type of product being shipped.{' '}
+                The type of product being shipped.{" "}
                 <a href="#/glossary/concepts">
                   <Icon name="icon-info" />
                 </a>
@@ -214,10 +222,10 @@ class NetworkPanel extends Component {
                 placeholder="Child classification..."
                 loading={!classifications.product.length}
                 data={classifications.product.filter(c => !c.source)}
-                onChange={val => actions.updateSelector('productClassification', val)}
+                onChange={val => actions.updateSelector("productClassification", val)}
                 selected={selectors.productClassification}
-                onUpdate={val => actions.updateSelector('productClassification', val)}
-                defaultValue={defaultSelectors.network['selectors.productClassification']}
+                onUpdate={val => actions.updateSelector("productClassification", val)}
+                defaultValue={defaultSelectors.network["selectors.productClassification"]}
               />
               <ItemSelector
                 valueKey="id"
@@ -225,10 +233,10 @@ class NetworkPanel extends Component {
                 disabled={!selectors.productClassification || !groups.product.length}
                 loading={selectors.productClassification && !groups.product.length}
                 data={groups.product}
-                onChange={val => actions.updateSelector('product', val)}
+                onChange={val => actions.updateSelector("product", val)}
                 selected={selectors.product}
-                onUpdate={val => actions.updateSelector('product', val)}
-                defaultValue={defaultSelectors.network['selectors.product']}
+                onUpdate={val => actions.updateSelector("product", val)}
+                defaultValue={defaultSelectors.network["selectors.product"]}
               />
             </div>
             <div className="form-group">
@@ -239,10 +247,10 @@ class NetworkPanel extends Component {
               <ItemSelector
                 type="kind"
                 valueKey="id"
-                onChange={val => actions.updateSelector('kind', val)}
+                onChange={val => actions.updateSelector("kind", val)}
                 selected={selectors.kind}
-                onUpdate={val => actions.updateSelector('kind', val)}
-                defaultValue={defaultSelectors.network['selectors.kind']}
+                onUpdate={val => actions.updateSelector("kind", val)}
+                defaultValue={defaultSelectors.network["selectors.kind"]}
               />
             </div>
             <div className="form-group">
@@ -256,10 +264,10 @@ class NetworkPanel extends Component {
                     valueKey="id"
                     type="dateMin"
                     data={dateMinOptions}
-                    onChange={val => actions.updateSelector('dateMin', val)}
+                    onChange={val => actions.updateSelector("dateMin", val)}
                     selected={selectors.dateMin}
-                    onUpdate={val => actions.updateSelector('dateMin', val)}
-                    defaultValue={defaultSelectors.network['selectors.dateMin']}
+                    onUpdate={val => actions.updateSelector("dateMin", val)}
+                    defaultValue={defaultSelectors.network["selectors.dateMin"]}
                   />
                 </div>
                 <div className="col-xs-6">
@@ -267,10 +275,10 @@ class NetworkPanel extends Component {
                     valueKey="id"
                     type="dateMax"
                     data={dateMaxOptions}
-                    onChange={val => actions.updateSelector('dateMax', val)}
+                    onChange={val => actions.updateSelector("dateMax", val)}
                     selected={selectors.dateMax}
-                    onUpdate={val => actions.updateSelector('dateMax', val)}
-                    defaultValue={defaultSelectors.network['selectors.dateMax']}
+                    onUpdate={val => actions.updateSelector("dateMax", val)}
+                    defaultValue={defaultSelectors.network["selectors.dateMax"]}
                   />
                 </div>
               </div>
@@ -280,7 +288,8 @@ class NetworkPanel extends Component {
                 className="btn btn-default"
                 data-loading={loading}
                 disabled={!classification}
-                onClick={actions.addNetwork}>
+                onClick={actions.addNetwork}
+              >
                 Update
               </button>
             </div>
@@ -308,7 +317,8 @@ class NetworkPanel extends Component {
           className="aside-legend"
           ref={el => {
             this.legend = el;
-          }}>
+          }}
+        >
           <form onSubmit={e => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="edgeSize" className="control-label">
@@ -322,16 +332,16 @@ class NetworkPanel extends Component {
                 searchable={false}
                 options={[
                   {
-                    value: 'flows',
-                    label: 'Nb of flows.',
+                    value: "flows",
+                    label: "Nb of flows.",
                   },
                   {
-                    value: 'value',
-                    label: 'Value of flows.',
+                    value: "value",
+                    label: "Value of flows.",
                   },
                 ]}
                 value={edgeSize}
-                onChange={({value}) => actions.selectEdgeSize(value)}
+                onChange={({ value }) => actions.selectEdgeSize(value)}
               />
             </div>
             <div className="form-group">
@@ -346,31 +356,31 @@ class NetworkPanel extends Component {
                 searchable={false}
                 options={[
                   {
-                    value: 'flows',
-                    label: 'Nb of flows.',
+                    value: "flows",
+                    label: "Nb of flows.",
                   },
                   {
-                    value: 'value',
-                    label: 'Value of flows.',
+                    value: "value",
+                    label: "Value of flows.",
                   },
                   {
-                    value: 'degree',
-                    label: 'Degree.',
+                    value: "degree",
+                    label: "Degree.",
                   },
                 ]}
                 value={nodeSize}
-                onChange={({value}) => actions.selectNodeSize(value)}
+                onChange={({ value }) => actions.selectNodeSize(value)}
               />
             </div>
             <div className="form-group">
               <label className="control-label">Color</label>
               <ul className="list-unstyled list-legend list-legend-circle">
                 <li>
-                  <span style={{backgroundColor: '#E6830E'}} />
+                  <span style={{ backgroundColor: "#E6830E" }} />
                   <span>Direction</span>
                 </li>
                 <li>
-                  <span style={{backgroundColor: '#049B9A'}} />
+                  <span style={{ backgroundColor: "#049B9A" }} />
                   <span>Partner</span>
                 </li>
               </ul>
@@ -388,11 +398,11 @@ class NetworkPanel extends Component {
                     clearable={false}
                     searchable={false}
                     options={range(1, 10).map(num => ({
-                      value: num + '',
-                      label: num + '',
+                      value: num + "",
+                      label: num + "",
                     }))}
-                    value={labelSizeRatio + ''}
-                    onChange={({value}) => actions.selectLabelSizeRatio(+value)}
+                    value={labelSizeRatio + ""}
+                    onChange={({ value }) => actions.selectLabelSizeRatio(+value)}
                   />
                 </div>
                 <div className="col-xs-6">
@@ -403,11 +413,11 @@ class NetworkPanel extends Component {
                     clearable={false}
                     searchable={false}
                     options={range(0, 20).map(num => ({
-                      value: num + '',
-                      label: num + '',
+                      value: num + "",
+                      label: num + "",
                     }))}
-                    value={labelThreshold + ''}
-                    onChange={({value}) => actions.selectLabelThreshold(+value)}
+                    value={labelThreshold + ""}
+                    onChange={({ value }) => actions.selectLabelThreshold(+value)}
                   />
                 </div>
               </div>
@@ -438,13 +448,19 @@ class NetworkPanel extends Component {
             <ExportButton
               exports={[
                 {
-                  label: 'Export CSV',
+                  label: "Export nodes CSV",
                   fn: () => {
-                    this.exportCsv();
+                    this.exportNodesCsv();
                   },
                 },
                 {
-                  label: 'Export SVG',
+                  label: "Export edges CSV",
+                  fn: () => {
+                    this.exportEdgesCsv();
+                  },
+                },
+                {
+                  label: "Export SVG",
                   fn: () => {
                     this.exportGraph();
                   },
