@@ -21,7 +21,17 @@ module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify('production')
       },
-      CONFIG: JSON.stringify(Object.assign({git_branch: 'prod'}, config))
+      CONFIG: JSON.stringify(
+        Object.assign(
+          {
+            git_branch:
+              ['prod', 'staging'].findIndex(e => e === git.branch()) > -1
+                ? git.branch()
+                : 'master'
+          },
+          config
+        )
+      )
     })
   ],
   module: {

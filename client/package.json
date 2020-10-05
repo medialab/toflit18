@@ -5,7 +5,7 @@
   "description": "Web interface for the TOFLIT18's datascape.",
   "main": "./js/main.jsx",
   "scripts": {
-    "build": "kotatsu build client -c webpack.config.prod.js --progress --minify",
+    "build": "kotatsu build client -c webpack.config.build.js --progress --minify",
     "dev": "kotatsu serve -c webpack.config.js --progress --public ./ --index index.html",
     "mockups:html": "browser-sync start --port 8001 --server mockups --server ./ --files mockups --files assets",
     "mockups:sass": "node-sass style/toflit18.scss -o mockups/dist; node-sass style/toflit18.scss -w -r style -o mockups/dist",

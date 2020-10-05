@@ -26,7 +26,7 @@ module.exports = {
             git_branch:
               ['prod', 'staging'].findIndex(e => e === git.branch()) > -1
                 ? git.branch()
-                : 'dev'
+                : 'master'
           },
           config
         )
