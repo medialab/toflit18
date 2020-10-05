@@ -12,9 +12,13 @@ server {
     set $api "http://${API_HOST}:${API_PORT}";
 
 ### API
+### reverse proxy on subfolder brings urlencoding issues
+### solution taken here https://stackoverflow.com/questions/28684300/nginx-pass-proxy-subdirectory-without-url-decoding/37584637#37584637
     location /api/ {
+        rewrite ^ $request_uri;
         rewrite ^/api/(.*) /$1  break;
-        proxy_pass $api$uri$is_args$args;
+        return 400;
+        proxy_pass $api$uri;
         proxy_read_timeout 190s;
     }
 

@@ -33,7 +33,7 @@ export function getLineFootprint(line) {
  * Updating a selector.
  */
 function fetchGroups(tree, cursor, id) {
-  tree.client.groups({ params: { id } }, function(err, data) {
+  tree.client.groups({ params: { id: encodeURIComponent(id) } }, function(err, data) {
     if (err) return;
 
     cursor.set(data.result.map(d => ({ ...d, value: d.id })));

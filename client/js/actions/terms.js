@@ -30,7 +30,7 @@ export function selectTerms(tree, classification) {
  * Updating a selector.
  */
 function fetchGroups(tree, cursor, id, callback) {
-  tree.client.groups({ params: { id } }, function(err, data) {
+  tree.client.groups({ params: { id: encodeURIComponent(id) } }, function(err, data) {
     if (err) return callback ? callback(err) : null;
 
     cursor.set(data.result.map(d => ({ ...d, value: d.id })));
@@ -99,7 +99,7 @@ export function addChart(tree) {
 
   cursor.set("loading", true);
 
-  tree.client.terms({ params: { id: classification }, data: paramsRequest }, function(err, data) {
+  tree.client.terms({ params: { id: encodeURIComponent(classification) }, data: paramsRequest }, function(err, data) {
     cursor.set("loading", false);
 
     if (err) return;

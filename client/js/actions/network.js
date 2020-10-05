@@ -69,7 +69,7 @@ export function addNetwork(tree) {
   cursor.set("loading", true);
 
   // Fetching data
-  tree.client.network({ params: { id: classification }, data: paramsRequest }, function(err, data) {
+  tree.client.network({ params: { id: encodeURIComponent(classification) }, data: paramsRequest }, function(err, data) {
     cursor.set("loading", false);
 
     // NOTE: the API should probably return an empty array somehow
@@ -149,7 +149,7 @@ export function addNetwork(tree) {
  * Updating a selector.
  */
 function fetchGroups(tree, cursor, id) {
-  tree.client.groups({ params: { id } }, function(err, data) {
+  tree.client.groups({ params: { id: encodeURIComponent(id) } }, function(err, data) {
     if (err) return;
 
     cursor.set(data.result.map(d => ({ ...d, value: d.id })));
