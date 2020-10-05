@@ -10,12 +10,14 @@ RUN mkdir /toflit18/
 
 ADD client /toflit18/client
 ADD lib /toflit18/lib
+ADD .git /toflit18/.git
 
 
 WORKDIR /toflit18/client
 
 
-RUN apk add --no-cache nodejs \
+RUN apk add --no-cache nodejs git\
+    && rm -fr ./node_modules \
     && npm --quiet install \
     && ln -s /toflit18/client/node_modules /toflit18/lib/node_modules \
     && npm run build  \

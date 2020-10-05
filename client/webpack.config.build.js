@@ -1,6 +1,7 @@
 let webpack = require('webpack'),
   config = require('config'),
-  path = require('path');
+  path = require('path'),
+  git = require('git-rev-sync');
 
 const PRESETS = ['es2015', 'stage-0', 'react'];
 
