@@ -66,6 +66,10 @@ const POSSIBLE_NODE_PROPERTIES = [
   "sourceType",
   "product",
   "id",
+  "nationalProductBestGuess:boolean",
+  "nationalGeographyBestGuess:boolean",
+  "localProductBestGuess:boolean",
+  "localGeographyBestGuess:boolean",
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -392,6 +396,11 @@ function importer(csvLine) {
     nodeData.product = capitalizeProduct(csvLine.product);
   }
   if (csvLine.source_type) nodeData.sourceType = csvLine.source_type;
+  // best guess source type
+  nodeData.nationalProductBestGuess = csvLine.national_product_best_guess === "1" ? "true" : "false";
+  nodeData.nationalGeographyBestGuess = csvLine.national_geography_best_guess === "1" ? "true" : "false";
+  nodeData.localProductBestGuess = csvLine.local_product_best_guess === "1" ? "true" : "false";
+  nodeData.localGeographyBestGuess = csvLine.local_geography_best_guess === "1" ? "true" : "false";
 
   // Here, we filter some lines deemed irrelevant
   if (!nodeData.value && !nodeData.quantity && !nodeData.unitPrice) return;

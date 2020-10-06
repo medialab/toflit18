@@ -6,6 +6,7 @@
 import decypher from "decypher";
 import database from "../connection";
 import filterItemsByIdsRegexps from "./utils";
+import camelCase from "lodash/camelCase";
 
 const { Expression, Query } = decypher;
 
@@ -56,25 +57,12 @@ const ModelNetwork = {
 
     //-- Do we need to match a source type?
     if (sourceType) {
-      match.push("(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)");
-
-      if (sourceType !== "National best guess" && sourceType !== "Local best guess") {
+      if (!sourceType.includes("best guess")) {
+        match.push("(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)");
         where.and("s.type IN $sourceType");
         query.params({ sourceType: [sourceType] });
-      } else if (sourceType === "National best guess") {
-        where.and("s.type IN $sourceType");
-        query.params({
-          sourceType: [
-            "Objet Général",
-            "Résumé",
-            "National toutes directions tous partenaires",
-            "Tableau des quantités",
-          ],
-        });
-      } else if (sourceType === "Local best guess") {
-        where.and(
-          's.type IN ["Local","National toutes directions tous partenaires"] and f.year <> 1749 and f.year <> 1751',
-        );
+      } else {
+        where.and(`f.${camelCase(sourceType)} = true`);
       }
     }
 

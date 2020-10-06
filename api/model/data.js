@@ -22,8 +22,10 @@ const Model = {
   sourceTypes(callback) {
     return database.cypher(queries.sourceTypes, function(err, result) {
       // add national best guess Source Type
-      result.push({ type: "National best guess" });
-      result.push({ type: "Local best guess" });
+      result.push({ type: "National product best guess" });
+      result.push({ type: "National geography best guess" });
+      result.push({ type: "Local product best guess" });
+      result.push({ type: "Local geography best guess" });
       result = sortBy(result, "type");
       if (err) return callback(err);
 

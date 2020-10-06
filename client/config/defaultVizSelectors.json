@@ -1,6 +1,6 @@
 {
   "terms": {
-    "defaultValues":  {
+    "defaultValues": {
       "labelSizeRatio": 2,
       "labelThreshold": 3,
       "nodeSize": "flows",
@@ -8,7 +8,7 @@
     },
     "initialValues": {
       "classification": "product_simplification",
-      "selectors.sourceType": "National best guess",
+      "selectors.sourceType": "National product best guess",
       "selectors.childClassification": "product_sitc_EN",
       "selectors.child": ["Raw_materials,_inedible,_except_fuels~product_sitc_EN"],
       "selectors.direction": "$all$",
@@ -27,13 +27,13 @@
     "initialValues": {
       "classification": "partner_grouping",
       "selectors.kind": "total",
-      "selectors.sourceType": "National best guess",
+      "selectors.sourceType": "National product best guess",
       "selectors.dateMin": "1750",
       "selectors.dateMax": "1750"
     }
   },
   "indicators": {
-    "selectors.sourceType": "National best guess"
+    "selectors.sourceType": "National product best guess"
   },
   "classifications": {
     "kind": "product",
