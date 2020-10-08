@@ -33,6 +33,8 @@ const controller = [
     //     partner: '?string',
     //     direction: '?string',
     //     kind: '?string'
+    //    limit: '?string'
+    //    skip:'?string'
     //   }
     // },
     action(req, res) {
@@ -45,6 +47,38 @@ const controller = [
         return v;
       });
       return modelFlowsPerYear.flowsPerYearPerDataType(req.params.type, payloadFlows, function(err, data) {
+        if (err) return res.serverError(err);
+
+        return res.ok(data);
+      });
+    },
+  },
+  {
+    url: "/values_per_year/:type",
+    method: "POST",
+    // validate: {
+    //   query: {
+    //     sourceType: '?string',
+    //     productClassification: '?string',
+    //     product: '?string',
+    //     partnerClassification: '?string',
+    //     partner: '?string',
+    //     direction: '?string',
+    //     kind: '?string'
+    //    limit: '?string'
+    //    skip:'?string'
+    //   }
+    // },
+    action(req, res) {
+      const payloadFlows = mapValues(req.body, (v, k) => {
+        if (k === "product" || k === "partner") {
+          // separate filters on id from those on name trhough regexp
+          return formatItemsParams(v);
+        }
+
+        return v;
+      });
+      return modelFlowsPerYear.DataTypePerYear(req.params.type, payloadFlows, function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);

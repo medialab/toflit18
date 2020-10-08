@@ -45,6 +45,7 @@ const defaultState = {
       direction: null,
       kind: null,
       sourceType: null,
+      page: 0,
     },
     groups: {
       partner: [],

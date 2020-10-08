@@ -1,5 +1,5 @@
 {
-  "metadataGroupMax": 100,
+  "metadataGroupMax": 50,
   "metadataSelectors": [
     {
       "name": "Source Type",

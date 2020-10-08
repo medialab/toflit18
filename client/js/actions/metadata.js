@@ -79,8 +79,12 @@ export function selectModel(tree, selected) {
 
   cursor.set("dataModel", selected);
 }
-
-export function addChart(tree) {
+export function changePage(tree, page) {
+  const selectors = tree.select([...ROOT, "selectors"]);
+  selectors.set("page", page);
+  loadPageData(tree);
+}
+function prepareAPIParams(tree) {
   const cursor = tree.select(ROOT);
 
   const dataType = cursor.get("dataType"),
@@ -95,7 +99,6 @@ export function addChart(tree) {
   // Can't load data when there is a model and a type, but the full data type hasn't been loaded yet:
   if (dataType && !fullDataType) return;
 
-  cursor.set("perYear", null);
   cursor.set("flowsPerYear", null);
   cursor.set("fileName", null);
   cursor.set("loading", true);
@@ -105,7 +108,10 @@ export function addChart(tree) {
 
   // set params for request
   const params = {},
-    paramsRequest = {};
+    paramsRequest = {
+      limit: specs.metadataGroupMax + 1,
+      skip: cursor.get("selectors", "page") * specs.metadataGroupMax,
+    };
 
   // get selectors choosen
   forIn(cursor.get("selectors"), (v, k) => {
@@ -138,26 +144,20 @@ export function addChart(tree) {
         paramsRequest[k] = v;
     }
   });
+  return { params: { type }, data: paramsRequest };
+}
 
-  tree.client.flowsPerYear({ params: { type }, data: paramsRequest }, function(err, data) {
+function loadPageData(tree) {
+  const cursor = tree.select(ROOT);
+  const APIparams = prepareAPIParams(tree);
+  tree.client.flowsPerYear(APIparams, function(err, data) {
     cursor.set("loading", false);
 
     if (err) return;
+    const selectors = tree.select([...ROOT, "selectors"]);
 
-    // Aggregation per year
-    const perYear = [];
-
-    _(data.result)
-      .map(e => e.data)
-      .flatten()
-      .map(d => d.year)
-      .groupBy()
-      .forEach((v, k) => perYear.push({ year: +k, data: _.isArray(v) ? v.length : 0 }));
-
-    cursor.set("perYear", perYear);
-
-    // Don't ask for data we don't need
-    if (dataType && data.result.length > specs.metadataGroupMax) return;
+    // // Don't ask for data we don't need
+    // if (dataType && data.result.length > specs.metadataGroupMax) return;
 
     cursor.set("flowsPerYear", data.result);
   });
@@ -165,9 +165,30 @@ export function addChart(tree) {
   // set fileName form params selected
   let fileName = "";
 
-  forIn(params, v => {
+  forIn(APIparams.params, v => {
     if (v) fileName = fileName + v + " - ";
   });
 
   cursor.set("fileName", fileName);
+}
+
+function loadValuesPerYear(tree) {
+  const cursor = tree.select(ROOT);
+  tree.client.valuesPerYear(prepareAPIParams(tree), function(err, data) {
+    cursor.set("loading", false);
+
+    if (err) return;
+
+    cursor.set("perYear", data.result);
+  });
+}
+
+export function loadMetadata(tree) {
+  const selectors = tree.select([...ROOT, "selectors"]);
+  //reset page to 0
+  selectors.set("page", 0);
+  // load values per year
+  loadValuesPerYear(tree);
+  // load first page
+  loadPageData(tree);
 }

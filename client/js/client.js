@@ -69,6 +69,11 @@ const client = new Client({
       url: "/viz/flows_per_year/:type",
     },
 
+    valuesPerYear: {
+      method: "POST",
+      url: "/viz/values_per_year/:type",
+    },
+
     network: {
       method: "POST",
       url: "/viz/network/:id",
