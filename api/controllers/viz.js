@@ -10,7 +10,7 @@ import modelTerms from "../model/terms";
 import modelNetwork from "../model/partner";
 import { mapValues } from "lodash";
 
-const formatItemsParams = items => {
+export const formatItemsParams = items => {
   // separate filters on id from those on name trhough regexp
   return items.length > 0
     ? {
