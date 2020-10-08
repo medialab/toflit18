@@ -55,10 +55,14 @@ const ModelTerms = {
     }
 
     //-- Do we need to match a product?
-    match.push("(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)");
-    const whereProduct = new Expression("pc.id = $classification");
-    query.params({ classification });
-    where.and(whereProduct);
+    if (classification !== "product_source") {
+      match.push("(f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(pci:ClassifiedItem)<-[:HAS]-(pc:Classification)");
+      const whereProduct = new Expression("pc.id = $classification");
+      query.params({ classification });
+      where.and(whereProduct);
+    } else {
+      match.push("(f:Flow)-[:OF]->(pci:Product)");
+    }
 
     //-- Should we match a precise direction?
     if (direction && direction !== "$all$") {
