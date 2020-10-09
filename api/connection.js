@@ -16,7 +16,7 @@ const config = CONFIG.get("db");
 const auth = neo4j.auth.basic(config.user, config.password);
 
 // Driver
-const driver = neo4j.driver(`bolt://${config.host}:${config.port}`, auth);
+const driver = neo4j.driver(`bolt://${config.host}:${config.port}`, auth, { disableLosslessIntegers: true });
 
 driver.onError = err => {
   console.error("Neo4j driver error", err);
