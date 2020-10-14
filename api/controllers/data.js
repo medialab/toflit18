@@ -46,7 +46,9 @@ const controller = [
     //     dateMin: '?string',
     //     dateMax: '?string',
     //     valueMin: '?string',
-    //     valueMax: '?string'
+    //     valueMax: '?string',
+    //     skip: '?number',
+    //     limit: '?number',
     //   }
     //   }
     // },
@@ -60,6 +62,41 @@ const controller = [
         return v;
       });
       return model.flows(payloadFlows, function(err, data) {
+        if (err) return res.serverError(err);
+
+        return res.ok(data);
+      });
+    },
+  },
+  {
+    url: "/countFlows",
+    method: "POST",
+    // validate: {
+    //   query: {
+    //     sourceType: '?string',
+    //     productClassification: '?string',
+    //     product: '?string',
+    //     partnerClassification: '?string',
+    //     partner: '?string',
+    //     direction: '?string',
+    //     kind: '?string'
+    //     dateMin: '?string',
+    //     dateMax: '?string',
+    //     valueMin: '?string',
+    //     valueMax: '?string'
+    //   }
+    //   }
+    // },
+    action(req, res) {
+      const payloadFlows = mapValues(req.body, (v, k) => {
+        if (k === "product" || k === "partner") {
+          // separate filters on id from those on name trhough regexp
+          return formatItemsParams(v);
+        }
+
+        return v;
+      });
+      return model.countFlows(payloadFlows, function(err, data) {
         if (err) return res.serverError(err);
 
         return res.ok(data);
