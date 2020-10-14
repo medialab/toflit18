@@ -108,7 +108,22 @@ const flowsQuery = (params) => {
     } else where.and(`f.${camelCase(sourceType)} = true`);
   }
 
-  if (dateMin) where.and("f.");
+  if (dateMin) { 
+    where.and("f.year >= $dateMin");
+    query.params({dateMin})
+  }
+  if (dateMax) { 
+    where.and("f.year <= $dateMax");
+    query.params({dateMax})
+  }
+  if (valueMin) { 
+    where.and("f.value >= $valueMin");
+    query.params({valueMin})
+  }
+  if (valueMax) { 
+    where.and("f.value <= $valueMax");
+    query.params({valueMax})
+  }
 
   if (match.length > 0) query.match(match);
   else query.match("(f:Flow)");
