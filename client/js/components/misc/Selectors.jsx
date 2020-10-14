@@ -169,20 +169,18 @@ export class ItemSelector extends Component {
   }
 
   search(input, callback) {
-    let options = [];
+    let options = this.props.data || [];
 
-    if (!input.trim())
-      options = this.props.data;
-    else {
+    if (input.trim()){
       // TODO: This could be optimized by using lodash's lazy chaining
-      options = this.props.data
+      options = options
       .filter(function(group) {
         input = input.toLowerCase();
         const name = group.name.toLowerCase();
         return !!~name.search(input);
       });
     }
-    if (options.length > MAX_LIST_SIZE) {
+    if (options && options.length > MAX_LIST_SIZE) {
       options = options
         .slice(0, MAX_LIST_SIZE)
         .concat([{id: '$warning$', disabled: true, name: 'Too many results to display. Try refining your query...'}]);
