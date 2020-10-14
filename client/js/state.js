@@ -141,6 +141,29 @@ const defaultState = {
       child: [],
     },
   },
+  explorationFlowsState: {
+    creating: false,
+    flows: null,
+    nbFlows: null,
+    loading: false,
+    selectors: {
+      productClassification: null,
+      partnerClassification: null,
+      partner: null,
+      product: null,
+      direction: null,
+      kind: null,
+      sourceType: null,
+      dateMin: null,
+      dateMax: null,
+      limit:500,
+      skip:0
+    },
+    groups: {
+      partner: [],
+      product: [],
+    },
+  },
 
   // User-related information
   user: null,

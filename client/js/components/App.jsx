@@ -19,6 +19,7 @@ import ExplorationTerms from "./exploration/ExplorationTerms.jsx";
 import Sources from "./Sources.jsx";
 import GlossaryPanel from "./glossary/GlossaryPanel.jsx";
 import Concepts from "./Concepts.jsx";
+import ExplorationFlows from "./exploration/ExplorationFlows.jsx";
 
 const COMPONENTS = {
   home: Home,
@@ -29,6 +30,7 @@ const COMPONENTS = {
   explorationIndicators: ExplorationIndicators,
   explorationNetwork: ExplorationNetwork,
   explorationTerms: ExplorationTerms,
+  explorationFlows: ExplorationFlows,
   explorationSources: Sources,
   glossaryPanel: GlossaryPanel,
   concepts: Concepts,

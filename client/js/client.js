@@ -83,6 +83,16 @@ const client = new Client({
       method: "POST",
       url: "/viz/terms/:id",
     },
+    
+    flows: {
+      method: "POST",
+      url: "/flows",
+    },
+
+    countFlows: {
+      method: "POST",
+      url: "/countFlows",
+    },
   },
 });
 
