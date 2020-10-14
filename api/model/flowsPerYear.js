@@ -44,10 +44,14 @@ const buildQuery = (dataType, params) => {
 
   //-- Do we need to match a product?
   if (productClassification && !twofoldProduct) {
-    query.match("(pc:Classification)-[:HAS]->(pg:ClassifiedItem)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow)");
-
-    const whereProduct = new Expression("pc.id = $productClassification");
-    query.params({ productClassification });
+    const whereProduct = new Expression()
+    if (productClassification !== 'product_source') {
+      query.match("(pc:Classification)-[:HAS]->(pg:ClassifiedItem)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow)");
+      whereProduct.and("pc.id = $productClassification");
+      query.params({ productClassification });
+    } else {
+      query.match("(pg:Product)<-[:OF]-(f:Flow)");
+    }
 
     if (product) {
       const productFilter = filterItemsByIdsRegexps(product, "pg");
@@ -57,7 +61,8 @@ const buildQuery = (dataType, params) => {
     }
 
     withs.add("f");
-    query.where(whereProduct);
+    if (!whereProduct.isEmpty()) 
+      query.where(whereProduct);
 
     if (dataType === "product") {
       withs.add("classificationGroupName");
@@ -69,12 +74,16 @@ const buildQuery = (dataType, params) => {
 
   // NOTE: twofold classification
   if (productClassification && twofoldProduct) {
-    query.match(
-      "(pc:Classification)-[:HAS]->(pg:ClassifiedItem)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow), (ppg:ClassifiedItem)-[:AGGREGATES*0..]->(pg)",
-    );
-
-    const whereProduct = new Expression("pc.id = $productClassification");
-    query.params({ productClassification });
+    const whereProduct = new Expression();
+    if (productClassification !== 'product_source') {
+      query.match(
+        "(pc:Classification)-[:HAS]->(pg:ClassifiedItem)-[:AGGREGATES*0..]->(pi)<-[:OF]-(f:Flow), (ppg:ClassifiedItem)-[:AGGREGATES*0..]->(pg)",
+      );
+      whereProduct.and("pc.id = $productClassification");
+      query.params({ productClassification });
+    } else {
+      query.match("(pg:Product)<-[:OF]-(f:Flow), (ppg:ClassifiedItem)-[:AGGREGATES*0..]->(pg)");
+    }
 
     if (product) {
       const productFilter = filterItemsByIdsRegexps(product, "ppg");
