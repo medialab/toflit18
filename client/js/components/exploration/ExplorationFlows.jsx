@@ -310,6 +310,21 @@ class Flows extends Component {
                 </div>
               </div>
             </div>
+            <div className="form-group">
+              <label htmlFor="dates" className="control-label">
+                Value
+              </label>
+              <small className="help-block">Choose a min and/or max flow value</small>
+              <div className="row">
+                <div className="col-xs-6">
+                  <input type="number" min="0" placeholder='minimal' onChange={e => actions.update("valueMin", e.target.value)} value={selectors.valueMin || ''}/>
+                </div>
+                <div className="col-xs-6">
+                  <input type="number" min="0" placeholder='maximal' onChange={e => actions.update("valueMax", e.target.value)} value={selectors.valueMax || ''}/>
+                </div>
+              </div>
+            </div>
+            
             <div className="form-group-fixed">
               <button
                 className="btn btn-default"

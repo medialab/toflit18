@@ -156,7 +156,9 @@ const defaultState = {
       kind: null,
       sourceType: null,
       dateMin: null,
-      dateMax: null
+      dateMax: null,
+      valueMin: null,
+      valueMax: null
     },
     groups: {
       partner: [],

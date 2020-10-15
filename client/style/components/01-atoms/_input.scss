@@ -2,8 +2,14 @@
 // TOFLIT18 COMPONENTS ATOM INPUT
 // --------------------------------------------------
 .form-group-xs {
-    .form-control {
-        height: 28px;
-        font-size: 0.9em;
-    }
+  .form-control {
+    height: 28px;
+    font-size: 0.9em;
+  }
+}
+
+.form-group {
+  input {
+    width: 100%;
+  }
 }
