@@ -6,28 +6,23 @@
  * partners and directions.
  */
 import React, {Component} from 'react';
-import {keys, toPairs} from 'lodash'
+import {keys} from 'lodash'
 
 
-//import DataGrid from 'react-data-grid';
-//import 'react-data-grid/dist/react-data-grid.css';
+import ReactDataGrid from 'react-data-grid';
  
-const columns = [
-  { key: 'id', name: 'ID' },
-  { key: 'title', name: 'Title' }
-];
- 
-const rows = [
-  { id: 0, title: 'Example' },
-  { id: 1, title: 'Demo' }
-];
- 
+
+
 export default class DataTable extends Component {
-
+  constructor(props, context) {
+    super(props, context);
+  }
     render() {
-        let {data, loading,alert} = this.props;
-        if (!data) data = [];
-        return (<div>
+      const {data, loading,alert} = this.props;
+      const rows = data || []
+      const columns = rows.length > 0 ? keys(rows[0]).map(key => ({key,name:key, resizable:true,})) : []
+      
+      return (<div>
             {(alert || loading) && (
                 <div className="progress-container progress-container-viz">
                   {alert && (
@@ -42,19 +37,12 @@ export default class DataTable extends Component {
                   )}
                 </div>
               )}
-            {data && data.length > 0 && 
-            <table>
-                <tbody> 
-                    <tr key='headers'>
-                        {keys(data[0]).map((k) => (<td key={k}>{k}</td>))}
-                    </tr>
-                {(data || []).map((flow,i)=> (
-                    <tr key={i}>
-                        {keys(flow).map((k) => (<td key={k}>{flow[k]}</td>))}
-                    </tr>
-                ))}
-                </tbody> 
-            </table>}
+             {rows.length > 0 &&  <ReactDataGrid
+              columns={columns}
+              rowGetter={i => rows[i]}
+              rowsCount={rows.length}
+              minHeight={800}
+            />}
             </div>);
     };
 }
