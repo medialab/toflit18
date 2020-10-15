@@ -11,6 +11,9 @@ import {keys} from 'lodash'
 
 import ReactDataGrid from 'react-data-grid';
 
+const formatters = {
+  "import":value => (value ? (<div>import</div>) : (<div>export</div>))
+}
 
 export default class DataTable extends Component {
   constructor(props, context) {
@@ -21,7 +24,11 @@ export default class DataTable extends Component {
     render() {
       const {data, loading,alert} = this.props;
       const rows = data || []
-      const columns = rows.length > 0 ? keys(rows[0]).map(key => ({key,name:key, resizable:true,})) : []
+      const columns = rows.length > 0 ? keys(rows[0]).map(key => {
+        const opts={key,name:key, resizable:true};
+        if(formatters[key]) opts.formatter = formatters[key];
+        return opts;
+      }) : []
       
       return (<div>
             {(alert || loading) && (
