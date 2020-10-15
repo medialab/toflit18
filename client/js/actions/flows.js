@@ -117,7 +117,6 @@ export function initFlowTable(tree) {
     flows:(done)=> loadFlows(tree, done)
   },(err)=>{
     if (err) return err;
-    console.log("done both requests")
     cursor.set("loading", false);
   });
 
