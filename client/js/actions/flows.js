@@ -6,7 +6,7 @@
  */
 
 import { uniq, forIn } from "lodash";
-
+import {parallel} from "async"
 import { regexIdToString, stringToRegexLabel } from "../lib/helpers";
 
 
@@ -90,24 +90,30 @@ export function initFlowTable(tree) {
   const paramsRequest = prepareParams(tree);
 
   cursor.set("loading", true);
-  // load total number of flows
- 
-    // load data table
-    tree.client.flows(({ data: paramsRequest }, function(err, flowsData) {
+  
+  parallel({
+    // load total number of flows
+    nbFlows:(done)=> tree.client.countFlows({ data: paramsRequest }, function(err, nbFlowsData) {
      
-      if (err) return;
+      if (err) done(err);
+      if (nbFlowsData) {
+        cursor.set("nbFlows", nbFlowsData.result[0].nbFlows);
+      }
+      done(null);
+    }),
+    // load data table
+    flows:(done)=> tree.client.flows({ data: paramsRequest }, function(err, flowsData) {
+      if (err) done(err);
+      
       if (flowsData)
         cursor.set("flows", flowsData.result);
-      tree.client.countFlows({ data: paramsRequest }, function(err, nbFlowsData) {
-        if (err) return;
-    
-        if (nbFlowsData) {
-          cursor.set("nbFlows", nbFlowsData.result[0].nbFlows);
-        }
-        cursor.set("loading", false);
-      });
-    
-    }));
+      done(null);
+    })
+  },(err)=>{
+    if (err) return err;
+    console.log("done both requests")
+    cursor.set("loading", false);
+  });
 
 }
 
