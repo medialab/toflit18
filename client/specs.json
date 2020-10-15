@@ -31,5 +31,6 @@
   "limits": {
     "minYear": 1719,
     "maxYear": 1839
-  }
+  },
+  "flowsRowsMax": 100
 }

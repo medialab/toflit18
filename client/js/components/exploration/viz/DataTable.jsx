@@ -10,12 +10,13 @@ import {keys} from 'lodash'
 
 
 import ReactDataGrid from 'react-data-grid';
- 
 
 
 export default class DataTable extends Component {
   constructor(props, context) {
     super(props, context);
+    this.rowHeight = 25;
+    this.headerRowHeight= 50;
   }
     render() {
       const {data, loading,alert} = this.props;
@@ -41,7 +42,9 @@ export default class DataTable extends Component {
               columns={columns}
               rowGetter={i => rows[i]}
               rowsCount={rows.length}
-              minHeight={800}
+              rowHeight={this.rowHeight}
+              headerRowHeight={this.headerRowHeight}
+              minHeight={900}
             />}
             </div>);
     };

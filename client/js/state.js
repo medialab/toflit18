@@ -146,6 +146,7 @@ const defaultState = {
     flows: null,
     nbFlows: null,
     loading: false,
+    page: 0,
     selectors: {
       productClassification: null,
       partnerClassification: null,
@@ -155,9 +156,7 @@ const defaultState = {
       kind: null,
       sourceType: null,
       dateMin: null,
-      dateMax: null,
-      limit:500,
-      skip:0
+      dateMax: null
     },
     groups: {
       partner: [],

@@ -9,6 +9,7 @@ import { uniq, forIn } from "lodash";
 import {parallel} from "async"
 import { regexIdToString, stringToRegexLabel } from "../lib/helpers";
 
+import specs from "../../specs.json";
 
 const ROOT = ["explorationFlowsState"];
 
@@ -77,23 +78,34 @@ function prepareParams(tree){
        .filter(o => o);}
    else paramsRequest[k] = v;
  });
+ paramsRequest.limit = specs.flowsRowsMax;
+ paramsRequest.skip = cursor.get("page")*specs.flowsRowsMax;
  return paramsRequest;
+}
+
+function loadFlows(tree, callback) {
+  const cursor = tree.select(ROOT);
+  tree.client.flows({ data: prepareParams(tree) }, function(err, flowsData) {
+    if (err) done(err);
+    
+    if (flowsData)
+      cursor.set("flows", flowsData.result);
+    if (callback) callback(null);
+  })
 }
 
 export function initFlowTable(tree) {
   const cursor = tree.select(ROOT);
  
-
+  cursor.set("page", 0);
   cursor.set("flows", null);
   cursor.set("nbFlows", null);
-
-  const paramsRequest = prepareParams(tree);
 
   cursor.set("loading", true);
   
   parallel({
     // load total number of flows
-    nbFlows:(done)=> tree.client.countFlows({ data: paramsRequest }, function(err, nbFlowsData) {
+    nbFlows:(done)=> tree.client.countFlows({ data: prepareParams(tree) }, function(err, nbFlowsData) {
      
       if (err) done(err);
       if (nbFlowsData) {
@@ -102,13 +114,7 @@ export function initFlowTable(tree) {
       done(null);
     }),
     // load data table
-    flows:(done)=> tree.client.flows({ data: paramsRequest }, function(err, flowsData) {
-      if (err) done(err);
-      
-      if (flowsData)
-        cursor.set("flows", flowsData.result);
-      done(null);
-    })
+    flows:(done)=> loadFlows(tree, done)
   },(err)=>{
     if (err) return err;
     console.log("done both requests")
@@ -116,6 +122,15 @@ export function initFlowTable(tree) {
   });
 
 }
+
+export function changePage(tree, page) {
+  const cursor = tree.select(ROOT);
+ 
+  cursor.set("page", page);
+  loadFlows(tree);
+
+}
+
 
 export function checkDefaultState(tree, defaultState) {
   for (const key in defaultState) {

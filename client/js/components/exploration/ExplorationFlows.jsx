@@ -9,7 +9,7 @@ import { format } from "d3-format";
 import { range } from "lodash";
 import Select from "react-select";
 import { branch } from "baobab-react/decorators";
-import { ExportButton } from "../misc/Button.jsx";
+import Button, { ExportButton } from "../misc/Button.jsx";
 import { ClassificationSelector, ItemSelector } from "../misc/Selectors.jsx";
 import DataTable from "./viz/DataTable.jsx";
 import VizLayout from "../misc/VizLayout.jsx";
@@ -19,6 +19,7 @@ import {
   initFlowTable,
   checkDefaultState,
   checkGroups,
+  changePage
 } from "../../actions/flows";
 import Icon from "../misc/Icon.jsx";
 const defaultSelectors = require("../../../config/defaultVizSelectors.json");
@@ -45,6 +46,7 @@ export default class ExplorationFlows extends Component {
     addChart: initFlowTable,
     checkDefaultState,
     checkGroups,
+    changePage
   },
   cursors: {
     alert: ["ui", "alert"],
@@ -122,7 +124,7 @@ class Flows extends Component {
       classifications,
       directions,
       sourceTypes,
-      state: { flows,nbFlows,loading, selectors, groups },
+      state: { flows,nbFlows,loading, selectors, groups,page },
     } = this.props;
 
     const {  fullscreen } = this.state;
@@ -321,7 +323,6 @@ class Flows extends Component {
           </form>
         </div>
         {/* Content panel */}<div  className="col-xs-12 col-sm-6 col-md-8">
-        {nbFlows}
         <DataTable data={flows} loading={loading} alert={alert}/> 
         {/* Right panel */}
         </div>
@@ -331,6 +332,28 @@ class Flows extends Component {
             this.legend = el;
           }}
         >
+          <div>
+            Your filters returned {nbFlows} rows.<br/>
+            A maximum of {specs.flowsRowsMax} rows are displayed per page.
+            <br />
+            <Button
+              type="submit"
+              className="btn btn-default"
+              disabled={page === 0}
+              onClick={() => actions.changePage(page - 1)}
+            >
+              Previous
+            </Button>{" "}
+            page {page + 1}{" "}
+            <Button
+              type="submit"
+              className="btn btn-default"
+              disabled={!nbFlows || nbFlows < (specs.flowsRowsMax*page)}
+              onClick={() => actions.changePage(page + 1)}
+            >
+              Next
+            </Button>
+          </div>
          
            
           <div className="form-group-fixed form-group-fixed-right">

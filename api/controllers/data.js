@@ -61,9 +61,6 @@ const controller = [
 
         return v;
       });
-      // TODO : remove this force limit max to 500
-      console.log(payloadFlows)
-      payloadFlows.limit = 500
       return model.flows(payloadFlows, function(err, data) {
         if (err) return res.serverError(err);
 
