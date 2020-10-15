@@ -110,19 +110,19 @@ const flowsQuery = (params) => {
 
   if (dateMin) { 
     where.and("f.year >= $dateMin");
-    query.params({dateMin})
+    query.params({dateMin: +dateMin})
   }
   if (dateMax) { 
     where.and("f.year <= $dateMax");
-    query.params({dateMax})
+    query.params({dateMax: +dateMax})
   }
   if (valueMin) { 
     where.and("f.value >= $valueMin");
-    query.params({valueMin})
+    query.params({valueMin: +valueMin})
   }
   if (valueMax) { 
     where.and("f.value <= $valueMax");
-    query.params({valueMax})
+    query.params({valueMax: +valueMax})
   }
 
   if (match.length > 0) query.match(match);
