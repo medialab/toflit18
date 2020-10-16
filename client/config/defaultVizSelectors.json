@@ -47,6 +47,7 @@
   },
   "flows": {
     "defaultValues": {
+      "page":0
     },
     "initialValues": {
       "selectors.sourceType": "National product best guess",

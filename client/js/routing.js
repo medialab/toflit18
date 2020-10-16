@@ -198,7 +198,7 @@ export default function bindRoutes(tree) {
             path: "/flows",
             query: {
               sourceType: ":sourceType",
-              productClassification: ":childClassification",
+              productClassification: ":productClassification",
               product: {
                 match: ":product",
                 cast: "json",
@@ -208,17 +208,22 @@ export default function bindRoutes(tree) {
                 match: ":partner",
                 cast: "json",
               },
+              page: {match: ":page", cast: "number" },
               direction: ":direction",
               kind: ":kind",
               dateMin: ":dateMin",
               dateMax: ":dateMax",
+              valueMin: {match: ":valueMin", cast: "number" },
+              valueMax: {match: ":valueMax", cast: "number" }
+
             },
             state: {
               view: "explorationFlows",
-              explorationTermsState: {
+              explorationFlowsState: {
+                page: ":page",
                 selectors: {
                   sourceType: ":sourceType",
-                  productClassification: ":childClassification",
+                  productClassification: ":productClassification",
                   product: ":product",
                   partnerClassification: ":partnerClassification",
                   partner: ":partner",
@@ -226,6 +231,8 @@ export default function bindRoutes(tree) {
                   kind: ":kind",
                   dateMin: ":dateMin",
                   dateMax: ":dateMax",
+                  valueMin: ":valueMin",
+                  valueMax: ":valueMax"
                 },
               },
             },
