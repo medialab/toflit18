@@ -11,24 +11,26 @@ import {keys} from 'lodash'
 
 import ReactDataGrid from 'react-data-grid';
 
-const formatters = {
-  "import":value => (value ? (<div>import</div>) : (<div>export</div>))
-}
-
-export default class DataTable extends Component {
+export default class FlowsTable extends Component {
   constructor(props, context) {
     super(props, context);
     this.rowHeight = 25;
     this.headerRowHeight= 50;
+
+    
   }
     render() {
-      const {data, loading,alert} = this.props;
-      const rows = data || []
-      const columns = rows.length > 0 ? keys(rows[0]).map(key => {
-        const opts={key,name:key, resizable:true};
-        if(formatters[key]) opts.formatter = formatters[key];
-        return opts;
-      }) : []
+      const {flows, loading,alert} = this.props;
+      const rows = flows || []
+      const columnsSpecificOpts = {
+        "rowIndex": {name:"#", width:rows.length>0?(rows[rows.length-1].rowIndex+'').length*15:0 },
+        "import":{width: 70,formatter:value => (value ? (<div>import</div>) : (<div>export</div>))},
+      "year": {width:50}
+      }
+      
+      const columns = rows.length > 0 ? keys(rows[0]).map(key => (
+        {key,name:key, resizable:true, ...columnsSpecificOpts[key]}
+        )) : []
       
       return (<div>
             {(alert || loading) && (

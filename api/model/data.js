@@ -232,7 +232,7 @@ const Model = {
     return database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
 
-      return callback(null, result);
+      return callback(null, result.map((row,i) => ({rowIndex:(skip||0)+i+1, ...row})));
     });
   },
 };

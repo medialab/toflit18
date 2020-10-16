@@ -11,7 +11,7 @@ import Select from "react-select";
 import { branch } from "baobab-react/decorators";
 import Button, { ExportButton } from "../misc/Button.jsx";
 import { ClassificationSelector, ItemSelector } from "../misc/Selectors.jsx";
-import DataTable from "./viz/DataTable.jsx";
+import FlowsTable from "./viz/DataTable.jsx";
 import VizLayout from "../misc/VizLayout.jsx";
 import { exportCSV, exportSVG } from "../../lib/exports";
 import {
@@ -338,7 +338,7 @@ class Flows extends Component {
           </form>
         </div>
         {/* Content panel */}<div  className="col-xs-12 col-sm-6 col-md-8">
-        <DataTable data={flows} loading={loading} alert={alert}/> 
+        <FlowsTable flows={flows} loading={loading} alert={alert} nbFlows={flows}/> 
         {/* Right panel */}
         </div>
         <div
