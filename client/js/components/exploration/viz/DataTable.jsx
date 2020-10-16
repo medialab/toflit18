@@ -6,8 +6,34 @@
  * partners and directions.
  */
 import React, {Component} from 'react';
-import {keys} from 'lodash'
+import {keys, max} from 'lodash'
+import {format, formatPrefix} from 'd3-format';
 
+
+/**
+ * Formats.
+ */
+const SI_FORMAT = formatPrefix(',.0s', 1.3e3);
+const Y_AXIS_FORMAT = nb => {
+  if (nb < 1000)
+    return '' + (nb | 0);
+
+  return SI_FORMAT(nb);
+};
+const NUMBER_FORMAT = n => n%1===0 ? format(',')(n) :format(',.2f')(n);
+
+const PERCENTAGE_FORMAT = format('.0%');
+
+/**
+ * Custom tooltip.
+ */
+const UNITS = {
+  count: () => 'flows',
+  value: payload => payload.year < 1797 ? 'lt.' : 'Fr.',
+  kg: () => 'kg',
+  litre: () => 'litres',
+  nbr: () => 'pieces'
+};
 
 import ReactDataGrid from 'react-data-grid';
 
@@ -23,9 +49,18 @@ export default class FlowsTable extends Component {
       const {flows, loading,alert} = this.props;
       const rows = flows || []
       const columnsSpecificOpts = {
-        "rowIndex": {name:"#", width:rows.length>0?(rows[rows.length-1].rowIndex+'').length*15:0 },
-        "import":{width: 70,formatter:value => (value ? (<div>import</div>) : (<div>export</div>))},
-      "year": {width:50}
+        "rowIndex": {name:"#", width:rows.length>0?(rows[rows.length-1].rowIndex+'').length*8+16:0 },
+        "import":{width: 70,formatter:({value}) => (value ? (<div>import</div>) : (<div>export</div>))},
+        "year": {width:50},
+        "value": {
+          formatter:({row}) => { 
+            if (row.value)
+              return <div>{`${NUMBER_FORMAT(row.value)} ${row.year <"1797" ? 'lt.': 'Fr.'}`}</div>
+            else
+              return <div>N/A</div>;
+          },
+          width:rows.length>0?max(rows.map(r => NUMBER_FORMAT(r.value).length+4))*8 :0 
+        }
       }
       
       const columns = rows.length > 0 ? keys(rows[0]).map(key => (
