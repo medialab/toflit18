@@ -94,10 +94,13 @@ function loadFlows(tree, callback) {
   })
 }
 
-export function initFlowTable(tree) {
+export function initFlowTable(tree, page) {
   const cursor = tree.select(ROOT);
  
-  cursor.set("page", 0);
+  if (page !== undefined){
+    // change page before init
+    cursor.set("page", page);
+  }
   cursor.set("flows", null);
   cursor.set("nbFlows", null);
 

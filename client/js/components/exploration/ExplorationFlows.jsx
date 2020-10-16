@@ -43,7 +43,7 @@ export default class ExplorationFlows extends Component {
 @branch({
   actions: {
     update,
-    addChart: initFlowTable,
+    initFlowTable,
     checkDefaultState,
     checkGroups,
     changePage
@@ -75,7 +75,7 @@ class Flows extends Component {
       this.props.actions.checkDefaultState(defaultSelectors.flows.initialValues);
     }
     
-    this.props.actions.checkGroups(this.props.actions.addChart);
+    this.props.actions.checkGroups(this.props.actions.initFlowTable);
   }
 
   componentDidUpdate() {
@@ -330,7 +330,7 @@ class Flows extends Component {
                 className="btn btn-default"
                 data-loading={loading}
                 
-                onClick={actions.addChart}
+                onClick={() => actions.initFlowTable(0)}
               >
                 Update
               </button>
@@ -363,7 +363,7 @@ class Flows extends Component {
             <Button
               type="submit"
               className="btn btn-default"
-              disabled={!nbFlows || nbFlows < (specs.flowsRowsMax*page)}
+              disabled={!nbFlows || nbFlows < (specs.flowsRowsMax*(page+1))}
               onClick={() => actions.changePage(page + 1)}
             >
               Next
