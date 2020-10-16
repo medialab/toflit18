@@ -126,7 +126,8 @@ export function changePage(tree, page) {
   const cursor = tree.select(ROOT);
  
   cursor.set("page", page);
-  loadFlows(tree);
+  cursor.set("loading", true)
+  loadFlows(tree, (err) => cursor.set("loading", false));
 
 }
 
