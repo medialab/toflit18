@@ -338,7 +338,22 @@ class Flows extends Component {
           </form>
         </div>
         {/* Content panel */}<div  className="col-xs-12 col-sm-6 col-md-8">
-        <FlowsTable flows={flows} loading={loading} alert={alert} nbFlows={flows}/> 
+
+            {(alert || loading) && (
+                <div className="progress-container progress-container-viz">
+                  {alert && (
+                    <div className="alert alert-danger" role="alert">
+                      {alert}
+                    </div>
+                  )}
+                  {loading && (
+                    <div className="progress-line progress-line-viz" syle={{backgroundColor:""}}>
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            <FlowsTable flows={flows} loading={loading} alert={alert} nbFlows={flows} orders={selectors.orders}/> 
         {/* Right panel */}
         </div>
         <div

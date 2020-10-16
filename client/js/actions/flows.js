@@ -5,7 +5,7 @@
  * Actions related to the globals' view.
  */
 
-import { uniq, forIn } from "lodash";
+import { uniq, forIn, debounce } from "lodash";
 import {parallel} from "async"
 import { regexIdToString, stringToRegexLabel } from "../lib/helpers";
 
@@ -42,6 +42,11 @@ export function updateSelector(tree, name, item) {
     groups.set(model, []);
 
     if (item) fetchGroups(tree, groups.select(model), item);
+  }
+  // If we updated orders, we need to reload data
+  if (name === "orders"){
+    // reloading at first page cause order changed
+    debounce(() => {changePage(tree, 0);},500)();
   }
 }
 
@@ -101,8 +106,6 @@ export function initFlowTable(tree, page) {
     // change page before init
     cursor.set("page", page);
   }
-  cursor.set("flows", null);
-  cursor.set("nbFlows", null);
 
   cursor.set("loading", true);
   

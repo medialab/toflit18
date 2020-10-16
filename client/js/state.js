@@ -158,7 +158,8 @@ const defaultState = {
       dateMin: null,
       dateMax: null,
       valueMin: null,
-      valueMax: null
+      valueMax: null,
+      orders: []
     },
     groups: {
       partner: [],

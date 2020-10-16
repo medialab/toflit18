@@ -189,12 +189,9 @@ const Model = {
       product,
       partnerClassification,
       partner,
-      dateMin,
-      dateMax,
-      valueMin,
-      valueMax,
       limit,
-      skip
+      skip,
+      orders
     } = params;
     //-- Returning data
     const shares = "sum(value) AS value_share, sum(kg) AS kg_share, sum(litre) AS litre_share, sum(nbr) AS nbr_share";
@@ -225,7 +222,8 @@ const Model = {
     query.return(
       fields.map(fieldname => `${fieldsDefinitions[fieldname] || `f.${fieldname}`} as ${fieldname}`).join(", "),
     );
-    query.orderBy("f.year, f.direction, f.product, f.partner");
+    if (orders.length > 0)
+     query.orderBy(orders.map(s => `${fieldsDefinitions[s.key] || `f.${s.key}`} ${s.order}`).join(', '));
     if (skip) query.skip(''+skip);
     if (limit) query.limit(''+limit);
     console.log(query.interpolate());

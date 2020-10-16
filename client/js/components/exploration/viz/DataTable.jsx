@@ -8,8 +8,11 @@
 import React, {Component} from 'react';
 import {keys, max} from 'lodash'
 import {format, formatPrefix} from 'd3-format';
+import {
+  updateSelector
+} from "../../../actions/flows";
 
-
+import { branch } from "baobab-react/decorators";
 /**
  * Formats.
  */
@@ -37,59 +40,100 @@ const UNITS = {
 
 import ReactDataGrid from 'react-data-grid';
 
+@branch({
+  actions: {
+    updateSelector
+  },
+  cursors: {
+    alert: ["ui", "alert"],
+    classifications: ["data", "classifications", "flat"],
+    classificationIndex: ["data", "classifications", "index"],
+    directions: ["data", "directions"],
+    sourceTypes: ["data", "sourceTypes"],
+    state: ["explorationFlowsState"],
+  },
+})
 export default class FlowsTable extends Component {
   constructor(props, context) {
     super(props, context);
     this.rowHeight = 25;
     this.headerRowHeight= 50;
+  }
 
+  onHeaderClick(e){
+    const {key} = e;
+    let sort = this.props.orders.find(s => s.key === key)
+    if (sort){
+        this.props.actions.updateSelector("orders",this.props.orders.map(s => {
+          // already there but need to change order
+          if(s.key === key && s.order === "DESC")
+            return {...s, order:"ASC"}
+          // another sort we need to keep in place
+          if(s.key !==key)
+            return s
+          // already there but in ASC mode => remove it through filtered falsy return
+          if(s.key === key && s.order === "ASC")
+            return false
+          }).filter(s => s))
+    }else
+    // add it in DESC mode
+      this.props.actions.updateSelector("orders", [...this.props.orders, {key, order:"DESC"} ])
     
   }
+
     render() {
+      
       const {flows, loading,alert} = this.props;
       const rows = flows || []
+      const headerRenderer = (props) => {
+        const headerText = props.column.rowType === 'header' ? props.column.name : '';
+        return (
+          <div className='widget-HeaderCell__value' style={{cursor: "pointer"}} onClick={()=>this.onHeaderClick(props.column)}>
+            {headerText}
+            {props.column.sort.key &&
+              <span className="pull-right">
+                {props.column.sort.order === "DESC"? '▼':'▲'} {props.column.sort.index+1}
+              </span>
+            }
+          </div>); 
+      }
       const columnsSpecificOpts = {
-        "rowIndex": {name:"#", width:rows.length>0?(rows[rows.length-1].rowIndex+'').length*8+16:0 },
-        "import":{width: 70,formatter:({value}) => (value ? (<div>import</div>) : (<div>export</div>))},
-        "year": {width:50},
-        "value": {
+        rowIndex: {name:"#", width:rows.length>0?(rows[rows.length-1].rowIndex+'').length*8+16:0 },
+        import: {width: 70,formatter:({value}) => (value ? (<div>import</div>) : (<div>export</div>))},
+        year: {width:50},
+        value: {
           formatter:({row}) => { 
             if (row.value)
               return <div>{`${NUMBER_FORMAT(row.value)} ${row.year <"1797" ? 'lt.': 'Fr.'}`}</div>
             else
               return <div>N/A</div>;
           },
-          width:rows.length>0?max(rows.map(r => NUMBER_FORMAT(r.value).length+4))*8 :0 
+          width:rows.length>0? max(max(rows.map(r => NUMBER_FORMAT(r.value).length+4))*8,50) :0 
         }
       }
       
       const columns = rows.length > 0 ? keys(rows[0]).map(key => (
-        {key,name:key, resizable:true, ...columnsSpecificOpts[key]}
+        {key,
+          name:key, 
+          resizable:true, 
+          headerRenderer,
+          sort:{
+            ...this.props.orders.find(s => s.key === key),
+            index:this.props.orders.findIndex(s => s.key === key)
+          },
+          ...columnsSpecificOpts[key]}
         )) : []
       
-      return (<div>
-            {(alert || loading) && (
-                <div className="progress-container progress-container-viz">
-                  {alert && (
-                    <div className="alert alert-danger" role="alert">
-                      {alert}
-                    </div>
-                  )}
-                  {loading && (
-                    <div className="progress-line progress-line-viz">
-                      <span className="sr-only">Loading...</span>
-                    </div>
-                  )}
-                </div>
-              )}
-             {rows.length > 0 &&  <ReactDataGrid
+      return (
+             <ReactDataGrid
+            
               columns={columns}
               rowGetter={i => rows[i]}
               rowsCount={rows.length}
               rowHeight={this.rowHeight}
               headerRowHeight={this.headerRowHeight}
               minHeight={900}
-            />}
-            </div>);
+              
+            />);
     };
 }

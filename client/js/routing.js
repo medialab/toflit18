@@ -232,7 +232,11 @@ export default function bindRoutes(tree) {
                   dateMin: ":dateMin",
                   dateMax: ":dateMax",
                   valueMin: ":valueMin",
-                  valueMax: ":valueMax"
+                  valueMax: ":valueMax",
+                  // orders: {
+                  //   match: ":orders",
+                  //   cast: "json",
+                  // },
                 },
               },
             },
