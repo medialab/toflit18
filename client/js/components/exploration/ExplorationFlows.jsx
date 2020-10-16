@@ -149,7 +149,7 @@ class Flows extends Component {
     }));
     return (
       <VizLayout
-        title="Flows"
+        title="Trade flows"
         description="Explore trade flows"
         leftPanelName="Filters"
         fullscreen={fullscreen}
