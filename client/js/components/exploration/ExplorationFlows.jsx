@@ -5,9 +5,7 @@
  * Displaying a network of product terms' decomposition.
  */
 import React, { Component } from "react";
-import { format } from "d3-format";
 import { range } from "lodash";
-import Select from "react-select";
 import { branch } from "baobab-react/decorators";
 import Button, { ExportButton } from "../misc/Button.jsx";
 import { ClassificationSelector, ItemSelector } from "../misc/Selectors.jsx";
@@ -147,8 +145,10 @@ class Flows extends Component {
       name: "" + d,
       id: "" + d,
     }));
-    //TODO: move this to specs
-    const columnsOptions = ['product', 'year', 'direction', 'partner', 'import', 'source', 'sourceType'].map(c => ({id:c,name:c}))
+    
+    const columnsOptions = [...specs.flowsColumns,
+    ...classifications.product,...classifications.partner];
+
     return (
       <VizLayout
         title="Trade flows"
@@ -355,7 +355,7 @@ class Flows extends Component {
                   )}
                 </div>
               )}
-            <FlowsTable flows={flows} columnsOrder={selectors.columns || []} loading={loading} alert={alert} nbFlows={flows} orders={selectors.orders || []}/> 
+            <FlowsTable flows={flows} columnsOrder={selectors.columns || []} columnsOptions={columnsOptions} loading={loading} alert={alert} nbFlows={flows} orders={selectors.orders || []}/> 
         {/* Right panel */}
         </div>
         <div
@@ -364,65 +364,95 @@ class Flows extends Component {
             this.legend = el;
           }}
         >
-          <div>
-            Your filters returned {nbFlows} rows.<br/>
-            A maximum of {specs.flowsRowsMax} rows are displayed per page.
-            <br />
-            <Button
-              type="submit"
-              className="btn btn-default"
-              disabled={page === 0}
-              onClick={() => actions.changePage(page - 1)}
-            >
-              Previous
-            </Button>{" "}
-            page {page + 1}{" "}
-            <Button
-              type="submit"
-              className="btn btn-default"
-              disabled={!nbFlows || nbFlows < (specs.flowsRowsMax*(page+1))}
-              onClick={() => actions.changePage(page + 1)}
-            >
-              Next
-            </Button>
-          </div>
-          <div className='form-group'> 
-          <div className="row">
-            <ItemSelector
-                valueKey="id"
-                type="columns"
-                //loading={selectors.partnerClassification && !groups.partner.length}
-                data={columnsOptions}
-                onChange={actions.update.bind(null, "columns")}
-                selected={selectors.columns}
-                onUpdate={v => actions.update("columns", v)}
-                defaultValue={defaultSelectors.flows["selectors.columns"]}
-              /></div>
-</div>
-          <div className="form-group-fixed form-group-fixed-right">
-            <ExportButton
-              exports={[
-                {
-                  label: "Export nodes CSV",
-                  fn: () => {
-                    this.exportNodesCsv();
+          <form onSubmit={e => e.preventDefault()}>
+            {/*  COLUMNS SELECTION */}
+            <div className='form-group'>
+              <label for="columnsSelector" className="control-label">Columns selection</label>
+              <small className="help-block">
+                Change the columns order by draggin/dropping the table headers.
+              </small>
+              
+                <ItemSelector
+                    id="columnsSelector"
+                    valueKey="id"
+                    type="columns"
+                    //loading={selectors.partnerClassification && !groups.partner.length}
+                    data={columnsOptions}
+                    onChange={actions.update.bind(null, "columns")}
+                    selected={selectors.columns}
+                    onUpdate={v => actions.update("columns", v)}
+                    defaultValue={defaultSelectors.flows["selectors.columns"]}
+                  />
+            </div>
+            {/* PAGINATION */}
+            <div className='form-group'>
+              <label for="columnsSelector" className="control-label">Pagination</label>
+              <div><b>{nbFlows}</b> rows selected</div>
+              <small className="help-block">
+              A maximum of {specs.flowsRowsMax} rows are displayed per page.
+              </small>
+              <div className="row">
+                <div className="col-xs-3">
+                <Button
+              size="small"
+              kind="default"
+                disabled={page === 0}
+                onClick={() => actions.changePage(page - 1)}
+              >
+                <b>{"<<"}</b>
+              </Button>
+                </div>
+                <div className="col-xs-6">
+                <ItemSelector
+                    id="pageSelector"
+                    valueKey="id"
+                    type="page"
+                    //loading={selectors.partnerClassification && !groups.partner.length}
+                    data={range(1,nbFlows / specs.flowsRowsMax).map(v => ({id:v, name:`page ${v}`}))}
+                    onChange={v => actions.changePage(v)}
+                    selected={page}
+                    onUpdate={v => actions.changePage(v)}
+                  />
+                </div>
+                <div className="col-xs-3">
+                <Button
+                  size="small"
+                  kind="default"
+                  disabled={!nbFlows || nbFlows < (specs.flowsRowsMax*(page+1))}
+                  onClick={() => actions.changePage(page + 1)}
+                >
+                   <b>{">>"}</b>
+                </Button>
+                </div>
+              </div>
+             
+                
+            </div>
+            <div className="form-group-fixed form-group-fixed-right">
+              <ExportButton
+                exports={[
+                  {
+                    label: "Export nodes CSV",
+                    fn: () => {
+                      this.exportNodesCsv();
+                    },
                   },
-                },
-                {
-                  label: "Export edges CSV",
-                  fn: () => {
-                    this.exportEdgesCsv();
+                  {
+                    label: "Export edges CSV",
+                    fn: () => {
+                      this.exportEdgesCsv();
+                    },
                   },
-                },
-                {
-                  label: "Export SVG",
-                  fn: () => {
-                    this.exportGraph();
+                  {
+                    label: "Export SVG",
+                    fn: () => {
+                      this.exportGraph();
+                    },
                   },
-                },
-              ]}
-            />
-          </div>
+                ]}
+              />
+            </div>
+          </form>
         </div>
       </VizLayout>
     );

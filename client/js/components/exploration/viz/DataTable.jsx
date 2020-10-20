@@ -113,7 +113,7 @@ export default class FlowsTable extends Component {
 
     render() {
       
-      const {flows, columnsOrder} = this.props;
+      const {flows, columnsOrder, columnsOptions} = this.props;
       const rows = flows || []
       const headerRenderer = (props) => {
         const headerText = props.column.rowType === 'header' ? props.column.name : '';
@@ -141,25 +141,26 @@ export default class FlowsTable extends Component {
           width:rows.length>0? max(max(rows.map(r => NUMBER_FORMAT(r.value).length+4))*8,50) :0 
         }
       }
-      
-      const columns = columnsOrder.map(key => (
-        {key,
-          name:key, 
+      const columns = ['rowIndex',...columnsOrder].map(c =>{
+        const o = columnsOptions.find(co => co.id === c) || {id:c,name:c};
+
+        return { key: o.id,
+          name: o.name, 
           draggable:true,
-          resizable: columnsSpecificOpts[key] && !!columnsSpecificOpts[key].width, 
+          resizable: columnsSpecificOpts[o.id] && !!columnsSpecificOpts[o.id].width, 
           headerRenderer,
           sort:{
-            ...this.props.orders.find(s => s.key === key),
-            index:this.props.orders.findIndex(s => s.key === key)
+            ...this.props.orders.find(s => s.key === o.id),
+            index:this.props.orders.findIndex(s => s.key === o.id)
           },
-          ...columnsSpecificOpts[key]}
-        ));
+          ...columnsSpecificOpts[o.id]}
+        });
       
       return (
         <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
              <ReactDataGrid
             
-              columns={[...columns]}
+              columns={columns}
               rowGetter={i => rows[i]}
               rowsCount={rows.length}
               rowHeight={this.rowHeight}

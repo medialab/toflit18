@@ -6,10 +6,29 @@
  */
 import database from "../connection";
 import { data as queries } from "../queries";
-import { sortBy, camelCase } from "lodash";
+import { sortBy, camelCase, capitalize } from "lodash";
 import filterItemsByIdsRegexps from "./utils";
 import { interpolate, Query, Expression } from "decypher";
 
+
+function addClassificationFilter(model, classificationVariable, classification, itemVariable, itemValues) {
+  const match = `(f:Flow)-[:OF]->(${model}:${capitalize(model)})<-[:AGGREGATES*1..]-(${itemVariable}:ClassifiedItem)<-[:HAS]-(${classificationVariable}:Classification)`;
+  const where = new Expression(`${classificationVariable}.id = $${classificationVariable}`);
+  let params ={ [classificationVariable]:classification };
+  if (itemValues) {
+    const filter = filterItemsByIdsRegexps(itemValues, itemVariable);
+    where.and(filter.expression);
+    params = {...params, ...filter.params};
+  }
+  return {match, where, params}
+}
+function retrieveClassificationNodes(model, classificationVariable, classification, itemVariable) {
+  const optionalMatch = `(f:Flow)-[:OF]->(:${capitalize(model)})<-[:AGGREGATES*1..]-(${itemVariable}:ClassifiedItem)<-[:HAS]-(${classificationVariable}:Classification)`;
+  const where = new Expression(`${classificationVariable}.id = $${classificationVariable}`);
+  let params ={ [classificationVariable]:classification };
+
+  return {optionalMatch, where, params}
+}
 
 const flowsQuery = (params) => {
   const {
@@ -24,6 +43,7 @@ const flowsQuery = (params) => {
     dateMax,
     valueMin,
     valueMax,
+    columns
   } = params;
 
   // build flows query
@@ -47,50 +67,22 @@ const flowsQuery = (params) => {
     where.and("NOT f.import");
   }
 
-  //-- Do we need to match a product?
+  //-- Do we need to filter by a product?
   if (productClassification) {
-    // match.push("(f:Flow)-[:OF]->(product)");
-    // where.and(new Expression("product IN products"));
-
-    query.match(
-      "(f:Flow)-[:OF]->(product:Product)<-[:AGGREGATES*1..]-(classifiedProduct:ClassifiedItem)<-[:HAS]-(pc:Classification)",
-    );
-    const whereProduct = new Expression("pc.id = $productClassification");
-    query.params({ productClassification });
-    if (product) {
-      const productFilter = filterItemsByIdsRegexps(product, "classifiedProduct");
-      whereProduct.and(productFilter.expression);
-      query.params(productFilter.params);
-    }
-    query.where(whereProduct);
-
-    query.params({ productClassification });
+    const {match, where, params} = addClassificationFilter("product",'pc',productClassification, productClassification, product)
+    query.match(match)
+    query.where(where);
+    query.params(params);
   }
 
-  //-- Do we need to match a partner?
+  //-- Do we need to filter by a partner?
   if (partnerClassification) {
-    // Adding the partner filter in the main query
-    // match.push(`(f:Flow)-[${exportImportFilterPartner}]->(partner)`);
-    // where.and(new Expression("partner IN partners"));
-
-    query.match(
-      `(f:Flow)-[${exportImportFilterPartner}]->(partner:Partner)<-[:AGGREGATES*1..]-(classifiedPartner:ClassifiedItem)<-[:HAS]-(cc:Classification)`,
-    );
-    const wherePartner = new Expression("cc.id = $partnerClassification");
-    query.params({ partnerClassification });
-    if (partner) {
-      const partnerFilter = filterItemsByIdsRegexps(partner, "classifiedPartner");
-      wherePartner.and(partnerFilter.expression);
-      query.params(partnerFilter.params);
-    }
-    query.where(wherePartner);
-
-    // if (productClassification) {
-    //   query.with("collect(partner) AS partners, products");
-    // } else {
-    //   query.with("collect(partner) AS partners");
-    // }
+    const {match, where, params} = addClassificationFilter("partner",'cc',partnerClassification, partnerClassification, partner)
+    query.match(match)
+    query.where(where);
+    query.params(params);
   }
+
 
   //-- Should we match a precise direction?
   if (direction && direction !== "$all$") {
@@ -129,6 +121,15 @@ const flowsQuery = (params) => {
   else query.match("(f:Flow)");
 
   if (!where.isEmpty()) query.where(where);
+
+  // should we match classification to feed columns
+  columns.filter(n => n.startsWith('product_') || n.startsWith('partner_')).forEach((c,i)=>{
+    const model = c.split('_')[0];
+    const {optionalMatch, where, params} = retrieveClassificationNodes(model,`classif${i}`,c, c);
+    query.optionalMatch(optionalMatch)
+    query.where(where);
+    query.params(params);
+  })
 
   return query;
 }
@@ -171,7 +172,6 @@ const Model = {
     //-- Returning data
     query.return("count(f) as nbFlows");
 
-    console.log(query.interpolate());
     return database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
 
@@ -196,22 +196,24 @@ const Model = {
     } = params;
     //-- Returning data
     
-    const fieldsDefinitions = {
-      value: "toFloat(f.value)",
+    const fieldsDefinitions = (fieldname) => {
+      const fields = { value: "toFloat(f.value)",
       kg: "toFloat(f.quantity_kg)",
       nb: "toFloat(f.quantity_nbr)",
       litre: "toFloat(f.quantity_litre)",
-      year: "f.year",
-      direction: "f.direction",
-      sourceType: "f.sourceType",
-      classifiedProduct: "classifiedProduct.name",
-      classifiedPartner: "classifiedPartner.name",
-      source: "s.name",
+      source: "s.name"
+      };
+      // first option, special cases listed in fields
+      if (fields[fieldsDefinitions]) return fields[fieldsDefinitions];
+      // second option, classification cases 
+      if (fieldname.startsWith('product_') || fieldname.startsWith('partner_')) return `${fieldname}.name`;
+      // finally let's try a flow metadata
+      return `f.${fieldname}`; 
     };
     const fields = columns && columns.length > 0 ? columns : ['product', 'value'];
     
     query.return(
-      fields.map(fieldname => `${fieldsDefinitions[fieldname] || `f.${fieldname}`} as ${fieldname}`).join(", "),
+      fields.map(fieldname => `${fieldsDefinitions(fieldname)} as ${fieldname}`).join(", "),
     );
     if (orders && orders.length > 0)
      query.orderBy(orders.map(s => `${fieldsDefinitions[s.key] || `f.${s.key}`} ${s.order}`).join(', '));
