@@ -147,6 +147,8 @@ const defaultState = {
     nbFlows: null,
     loading: false,
     page: 0,
+    CSVloading: false,
+    alert: null,
     selectors: {
       productClassification: null,
       partnerClassification: null,

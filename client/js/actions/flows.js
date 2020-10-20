@@ -9,6 +9,8 @@ import { uniq, forIn, debounce, keys } from "lodash";
 import {parallel} from "async"
 import { regexIdToString, stringToRegexLabel } from "../lib/helpers";
 
+import { exportCSV } from "../lib/exports";
+
 import specs from "../../specs.json";
 
 const ROOT = ["explorationFlowsState"];
@@ -99,7 +101,25 @@ function prepareParams(tree){
  return paramsRequest;
 }
 
-function loadFlows(tree, callback) {
+export function downloadFlowsCSV(tree) {
+  const cursor = tree.select(ROOT);
+ 
+  cursor.set("CSVloading", true);
+  // load without pagination
+  tree.client.flows({ data: {...prepareParams(tree), limit:'',skip:'' }}, function(err, flowsData) {
+    if (err) cursor.set("alert", false);
+    cursor.set("CSVloading", false);
+    if (flowsData){
+      const now = new Date();
+      exportCSV({
+        data: flowsData.result,
+        name: `TOFLIT18_trade_flows_${now.toLocaleString("se-SE").replace(" ", "_")}.csv`,
+      });
+    }
+  });
+}
+
+export function loadFlows(tree, callback) {
   const cursor = tree.select(ROOT);
   tree.client.flows({ data: prepareParams(tree) }, function(err, flowsData) {
     if (err && callback) return callback(err);

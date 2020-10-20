@@ -11,13 +11,13 @@ import Button, { ExportButton } from "../misc/Button.jsx";
 import { ClassificationSelector, ItemSelector } from "../misc/Selectors.jsx";
 import FlowsTable from "./viz/DataTable.jsx";
 import VizLayout from "../misc/VizLayout.jsx";
-import { exportCSV, exportSVG } from "../../lib/exports";
 import {
   updateSelector as update,
   initFlowTable,
   checkDefaultState,
   checkGroups,
-  changePage
+  changePage,
+  downloadFlowsCSV
 } from "../../actions/flows";
 import Icon from "../misc/Icon.jsx";
 const defaultSelectors = require("../../../config/defaultVizSelectors.json");
@@ -44,7 +44,8 @@ export default class ExplorationFlows extends Component {
     initFlowTable,
     checkDefaultState,
     checkGroups,
-    changePage
+    changePage,
+    downloadFlowsCSV
   },
   cursors: {
     alert: ["ui", "alert"],
@@ -81,32 +82,6 @@ class Flows extends Component {
     this.props.actions.checkDefaultState(defaultSelectors.flows.defaultValues);
   }
 
-  exportNodesCsv() {
-    const now = new Date();
-    exportCSV({
-      data: this.props.state.graph.nodes,
-      name: `TOFLIT18_Product_terms_nodes_${now.toLocaleString("se-SE").replace(" ", "_")}.csv`,
-    });
-  }
-  exportEdgesCsv() {
-    const now = new Date();
-    exportCSV({
-      data: this.props.state.graph.edges,
-      name: `TOFLIT18_Product_terms_edges_${now.toLocaleString("se-SE").replace(" ", "_")}.csv`,
-    });
-  }
-
-  exportGraph() {
-    const now = new Date();
-    const graphSvg = sigma.instances(0).toSVG({
-      labels: true,
-    });
-    exportSVG({
-      nodes: [this.legend, graphSvg],
-      name: `TOFLIT18_Product_terms_${now.toLocaleString("se-SE").replace(" ", "_")}.svg`,
-    });
-  }
-
   setSelectedNode(selectedNode) {
     this.setState({ selectedNode });
   }
@@ -114,7 +89,7 @@ class Flows extends Component {
   toggleFullscreen() {
     this.setState({ fullscreen: !this.state.fullscreen });
   }
-
+  
   render() {
     const {
       alert,
@@ -122,7 +97,7 @@ class Flows extends Component {
       classifications,
       directions,
       sourceTypes,
-      state: { flows,nbFlows,loading, selectors, groups,page },
+      state: { flows,nbFlows,loading, selectors, groups,page, CSVloading },
     } = this.props;
 
     const {  fullscreen } = this.state;
@@ -148,7 +123,7 @@ class Flows extends Component {
     
     const columnsOptions = [...specs.flowsColumns,
     ...classifications.product,...classifications.partner];
-
+    
     return (
       <VizLayout
         title="Trade flows"
@@ -341,14 +316,14 @@ class Flows extends Component {
         </div>
         {/* Content panel */}<div  className="col-xs-12 col-sm-6 col-md-8">
 
-            {(alert || loading) && (
+            {(alert || loading ||CSVloading) && (
                 <div className="progress-container progress-container-viz">
                   {alert && (
                     <div className="alert alert-danger" role="alert">
                       {alert}
                     </div>
                   )}
-                  {loading && (
+                  {(loading || CSVloading)&& (
                     <div className="progress-line progress-line-viz">
                       <span className="sr-only">Loading...</span>
                     </div>
@@ -430,25 +405,14 @@ class Flows extends Component {
             </div>
             <div className="form-group-fixed form-group-fixed-right">
               <ExportButton
+                loading={CSVloading}
                 exports={[
                   {
                     label: "Export nodes CSV",
                     fn: () => {
-                      this.exportNodesCsv();
+                      actions.downloadFlowsCSV();
                     },
-                  },
-                  {
-                    label: "Export edges CSV",
-                    fn: () => {
-                      this.exportEdgesCsv();
-                    },
-                  },
-                  {
-                    label: "Export SVG",
-                    fn: () => {
-                      this.exportGraph();
-                    },
-                  },
+                  }
                 ]}
               />
             </div>
