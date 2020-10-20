@@ -126,7 +126,8 @@ const PLACEHOLDERS = {
   kind: 'Import/Export...',
   sourceType: 'Source type...',
   dateMin: 'Date min...',
-  dateMax: 'Date max...'
+  dateMax: 'Date max...',
+  columns: 'Columns...'
 };
 
 const MAX_LIST_SIZE = 200;
@@ -157,7 +158,7 @@ export class ItemSelector extends Component {
     // once we got the props ready we test if we can find the name of the default value
 
     if (!this.defaultTriggered && nextProps.defaultValue && !nextProps.selected && (nextProps.data || []).length > 0) {
-      if (['product', 'partner'].indexOf(nextProps.type) !== -1) {
+      if (['product', 'partner', 'columns'].indexOf(nextProps.type) !== -1) {
         // products and partner are multiple selectors, let's iterate trough selection
         nextProps.onUpdate(_dataToId(nextProps.defaultValue.map(s => nextProps.data.filter(d => d[valueKey] === s)[0]), valueKey));
       }
@@ -225,7 +226,7 @@ export class ItemSelector extends Component {
       valueRenderer: this.renderOption,
       valueKey
     };
-
+    if(type=='columns') commonProps.multi=true;
     if (type !== 'product' && type !== 'partner')
       return <Select {...commonProps} options={this.compulsoryOptions.concat(data)} />;
     return (

@@ -147,6 +147,8 @@ class Flows extends Component {
       name: "" + d,
       id: "" + d,
     }));
+    //TODO: move this to specs
+    const columnsOptions = ['product', 'year', 'direction', 'partner', 'import', 'source', 'sourceType'].map(c => ({id:c,name:c}))
     return (
       <VizLayout
         title="Trade flows"
@@ -347,13 +349,13 @@ class Flows extends Component {
                     </div>
                   )}
                   {loading && (
-                    <div className="progress-line progress-line-viz" syle={{backgroundColor:""}}>
+                    <div className="progress-line progress-line-viz">
                       <span className="sr-only">Loading...</span>
                     </div>
                   )}
                 </div>
               )}
-            <FlowsTable flows={flows} loading={loading} alert={alert} nbFlows={flows} orders={selectors.orders}/> 
+            <FlowsTable flows={flows} columnsOrder={selectors.columns || []} loading={loading} alert={alert} nbFlows={flows} orders={selectors.orders || []}/> 
         {/* Right panel */}
         </div>
         <div
@@ -384,8 +386,19 @@ class Flows extends Component {
               Next
             </Button>
           </div>
-         
-           
+          <div className='form-group'> 
+          <div className="row">
+            <ItemSelector
+                valueKey="id"
+                type="columns"
+                //loading={selectors.partnerClassification && !groups.partner.length}
+                data={columnsOptions}
+                onChange={actions.update.bind(null, "columns")}
+                selected={selectors.columns}
+                onUpdate={v => actions.update("columns", v)}
+                defaultValue={defaultSelectors.flows["selectors.columns"]}
+              /></div>
+</div>
           <div className="form-group-fixed form-group-fixed-right">
             <ExportButton
               exports={[

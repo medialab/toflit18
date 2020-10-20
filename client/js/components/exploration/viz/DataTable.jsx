@@ -6,7 +6,7 @@
  * partners and directions.
  */
 import React, {Component} from 'react';
-import {keys, max} from 'lodash'
+import {debounce, keys, max} from 'lodash'
 import {format, formatPrefix} from 'd3-format';
 import {
   updateSelector
@@ -39,6 +39,13 @@ const UNITS = {
 };
 
 import ReactDataGrid from 'react-data-grid';
+const {
+  DraggableHeader: { DraggableContainer }
+} = require("react-data-grid-addons");
+
+
+
+
 
 @branch({
   actions: {
@@ -81,9 +88,32 @@ export default class FlowsTable extends Component {
     
   }
 
+  updateColumnsOrder(cs) {
+    this.props.actions.updateSelector("columns",cs);
+  }
+
+  onHeaderDrop = (source, target) => {
+    const stateCopy = [...this.props.columnsOrder];
+    const columnSourceIndex = this.props.columnsOrder.findIndex(
+      i => i === source
+    );
+    const columnTargetIndex = this.props.columnsOrder.findIndex(
+      i => i === target
+    );
+
+    stateCopy.splice(
+      columnTargetIndex,
+      0,
+      stateCopy.splice(columnSourceIndex, 1)[0]
+    );
+    this.updateColumnsOrder([]);
+    this.updateColumnsOrder(stateCopy);
+  };
+
+
     render() {
       
-      const {flows, loading,alert} = this.props;
+      const {flows, columnsOrder} = this.props;
       const rows = flows || []
       const headerRenderer = (props) => {
         const headerText = props.column.rowType === 'header' ? props.column.name : '';
@@ -112,28 +142,31 @@ export default class FlowsTable extends Component {
         }
       }
       
-      const columns = rows.length > 0 ? keys(rows[0]).map(key => (
+      const columns = columnsOrder.map(key => (
         {key,
           name:key, 
-          resizable:true, 
+          draggable:true,
+          resizable: columnsSpecificOpts[key] && !!columnsSpecificOpts[key].width, 
           headerRenderer,
           sort:{
             ...this.props.orders.find(s => s.key === key),
             index:this.props.orders.findIndex(s => s.key === key)
           },
           ...columnsSpecificOpts[key]}
-        )) : []
+        ));
       
       return (
+        <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
              <ReactDataGrid
             
-              columns={columns}
+              columns={[...columns]}
               rowGetter={i => rows[i]}
               rowsCount={rows.length}
               rowHeight={this.rowHeight}
               headerRowHeight={this.headerRowHeight}
               minHeight={900}
               
-            />);
+            />
+            </DraggableContainer>);
     };
 }

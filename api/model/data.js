@@ -191,10 +191,11 @@ const Model = {
       partner,
       limit,
       skip,
-      orders
+      orders,
+      columns
     } = params;
     //-- Returning data
-    const shares = "sum(value) AS value_share, sum(kg) AS kg_share, sum(litre) AS litre_share, sum(nbr) AS nbr_share";
+    
     const fieldsDefinitions = {
       value: "toFloat(f.value)",
       kg: "toFloat(f.quantity_kg)",
@@ -207,26 +208,16 @@ const Model = {
       classifiedPartner: "classifiedPartner.name",
       source: "s.name",
     };
-    const fields = [
-      "product",
-      product ? "classifiedProduct" : null,
-      "import",
-      "year",
-      "direction",
-      "partner",
-      partner ? "classifiedPartner" : null,
-      "value",
-      "source",
-    ].filter(f => f);
-
+    const fields = columns && columns.length > 0 ? columns : ['product', 'value'];
+    
     query.return(
       fields.map(fieldname => `${fieldsDefinitions[fieldname] || `f.${fieldname}`} as ${fieldname}`).join(", "),
     );
-    if (orders.length > 0)
+    if (orders && orders.length > 0)
      query.orderBy(orders.map(s => `${fieldsDefinitions[s.key] || `f.${s.key}`} ${s.order}`).join(', '));
     if (skip) query.skip(''+skip);
     if (limit) query.limit(''+limit);
-    console.log(query.interpolate());
+    
     return database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
 

@@ -56,7 +56,8 @@
       "selectors.direction": "$all$",
       "selectors.kind": "total",
       "selectors.dateMin": "1720",
-      "selectors.dateMax": "1780"
+      "selectors.dateMax": "1780",
+      "selectors.columns": ["product", "direction", "year", "partner", "import", "value", "source"]
     }
   }
 }

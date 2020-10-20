@@ -5,7 +5,7 @@
  * Actions related to the globals' view.
  */
 
-import { uniq, forIn, debounce } from "lodash";
+import { uniq, forIn, debounce, keys } from "lodash";
 import {parallel} from "async"
 import { regexIdToString, stringToRegexLabel } from "../lib/helpers";
 
@@ -43,10 +43,21 @@ export function updateSelector(tree, name, item) {
 
     if (item) fetchGroups(tree, groups.select(model), item);
   }
-  // If we updated orders, we need to reload data
-  if (name === "orders"){
-    // reloading at first page cause order changed
-    debounce(() => {changePage(tree, 0);},500)();
+  // If we updated orders or columns, we might need to reload data
+  if (name === "orders" || name =="columns"){
+    //reload only if we miss a column
+    if (name === "columns"){
+      const flows = tree.select(ROOT).get('flows')
+      const existingColumns = flows.length>0 ? keys(flows[0]) : [];
+      if (item.some(k => !existingColumns.includes(k))){
+        // reload the same page
+        debounce(() => changePage(tree, tree.select(ROOT).get('page')),500)();
+      }
+    }
+    else{
+      // reloading at first page cause order changed
+      debounce(() => {changePage(tree, 0);},500)();
+    }
   }
 }
 
@@ -91,10 +102,11 @@ function prepareParams(tree){
 function loadFlows(tree, callback) {
   const cursor = tree.select(ROOT);
   tree.client.flows({ data: prepareParams(tree) }, function(err, flowsData) {
-    if (err) done(err);
+    if (err && callback) return callback(err);
     
-    if (flowsData)
+    if (flowsData){
       cursor.set("flows", flowsData.result);
+    }
     if (callback) callback(null);
   })
 }

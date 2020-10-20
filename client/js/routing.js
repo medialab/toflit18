@@ -214,8 +214,15 @@ export default function bindRoutes(tree) {
               dateMin: ":dateMin",
               dateMax: ":dateMax",
               valueMin: {match: ":valueMin", cast: "number" },
-              valueMax: {match: ":valueMax", cast: "number" }
-
+              valueMax: {match: ":valueMax", cast: "number" },
+              columns: {
+                match: ":columns",
+                cast: "json",
+              },
+              orders: {
+                match: ":orders",
+                cast: "json",
+              }
             },
             state: {
               view: "explorationFlows",
@@ -233,10 +240,8 @@ export default function bindRoutes(tree) {
                   dateMax: ":dateMax",
                   valueMin: ":valueMin",
                   valueMax: ":valueMax",
-                  // orders: {
-                  //   match: ":orders",
-                  //   cast: "json",
-                  // },
+                  columns: ":columns",
+                  orders: ":orders"
                 },
               },
             },

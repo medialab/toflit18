@@ -49,7 +49,8 @@ const controller = [
     //     valueMax: '?string',
     //     skip: '?number',
     //     limit: '?number',
-    //      orders: '?{key:string, order:string}[]
+    //     orders: '?{key:string, order:string}[]
+    //     columns: '?string[]'
     //   }
     //   }
     // },
