@@ -66,10 +66,10 @@ const POSSIBLE_NODE_PROPERTIES = [
   "sourceType",
   "product",
   "id",
-  "bestGuessNationalProdxpart:boolean",
+  "bestGuessNationalProductXPartner:boolean",
   "bestGuessNationalPartner:boolean",
-  "bestGuessDepartmentProdxpart:boolean",
-  "bestGuessNationalDepartment:boolean",
+  "bestGuessTaxDepartmentProductXPartner:boolean",
+  "bestGuessNationalTaxDepartment:boolean",
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -397,10 +397,10 @@ function importer(csvLine) {
   }
   if (csvLine.source_type) nodeData.sourceType = csvLine.source_type;
   // best guess source type
-  nodeData.bestGuessNationalProdxpart = csvLine.best_guess_national_prodxpart === "1" ? "true" : "false";
+  nodeData.bestGuessNationalProductXPartner = csvLine.best_guess_national_prodxpart === "1" ? "true" : "false";
   nodeData.bestGuessNationalPartner = csvLine.best_guess_national_partner === "1" ? "true" : "false";
-  nodeData.bestGuessDepartmentProdxpart = csvLine.best_guess_department_prodxpart === "1" ? "true" : "false";
-  nodeData.bestGuessNationalDepartment = csvLine.best_guess_national_department === "1" ? "true" : "false";
+  nodeData.bestGuessTaxDepartmentProductXPartner = csvLine.best_guess_department_prodxpart === "1" ? "true" : "false";
+  nodeData.bestGuessNationalTaxDepartment = csvLine.best_guess_national_department === "1" ? "true" : "false";
 
   // Here, we filter some lines deemed irrelevant
   if (!nodeData.value && !nodeData.quantity && !nodeData.unitPrice) return;
