@@ -57,10 +57,11 @@ export function updateSelector(tree, name, item) {
       }
       // remove columns from order
       const orders = selectors.get("orders")
-      const newOrders = orders.filter(c => !!item.includes(c.key))
-      if (orders.length != newOrders.length)
-        selectors.set("orders", newOrders)
-      
+      if (orders){
+        const newOrders = orders.filter(c => !!item.includes(c.key))
+        if (orders.length != newOrders.length)
+          selectors.set("orders", newOrders)
+      }      
     }
     else{
       // reloading at first page cause order changed
@@ -149,9 +150,10 @@ export function initFlowTable(tree, page) {
   
   parallel({
     // load total number of flows
-    nbFlows:(done)=> tree.client.countFlows({ data: prepareParams(tree) }, function(err, nbFlowsData) {
+    nbFlows:(done)=> 
+      tree.client.countFlows({ data: prepareParams(tree) }, function(err, nbFlowsData) {
      
-      if (err) done(err);
+      if (err) return done(err);
       if (nbFlowsData) {
         cursor.set("nbFlows", nbFlowsData.result[0].nbFlows);
       }
@@ -160,7 +162,7 @@ export function initFlowTable(tree, page) {
     // load data table
     flows:(done)=> loadFlows(tree, done)
   },(err)=>{
-    if (err) return err;
+    if (err) return done(err);
     cursor.set("loading", false);
   });
 
