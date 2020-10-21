@@ -141,7 +141,7 @@ export default class FlowsTable extends Component {
           width:rows.length>0? max(max(rows.map(r => NUMBER_FORMAT(r.value).length+4))*8,50) :0 
         }
       }
-      const columns = ['rowIndex',...columnsOrder].map(c =>{
+      const columns = rows.length > 0 ? ['rowIndex',...columnsOrder].map(c =>{
         const o = columnsOptions.find(co => co.id === c) || {id:c,name:c};
 
         return { key: o.id,
@@ -154,8 +154,7 @@ export default class FlowsTable extends Component {
             index:this.props.orders.findIndex(s => s.key === o.id)
           },
           ...columnsSpecificOpts[o.id]}
-        });
-      
+        }) : [];
       return (
         <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
              <ReactDataGrid
