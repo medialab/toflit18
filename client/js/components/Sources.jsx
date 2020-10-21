@@ -27,21 +27,39 @@ export default class Sources extends Component {
         <div className="container content">
           <div className="row">
             <div className="col-sm-10 col-sm-offset-1">
-              <h2>National best guess</h2>
+              <h2>Best Guess national product x partner</h2>
               <p className="lead">
                 This autoselects the best source about trade by product x partner for the whole of France in each year.
                 This is "National toutes directions tous partenaires" for 1750, "Objet Général" from 1754 to 1782,
-                "Résumé" in 1787-1789 and 1797-1821.
+                "Résumé" in 1787-1789 and 1797-1821. These sources are supplemented by data from "Compagnie des Indes"
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
-              <h2>Local best guess</h2>
+              <h2>Best Guess national partner</h2>
+              <p className="lead">
+                This autoselects the best source about trade by partner for the whole of France in each year.
+                This is "Tableau Général" for 1716-1782 and "Résumé" in 1787-1789 and 1797-1821.
+              </p>
+            </div>
+            <div className="col-sm-10 col-sm-offset-1">
+              <h2>Best Guess tax department product x partner</h2>
               <p className="lead">
                 This autoselects the best source about trade by product x partner x direction in each year. The selected
                 sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes directions
-                tous partenaires".
+                tous partenaires". Some "Local" sources from Rouen imports are excluded as they do not include all products
+                (1737, 1739-1749, 1754, 1756-1762)
               </p>
             </div>
+            <div className="col-sm-10 col-sm-offset-1">
+              <h2>Best Guess national tax department</h2>
+              <p className="lead">
+                This autoselects the best source about trade by tax departement for the whole of France. It might not 
+                include all partners nor all goods. This is product x partner for the whole of France in each year.
+                This is "National toutes directions tous partenaires" for 1750, "National toutes directions partenaires manquants"
+                for the 1780s and "National toutes directions partenaires manquants" otherwise.
+              </p>
+            </div>
+         
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Objet Général</h2>
               <p className="lead">

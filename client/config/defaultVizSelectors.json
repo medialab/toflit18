@@ -8,7 +8,7 @@
     },
     "initialValues": {
       "classification": "product_simplification",
-      "selectors.sourceType": "National product best guess",
+      "selectors.sourceType": "Best Guess national product x partner",
       "selectors.childClassification": "product_sitc_EN",
       "selectors.child": ["Raw_materials,_inedible,_except_fuels~product_sitc_EN"],
       "selectors.direction": "$all$",
@@ -27,13 +27,13 @@
     "initialValues": {
       "classification": "partner_grouping",
       "selectors.kind": "total",
-      "selectors.sourceType": "National product best guess",
+      "selectors.sourceType": "Best Guess national product x partner",
       "selectors.dateMin": "1750",
       "selectors.dateMax": "1750"
     }
   },
   "indicators": {
-    "selectors.sourceType": "National product best guess"
+    "selectors.sourceType": "Best Guess national product x partner"
   },
   "classifications": {
     "kind": "product",

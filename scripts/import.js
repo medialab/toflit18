@@ -66,10 +66,10 @@ const POSSIBLE_NODE_PROPERTIES = [
   "sourceType",
   "product",
   "id",
-  "nationalProductBestGuess:boolean",
-  "nationalGeographyBestGuess:boolean",
-  "localProductBestGuess:boolean",
-  "localGeographyBestGuess:boolean",
+  "bestGuessNationalProdxpart:boolean",
+  "bestGuessNationalPartner:boolean",
+  "bestGuessDepartmentProdxpart:boolean",
+  "bestGuessNationalDepartment:boolean",
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -397,10 +397,10 @@ function importer(csvLine) {
   }
   if (csvLine.source_type) nodeData.sourceType = csvLine.source_type;
   // best guess source type
-  nodeData.nationalProductBestGuess = csvLine.national_product_best_guess === "1" ? "true" : "false";
-  nodeData.nationalGeographyBestGuess = csvLine.national_geography_best_guess === "1" ? "true" : "false";
-  nodeData.localProductBestGuess = csvLine.local_product_best_guess === "1" ? "true" : "false";
-  nodeData.localGeographyBestGuess = csvLine.local_geography_best_guess === "1" ? "true" : "false";
+  nodeData.bestGuessNationalProdxpart = csvLine.best_guess_national_prodxpart === "1" ? "true" : "false";
+  nodeData.bestGuessNationalPartner = csvLine.best_guess_national_partner === "1" ? "true" : "false";
+  nodeData.bestGuessDepartmentProdxpart = csvLine.best_guess_department_prodxpart === "1" ? "true" : "false";
+  nodeData.bestGuessNationalDepartment = csvLine.best_guess_national_department === "1" ? "true" : "false";
 
   // Here, we filter some lines deemed irrelevant
   if (!nodeData.value && !nodeData.quantity && !nodeData.unitPrice) return;
