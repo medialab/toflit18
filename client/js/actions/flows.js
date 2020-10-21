@@ -55,6 +55,12 @@ export function updateSelector(tree, name, item) {
         // reload the same page
         debounce(() => changePage(tree, tree.select(ROOT).get('page')),500)();
       }
+      // remove columns from order
+      const orders = selectors.get("orders")
+      const newOrders = orders.filter(c => !!item.includes(c.key))
+      if (orders.length != newOrders.length)
+        selectors.set("orders", newOrders)
+      
     }
     else{
       // reloading at first page cause order changed
