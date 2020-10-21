@@ -192,7 +192,7 @@ export class ItemSelector extends Component {
 
   renderOption(o) {
     return (
-      <div className={cls('option', {special: o.special})}>
+      <div title={o.name} className={cls('option', {special: o.special})}>
         <strong>{o.name}</strong>
       </div>
     );

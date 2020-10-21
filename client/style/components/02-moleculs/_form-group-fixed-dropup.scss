@@ -2,25 +2,30 @@
 // TOFLIT18 COMPONENTS MOLECUL FORM GROUP FIXED DROPUP
 // --------------------------------------------------
 .form-group-fixed {
-    .dropdown-menu {
-        width: 100%;
-        text-align: center;
-    }
+  .dropdown-menu {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .Select-value-label {
-	max-width:150px;
-	max-height:50px;
+  max-width: 200px;
+  max-height: 50px;
+}
+.Select-value-label div {
+  text-overflow: ellipsis ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .Select--multi .Select-value {
-	color: $mine-shaft-darken;
-	background-color: white;
+  color: $mine-shaft-darken;
+  background-color: white;
 }
 
 .Select.is-focused:not(is-open) > .Select-control {
-	border-color:$olive-haze;
+  border-color: $olive-haze;
 }
 
 .Select.is-focused:not(.is-open) > .Select-control {
-	border-color:$olive-haze;
+  border-color: $olive-haze;
 }
