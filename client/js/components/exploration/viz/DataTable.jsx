@@ -127,6 +127,7 @@ export default class FlowsTable extends Component {
             }
           </div>); 
       }
+      const booleanFormatter = ({value}) => (value ? (<div>true</div>) : (<div>false</div>))
       const columnsSpecificOpts = {
         rowIndex: {name:"#", width:rows.length>0?(rows[rows.length-1].rowIndex+'').length*8+16:0 },
         import: {width: 70,formatter:({value}) => (value ? (<div>import</div>) : (<div>export</div>))},
@@ -139,7 +140,12 @@ export default class FlowsTable extends Component {
               return <div>N/A</div>;
           },
           width:rows.length>0? max(max(rows.map(r => NUMBER_FORMAT(r.value).length+4))*8,50) :0 
-        }
+        },
+        nationalProductBestGuess: {formatter:booleanFormatter},
+        localProductBestGuess: {formatter:booleanFormatter},
+        nationalGeographyBestGuess: {formatter:booleanFormatter},
+        localGeographyBestGuess: {formatter:booleanFormatter}
+        
       }
       const columns = rows.length > 0 ? ['rowIndex',...columnsOrder].map(c =>{
         const o = columnsOptions.find(co => co.id === c) || {id:c,name:c};
@@ -147,7 +153,7 @@ export default class FlowsTable extends Component {
         return { key: o.id,
           name: o.name, 
           draggable:true,
-          resizable: columnsSpecificOpts[o.id] && !!columnsSpecificOpts[o.id].width, 
+          resizable: true, 
           headerRenderer,
           sort:{
             ...this.props.orders.find(s => s.key === o.id),

@@ -92,7 +92,7 @@ const flowsQuery = (params) => {
   }
 
   //-- Do we need to match a source type
-  match.push("(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)");
+  match.push("(f:Flow)-[trans:TRANSCRIBED_FROM]->(s:Source)");
   if (sourceType) {
     if (!sourceType.includes("best guess")) {
       where.and("s.type IN $sourceType");
@@ -201,10 +201,13 @@ const Model = {
       kg: "toFloat(f.quantity_kg)",
       nb: "toFloat(f.quantity_nbr)",
       litre: "toFloat(f.quantity_litre)",
-      source: "s.name"
+      source: "s.name",
+      path: "s.path",
+      sheet: "trans.sheet",
+      line: "trans.line"
       };
       // first option, special cases listed in fields
-      if (fields[fieldsDefinitions]) return fields[fieldsDefinitions];
+      if (fields[fieldname]) return fields[fieldname];
       // second option, classification cases 
       if (fieldname.startsWith('product_') || fieldname.startsWith('partner_')) return `${fieldname}.name`;
       // finally let's try a flow metadata
@@ -219,7 +222,7 @@ const Model = {
      query.orderBy(orders.map(s => `${fieldsDefinitions[s.key] || `f.${s.key}`} ${s.order}`).join(', '));
     if (skip) query.skip(''+skip);
     if (limit) query.limit(''+limit);
-    
+    console.log(query.build());
     return database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
 
