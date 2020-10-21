@@ -24,7 +24,6 @@ const Y_AXIS_FORMAT = nb => {
 
   return SI_FORMAT(nb);
 };
-const NUMBER_FORMAT = n => n%1===0 ? format(',')(n) :format(',.2f')(n);
 
 const PERCENTAGE_FORMAT = format('.0%');
 
@@ -175,7 +174,12 @@ export default class FlowsTable extends Component {
       const headerRenderer = (props) => {
         const headerText = props.column.rowType === 'header' ? props.column.name : '';
         return (
-          <div className='widget-HeaderCell__value' style={{cursor: "pointer"}} onClick={()=>this.onHeaderClick(props.column)}>
+          <div className='widget-HeaderCell__value' 
+              style={{
+                cursor: "pointer", 
+                textAlign:(props.column.name==='Value' ? 'right': 'left'),
+                paddingRight:(props.column.name==='Value' ? '2em': 0)}}
+              onClick={()=>this.onHeaderClick(props.column)}>
             {headerText}
             {props.column.sort.key &&
               <span className="pull-right">
@@ -191,12 +195,20 @@ export default class FlowsTable extends Component {
         year: {width:50},
         value: {
           formatter:({row}) => { 
+            
             if (row.value)
-              return <div>{`${NUMBER_FORMAT(row.value)} ${row.year <"1797" ? 'lt.': 'Fr.'}`}</div>
+              return <div style={{textAlign:'right'}}>
+                { (row.value%1===0) ?
+                  // integer
+                  <span>{format(',')(row.value)} {row.year <"1797" ? 'lt.': 'Fr.'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  : // float
+                  <span>{format(',.2f')(row.value)} {row.year <"1797" ? 'lt.': 'Fr.'}</span>
+                }
+              </div>
             else
-              return <div>N/A</div>;
+              return <div style={{textAlign:'right'}}>N/A</div>
+
           },
-          width:rows.length>0? max(max(rows.map(r => NUMBER_FORMAT(r.value).length+4))*8,50) :0 
         },
         nationalProductBestGuess: {formatter:booleanFormatter},
         localProductBestGuess: {formatter:booleanFormatter},
