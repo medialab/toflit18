@@ -12,7 +12,7 @@ import { interpolate, Query, Expression } from "decypher";
 
 
 function addClassificationFilter(model, classificationVariable, classification, itemVariable, itemValues) {
-  const match = `(f:Flow)-[:OF]->(${model}:${capitalize(model)})<-[:AGGREGATES*1..]-(${itemVariable}:ClassifiedItem)<-[:HAS]-(${classificationVariable}:Classification)`;
+  const match = `(f:Flow)-[${model == 'product' ? ':OF' : ':FROM|:TO'}]->(${model}:${capitalize(model)})<-[:AGGREGATES*1..]-(${itemVariable}:ClassifiedItem)<-[:HAS]-(${classificationVariable}:Classification)`;
   const where = new Expression(`${classificationVariable}.id = $${classificationVariable}`);
   let params ={ [classificationVariable]:classification };
   if (itemValues) {
@@ -23,7 +23,7 @@ function addClassificationFilter(model, classificationVariable, classification, 
   return {match, where, params}
 }
 function retrieveClassificationNodes(model, classificationVariable, classification, itemVariable) {
-  const optionalMatch = `(f:Flow)-[:OF]->(:${capitalize(model)})<-[:AGGREGATES*1..]-(${itemVariable}:ClassifiedItem)<-[:HAS]-(${classificationVariable}:Classification)`;
+  const optionalMatch = `(f:Flow)-[${model == 'product' ? ':OF' : ':FROM|:TO'}]->(:${capitalize(model)})<-[:AGGREGATES*1..]-(${itemVariable}:ClassifiedItem)<-[:HAS]-(${classificationVariable}:Classification)`;
   const where = new Expression(`${classificationVariable}.id = $${classificationVariable}`);
   let params ={ [classificationVariable]:classification };
 
@@ -122,15 +122,6 @@ const flowsQuery = (params) => {
 
   if (!where.isEmpty()) query.where(where);
 
-  // should we match classification to feed columns
-  columns.filter(n => n.startsWith('product_') || n.startsWith('partner_')).forEach((c,i)=>{
-    const model = c.split('_')[0];
-    const {optionalMatch, where, params} = retrieveClassificationNodes(model,`classif${i}`,c, c);
-    query.optionalMatch(optionalMatch)
-    query.where(where);
-    query.params(params);
-  })
-
   return query;
 }
 
@@ -214,12 +205,20 @@ const Model = {
       return `f.${fieldname}`; 
     };
     const fields = columns && columns.length > 0 ? columns : ['product', 'value'];
-    
+      // should we match classification to feed columns
+    fields.filter(n => n.startsWith('product_') || n.startsWith('partner_')).forEach((c,i)=>{
+      const model = c.split('_')[0];
+      const {optionalMatch, where, params} = retrieveClassificationNodes(model,`classif${i}`,c, c);
+      query.optionalMatch(optionalMatch)
+      query.where(where);
+      query.params(params);
+    })
+
     query.return(
       fields.map(fieldname => `${fieldsDefinitions(fieldname)} as ${fieldname}`).join(", "),
     );
     if (orders && orders.length > 0)
-     query.orderBy(orders.map(s => `${fieldsDefinitions[s.key] || `f.${s.key}`} ${s.order}`).join(', '));
+     query.orderBy(orders.map(s => `apoc.text.clean(${fieldsDefinitions(s.key)}) ${s.order}`).join(', '));
     if (skip) query.skip(''+skip);
     if (limit) query.limit(''+limit);
     console.log(query.build());
