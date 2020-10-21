@@ -6,12 +6,13 @@
  * partners and directions.
  */
 import React, {Component} from 'react';
-import {debounce, keys, max} from 'lodash'
+import {keys, max, values, range} from 'lodash'
 import {format, formatPrefix} from 'd3-format';
 import {
   updateSelector
 } from "../../../actions/flows";
 
+import csvParse from "papaparse";
 import { branch } from "baobab-react/decorators";
 /**
  * Formats.
@@ -65,6 +66,62 @@ export default class FlowsTable extends Component {
     super(props, context);
     this.rowHeight = 25;
     this.headerRowHeight= 50;
+    this.state = {
+      topLeft: {},
+      botmRight: {},
+    };
+    
+  }
+  componentDidMount= () => {
+    document.addEventListener("copy", this.copy);
+  }
+  componentWillUnmount= () =>{
+    document.removeEventListener("copy", this.copy);
+  }
+
+  setSelection = args => {
+    // console.log(args)
+    this.setState({
+      topLeft: {
+        rowIdx: args.topLeft.rowIdx,
+        colIdx: args.topLeft.idx
+      },
+      botmRight: {
+        rowIdx: args.bottomRight.rowIdx,
+        colIdx: args.bottomRight.idx
+      }
+    });
+  };
+  
+  copy = (e) => {
+
+    const { topLeft, botmRight } = this.state;
+
+    if (topLeft.colIdx != -1 && botmRight.colIdx != -1){
+      e.preventDefault();
+      // Loop through each row
+      const columns = range(topLeft.colIdx -1, botmRight.colIdx)
+      .map(i => this.props.columnsOrder[i])
+      console.log(columns, this.props.columnsOrder, topLeft.colIdx, botmRight.colIdx );
+      const copyData =
+        // headers
+        [columns].concat(
+        // data
+        range(topLeft.rowIdx, botmRight.rowIdx + 1)
+        .map(
+          // Loop through each column
+          rowIdx =>
+            columns
+              .map(
+                // Grab the row values
+                col => this.props.flows[rowIdx][col]
+              )
+        )
+      );
+      const csv = csvParse.unparse(copyData)
+      
+      e.clipboardData.setData("text/plain", csv);
+    }
   }
 
   onHeaderClick(e){
@@ -164,13 +221,15 @@ export default class FlowsTable extends Component {
       return (
         <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
              <ReactDataGrid
-            
               columns={columns}
               rowGetter={i => rows[i]}
               rowsCount={rows.length}
               rowHeight={this.rowHeight}
               headerRowHeight={this.headerRowHeight}
               minHeight={900}
+              cellRangeSelection={{
+                onComplete: this.setSelection
+              }}
               
             />
             </DraggableContainer>);
