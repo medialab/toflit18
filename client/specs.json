@@ -33,6 +33,7 @@
     "maxYear": 1839
   },
   "flowsRowsMax": 100,
+  "flowsExportMax": 200000,
   "flowsColumns": [    
     { "id":"value","name":"Value"},
     { "id":"year","name":"Year"},

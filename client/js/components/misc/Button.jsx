@@ -161,7 +161,7 @@ export class ExportButton extends Component {
           aria-haspopup="true"
           aria-expanded="true"
           onClick={this.toggleList}
-          disabled={!this.props.exports.length}
+          disabled={this.props.disabled || this.props.exports.length == 0}
           className={cls(
             'btn',
             'btn-default',

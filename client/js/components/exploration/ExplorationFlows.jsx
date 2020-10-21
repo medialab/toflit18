@@ -342,7 +342,7 @@ class Flows extends Component {
           <form onSubmit={e => e.preventDefault()}>
             {/*  COLUMNS SELECTION */}
             <div className='form-group'>
-              <label for="columnsSelector" className="control-label">Columns selection</label>
+              <label  className="control-label">Columns selection</label>
               <small className="help-block">
                 Change the columns order by draggin/dropping the table headers.
               </small>
@@ -361,10 +361,10 @@ class Flows extends Component {
             </div>
             {/* PAGINATION */}
             <div className='form-group'>
-              <label for="columnsSelector" className="control-label">Pagination</label>
-              <div><b>{nbFlows}</b> rows selected</div>
+              <label  className="control-label">Pagination</label>
+              <div><b>{nbFlows}</b> flows selected</div>
               <small className="help-block">
-              A maximum of {specs.flowsRowsMax} rows are displayed per page.
+              A maximum of {specs.flowsRowsMax} flows are displayed per page.
               </small>
               <div className="row">
                 <div className="col-xs-3">
@@ -385,7 +385,7 @@ class Flows extends Component {
                     //loading={selectors.partnerClassification && !groups.partner.length}
                     data={range(1,nbFlows / specs.flowsRowsMax).map(v => ({id:v, name:`page ${v}`}))}
                     onChange={v => actions.changePage(v)}
-                    selected={page}
+                    selected={page+1}
                     onUpdate={v => actions.changePage(v)}
                   />
                 </div>
@@ -406,15 +406,21 @@ class Flows extends Component {
             <div className="form-group-fixed form-group-fixed-right">
               <ExportButton
                 loading={CSVloading}
+                disabled={nbFlows>specs.flowsExportMax}
                 exports={[
                   {
-                    label: "Export nodes CSV",
+                    label: "Export CSV",
                     fn: () => {
                       actions.downloadFlowsCSV();
                     },
                   }
                 ]}
               />
+              {nbFlows>specs.flowsExportMax && 
+                <small className="help-block">
+                 Export in CSV only possible for less than {specs.flowsExportMax} flows. Adjust a more precise set of filters to be able to export.
+                </small>
+                }
             </div>
           </form>
         </div>
