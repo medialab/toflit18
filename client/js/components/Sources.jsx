@@ -59,7 +59,6 @@ export default class Sources extends Component {
                 for the 1780s and "National toutes directions partenaires manquants" otherwise.
               </p>
             </div>
-         
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Objet Général</h2>
               <p className="lead">
