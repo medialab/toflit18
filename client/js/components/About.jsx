@@ -211,7 +211,7 @@ export default class About extends Component {
                 (guillaume.daudin@dauphine.psl.eu)
               </p>
               <p>For basic guidance in using this website, ask Guillaume Daudin (guillaume.daudin@dauphine.psl.eu)</p>
-              <p>For advanced technical issues, ask Paul Girard (paul.girard@sciencespo.fr)</p>
+              <p>For advanced technical issues, ask Paul Girard (paul.girard@ouestware.com)</p>
             </div>
           </div>
         </div>
