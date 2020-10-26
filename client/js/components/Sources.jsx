@@ -179,14 +179,6 @@ export default class Sources extends Component {
                 </ul>
               </p>
             </div>
-
-
-
-
-
-
-
-
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Local</h2>
               <p className="lead">
@@ -358,13 +350,13 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National partenaires manquants</h2>
               <p className="lead">
-                contain trade by product x partner for the whole of France and a small number of partners (Angleterre,
-                Barbarie, États-Unis, Russie for individual years in the 1780s).
+                contain trade by product x partner for the whole of France and a sub-set of all partners (All of them without imports from the West Indies in 1752 ; only Angleterre, Barbarie, États-Unis, Russie for individual years in the 1780s).
               </p>
               <p>
                 <ul>
                   <li>AN F12 1835</li>
                   <li>AN F12 250</li>
+                  <li>BM Rouen, Fonds Montbret, 155-1 ("Objet Général of 1752")</li> 
                 </ul>
               </p>
             </div>
