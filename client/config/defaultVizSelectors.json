@@ -50,7 +50,7 @@
       "page":0
     },
     "initialValues": {
-      "selectors.sourceType": "National product best guess",
+      "selectors.sourceType": "Best Guess national product x partner",
       "selectors.productClassification": "product_sitc_EN",
       "selectors.product": ["Raw_materials,_inedible,_except_fuels~product_sitc_EN"],
       "selectors.direction": "$all$",
