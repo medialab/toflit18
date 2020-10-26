@@ -162,7 +162,7 @@ const buildQuery = (dataType, params) => {
   query.params({ limitMinYear: database.int(limits.minYear) });
 
   // manage special sourceType
-  if (sourceType && !sourceType.includes("best guess")) {
+  if (sourceType && !sourceType.toLowerCase().includes("best guess")) {
     where.and("f.sourceType IN $sourceType");
     query.params({ sourceType: [sourceType] });
   }

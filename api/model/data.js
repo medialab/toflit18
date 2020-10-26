@@ -132,7 +132,7 @@ const Model = {
     //-- Do we need to match a source type
     match.push("(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)");
     if (sourceType) {
-      if (!sourceType.includes("best guess")) {
+      if (!sourceType.toLowerCase().includes("best guess")) {
         where.and("s.type IN $sourceType");
         query.params({ sourceType: [sourceType] });
       } else where.and(`f.${camelCase(sourceType)} = true`);
