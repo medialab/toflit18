@@ -9,7 +9,7 @@ import Icon from "./misc/Icon.jsx";
 
 const LINKS = {
   data: ["/exploration/meta", "/classification/browser", "/exploration/sources"],
-  view: ["/exploration/indicators", "/exploration/network", "/exploration/terms"],
+  view: ["/exploration/indicators", "/exploration/network", "/exploration/terms", "/exploration/flows"],
   glossary: ["/glossary/products", "/glossary/concepts"],
   sources: "/sources",
   about: "/about",
@@ -128,6 +128,9 @@ export default class Header extends Component {
                     </li>
                     <li>
                       <a href="#/exploration/terms">Product Terms Network</a>
+                    </li>
+                    <li>
+                      <a href="#/exploration/flows">Trade flows</a>
                     </li>
                   </ul>
                 </li>

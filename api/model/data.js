@@ -6,9 +6,124 @@
  */
 import database from "../connection";
 import { data as queries } from "../queries";
-import { sortBy, camelCase } from "lodash";
+import { sortBy, camelCase, capitalize } from "lodash";
 import filterItemsByIdsRegexps from "./utils";
 import { interpolate, Query, Expression } from "decypher";
+
+
+function addClassificationFilter(model, classificationVariable, classification, itemVariable, itemValues) {
+  const match = `(f:Flow)-[${model == 'product' ? ':OF' : ':FROM|:TO'}]->(${model}:${capitalize(model)})<-[:AGGREGATES*1..]-(${itemVariable}:ClassifiedItem)<-[:HAS]-(${classificationVariable}:Classification)`;
+  const where = new Expression(`${classificationVariable}.id = $${classificationVariable}`);
+  let params ={ [classificationVariable]:classification };
+  if (itemValues) {
+    const filter = filterItemsByIdsRegexps(itemValues, itemVariable);
+    where.and(filter.expression);
+    params = {...params, ...filter.params};
+  }
+  return {match, where, params}
+}
+function retrieveClassificationNodes(model, classificationVariable, classification, itemVariable) {
+  const optionalMatch = `(f:Flow)-[${model == 'product' ? ':OF' : ':FROM|:TO'}]->(:${capitalize(model)})<-[:AGGREGATES*1..]-(${itemVariable}:ClassifiedItem)<-[:HAS]-(${classificationVariable}:Classification)`;
+  const where = new Expression(`${classificationVariable}.id = $${classificationVariable}`);
+  let params ={ [classificationVariable]:classification };
+
+  return {optionalMatch, where, params}
+}
+
+const flowsQuery = (params) => {
+  const {
+    sourceType,
+    direction,
+    kind,
+    productClassification,
+    product,
+    partnerClassification,
+    partner,
+    dateMin,
+    dateMax,
+    valueMin,
+    valueMax,
+    columns
+  } = params;
+
+  // build flows query
+  const query = new Query(),
+    where = new Expression(),
+    match = [];
+
+  //--  import export
+  // define import export edge type filter
+  let exportImportFilterDirection = ":FROM|:TO";
+  let exportImportFilterPartner = ":FROM|:TO";
+  if (kind === "import") {
+    exportImportFilterDirection = ":TO";
+    exportImportFilterPartner = ":FROM";
+    // add a where clause an flow import index to match flows which doesn't have a partner or direction link
+    where.and("f.import");
+  } else if (kind === "export") {
+    exportImportFilterDirection = ":FROM";
+    exportImportFilterPartner = ":TO";
+    // add a where clause an flow import index to match flows which doesn't have a partner or direction link
+    where.and("NOT f.import");
+  }
+
+  //-- Do we need to filter by a product?
+  if (productClassification) {
+    const {match, where, params} = addClassificationFilter("product",'pc',productClassification, productClassification, product)
+    query.match(match)
+    query.where(where);
+    query.params(params);
+  }
+
+  //-- Do we need to filter by a partner?
+  if (partnerClassification) {
+    const {match, where, params} = addClassificationFilter("partner",'cc',partnerClassification, partnerClassification, partner)
+    query.match(match)
+    query.where(where);
+    query.params(params);
+  }
+
+
+  //-- Should we match a precise direction?
+  if (direction && direction !== "$all$") {
+    match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
+    where.and("d.id = $direction");
+    query.params({ direction });
+  }
+
+  //-- Do we need to match a source type
+  match.push("(f:Flow)-[trans:TRANSCRIBED_FROM]->(s:Source)");
+  if (sourceType) {
+    if (!sourceType.toLowerCase().includes("best guess")) {
+      where.and("s.type IN $sourceType");
+      query.params({ sourceType: [sourceType] });
+    } else where.and(`f.${camelCase(sourceType)} = true`);
+  }
+
+  if (dateMin) { 
+    where.and("f.year >= $dateMin");
+    query.params({dateMin: +dateMin})
+  }
+  if (dateMax) { 
+    where.and("f.year <= $dateMax");
+    query.params({dateMax: +dateMax})
+  }
+  if (valueMin) { 
+    where.and("f.value >= $valueMin");
+    query.params({valueMin: +valueMin})
+  }
+  if (valueMax) { 
+    where.and("f.value <= $valueMax");
+    query.params({valueMax: +valueMax})
+  }
+
+  if (match.length > 0) query.match(match);
+  else query.match("(f:Flow)");
+
+  if (!where.isEmpty()) query.where(where);
+
+  return query;
+}
 
 const Model = {
   /**
@@ -41,7 +156,22 @@ const Model = {
   /**
    * Flows.
    */
+  countFlows(params, callback) {
+    
+    const query = flowsQuery(params);
+    
+    //-- Returning data
+    query.return("count(f) as nbFlows");
+
+    return database.cypher(query.build(), function(err, result) {
+      if (err) return callback(err);
+
+      return callback(null, result);
+    });
+  },
   flows(params, callback) {
+    
+    const query = flowsQuery(params);
     const {
       sourceType,
       direction,
@@ -50,137 +180,52 @@ const Model = {
       product,
       partnerClassification,
       partner,
-      dateMin,
-      dateMax,
-      valueMin,
-      valueMax,
+      limit,
+      skip,
+      orders,
+      columns
     } = params;
-
-    // build flows query
-    const query = new Query(),
-      where = new Expression(),
-      match = [];
-
-    //--  import export
-    // define import export edge type filter
-    let exportImportFilterDirection = ":FROM|:TO";
-    let exportImportFilterPartner = ":FROM|:TO";
-    if (kind === "import") {
-      exportImportFilterDirection = ":TO";
-      exportImportFilterPartner = ":FROM";
-      // add a where clause an flow import index to match flows which doesn't have a partner or direction link
-      where.and("f.import");
-    } else if (kind === "export") {
-      exportImportFilterDirection = ":FROM";
-      exportImportFilterPartner = ":TO";
-      // add a where clause an flow import index to match flows which doesn't have a partner or direction link
-      where.and("NOT f.import");
-    }
-
-    //-- Do we need to match a product?
-    if (productClassification) {
-      // match.push("(f:Flow)-[:OF]->(product)");
-      // where.and(new Expression("product IN products"));
-
-      query.match(
-        "(f:Flow)-[:OF]->(product:Product)<-[:AGGREGATES*1..]-(classifiedProduct:ClassifiedItem)<-[:HAS]-(pc:Classification)",
-      );
-      const whereProduct = new Expression("pc.id = $productClassification");
-      query.params({ productClassification });
-      if (product) {
-        const productFilter = filterItemsByIdsRegexps(product, "classifiedProduct");
-        whereProduct.and(productFilter.expression);
-        query.params(productFilter.params);
-      }
-      query.where(whereProduct);
-
-      query.params({ productClassification });
-    }
-
-    //-- Do we need to match a partner?
-    if (partnerClassification) {
-      // Adding the partner filter in the main query
-      // match.push(`(f:Flow)-[${exportImportFilterPartner}]->(partner)`);
-      // where.and(new Expression("partner IN partners"));
-
-      query.match(
-        `(f:Flow)-[${exportImportFilterPartner}]->(partner:Partner)<-[:AGGREGATES*1..]-(classifiedPartner:ClassifiedItem)<-[:HAS]-(cc:Classification)`,
-      );
-      const wherePartner = new Expression("cc.id = $partnerClassification");
-      query.params({ partnerClassification });
-      if (partner) {
-        const partnerFilter = filterItemsByIdsRegexps(partner, "classifiedPartner");
-        wherePartner.and(partnerFilter.expression);
-        query.params(partnerFilter.params);
-      }
-      query.where(wherePartner);
-
-      // if (productClassification) {
-      //   query.with("collect(partner) AS partners, products");
-      // } else {
-      //   query.with("collect(partner) AS partners");
-      // }
-    }
-
-    //-- Should we match a precise direction?
-    if (direction && direction !== "$all$") {
-      match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
-      where.and("d.id = $direction");
-      query.params({ direction });
-    }
-
-    //-- Do we need to match a source type
-    match.push("(f:Flow)-[:TRANSCRIBED_FROM]->(s:Source)");
-    if (sourceType) {
-      if (!sourceType.toLowerCase().includes("best guess")) {
-        where.and("s.type IN $sourceType");
-        query.params({ sourceType: [sourceType] });
-      } else where.and(`f.${camelCase(sourceType)} = true`);
-    }
-
-    if (dateMin) where.and("f.");
-
-    if (match.length > 0) query.match(match);
-    else query.match("(f:Flow)");
-
-    if (!where.isEmpty()) query.where(where);
-
     //-- Returning data
-    const shares = "sum(value) AS value_share, sum(kg) AS kg_share, sum(litre) AS litre_share, sum(nbr) AS nbr_share";
-    const fieldsDefinitions = {
-      value: "toFloat(f.value)",
+    
+    const fieldsDefinitions = (fieldname) => {
+      const fields = { value: "toFloat(f.value)",
       kg: "toFloat(f.quantity_kg)",
       nb: "toFloat(f.quantity_nbr)",
       litre: "toFloat(f.quantity_litre)",
-      year: "f.year",
-      direction: "f.direction",
-      sourceType: "f.sourceType",
-      classifiedProduct: "classifiedProduct.name",
-      classifiedPartner: "classifiedPartner.name",
       source: "s.name",
+      path: "s.path",
+      sheet: "trans.sheet",
+      line: "trans.line"
+      };
+      // first option, special cases listed in fields
+      if (fields[fieldname]) return fields[fieldname];
+      // second option, classification cases 
+      if (fieldname.startsWith('product_') || fieldname.startsWith('partner_')) return `${fieldname}.name`;
+      // finally let's try a flow metadata
+      return `f.${fieldname}`; 
     };
-    const fields = [
-      "product",
-      product ? "classifiedProduct" : null,
-      "import",
-      "year",
-      "direction",
-      "partner",
-      partner ? "classifiedPartner" : null,
-      "value",
-      "source",
-    ].filter(f => f);
+    const fields = columns && columns.length > 0 ? columns : ['product', 'value'];
+      // should we match classification to feed columns
+    fields.filter(n => n.startsWith('product_') || n.startsWith('partner_')).forEach((c,i)=>{
+      const model = c.split('_')[0];
+      const {optionalMatch, where, params} = retrieveClassificationNodes(model,`classif${i}`,c, c);
+      query.optionalMatch(optionalMatch)
+      query.where(where);
+      query.params(params);
+    })
 
     query.return(
-      fields.map(fieldname => `${fieldsDefinitions[fieldname] || `f.${fieldname}`} as ${fieldname}`).join(", "),
+      fields.map(fieldname => `${fieldsDefinitions(fieldname)} as ${fieldname}`).join(", "),
     );
-    query.orderBy("f.year, f.direction, f.product, f.partner");
-
-    console.log(query.interpolate());
+    if (orders && orders.length > 0)
+     query.orderBy(orders.map(s => `apoc.text.clean(${fieldsDefinitions(s.key)}) ${s.order}`).join(', '));
+    if (skip) query.skip(''+skip);
+    if (limit) query.limit(''+limit);
+    console.log(query.build());
     return database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
 
-      return callback(null, result);
+      return callback(null, result.map((row,i) => ({rowIndex:(skip||0)+i+1, ...row})));
     });
   },
 };

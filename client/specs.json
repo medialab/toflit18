@@ -31,5 +31,34 @@
   "limits": {
     "minYear": 1719,
     "maxYear": 1839
-  }
+  },
+  "flowsRowsMax": 100,
+  "flowsExportMax": 200000,
+  "flowsColumns": [    
+    { "id":"value","name":"Value"},
+    { "id":"year","name":"Year"},
+    { "id":"rawYear","name":"Year (source)"},
+    { "id":"product","name":"Product (source)"},
+    { "id":"direction","name":"Direction"},
+    { "id":"originalDirection","name": "Direction (source)"},
+    { "id":"partner","name": "Partner"},
+    { "id":"import","name": "Import/Export"},
+    { "id":"source","name":"Source"},
+    { "id":"path","name":"Source filepath"},
+    { "id":"line","name": "Line number"},
+    { "id":"sheet","name":"Sheet"},
+    { "id":"sourceType","name": "Source type"},
+    { "id":"normalizedUnit","name": "Unit normalised"},
+    { "id":"unit","name":"Unit"},
+    { "id":"unitPrice","name":"Unit price"},
+    { "id":"rawUnit","name":"Unit (source)"},
+    { "id":"quantity","name":"Quantity"},
+    { "id":"quantity_kg","name": "Quantity in Kg"},
+    { "id":"quantity_litre","name":"Quantity in litre"},
+    { "id":"localGeographyBestGuess","name":"Local geography best guess"},
+    { "id":"localProductBestGuess","name": "Local product best guess"},
+    { "id":"nationalGeographyBestGuess","name": "National geography best guess"},
+    { "id":"nationalProductBestGuess","name": "National product best guess"},
+    { "id":"note","name": "Notes"}
+    ]
 }

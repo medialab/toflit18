@@ -44,5 +44,20 @@
     "dataModel": "direction",
     "selectors.direction": "$all$",
     "selectors.kind": "total"
+  },
+  "flows": {
+    "defaultValues": {
+      "page":0
+    },
+    "initialValues": {
+      "selectors.sourceType": "National product best guess",
+      "selectors.productClassification": "product_sitc_EN",
+      "selectors.product": ["Raw_materials,_inedible,_except_fuels~product_sitc_EN"],
+      "selectors.direction": "$all$",
+      "selectors.kind": "total",
+      "selectors.dateMin": "1720",
+      "selectors.dateMax": "1780",
+      "selectors.columns": ["product", "direction", "year", "partner", "import", "value", "source"]
+    }
   }
 }

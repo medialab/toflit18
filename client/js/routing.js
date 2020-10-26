@@ -194,6 +194,58 @@ export default function bindRoutes(tree) {
             path: "/sources",
             state: { view: "explorationSources" },
           },
+          {
+            path: "/flows",
+            query: {
+              sourceType: ":sourceType",
+              productClassification: ":productClassification",
+              product: {
+                match: ":product",
+                cast: "json",
+              },
+              partnerClassification: ":partnerClassification",
+              partner: {
+                match: ":partner",
+                cast: "json",
+              },
+              page: {match: ":page", cast: "number" },
+              direction: ":direction",
+              kind: ":kind",
+              dateMin: ":dateMin",
+              dateMax: ":dateMax",
+              valueMin: {match: ":valueMin", cast: "number" },
+              valueMax: {match: ":valueMax", cast: "number" },
+              columns: {
+                match: ":columns",
+                cast: "json",
+              },
+              orders: {
+                match: ":orders",
+                cast: "json",
+              }
+            },
+            state: {
+              view: "explorationFlows",
+              explorationFlowsState: {
+                page: ":page",
+                selectors: {
+                  sourceType: ":sourceType",
+                  productClassification: ":productClassification",
+                  product: ":product",
+                  partnerClassification: ":partnerClassification",
+                  partner: ":partner",
+                  direction: ":direction",
+                  kind: ":kind",
+                  dateMin: ":dateMin",
+                  dateMax: ":dateMax",
+                  valueMin: ":valueMin",
+                  valueMax: ":valueMax",
+                  columns: ":columns",
+                  orders: ":orders"
+                },
+              },
+            },
+          },
         ],
       },
       {

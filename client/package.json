@@ -80,6 +80,8 @@
     "lodash": "^4.17.4",
     "papaparse": "^4.1.2",
     "react": "~15.4.2",
+    "react-data-grid": "^5.0.4",
+    "react-data-grid-addons": "^5.0.5",
     "react-dom": "~15.4.2",
     "react-select": "^1.2.1",
     "recharts": "^1.0.0-alpha.4",
