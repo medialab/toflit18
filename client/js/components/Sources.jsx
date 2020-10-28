@@ -29,41 +29,31 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Best Guess national product x partner</h2>
               <p className="lead">
-                This autoselects the best source about trade by product x partner for the whole of France in each year.
-                This is "National toutes directions tous partenaires" for 1750, "Objet Général" from 1754 to 1782,
-                "Résumé" in 1787-1789 and 1797-1821. These sources are supplemented by data from "Compagnie des Indes"
+                This autoselects the best source about trade by product x partner for the whole of France in each year. This is "National toutes directions tous partenaires" for 1750, "Objet Général" from 1754 to 1782, "Résumé" in 1787-1789 and 1797-1821. These sources are supplemented by data from "Compagnie des Indes"
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Best Guess national partner</h2>
               <p className="lead">
-                This autoselects the best source about trade by partner for the whole of France in each year.
-                This is "Tableau Général" for 1716-1782 and "Résumé" in 1787-1789 and 1797-1821.
+                This autoselects the best source about trade by partner for the whole of France in each year. This is "Tableau Général" for 1716-1782 and "Résumé" in 1787-1789 and 1797-1821.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Best Guess tax department product x partner</h2>
               <p className="lead">
-                This autoselects the best source about trade by product x partner x direction in each year. The selected
-                sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes directions
-                tous partenaires". Some "Local" sources from Rouen imports are excluded as they do not include all products
-                (1737, 1739-1749, 1754, 1756-1762)
+                This autoselects the best source about trade by product x partner x direction in each year. The selected sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes directions tous partenaires". Some "Local" sources from Rouen imports are excluded as they do not include all products (1737, 1739-1749, 1754, 1756-1762). 1789 is nearly there, but does not include Asian trade.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Best Guess national tax department</h2>
               <p className="lead">
-                This autoselects the best source about trade by tax department for the whole of France. It might not 
-                include all partners nor all goods. The selected source  is "National toutes directions tous partenaires" for 1750; "National toutes directions sans produits" for 1753, 1756, 1766, 1768, 1770-1, 1773-4 and 1777-80; and "National toutes directions partenaires manquants" otherwise.
+                This autoselects the best source about trade by tax department for the whole of France. It might not include all partners nor all goods. The selected source  is "National toutes directions tous partenaires" for 1750; "National toutes directions sans produits" for 1753, 1756, 1766, 1768, 1770-1, 1773-4 and 1777-80; and "National toutes directions partenaires manquants" otherwise.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Objet Général</h2>
               <p className="lead">
-                were produced from 1752 to 1788. They contain trade by product x partner for the whole of France. They
-                always include the value of the flows. From 1771, they include quantities and / or unit prices. The 1752
-                Objet Général does not include imports from the West Indies. We have added to the Objet Général imports
-                through the French East Indian Company when available on the same year (up to 1771)
+                were produced from 1752 to 1788. They contain trade by product x partner for the whole of France. They always include the value of the flows. From 1771, they include quantities and / or unit prices. The 1752 Objet Général does not include imports from the West Indies. We have added to the Objet Général imports through the French East Indian Company when available on the same year (up to 1771)
               </p>
               <p>
                 <ul>
@@ -91,8 +81,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Résumé</h2>
               <p className="lead">
-                cover the 1787-1789 and 1797-1821. They contain trade by class of products x partner for the whole of
-                France. They include the value of the flows.
+                cover the 1787-1789 and 1797-1821. They contain trade by class of products x partner for the whole of France. They include the value of the flows.
               </p>
               <p>
                 <ul>
@@ -151,7 +140,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National toutes directions tous partenaires</h2>
               <p className="lead">
-                contain trade by product x partner x tax department for the whole of France. They include values and quantities. They only exist for 1750 (though the 1789 year is nearly covered in the same way)
+                contain trade by product x partner x tax department for the whole of France. They include values and quantities. They only exist for 1750. Notice that 1789 nearly makes it ; but trade with Asia is missing. As a result, the 1789 is classified in "National toutes directions partenaires manquants".
               </p>
               <p>
                 <ul>
