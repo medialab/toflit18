@@ -112,7 +112,7 @@ const ModelCreateLine = {
       "CASE WHEN exists(f.quantity_nbr) AND f.quantity_nbr > 0 THEN 1 ELSE 0 END AS nbr",
     ]);
     query.return(
-      "count(f) AS count, sum(toFloat(f.value)) AS value, sum(toFloat(f.quantity_kg)) AS kg, sum(toFloat(f.quantity_nbr)) AS nbr, sum(toFloat(f.quantity_litre)) AS litre, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType, " +
+      "count(f) AS count, sum(f.value) AS value, sum(f.quantity_kg) AS kg, sum(f.quantity_nbr) AS nbr, sum(f.quantity_litre) AS litre, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType, " +
         shares,
     );
     query.orderBy("f.year");
