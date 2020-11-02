@@ -53,10 +53,8 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Best Guess national tax department</h2>
               <p className="lead">
-                This autoselects the best source about trade by tax departement for the whole of France. It might not 
-                include all partners nor all goods. This is product x partner for the whole of France in each year.
-                This is "National toutes directions tous partenaires" for 1750, "National toutes directions partenaires manquants"
-                for the 1780s and "National toutes directions partenaires manquants" otherwise.
+                This autoselects the best source about trade by tax department for the whole of France. It might not 
+                include all partners nor all goods. The selected source  is "National toutes directions tous partenaires" for 1750; "National toutes directions sans produits" for 1753, 1756, 1766, 1768, 1770-1, 1773-4 and 1777-80; and "National toutes directions partenaires manquants" otherwise.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
@@ -103,9 +101,9 @@ export default class Sources extends Component {
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
-              <h2>National toutes directions partenaires manquant</h2>
+              <h2>National toutes directions partenaires manquants</h2>
               <p className="lead">
-                They contain trade by product x partner x direction for the whole of France and some partners.
+                They contain trade by product x partner x tax department for the whole of France and some partners.
               </p>
               <p>
                 <ul>
@@ -153,8 +151,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National toutes directions tous partenaires</h2>
               <p className="lead">
-                contain trade by product x partner x direction for the whole of France. They includes values and
-                quantities. They only exist for 1750 (though the 1789 year is nearly covered in the same way)
+                contain trade by product x partner x tax department for the whole of France. They include values and quantities. They only exist for 1750 (though the 1789 year is nearly covered in the same way)
               </p>
               <p>
                 <ul>
@@ -165,10 +162,27 @@ export default class Sources extends Component {
                 </ul>
               </p>
             </div>
+			<div className="col-sm-10 col-sm-offset-1">
+              <h2>National toutes directions sans produits</h2>
+              <p className="lead">
+                contain trade by partner x tax department for the whole of France. They include only values.They only exist for 1753, 1756, 1766, 1768, 1770-1, 1773-4, 1777-80.
+              </p>
+              <p>
+                <ul>
+                  <li>AN F12 245</li>
+                  <li>AN F12 246</li>
+                  <li>AN F12 247</li>
+                  <li>AN F12 248</li>
+                  <li>AN F12 248</li>
+                  <li>BM Rouen, Fonds Montbret, 155-1</li>
+                  <li>IIHS-123</li>
+                </ul>
+              </p>
+            </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Local</h2>
               <p className="lead">
-                sources contain data for trade by a specific direction by product x partner x direction. They include
+                sources contain data for trade by a specific tax department by product x partner x tax department. They include
                 unit prices and quantites (and sometimes also values). They exist from 1714 to 1780.
               </p>
               <p>
@@ -336,13 +350,13 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National partenaires manquants</h2>
               <p className="lead">
-                contain trade by product x partner for the whole of France and a small number of partners (Angleterre,
-                Barbarie, États-Unis, Russie for individual years in the 1780s).
+                contain trade by product x partner for the whole of France and a sub-set of all partners (All of them without imports from the West Indies in 1752 ; only Angleterre, Barbarie, États-Unis, Russie for individual years in the 1780s).
               </p>
               <p>
                 <ul>
                   <li>AN F12 1835</li>
                   <li>AN F12 250</li>
+                  <li>BM Rouen, Fonds Montbret, 155-1 ("Objet Général of 1752")</li> 
                 </ul>
               </p>
             </div>
