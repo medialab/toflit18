@@ -188,10 +188,10 @@ const Model = {
     //-- Returning data
     
     const fieldsDefinitions = (fieldname) => {
-      const fields = { value: "toFloat(f.value)",
-      kg: "toFloat(f.quantity_kg)",
-      nb: "toFloat(f.quantity_nbr)",
-      litre: "toFloat(f.quantity_litre)",
+      const fields = { value: "f.value",
+      kg: "f.quantity_kg",
+      nb: "f.quantity_nbr",
+      litre: "f.quantity_litre",
       source: "s.name",
       path: "s.path",
       sheet: "trans.sheet",
@@ -218,10 +218,14 @@ const Model = {
       fields.map(fieldname => `${fieldsDefinitions(fieldname)} as ${fieldname}`).join(", "),
     );
     if (orders && orders.length > 0)
-     query.orderBy(orders.map(s => `apoc.text.clean(${fieldsDefinitions(s.key)}) ${s.order}`).join(', '));
+     query.orderBy(orders.map(s => {
+      //don't clean text on numbers...
+      if (['value', 'kg', 'nb', 'litre'].includes(s.key))
+        return `${fieldsDefinitions(s.key)} ${s.order}`
+      else
+        return  `apoc.text.clean(${fieldsDefinitions(s.key)}) ${s.order}`}).join(', '));
     if (skip) query.skip(''+skip);
     if (limit) query.limit(''+limit);
-    console.log(query.build());
     return database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
 

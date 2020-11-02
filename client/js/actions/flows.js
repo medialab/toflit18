@@ -162,8 +162,8 @@ export function initFlowTable(tree, page) {
     // load data table
     flows:(done)=> loadFlows(tree, done)
   },(err)=>{
-    if (err) return done(err);
     cursor.set("loading", false);
+    if (err) throw err;
   });
 
 }
