@@ -226,9 +226,6 @@ const Model = {
         return  `apoc.text.clean(${fieldsDefinitions(s.key)}) ${s.order}`}).join(', '));
     if (skip) query.skip(''+skip);
     if (limit) query.limit(''+limit);
-    console.log(query.interpolate());
-
-    console.log(query.build());
     return database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
 
