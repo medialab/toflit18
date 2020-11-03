@@ -60,5 +60,7 @@
     { "id":"nationalGeographyBestGuess","name": "National geography best guess"},
     { "id":"nationalProductBestGuess","name": "National product best guess"},
     { "id":"note","name": "Notes"}
+    { "id":"absurd_value","name": "Absurd value"}
+    { "id":"absurd_quantity","name": "Absurd quantity"}
     ]
 }
