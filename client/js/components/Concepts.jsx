@@ -28,7 +28,7 @@ export default class Concepts extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Flows</h2>
               <p className="lead">
-                A flow is an observation of a trade exchange between France (or a "Direction") and a partner in a
+                A flow is an observation of a trade exchange between France (or a "Tax department") and a partner in a
                 specific year for a specific commodity or commodity group.
               </p>
               <p className="hidden-xs">
@@ -36,20 +36,20 @@ export default class Concepts extends Component {
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
-              <h2>Directions</h2>
+              <h2>Tax department</h2>
               <p className="lead">
-                A "Direction" is a divison of the French geographical space (including colonies) reporting external
+                A "Tax department" is a divison of the French geographical space (including colonies) reporting external
                 trade.
               </p>
               <p>
-                The name comes from the "directions des fermes". For example the "Nantes" direction covers all the
+                They mostly are "directions des fermes". For example the "Nantes" tax department covers all the
                 Nantes region.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Classifications</h2>
               <p className="lead">
-                A "Classification" is a taxonomy of commodities or locations recorded in the database.
+                A "Classification" is a taxonomy of commodities or partners recorded in the database.
               </p>
               <p>
                 There are two different types of classifications :
@@ -86,14 +86,14 @@ export default class Concepts extends Component {
               <p>The team would gladly welcome new classifications suggestions.</p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
-              <h2>Locations</h2>
+              <h2>Partners</h2>
               <p className="lead">
-                "Locations" are geographical entitites that are trading partners with France or French directions.
+                "Partners" are geographical entitites that are trading partners with France or French tax department.
               </p>
               <p>
-                Locations are geographical entitites that are trading partners with France or French directions. They
+                Partners are geographical entitites that are trading partners with France or French tax departments. They
                 can either be geographical (Le Nord, Guinée, Italie...) or political entities (Espagne et ses
-                possessions)... Le Nord designates the Baltic area reached by sea. The same location can designate
+                possessions)... Le Nord designates the Baltic area reached by sea. The same partner can designate
                 different geographical areas depending on the time and source. For example, "Le Nord" includes Russia in
                 the national sources before 1744 and not after. You can use the metadata view to explore these issues.
               </p>

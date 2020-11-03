@@ -376,7 +376,7 @@ export default class ExplorationMeta extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">
-                Direction
+                Tax department
               </label>
               <small className="help-block">
                 The French harbor where the transactions were recorded.{" "}
@@ -398,7 +398,7 @@ export default class ExplorationMeta extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">
-                Kind
+                Export/Import
               </label>
               <small className="help-block">Should we look at import, export, or total?</small>
               <ItemSelector
@@ -516,7 +516,7 @@ export default class ExplorationMeta extends Component {
               exports={compact([
                 state.perYear &&
                   state.dataModel && {
-                    label: "Export direction by years",
+                    label: "Export tax department by years",
                     fn: () => {
                       this.exportPerYear();
                     },

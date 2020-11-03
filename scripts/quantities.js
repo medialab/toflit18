@@ -192,7 +192,7 @@ async.series(
             });
           },
 
-          // Metric 2 : unit name + product name + location
+          // Metric 2 : unit name + product name + partner
           metric2: callback => {
             const csvString = fs.readFileSync(METRICS_FILE_METRIC2, "utf-8");
 

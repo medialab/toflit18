@@ -224,7 +224,7 @@ class Flows extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">
-                Direction
+                Tax department
               </label>
               <small className="help-block">
                 Where, in France, the transactions were recorded.{" "}
@@ -245,7 +245,7 @@ class Flows extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">
-                Kind
+                Export/Import
               </label>
               <small className="help-block">Should we look at import, export, or total?</small>
               <ItemSelector

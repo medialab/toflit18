@@ -122,7 +122,7 @@ const TEMPLATES = {
 const PLACEHOLDERS = {
   product: 'Product...',
   partner: 'Partner...',
-  direction: 'Direction...',
+  direction: 'Tax department...',
   kind: 'Import/Export...',
   sourceType: 'Source type...',
   dateMin: 'Date min...',

@@ -41,7 +41,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Best Guess tax department product x partner</h2>
               <p className="lead">
-                This autoselects the best source about trade by product x partner x direction in each year. The selected sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes directions tous partenaires". Some "Local" sources from Rouen imports are excluded as they do not include all products (1737, 1739-1749, 1754, 1756-1762). 1789 is nearly there, but does not include Asian trade.
+                This autoselects the best source about trade by product x partner x tax department in each year. The selected sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes directions tous partenaires". Some "Local" sources from Rouen imports are excluded as they do not include all products (1737, 1739-1749, 1754, 1756-1762). 1789 is nearly there, but does not include Asian trade.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">

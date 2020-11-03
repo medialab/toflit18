@@ -154,7 +154,7 @@ export default class Classification extends Component {
     return (
       <VizLayout
         title="Classifications"
-        description="Select a type of data (locations or products) and check the content of each classification. If you spot an error or want to create another classification, please send an email to guillaume.daudin@dauphine.psl.eu"
+        description="Select a type of data (partners or products) and check the content of each classification. If you spot an error or want to create another classification, please send an email to guillaume.daudin@dauphine.psl.eu"
         leftPanelName="Filters"
         rightPanelName="Caption">
         {/* Top of the left panel */}
@@ -399,7 +399,7 @@ export default class Classification extends Component {
         {/* Right panel */}
         <div className="aside-legend">
           <p>
-            Each classification relates "items" (products or locations present in the sources or the parent
+            Each classification relates "items" (products or partners present in the sources or the parent
             classification) to a smaller number of "groups". The information on each classification are: the number of
             groups, the number of classified items, the number of items that could be classified, and the share of
             classified items
