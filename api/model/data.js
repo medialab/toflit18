@@ -23,9 +23,14 @@ function addClassificationFilter(model, classificationVariable, classification, 
   return {match, where, params}
 }
 function retrieveClassificationNodes(model, classificationVariable, classification, itemVariable) {
-  const optionalMatch = `(f:Flow)-[${model == 'product' ? ':OF' : ':FROM|:TO'}]->(:${capitalize(model)})<-[:AGGREGATES*1..]-(${itemVariable}:ClassifiedItem)<-[:HAS]-(${classificationVariable}:Classification)`;
-  const where = new Expression(`${classificationVariable}.id = $${classificationVariable}`);
-  let params ={ [classificationVariable]:classification };
+  let optionalMatch, where, params = null;
+  if (!["product_source", "partner_source"].includes(classification)){
+    optionalMatch = `(f:Flow)-[${model == 'product' ? ':OF' : ':FROM|:TO'}]->(:${capitalize(model)})<-[:AGGREGATES*1..]-(${itemVariable}:ClassifiedItem)<-[:HAS]-(${classificationVariable}:Classification)`;
+    where = new Expression(`${classificationVariable}.id = $${classificationVariable}`);
+    params ={ [classificationVariable]:classification };
+  }
+  else 
+    optionalMatch = `(f:Flow)-[${model == 'product' ? ':OF' : ':FROM|:TO'}]->(${itemVariable}:${capitalize(model)})`;
 
   return {optionalMatch, where, params}
 }
@@ -209,9 +214,12 @@ const Model = {
     fields.filter(n => n.startsWith('product_') || n.startsWith('partner_')).forEach((c,i)=>{
       const model = c.split('_')[0];
       const {optionalMatch, where, params} = retrieveClassificationNodes(model,`classif${i}`,c, c);
-      query.optionalMatch(optionalMatch)
-      query.where(where);
-      query.params(params);
+      if (optionalMatch)
+        query.optionalMatch(optionalMatch)
+      if (where)
+        query.where(where);
+      if(params)
+        query.params(params);
     })
 
     query.return(

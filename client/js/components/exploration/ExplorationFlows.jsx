@@ -120,9 +120,9 @@ class Flows extends Component {
       name: "" + d,
       id: "" + d,
     }));
-    
+    const classifToColumnsChoices = (cs, model) => cs.map(cp => ({...cp, name:`${cp.name} (${model})`}))
     const columnsOptions = [...specs.flowsColumns,
-    ...classifications.product,...classifications.partner];
+    ...classifToColumnsChoices(classifications.product, 'products'),...classifToColumnsChoices(classifications.partner, 'partners')];
     
     return (
       <VizLayout
