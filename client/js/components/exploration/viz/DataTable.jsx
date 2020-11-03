@@ -71,57 +71,57 @@ export default class FlowsTable extends Component {
     };
     
   }
-  componentDidMount= () => {
-    document.addEventListener("copy", this.copy);
-  }
-  componentWillUnmount= () =>{
-    document.removeEventListener("copy", this.copy);
-  }
+  //disabling copy paste feature cause of issue https://github.com/medialab/toflit18/issues/203
+  // componentDidMount= () => {
+  //   document.addEventListener("copy", this.copy);
+  // }
+  // componentWillUnmount= () =>{
+  //   document.removeEventListener("copy", this.copy);
+  // }
 
-  setSelection = args => {
-    // console.log(args)
-    this.setState({
-      topLeft: {
-        rowIdx: args.topLeft.rowIdx,
-        colIdx: args.topLeft.idx
-      },
-      botmRight: {
-        rowIdx: args.bottomRight.rowIdx,
-        colIdx: args.bottomRight.idx
-      }
-    });
-  };
+  // setSelection = args => {
+  //   this.setState({
+  //     topLeft: {
+  //       rowIdx: args.topLeft.rowIdx,
+  //       colIdx: args.topLeft.idx
+  //     },
+  //     botmRight: {
+  //       rowIdx: args.bottomRight.rowIdx,
+  //       colIdx: args.bottomRight.idx
+  //     }
+  //   });
+  // };
   
-  copy = (e) => {
+  // copy = (e) => {
 
-    const { topLeft, botmRight } = this.state;
+  //   const { topLeft, botmRight } = this.state;
 
-    if (topLeft.colIdx != -1 && botmRight.colIdx != -1){
-      e.preventDefault();
-      // Loop through each row
-      const columns = range(topLeft.colIdx -1, botmRight.colIdx)
-      .map(i => this.props.columnsOrder[i])
-      console.log(columns, this.props.columnsOrder, topLeft.colIdx, botmRight.colIdx );
-      const copyData =
-        // headers
-        [columns].concat(
-        // data
-        range(topLeft.rowIdx, botmRight.rowIdx + 1)
-        .map(
-          // Loop through each column
-          rowIdx =>
-            columns
-              .map(
-                // Grab the row values
-                col => this.props.flows[rowIdx][col]
-              )
-        )
-      );
-      const csv = csvParse.unparse(copyData)
+  //   if (topLeft.colIdx != -1 && botmRight.colIdx != -1){
+  //     e.preventDefault();
+  //     // Loop through each row
+  //     const columns = range(topLeft.colIdx -1, botmRight.colIdx)
+  //     .map(i => this.props.columnsOrder[i])
+  //     console.log(columns, this.props.columnsOrder, topLeft.colIdx, botmRight.colIdx );
+  //     const copyData =
+  //       // headers
+  //       [columns].concat(
+  //       // data
+  //       range(topLeft.rowIdx, botmRight.rowIdx + 1)
+  //       .map(
+  //         // Loop through each column
+  //         rowIdx =>
+  //           columns
+  //             .map(
+  //               // Grab the row values
+  //               col => this.props.flows[rowIdx][col]
+  //             )
+  //       )
+  //     );
+  //     const csv = csvParse.unparse(copyData)
       
-      e.clipboardData.setData("text/plain", csv);
-    }
-  }
+  //     e.clipboardData.setData("text/plain", csv);
+  //   }
+  // }
 
   onHeaderClick(e){
     const {key} = e;
@@ -170,6 +170,7 @@ export default class FlowsTable extends Component {
     render() {
       
       const {flows, columnsOrder, columnsOptions} = this.props;
+
       const rows = flows || []
       const headerRenderer = (props) => {
         const headerText = props.column.rowType === 'header' ? props.column.name : '';
@@ -239,9 +240,9 @@ export default class FlowsTable extends Component {
               rowHeight={this.rowHeight}
               headerRowHeight={this.headerRowHeight}
               minHeight={900}
-              cellRangeSelection={{
-                onComplete: this.setSelection
-              }}
+              // cellRangeSelection={{
+              //   onComplete: this.setSelection
+              // }}
               
             />
             </DraggableContainer>);
