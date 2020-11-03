@@ -158,8 +158,8 @@ class NetworkPanel extends Component {
 
     return (
       <VizLayout
-        title="Locations"
-        description="Choose a partner classification and display a graph showing relations between partners & directions."
+        title="Partners"
+        description="Choose a partner classification and display a graph showing relations between partners & tax departments."
         leftPanelName="Filters"
         rightPanelName="Caption"
         fullscreen={fullscreen}
@@ -241,7 +241,7 @@ class NetworkPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">
-                Kind
+                Export/Import
               </label>
               <small className="help-block">Should we look at import, export, or total?</small>
               <ItemSelector
@@ -255,9 +255,9 @@ class NetworkPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="dates" className="control-label">
-                Dates
+            	Years
               </label>
-              <small className="help-block">Choose one date or a range data</small>
+              <small className="help-block">Choose one year or a range of years</small>
               <div className="row">
                 <div className="col-xs-6">
                   <ItemSelector
@@ -377,7 +377,7 @@ class NetworkPanel extends Component {
               <ul className="list-unstyled list-legend list-legend-circle">
                 <li>
                   <span style={{ backgroundColor: "#E6830E" }} />
-                  <span>Direction</span>
+                  <span>Tax department</span>
                 </li>
                 <li>
                   <span style={{ backgroundColor: "#049B9A" }} />

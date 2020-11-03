@@ -300,7 +300,7 @@ export default class ExplorationIndicators extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="partner" className="control-label">
-                Location
+                Partners
               </label>
               <small className="help-block">
                 Whence products are exchanged.{' '}
@@ -336,7 +336,7 @@ export default class ExplorationIndicators extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">
-                Direction
+                Tax department
               </label>
               <small className="help-block">
                 Where, in France, the transactions were recorded.{' '}
@@ -358,7 +358,7 @@ export default class ExplorationIndicators extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">
-                Kind
+                Export/Import
               </label>
               <small className="help-block">
                 Should we look at import, export, or total?
@@ -550,7 +550,7 @@ class Charts extends Component {
               this.vizContainer = el;
             }}>
             <div className="box-viz">
-              <span className="title">Total number of directions per year</span>
+              <span className="title">Total number of tax departments per year</span>
               <DataQualityBarChart data={barData} syncId="indicators" yAxis />
             </div>
             <div className="box-viz">

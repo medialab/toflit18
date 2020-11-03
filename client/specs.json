@@ -6,7 +6,7 @@
       "value": "sourceType"
     },
     {
-      "name": "Direction",
+      "name": "Tax department",
       "value": "direction"
     },
     {
@@ -40,8 +40,8 @@
     { "id":"year","name":"Year"},
     { "id":"rawYear","name":"Year (source)"},
     { "id":"product","name":"Product (source)"},
-    { "id":"direction","name":"Direction"},
-    { "id":"originalDirection","name": "Direction (source)"},
+    { "id":"direction","name":"Tax department"},
+    { "id":"originalDirection","name": "Tax department (source)"},
     { "id":"partner","name": "Partner"},
     { "id":"import","name": "Import/Export"},
     { "id":"source","name":"Source"},
@@ -61,5 +61,7 @@
     { "id":"nationalGeographyBestGuess","name": "National geography best guess"},
     { "id":"nationalProductBestGuess","name": "National product best guess"},
     { "id":"note","name": "Notes"}
+    { "id":"absurd_value","name": "Absurd value"}
+    { "id":"absurd_quantity","name": "Absurd quantity"}
     ]
 }

@@ -11,7 +11,7 @@ import async from "async";
 console.log("Creating indices in the Neo4j database...");
 
 const indices = [
-  { type: "index", label: "Flow", property: "direction" },
+  { type: "index", label: "Flow", property: "tax department" },
   { type: "index", label: "Flow", property: "partner" },
   { type: "index", label: "Flow", property: "sourceType" },
   { type: "index", label: "Flow", property: "product" },
@@ -28,7 +28,7 @@ const indices = [
   { type: "unique", label: "ClassifiedItem", property: "id" },
   { type: "unique", label: "Item", property: "id" },
   { type: "unique", label: "Classification", property: "id" },
-  { type: "unique", label: "Direction", property: "id" },
+  { type: "unique", label: "Tax department", property: "id" },
 ];
 
 async.eachSeries(

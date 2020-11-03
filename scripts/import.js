@@ -317,7 +317,7 @@ function importer(csvLine) {
 
   if (!!originalDirection && direction === undefined) {
     direction = originalDirection;
-    console.log("  !! Could not find simplified direction for:", originalDirection, "In file:", csvLine.filepath);
+    console.log("  !! Could not find simplified tax department for:", originalDirection, "In file:", csvLine.filepath);
   }
 
   // Import or Export
@@ -473,7 +473,7 @@ function importer(csvLine) {
     if (direction && !EDGE_INDEXES.offices.has(csvLine.tax_office)) {
       const directionNode = indexedNode(
         INDEXES.direction,
-        "Direction",
+        "Tax department",
         slugifyDirection(direction),
         {
           name: direction,
@@ -491,7 +491,7 @@ function importer(csvLine) {
   if (direction) {
     const directionNode = indexedNode(
       INDEXES.direction,
-      "Direction",
+      "Tax department",
       slugifyDirection(direction),
       {
         name: direction,
@@ -629,7 +629,7 @@ function makeClassificationConsumer(
 async.series(
   {
     directions(next) {
-      console.log("Processing directions...");
+      console.log("Processing tax departments...");
 
       const csvDirections = fs.readFileSync(DATA_PATH + BDD_TAX_DEPARTMENTS, "utf-8");
       parseCsv(csvDirections, { delimiter: "," }, function(err, data) {

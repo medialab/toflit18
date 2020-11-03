@@ -124,7 +124,7 @@ export default class Header extends Component {
                       <a href="#/exploration/indicators">Time Series</a>
                     </li>
                     <li>
-                      <a href="#/exploration/network">Locations Network</a>
+                      <a href="#/exploration/network">Partners Network</a>
                     </li>
                     <li>
                       <a href="#/exploration/terms">Product Terms Network</a>

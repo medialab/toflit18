@@ -307,7 +307,7 @@ class TermsPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">
-                Direction
+                Tax department
               </label>
               <small className="help-block">
                 Where, in France, the transactions were recorded.{" "}
@@ -328,7 +328,7 @@ class TermsPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">
-                Kind
+                Export/Import
               </label>
               <small className="help-block">Should we look at import, export, or total?</small>
               <ItemSelector
@@ -342,9 +342,9 @@ class TermsPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="dates" className="control-label">
-                Dates
+                Years
               </label>
-              <small className="help-block">Choose one date or a range data</small>
+              <small className="help-block">Choose one year or a range of years</small>
               <div className="row">
                 <div className="col-xs-6">
                   <ItemSelector
