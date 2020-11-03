@@ -8,9 +8,8 @@ import { six as palette } from "../lib/palettes";
 import { find, pickBy } from "lodash";
 import { regexIdToString, stringToRegexLabel } from "../lib/helpers";
 
-const ROOT = ["indicatorsState"],
-  MAXIMUM_LINES = 6;
-
+const ROOT = ["indicatorsState"];
+import specs from "../../specs.json";
 /**
  * Returns an isomorphic footprint for any line.
  */
@@ -92,20 +91,8 @@ export function loadLine(tree, line) {
 /**
  * Add a line to the graph.
  */
-export function addLine(tree) {
-  const cursor = tree.select(ROOT),
-    groups = cursor.get("groups"),
-    lines = cursor.get("lines") || [];
-
-  // Cannot have more than the maximum lines
-  if (lines.length >= MAXIMUM_LINES) return;
-
-  const selectors = cursor.get("selectors");
-  const color = findAvailableColor(lines);
-  const line = pickBy({
-    color,
-    ...selectors,
-  });
+export function createLineFromSelectors(selectors, groups) {
+  const line = pickBy(selectors);
 
   ["product", "partner"].forEach(key => {
     if (!line[key] || !line[key].length) return;
@@ -126,6 +113,22 @@ export function addLine(tree) {
       };
     });
   });
+  return line;
+} 
+export function addLine(tree) {
+  const cursor = tree.select(ROOT),
+    groups = cursor.get("groups"),
+    lines = cursor.get("lines") || [];
+
+  // Cannot have more than the maximum lines
+  if (lines.length >= specs.indicatorsMaxNbLine) return;
+
+  const selectors = cursor.get("selectors");
+  const color = findAvailableColor(lines);
+  const line = {
+    color,
+    ...createLineFromSelectors(selectors, groups),
+  };
 
   cursor.set("lines", lines.concat([line]));
 

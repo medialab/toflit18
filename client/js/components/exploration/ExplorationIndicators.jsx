@@ -11,7 +11,7 @@ import {ExportButton} from '../misc/Button.jsx';
 import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
 import LineChart from './viz/LineChart.jsx';
 import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
-import {capitalize, isEqual, mapValues, pick} from 'lodash';
+import {capitalize, isEqual, mapValues, pick, omit} from 'lodash';
 import Icon from '../misc/Icon.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
 import {exportCSV, exportSVG} from '../../lib/exports';
@@ -20,8 +20,11 @@ import {
   addLine,
   dropLine,
   checkLines,
-  getLineFootprint
+  getLineFootprint,
+  createLineFromSelectors
 } from '../../actions/indicators';
+
+import specs from "../../../specs.json";
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
 import {checkDefaultValues} from './utils';
@@ -97,7 +100,8 @@ function buildDescription(line, data, index) {
     addLine,
     dropLine,
     update,
-    checkLines
+    checkLines,
+    createLineFromSelectors
   },
   cursors: {
     alert: ['ui', 'alert'],
@@ -207,9 +211,11 @@ export default class ExplorationIndicators extends Component {
       state: {groups, lines, selectors, dataIndex}
     } = this.props;
 
-    const lineAlreadyExisting = (lines || []).some(line =>
-      isEqual(line.params, selectors)
-    );
+    const newLine = createLineFromSelectors(selectors, groups);
+    const lineAlreadyExisting = (lines || []).some(line => {
+      const existingLine = omit(line,['color']);
+      return isEqual(existingLine, newLine);
+    });
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
@@ -366,10 +372,16 @@ export default class ExplorationIndicators extends Component {
                 defaultValue={defaultSelectors.indicators['selectors.kind']} />
             </div>
             <div className="form-group-fixed">
+            {(lineAlreadyExisting || lines.length >= specs.indicatorsMaxNbLine) && 
+              <small className="help-block">
+                {lineAlreadyExisting  && 'This line has already been drawn.'}
+                {lineAlreadyExisting  && lines.length >= specs.indicatorsMaxNbLine && <br/>}
+                {lines.length >= specs.indicatorsMaxNbLine && `You can select a maximum of ${specs.indicatorsMaxNbLine} lines.`}
+              </small>}
               <button
                 type="submit"
                 className="btn btn-default"
-                disabled={lineAlreadyExisting}
+                disabled={lineAlreadyExisting || lines.length >= specs.indicatorsMaxNbLine }
                 onClick={() => actions.addLine()}
                 data-loading={isLoading}>
                 Add line
