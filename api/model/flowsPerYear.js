@@ -175,7 +175,7 @@ const buildQuery = (dataType, params) => {
     where.and("f.sourceType IN $sourceType");
     query.params({ sourceType: [sourceType] });
   }
-  if (sourceType && sourceType.includes("best guess")) {
+  if (sourceType && sourceType.toLowerCase().includes("best guess")) {
     where.and(`f.${_.camelCase(sourceType)} = true`);
   }
 
