@@ -193,7 +193,7 @@ const Model = {
     //-- Returning data
     
     const fieldsDefinitions = (fieldname) => {
-      const fields = { value: "f.value",
+      const fields = {
       kg: "f.quantity_kg",
       nb: "f.quantity_nbr",
       litre: "f.quantity_litre",
@@ -228,7 +228,7 @@ const Model = {
     if (orders && orders.length > 0)
      query.orderBy(orders.map(s => {
       //don't clean text on numbers...
-      if (['value', 'kg', 'nb', 'litre'].includes(s.key))
+      if (['value', 'kg', 'nb', 'litre', 'unitPrice'].includes(s.key))
         return `${fieldsDefinitions(s.key)} ${s.order}`
       else
         return  `apoc.text.clean(${fieldsDefinitions(s.key)}) ${s.order}`}).join(', '));

@@ -133,7 +133,7 @@ export default class FlowsTable extends Component {
             }
           </div>); 
       }
-      const booleanFormatter = ({value}) => (value ? (<div>true</div>) : (<div>false</div>))
+      const booleanFormatter = ({value}) => (value ? (<div>true</div>) : (<div>false</div>));
       const columnsSpecificOpts = {
         rowIndex: {name:"#", width:rows.length>0?(rows[rows.length-1].rowIndex+'').length*8+16:0 },
         import: {width: 70,formatter:({value}) => (value ? (<div>import</div>) : (<div>export</div>))},
@@ -148,6 +148,24 @@ export default class FlowsTable extends Component {
                   <span>{format(',')(row.value)} {row.year <"1797" ? 'lt.': 'Fr.'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                   : // float
                   <span>{format(',.2f')(row.value)} {row.year <"1797" ? 'lt.': 'Fr.'}</span>
+                }
+              </div>
+            else
+              return <div style={{textAlign:'right'}}>N/A</div>
+
+          },
+        },
+        unitPrice: {
+          //TODO: create a generic numeric value formater
+          formatter:({row}) => { 
+            
+            if (row.unitPrice)
+              return <div style={{textAlign:'right'}}>
+                { (row.unitPrice%1===0) ?
+                  // integer
+                  <span>{format(',')(row.unitPrice)} {row.year <"1797" ? 'lt.': 'Fr.'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  : // float
+                  <span>{format(',.4f')(row.unitPrice)} {row.year <"1797" ? 'lt.': 'Fr.'}</span>
                 }
               </div>
             else
