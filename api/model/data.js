@@ -228,7 +228,7 @@ const Model = {
     if (orders && orders.length > 0)
      query.orderBy(orders.map(s => {
       //don't clean text on numbers...
-      if (['value', 'kg', 'nb', 'litre', 'unitPrice'].includes(s.key))
+      if (['value', 'kg', 'nb', 'litre', 'unitPrice', 'import'].includes(s.key))
         return `${fieldsDefinitions(s.key)} ${s.order}`
       else
         return  `apoc.text.clean(${fieldsDefinitions(s.key)}) ${s.order}`}).join(', '));
