@@ -240,6 +240,12 @@ const Model = {
       return callback(null, result.map((row,i) => ({rowIndex:(skip||0)+i+1, ...row})));
     });
   },
+    /**
+   * Commits.
+   */
+  lastCommits(callback) {
+    return database.cypher(queries.lastCommits, callback);
+  },
 };
 
 export default Model;

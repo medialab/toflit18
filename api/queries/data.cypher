@@ -13,3 +13,8 @@ ORDER BY d.name
 MATCH (s:Source)
 RETURN DISTINCT s.type AS type
 ORDER BY s.type
+
+// name: lastCommits
+// Retrieving the last commits from source code and data repositories used to build the datascape
+//------------------------------------------------------------------------------
+MATCH(c:Commit) return c 

@@ -36,6 +36,8 @@ const client = new Client({
 
     sourceTypes: "/source_types",
 
+    lastCommits: "/lastCommits",
+
     search: {
       contentType: FORM,
       url: "/classification/:id/search",

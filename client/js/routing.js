@@ -16,6 +16,9 @@ export default function bindRoutes(tree) {
       },
       {
         path: "/about",
+        query: {
+          lastCommits: ":lastCommits",
+        },
         state: {
           view: "about",
           viewGroup: "staticPages",

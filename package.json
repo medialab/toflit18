@@ -54,6 +54,7 @@
     "dolman": "^0.4.0",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
+    "gitlog": "^4.0.3",
     "graphology": "^0.11.4",
     "graphology-communities-louvain": "^0.1.1",
     "highland": "^2.5.1",

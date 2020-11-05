@@ -4,6 +4,7 @@
  *
  */
 import React, { Component } from "react";
+import LastCommits from "./misc/LastCommits.jsx";
 
 export default class About extends Component {
   render() {
@@ -15,8 +16,11 @@ export default class About extends Component {
               <div className="col-sm-4 col-md-3">
                 <h1>About</h1>
               </div>
-              <div className="col-sm-8 col-md-5">
+              <div className="col-sm-5 col-md-7">
                 <p className="hidden-xs">Various information about the project</p>
+              </div>
+              <div className="col-sm-3 col-md-2">
+              <LastCommits/>
               </div>
             </div>
           </div>

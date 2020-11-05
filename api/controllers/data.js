@@ -105,6 +105,17 @@ const controller = [
       });
     },
   },
+  {
+    url: "/lastCommits",
+    method: "GET",
+    action(req, res) {
+      model.lastCommits(function(err, commits) {
+        if (err) return res.serverError(err);
+        console.log(commits);
+        return res.ok(commits.map(c => c.c.properties));
+      });
+    },
+  },
 ];
 
 export default controller;

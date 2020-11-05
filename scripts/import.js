@@ -18,6 +18,7 @@ import { cleanText, cleanNumber } from "../lib/clean";
 import path from "path";
 import fs from "fs";
 import _ from "lodash";
+import gitlog from "gitlog";
 
 /**
  * Initialization
@@ -70,6 +71,9 @@ const POSSIBLE_NODE_PROPERTIES = [
   "bestGuessNationalPartner:boolean",
   "bestGuessTaxDepartmentProductXPartner:boolean",
   "bestGuessNationalTaxDepartment:boolean",
+  "hash",
+  "date",
+  "repository"
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -269,6 +273,28 @@ _.uniq(classificationsIndex.map(c => c.author)).forEach(a => {
     "User",
   );
 });
+
+// COMMITs INFO
+const commitMeta = (path) => {
+  const d = gitlog({
+    repo: path,
+    number: 1,
+    fields: ['hash', 'authorDate']
+  })
+  if (d.length>0){
+    const meta = d[0];
+    const date = meta.authorDate.slice(0,16);
+    return {
+      hash: meta.hash,
+      date,
+      repository: path === '.' ? 'http://github.com/medialab/toflit18' : 'http://github.com/medialab/toflit18_data'};
+  }
+};
+
+const COMMITS = ['.',DATA_PATH].forEach(p => {
+  const commitNode = commitMeta(p);
+  if (commitNode) 
+    BUILDER.save(commitNode,"Commit");});
 
 const CLASSIFICATION_INDEXES = {};
 

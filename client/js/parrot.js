@@ -47,6 +47,17 @@ export default function(state, client) {
           });
         },
       },
+      // Accessing the last commits list
+      {
+        path: ["data", "lastCommits"],
+        get() {
+          return client.lastCommits(function(err, data) {
+            if (err) return;
+
+            state.set(["data", "lastCommits"], data.result);
+          });
+        },
+      },
     ],
   });
 }

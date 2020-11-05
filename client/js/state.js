@@ -21,6 +21,7 @@ const defaultState = {
     },
     directions: null,
     sourceTypes: null,
+    lastCommits: null,
   },
 
   // Some generic UI state
