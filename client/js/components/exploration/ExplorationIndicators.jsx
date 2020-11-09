@@ -372,16 +372,16 @@ export default class ExplorationIndicators extends Component {
                 defaultValue={defaultSelectors.indicators['selectors.kind']} />
             </div>
             <div className="form-group-fixed">
-            {(lineAlreadyExisting || lines.length >= specs.indicatorsMaxNbLine) && 
+            {(lineAlreadyExisting || (lines && lines.length >= specs.indicatorsMaxNbLine)) && 
               <small className="help-block">
                 {lineAlreadyExisting  && 'This line has already been drawn.'}
-                {lineAlreadyExisting  && lines.length >= specs.indicatorsMaxNbLine && <br/>}
+                {lineAlreadyExisting  && lines && lines.length >= specs.indicatorsMaxNbLine && <br/>}
                 {lines.length >= specs.indicatorsMaxNbLine && `You can select a maximum of ${specs.indicatorsMaxNbLine} lines.`}
               </small>}
               <button
                 type="submit"
                 className="btn btn-default"
-                disabled={lineAlreadyExisting || lines.length >= specs.indicatorsMaxNbLine }
+                disabled={lineAlreadyExisting || (lines && lines.length >= specs.indicatorsMaxNbLine) }
                 onClick={() => actions.addLine()}
                 data-loading={isLoading}>
                 Add line
