@@ -106,7 +106,10 @@ const ModelTerms = {
       where.and("f.year <= $flowYearMax");
       query.params({ flowYearMax: dateMax });
     }
-
+    // filter out absurd values
+    where.and("(NOT EXISTS(f.absurdValue) OR f.absurdValue<>'absurd')");
+    where.and("(NOT EXISTS(f.absurdQuantity) OR f.absurdQuantity<>'absurd')");
+    
     if (match.length > 0) query.match(match);
 
     if (!where.isEmpty()) query.where(where);

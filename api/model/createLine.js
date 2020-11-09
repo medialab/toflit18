@@ -99,6 +99,10 @@ const ModelCreateLine = {
     if (match.length > 0) query.match(match);
     else query.match("(f:Flow)");
 
+    // filter out absurd values
+    where.and("(NOT EXISTS(f.absurdValue) OR f.absurdValue<>'absurd')");
+    where.and("(NOT EXISTS(f.absurdQuantity) OR f.absurdQuantity<>'absurd')");
+
     if (!where.isEmpty()) query.where(where);
 
     //-- Returning data

@@ -79,7 +79,10 @@ const ModelNetwork = {
       where.and("f.year <= $flowYearMax");
       query.params({ flowYearMax: database.int(dateMax) });
     }
-
+    // filter out absurd values
+    where.and("(NOT EXISTS(f.absurdValue) OR f.absurdValue<>'absurd')");
+    where.and("(NOT EXISTS(f.absurdQuantity) OR f.absurdQuantity<>'absurd')");
+    
     if (!where.isEmpty()) query.where(where);
 
     query.return("cci.name as partner, f.direction AS direction, count(f) AS count, sum(f.value) AS value");

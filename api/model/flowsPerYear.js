@@ -170,6 +170,10 @@ const buildQuery = (dataType, params) => {
   where.and("f.year >= $limitMinYear");
   query.params({ limitMinYear: database.int(limits.minYear) });
 
+  // filter out absurd values
+  where.and("(NOT EXISTS(f.absurdValue) OR f.absurdValue<>'absurd')");
+  where.and("(NOT EXISTS(f.absurdQuantity) OR f.absurdQuantity<>'absurd')");
+  
   // manage special sourceType
   if (sourceType && !sourceType.toLowerCase().includes("best guess")) {
     where.and("f.sourceType IN $sourceType");

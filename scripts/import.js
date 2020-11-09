@@ -73,7 +73,9 @@ const POSSIBLE_NODE_PROPERTIES = [
   "bestGuessNationalTaxDepartment:boolean",
   "hash",
   "date",
-  "repository"
+  "repository",
+  "absurdValue",
+  "absurdQuantity"
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -399,6 +401,12 @@ function importer(csvLine) {
     if (realQuantity) nodeData.quantity = realQuantity;
     else if (realQuantity !== 0) console.log("  !! Weird quantity:", csvLine.quantity);
   }
+
+  // absurd flags
+  if (csvLine.absurd_value)
+    nodeData.absurdValue = csvLine.absurd_value
+  if (csvLine.absurd_quantity)
+    nodeData.absurdValue = csvLine.absurd_quantity
 
   // Unit price
   if (csvLine.value_per_unit) {
