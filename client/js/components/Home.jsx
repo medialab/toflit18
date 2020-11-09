@@ -40,15 +40,13 @@ export default class Home extends Component {
               <div className="col-sm-12">
                 <h2>Explore Trade</h2>
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-3">
                 <a href="#/exploration/indicators" className="btn btn-link">
                   <figure>
                     <img
                       className="img-responsive"
                       src="./assets/images/indicators.png"
                       alt="Time series"
-                      width="300"
-                      height="180"
                     />
                     <figcaption>
                       <span>Time series</span>
@@ -57,15 +55,15 @@ export default class Home extends Component {
                 </a>
                 <p>Here, you can vizualize the evolutions of particular branches of French trade through time.</p>
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-3">
                 <a href="#/exploration/terms" className="btn btn-link">
                   <figure>
                     <img
                       className="img-responsive"
                       src="./assets/images/products.png"
                       alt="Products"
-                      width="300"
-                      height="180"
+                      
+       
                     />
                     <figcaption>
                       <span>Products</span>
@@ -74,15 +72,14 @@ export default class Home extends Component {
                 </a>
                 <p>Here, you can vizualize lexicographic networks of commodities traded by France.</p>
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-3">
                 <a href="#/exploration/network" className="btn btn-link">
                   <figure>
                     <img
                       className="img-responsive"
                       src="./assets/images/partners.png"
                       alt="Partners"
-                      width="300"
-                      height="180"
+        
                     />
                     <figcaption>
                       <span>Partners</span>
@@ -91,20 +88,35 @@ export default class Home extends Component {
                 </a>
                 <p>Here, you can vizualize geographical networks of French international trade.</p>
               </div>
+              <div className="col-sm-3">
+                <a href="#/exploration/flows" className="btn btn-link">
+                  <figure>
+                    <img
+                      className="img-responsive"
+                      src="./assets/images/flows.png"
+                      alt="Time series"
+                      
+                    />
+                    <figcaption>
+                      <span>Trade flows</span>
+                    </figcaption>
+                  </figure>
+                </a>
+                <p>Here, you can explore the trade flows as transcribed from the sources.</p>
+              </div>
             </div>
             <div className="row">
               <div className="col-sm-12">
                 <h2>Data</h2>
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-3">
                 <a href="#/sources" className="btn btn-link">
                   <figure>
                     <img
                       className="img-responsive"
                       src="./assets/images/sources.png"
                       alt="Sources"
-                      width="300"
-                      height="180"
+
                     />
                     <figcaption>
                       <span>Sources</span>
@@ -113,15 +125,14 @@ export default class Home extends Component {
                 </a>
                 <p>Provides information on the sources and the methods used to create the TOFLIT18 database.</p>
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-3">
                 <a href="#/exploration/meta" className="btn btn-link">
                   <figure>
                     <img
                       className="img-responsive"
                       src="./assets/images/metadata.png"
                       alt="Metadata"
-                      width="300"
-                      height="180"
+
                     />
                     <figcaption>
                       <span>Metadata</span>
@@ -133,15 +144,14 @@ export default class Home extends Component {
                   locations...).
                 </p>
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-3">
                 <a href="#/classification/browser" className="btn btn-link">
                   <figure>
                     <img
                       className="img-responsive"
                       src="./assets/images/classification.png"
                       alt="Classifications"
-                      width="300"
-                      height="180"
+             
                     />
                     <figcaption>
                       <span>Classifications</span>
