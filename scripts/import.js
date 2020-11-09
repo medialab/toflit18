@@ -499,7 +499,7 @@ function importer(csvLine) {
     if (direction && !EDGE_INDEXES.offices.has(csvLine.tax_office)) {
       const directionNode = indexedNode(
         INDEXES.direction,
-        "Tax department",
+        "Direction",
         slugifyDirection(direction),
         {
           name: direction,
@@ -517,7 +517,7 @@ function importer(csvLine) {
   if (direction) {
     const directionNode = indexedNode(
       INDEXES.direction,
-      "Tax department",
+      "Direction",
       slugifyDirection(direction),
       {
         name: direction,
