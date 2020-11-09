@@ -2,7 +2,7 @@ FROM node:7.9.0-alpine
 
 ENV NODE_ENV production
 
-RUN apk add --no-cache su-exec
+RUN apk add --no-cache su-exec git
 
 RUN mkdir /toflit18/
 
