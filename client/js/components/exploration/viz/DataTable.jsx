@@ -155,23 +155,6 @@ export default class FlowsTable extends Component {
 
           },
         },
-        quantity: {
-          formatter:({row}) => { 
-            
-            if (row.quantity)
-              return <div style={{textAlign:'right'}}>
-                { (row.quantity%1===0) ?
-                  // integer
-                  <span>{format(',')(row.quantity)} &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                  : // float
-                  <span>{format(',.2f')(row.quantity)} </span>
-                }
-              </div>
-            else
-              return <div style={{textAlign:'right'}}>N/A</div>
-
-          },
-        },
         unitPrice: {
           //TODO: create a generic numeric value formater
           formatter:({row}) => { 
