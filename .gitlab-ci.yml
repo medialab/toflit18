@@ -11,7 +11,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
 
 services:
-    - docker:stable-dind
+  - docker:stable-dind
 
 build_client:
   stage: build
@@ -22,7 +22,6 @@ build_client:
   environment:
     name: $CI_COMMIT_REF_SLUG
   only:
-    - master
     - staging
     - prod
 
@@ -35,7 +34,6 @@ build_api:
   environment:
     name: $CI_COMMIT_REF_SLUG
   only:
-    - master
     - staging
     - prod
 
@@ -62,5 +60,5 @@ deploy:
   environment:
     name: $CI_COMMIT_REF_SLUG
   only:
-   - staging
-   - prod
+    - staging
+    - prod
