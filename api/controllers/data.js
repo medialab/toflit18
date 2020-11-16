@@ -111,7 +111,6 @@ const controller = [
     action(req, res) {
       model.lastCommits(function(err, commits) {
         if (err) return res.serverError(err);
-        console.log(commits);
         return res.ok(commits.map(c => c.c.properties));
       });
     },

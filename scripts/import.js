@@ -285,7 +285,7 @@ const commitMeta = (path) => {
   })
   if (d.length>0){
     const meta = d[0];
-    const date = meta.authorDate.slice(0,16);
+    const date = new Date(meta.authorDate).toISOString();
     return {
       hash: meta.hash,
       date,
@@ -293,7 +293,7 @@ const commitMeta = (path) => {
   }
 };
 
-const COMMITS = ['.',DATA_PATH].forEach(p => {
+[DATA_PATH].forEach(p => {
   const commitNode = commitMeta(p);
   if (commitNode) 
     BUILDER.save(commitNode,"Commit");});

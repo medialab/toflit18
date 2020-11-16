@@ -26,7 +26,13 @@ module.exports = {
             git_branch:
               ['prod', 'staging'].findIndex(e => e === git.branch()) > -1
                 ? git.branch()
-                : 'master'
+                : 'master',
+            git_last_commit:{
+              hash: git.long(),
+              date: git.date().toISOString(),
+              repository: 'http://github.com/medialab/toflit18'
+            },
+
           },
           config
         )
