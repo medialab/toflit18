@@ -164,6 +164,7 @@ export default class About extends Component {
                   <li>Plique, Guillaume</li>
                   <li>Ricci, Donato</li>
                   <li>Tible, Gregory</li>
+                  <li>Simard, Benoît</li>
                 </ul>
               </p>
               <p>
