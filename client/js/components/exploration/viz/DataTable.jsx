@@ -173,6 +173,24 @@ export default class FlowsTable extends Component {
 
           },
         },
+        quantity: {
+          //TODO: create a generic numeric value formater
+          formatter:({row}) => { 
+            
+            if (row.quantity)
+              return <div style={{textAlign:'right'}}>
+                { (row.quantity%1===0) ?
+                  // integer
+                  <span>{format(',')(row.quantity)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  : // float
+                  <span>{format(',.2f')(row.quantity)}</span>
+                }
+              </div>
+            else
+              return <div style={{textAlign:'right'}}>N/A</div>
+
+          },
+        },
         nationalProductBestGuess: {formatter:booleanFormatter},
         localProductBestGuess: {formatter:booleanFormatter},
         nationalGeographyBestGuess: {formatter:booleanFormatter},
