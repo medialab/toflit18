@@ -19,6 +19,7 @@ const indices = [
   { type: "index", label: "Flow", property: "import" },
   { type: "index", label: "Flow", property: "bestGuessNationalProductXPartner" },
   { type: "index", label: "Flow", property: "bestGuessNationalPartner" },
+  { type: "index", label: "Flow", property: "bestGuessNationalProduct" },
   { type: "index", label: "Flow", property: "bestGuessDepartmentProductXPartner" },
   { type: "index", label: "Flow", property: "bestGuessNationalDepartment" },
   { type: "index", label: "Source", property: "type" },

@@ -69,6 +69,7 @@ const POSSIBLE_NODE_PROPERTIES = [
   "id",
   "bestGuessNationalProductXPartner:boolean",
   "bestGuessNationalPartner:boolean",
+  "bestGuessNationalProduct:boolean",
   "bestGuessTaxDepartmentProductXPartner:boolean",
   "bestGuessNationalTaxDepartment:boolean",
   "hash",
@@ -431,6 +432,7 @@ function importer(csvLine) {
   // best guess source type
   nodeData.bestGuessNationalProductXPartner = csvLine.best_guess_national_prodxpart === "1" ? "true" : "false";
   nodeData.bestGuessNationalPartner = csvLine.best_guess_national_partner === "1" ? "true" : "false";
+  nodeData.bestGuessNationalProduct = csvLine.best_guess_national_product === "1" ? "true" : "false";
   nodeData.bestGuessTaxDepartmentProductXPartner = csvLine.best_guess_department_prodxpart === "1" ? "true" : "false";
   nodeData.bestGuessNationalTaxDepartment = csvLine.best_guess_national_department === "1" ? "true" : "false";
 

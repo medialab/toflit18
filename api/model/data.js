@@ -148,6 +148,7 @@ const Model = {
       result.push({ type: "Best Guess national partner" });
       result.push({ type: "Best Guess tax department product x partner" });
       result.push({ type: "Best Guess national tax department" });
+      result.push({ type: "Best Guess national product" });
       result = sortBy(result, "type");
       if (err) return callback(err);
 

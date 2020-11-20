@@ -191,10 +191,11 @@ export default class FlowsTable extends Component {
 
           },
         },
-        nationalProductBestGuess: {formatter:booleanFormatter},
-        localProductBestGuess: {formatter:booleanFormatter},
-        nationalGeographyBestGuess: {formatter:booleanFormatter},
-        localGeographyBestGuess: {formatter:booleanFormatter}
+        bestGuessNationalProductXPartner: {formatter:booleanFormatter},
+        bestGuessNationalProduct: {formatter:booleanFormatter},
+        bestGuessNationalPartner: {formatter:booleanFormatter},
+        bestGuessTaxDepartmentProductXPartner: {formatter:booleanFormatter},
+        bestGuessNationalTaxDepartment: {formatter:booleanFormatter}
         
       }
       const columns = rows.length > 0 ? ['rowIndex',...columnsOrder].map(c =>{
