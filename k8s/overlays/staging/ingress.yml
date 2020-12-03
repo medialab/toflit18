@@ -4,7 +4,7 @@ metadata:
   name: ingress
   annotations:
     ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/proxy-read-timeout: 190
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "190"
 spec:
   rules:
     - host: toflit18-pprd.medialab.sciences-po.fr
