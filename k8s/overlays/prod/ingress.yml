@@ -4,13 +4,14 @@ metadata:
   name: ingress
   annotations:
     ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/server-alias: toflit18-prod.medialab.sciences-po.fr
+    nginx.ingress.kubernetes.io/server-alias: toflit18-prod.medialab.sciences-po.fr /
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "190"
 spec:
   rules:
-  - host: toflit18.medialab.sciences-po.fr
-    http:
-      paths:
-        - path: /
-          backend:
-            serviceName: client
-            servicePort: 80
+    - host: toflit18.medialab.sciences-po.fr
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: client
+              servicePort: 80
