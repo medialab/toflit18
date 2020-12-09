@@ -77,8 +77,9 @@ export default class Legal extends Component {
                 <a href="http://opendatacommons.org/licenses/odbl/1.0/">license ODbL</a>.
               </p>
               <p>
-                To access the full data collected by the project, please contact Guillaume Daudin
-                (guillaume.daudin@dauphine.psl.eu).
+                The full data collected by the project is available on github under ODbl license.{" "}
+	                <a href="http://opendatacommons.org/licenses/odbl/1.0/">license ODbL</a>
+                	<a href="https://github.com/medialab/toflit18_data">https://github.com/medialab/toflit18_data</a>
               </p>
               <p className="lead">misc</p>
               <p>

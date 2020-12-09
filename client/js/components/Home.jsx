@@ -192,8 +192,8 @@ export default class Home extends Component {
                   </a>
                 </p>
                 <p>
-                  To access the full data collected by the project, please contact Guillaume Daudin
-                  guillaume.daudin@dauphine.psl.eu
+                  The full data collected by the project is available on github under ODbl license.{" "}
+                	<a href="https://github.com/medialab/toflit18_data">https://github.com/medialab/toflit18_data</a>
                 </p>
               </div>
             </div>

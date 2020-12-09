@@ -74,6 +74,10 @@ export default class About extends Component {
                 source code of this application is available on github under license AGPLv3
                 https://github.com/medialab/toflit18.
               </p>
+              <p>
+                The data of TOFLIT18 are in free access and available on github under license ODbl
+                https://github.com/medialab/toflit18_data.
+              </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>History</h2>
