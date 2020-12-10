@@ -70,8 +70,7 @@ export default class About extends Component {
               <h2>Github</h2>
               <p className="lead">Get inspired or contribute to the project!</p>
               <p>
-                Tools produced in the TOFLIT18 project are in free access: Source code of the exploration tool The
-                source code of this application is available on github under license AGPLv3
+                Tools produced in the TOFLIT18 project are in free access and available on github under license AGPLv3
                 https://github.com/medialab/toflit18.
               </p>
               <p>

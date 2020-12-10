@@ -73,12 +73,11 @@ export default class Legal extends Component {
               </p>
               <p className="lead">data</p>
               <p>
-                The data you can extract from this webside are under{" "}
+                The data of the project are under{" "}
                 <a href="http://opendatacommons.org/licenses/odbl/1.0/">license ODbL</a>.
               </p>
               <p>
-                The full data collected by the project is available on github under ODbl license.{" "}
-	                <a href="http://opendatacommons.org/licenses/odbl/1.0/">license ODbL</a>
+                The full data collected by the project is available on github.{" "}
                 	<a href="https://github.com/medialab/toflit18_data">https://github.com/medialab/toflit18_data</a>
               </p>
               <p className="lead">misc</p>
