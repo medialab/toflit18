@@ -29,7 +29,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Best Guess national product x partner</h2>
               <p className="lead">
-                This autoselects the best source about trade by product x partner for the whole of France in each year. This is "National toutes directions tous partenaires" for 1750, "Objet Général" from 1754 to 1782, "Résumé" in 1787-1789 and 1797-1821. These sources are supplemented by data from "Compagnie des Indes"
+                This autoselects the best source about trade by product x partner for the whole of France in each year. This is "National toutes directions tous partenaires" for 1750, "Objet Général" from 1754 to 1780, "Résumé" in 1787-1789 and 1797-1821. These sources are supplemented by data from "Compagnie des Indes"
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
@@ -41,7 +41,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Best Guess national product</h2>
               <p className="lead">
-                This autoselects the best source about trade by product for the whole of France in each year. This is "National toutes directions tous partenaires" for 1750, "Objet Général" from 1754 to 1780, "Résumé" in 1787-1789 and 1797-1821, and "Tableau des Quantités" in 1822-1823. These sources are supplemented by data from "Compagnie des Indes"
+                This autoselects the best source about trade by product for the whole of France in each year. Sources are the same as "Best Guess national product x partner", but they are supplemented by "Tableau des Quantités" for 1822-1823.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
@@ -59,7 +59,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Objet Général</h2>
               <p className="lead">
-                were produced from 1752 to 1788. They contain trade by product x partner for the whole of France. They always include the value of the flows. From 1771, they include quantities and / or unit prices. The 1752 Objet Général does not include imports from the West Indies. The 1782 Objet Général does include trade with America (except the United States, Asia or Africa). We have added to the Objet Général imports through the French East Indian Company when available on the same year (up to 1771)
+                "Objet Généraux" is the title of documents that were produced from 1752 to 1788. They contain trade by product x partner for the whole of France. They always include the value of the flows. From 1771, they include quantities and / or unit prices. The 1752 Objet Général does not include imports from the West Indies. The 1782 and 1787 Objets Généraux do not include trade with America (except the United States), Asia or Afric). We have added to the Objet Général imports through the French East Indian Company when available on the same year (up to 1771)
               </p>
               <p>
                 <ul>
@@ -71,6 +71,7 @@ export default class Sources extends Component {
                   <li>AN F12 247</li>
                   <li>AN F12 248</li>
                   <li>AN F12 249</li>
+                  <li>AN F12 250</li>
                   <li>BM Rouen, Fonds Montbret, 155-1</li>
                   <li>BM Rouen, Fonds Montbret, 155-2</li>
                   <li>BNF Ms. 6431 (Compagnie des Indes)</li>
@@ -81,13 +82,14 @@ export default class Sources extends Component {
                   <li>IIHS-122E</li>
                   <li>IIHS-122F</li>
                   <li>IIHS-122G</li>
+                  
                 </ul>
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Résumé</h2>
               <p className="lead">
-                cover the 1787-1789 and 1797-1821. They contain trade by class of products x partner for the whole of France. They include the value of the flows.
+                "Résumés" cover 1787-1789 and 1797-1821. They contain trade by  products x partner for the whole of France, including all products and all partner. They give the value of the flows, but not the quantities.
               </p>
               <p>
                 <ul>
@@ -146,7 +148,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National toutes directions tous partenaires</h2>
               <p className="lead">
-                contain trade by product x partner x tax department for the whole of France. They include values and quantities. They only exist for 1750. Notice that 1789 nearly makes it ; but trade with Asia is missing. As a result, the 1789 is classified in "National toutes directions partenaires manquants".
+                These sources contain trade by product x partner x tax department for the whole of France. They include values and quantities. They only exist for 1750. Notice that 1789 in AN F12 1666 and F12 1667 nearly makes it ; but trade with America (except the United States), Africa and Asia is missing. As a result, the 1789 is classified in "National toutes directions partenaires manquants".
               </p>
               <p>
                 <ul>
@@ -345,13 +347,11 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National partenaires manquants</h2>
               <p className="lead">
-                contain trade by product x partner for the whole of France and a sub-set of all partners (All of them without imports from the West Indies in 1752 ; only Angleterre, Barbarie, États-Unis, Russie for individual years in the 1780s).
+                contain trade by product x partner for the whole of France and a sub-set of all partners : only Angleterre, Barbarie, États-Unis, Russie for individual years in the 1780s).
               </p>
               <p>
                 <ul>
                   <li>AN F12 1835</li>
-                  <li>AN F12 250</li>
-                  <li>BM Rouen, Fonds Montbret, 155-1 ("Objet Général of 1752")</li> 
                 </ul>
               </p>
             </div>
