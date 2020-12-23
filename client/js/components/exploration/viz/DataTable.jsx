@@ -199,7 +199,7 @@ export default class FlowsTable extends Component {
               return <div style={{textAlign:'right'}}>
                 { (row.year%1===0) ?
                   // integer
-                  <span>{format(',')(row.year)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span>{format('')(row.year)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                   : // float
                   <span>{format(',.1f')(row.year)}</span>
                 }
@@ -208,6 +208,7 @@ export default class FlowsTable extends Component {
               return <div style={{textAlign:'right'}}>N/A</div>
 
           },
+
         },
         bestGuessNationalProductXPartner: {formatter:booleanFormatter},
         bestGuessNationalProduct: {formatter:booleanFormatter},
