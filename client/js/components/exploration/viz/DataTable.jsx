@@ -191,6 +191,24 @@ export default class FlowsTable extends Component {
 
           },
         },
+        year: {
+          //TODO: create a generic numeric value formater
+          formatter:({row}) => { 
+            
+            if (row.year)
+              return <div style={{textAlign:'right'}}>
+                { (row.year%1===0) ?
+                  // integer
+                  <span>{format(',')(row.year)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  : // float
+                  <span>{format(',.1f')(row.year)}</span>
+                }
+              </div>
+            else
+              return <div style={{textAlign:'right'}}>N/A</div>
+
+          },
+        },
         bestGuessNationalProductXPartner: {formatter:booleanFormatter},
         bestGuessNationalProduct: {formatter:booleanFormatter},
         bestGuessNationalPartner: {formatter:booleanFormatter},
