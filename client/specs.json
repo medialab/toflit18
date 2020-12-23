@@ -63,7 +63,6 @@
     { "id":"bestGuessTaxDepartmentProductXPartner","name": "Best Guess tax department product x partner"},
     { "id":"bestGuessNationalTaxDepartment","name": "Best Guess national tax department"},
     { "id":"note","name": "Remarks"},
-    { "id":"absurdValue","name": "Absurd value"},
-    { "id":"absurdQuantity","name": "Absurd quantity"}
+    { "id":"absurdObservation","name": "Absurd observation"}
     ]
 }

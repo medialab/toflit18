@@ -75,8 +75,7 @@ const POSSIBLE_NODE_PROPERTIES = [
   "hash",
   "date",
   "repository",
-  "absurdValue",
-  "absurdQuantity"
+  "absurdObservation"
 ];
 
 const NODE_PROPERTIES_MAPPING = _(POSSIBLE_NODE_PROPERTIES)
@@ -404,10 +403,8 @@ function importer(csvLine) {
   }
 
   // absurd flags
-  if (csvLine.absurd_value)
-    nodeData.absurdValue = csvLine.absurd_value
-  if (csvLine.absurd_quantity)
-    nodeData.absurdValue = csvLine.absurd_quantity
+  if (csvLine.absurd_observation)
+    nodeData.absurdObservation = csvLine.absurd_observation
 
   // Unit price
   if (csvLine.value_per_unit) {

@@ -107,8 +107,7 @@ const ModelTerms = {
       query.params({ flowYearMax: dateMax });
     }
     // filter out absurd values
-    where.and("(NOT EXISTS(f.absurdValue) OR f.absurdValue<>'absurd')");
-    where.and("(NOT EXISTS(f.absurdQuantity) OR f.absurdQuantity<>'absurd')");
+    where.and("(NOT EXISTS(f.absurdObservation) OR f.absurdObservation<>'absurd')");
     
     if (match.length > 0) query.match(match);
 
