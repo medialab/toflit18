@@ -59,7 +59,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Objet Général</h2>
               <p className="lead">
-                "Objet Généraux" is the title of documents that were produced from 1752 to 1788. They contain trade by product x partner for the whole of France. They always include the value of the flows. From 1771, they include quantities and / or unit prices. The 1752 Objet Général does not include imports from the West Indies. The 1782 and 1787 Objets Généraux do not include trade with America (except the United States), Asia or Afric). We have added to the Objet Général imports through the French East Indian Company when available on the same year (up to 1771)
+                "Objet Généraux" is the title of documents that were produced from 1752 to 1788. They contain trade by product x partner for the whole of France. They always include the value of the flows. From 1771, they include quantities and / or unit prices. The 1752 Objet Général does not include imports from the West Indies. The 1782 and 1787 Objets Généraux do not include trade with America (except the United States), Asia or Africa). We have added to the Objet Général imports through the French East Indian Company when available on the same year (up to 1771)
               </p>
               <p>
                 <ul>
