@@ -196,7 +196,7 @@ const ID_INDEXES = {
   outsider: {},
 };
 
-const DIRECTIONS_INDEX = {};
+const REGIONS_INDEX = {};
 
 const OUTSIDER_INDEXES = {
   sund: {},
@@ -208,7 +208,7 @@ const EDGE_INDEXES = {
   offices: new Set(),
 };
 
-const slugifyDirection = name => `${name.replace(/[\s-]/g, "_")}`;
+const slugifyRegion = name => `${name.replace(/[\s-]/g, "_")}`;
 
 // loading classification index
 const csvData = fs.readFileSync(DATA_PATH + INDEX_CLASSIFICATIONS, "utf-8");
@@ -341,7 +341,7 @@ function importer(csvLine) {
   //Patching regions names
   const originalRegion = csvLine.customs_region;
 
-  let region = DIRECTIONS_INDEX[originalRegion];
+  let region = REGIONS_INDEX[originalRegion];
 
   if (!!originalRegion && region === undefined) {
     region = originalRegion;
@@ -506,11 +506,11 @@ function importer(csvLine) {
     if (region && !EDGE_INDEXES.offices.has(csvLine.customs_office)) {
       const regionNode = indexedNode(
         INDEXES.region,
-        "Direction",
-        slugifyDirection(region),
+        "REGION",
+        slugifyRegion(region),
         {
           name: region,
-          id: slugifyDirection(region),
+          id: slugifyRegion(region),
         },
         ID_INDEXES.region,
       );
@@ -520,15 +520,15 @@ function importer(csvLine) {
     }
   }
 
-  // Direction
+  // REGION
   if (region) {
     const regionNode = indexedNode(
       INDEXES.region,
-      "Direction",
-      slugifyDirection(region),
+      "REGION",
+      slugifyRegion(region),
       {
         name: region,
-        id: slugifyDirection(region),
+        id: slugifyRegion(region),
       },
       ID_INDEXES.region,
     );
@@ -664,13 +664,13 @@ async.series(
     regions(next) {
       console.log("Processing customs regions...");
 
-      const csvDirections = fs.readFileSync(DATA_PATH + BDD_CUSTOMS_REGIONS, "utf-8");
-      parseCsv(csvDirections, { delimiter: "," }, function(err, data) {
+      const csvREGIONs = fs.readFileSync(DATA_PATH + BDD_CUSTOMS_REGIONS, "utf-8");
+      parseCsv(csvREGIONs, { delimiter: "," }, function(err, data) {
         data.forEach(row => {
-          const sourceDirection = cleanText(row[0]),
-            targetDirection = cleanText(row[1]);
+          const sourceREGION = cleanText(row[0]),
+            targetREGION = cleanText(row[1]);
 
-          DIRECTIONS_INDEX[sourceDirection] = targetDirection;
+          REGIONS_INDEX[sourceREGION] = targetREGION;
         });
 
         return next();
