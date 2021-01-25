@@ -495,15 +495,15 @@ function importer(csvLine) {
   }
 
   // Office
-  if (csvLine.tax_office) {
-    const officeNode = indexedNode(INDEXES.office, "Office", csvLine.tax_office, {
-      name: csvLine.tax_office,
+  if (csvLine.customs_office) {
+    const officeNode = indexedNode(INDEXES.office, "Office", csvLine.customs_office, {
+      name: csvLine.customs_office,
     });
 
     if (!isImport) BUILDER.relate(flowNode, "FROM", officeNode);
     else BUILDER.relate(flowNode, "TO", officeNode);
 
-    if (region && !EDGE_INDEXES.offices.has(csvLine.tax_office)) {
+    if (region && !EDGE_INDEXES.offices.has(csvLine.customs_office)) {
       const regionNode = indexedNode(
         INDEXES.region,
         "Direction",
@@ -516,7 +516,7 @@ function importer(csvLine) {
       );
 
       BUILDER.relate(regionNode, "GATHERS", officeNode);
-      EDGE_INDEXES.offices.add(csvLine.tax_office);
+      EDGE_INDEXES.offices.add(csvLine.customs_office);
     }
   }
 
