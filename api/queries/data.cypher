@@ -1,7 +1,7 @@
 // name: regions
 // Retrieving the list of the available regions.
 //------------------------------------------------------------------------------
-MATCH (d:Direction)
+MATCH (d:Region)
 RETURN
   d.id AS id,
   d.name AS name

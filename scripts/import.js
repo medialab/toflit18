@@ -62,7 +62,7 @@ const POSSIBLE_NODE_PROPERTIES = [
   "description",
   "source:boolean",
   "region",
-  "originalDirection",
+  "originalRegion",
   "partner",
   "sourceType",
   "product",
@@ -339,13 +339,13 @@ function importer(csvLine) {
   if (csvLine.source_type === "Out") return;
 
   //Patching regions names
-  const originalDirection = csvLine.customs_region;
+  const originalRegion = csvLine.customs_region;
 
-  let region = DIRECTIONS_INDEX[originalDirection];
+  let region = DIRECTIONS_INDEX[originalRegion];
 
-  if (!!originalDirection && region === undefined) {
-    region = originalDirection;
-    console.log("  !! Could not find simplified customs region for:", originalDirection, "In file:", csvLine.filepath);
+  if (!!originalRegion && region === undefined) {
+    region = originalRegion;
+    console.log("  !! Could not find simplified customs region for:", originalRegion, "In file:", csvLine.filepath);
   }
 
   // Import or Export
@@ -419,7 +419,7 @@ function importer(csvLine) {
   // Additional static indexed properties for convenience
   if (csvLine.partner) nodeData.partner = csvLine.partner;
   if (region) nodeData.region = region;
-  if (originalDirection) nodeData.originalDirection = originalDirection;
+  if (originalRegion) nodeData.originalRegion = originalRegion;
 
   if (csvLine.product) {
     // we want every product name to be have a capital on the first letter

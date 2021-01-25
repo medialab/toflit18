@@ -70,7 +70,7 @@ const ModelTerms = {
       let exportImportFilter = ":FROM|:TO";
       if (kind === "import") exportImportFilter = ":TO";
       else if (kind === "export") exportImportFilter = ":FROM";
-      match.push(`(d:Direction)<-[${exportImportFilter}]-(f:Flow)`);
+      match.push(`(d:Region)<-[${exportImportFilter}]-(f:Flow)`);
       where.and("d.id = $region");
       query.params({ region });
     }

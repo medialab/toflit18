@@ -41,7 +41,7 @@
     { "id":"rawYear","name":"Year (source)"},
     { "id":"product","name":"Product (source)"},
     { "id":"region","name":"Customs region"},
-    { "id":"originalDirection","name": "Customs region (source)"},
+    { "id":"originalRegion","name": "Customs region (source)"},
     { "id":"partner","name": "Partner"},
     { "id":"import","name": "Import/Export"},
     { "id":"source","name":"Source"},

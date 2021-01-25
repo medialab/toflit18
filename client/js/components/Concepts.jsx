@@ -42,7 +42,7 @@ export default class Concepts extends Component {
                 trade.
               </p>
               <p>
-                They mostly are "directions des fermes". For example the "Nantes" customs region covers all the
+                They mostly are "directions des traites". For example the "Nantes" customs region covers all the
                 Nantes region.
               </p>
             </div>

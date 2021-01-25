@@ -1,5 +1,5 @@
 /**
- * TOFLIT18 Client Sources Per Directions Component
+ * TOFLIT18 Client Sources Per Regions Component
  * =================================================
  *
  * Series of bar charts displaying the amount of data coming from different
@@ -48,7 +48,7 @@ const renderTooltip = name => data => {
 /**
  * Main component.
  */
-export default class SourcesPerDirections extends Component {
+export default class SourcesPerRegions extends Component {
   render() {
     const unsorted = this.props.data;
 

@@ -24,15 +24,15 @@ const ModelCreateLine = {
 
     // import export
     // define import export edge type filter
-    let exportImportFilterDirection = ":FROM|:TO";
+    let exportImportFilterRegion = ":FROM|:TO";
     let exportImportFilterPartner = ":FROM|:TO";
     if (kind === "import") {
-      exportImportFilterDirection = ":TO";
+      exportImportFilterRegion = ":TO";
       exportImportFilterPartner = ":FROM";
       // add a where clause an flow import index to match flows which doesn't have a partner or region link
       where.and("f.import");
     } else if (kind === "export") {
-      exportImportFilterDirection = ":FROM";
+      exportImportFilterRegion = ":FROM";
       exportImportFilterPartner = ":TO";
       // add a where clause an flow import index to match flows which doesn't have a partner or region link
       where.and("NOT f.import");
@@ -82,7 +82,7 @@ const ModelCreateLine = {
 
     //-- Should we match a precise region?
     if (region && region !== "$all$") {
-      match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
+      match.push(`(d:Region)<-[${exportImportFilterRegion}]-(f:Flow)`);
       where.and("d.id = $region");
       query.params({ region });
     }

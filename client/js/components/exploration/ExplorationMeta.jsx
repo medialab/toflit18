@@ -13,7 +13,7 @@ import { ClassificationSelector, ItemSelector } from "../misc/Selectors.jsx";
 import { branch } from "baobab-react/decorators";
 
 import DataQualityBarChart from "./viz/DataQualityBarChart.jsx";
-import SourcesPerDirections from "./viz/SourcesPerDirections.jsx";
+import SourcesPerRegions from "./viz/SourcesPerRegions.jsx";
 
 import { exportCSV, exportSVG } from "../../lib/exports";
 import VizLayout from "../misc/VizLayout.jsx";
@@ -462,7 +462,7 @@ export default class ExplorationMeta extends Component {
             {state.flowsPerYear && state.dataModel && (
               <div className="box-viz">
                 {state.flowsPerYear ? (
-                  <SourcesPerDirections data={state.flowsPerYear.slice(0, specs.metadataGroupMax)} />
+                  <SourcesPerRegions data={state.flowsPerYear.slice(0, specs.metadataGroupMax)} />
                 ) : (
                   <Waiter />
                 )}

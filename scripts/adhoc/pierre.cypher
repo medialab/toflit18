@@ -5,7 +5,7 @@ WITH c
 MATCH
   (f:Flow),
   (f:Flow)-[:TRANSCRIBED_FROM]->(s:Source),
-  (f:Flow)-[:TO|:FROM]->(d:Direction),
+  (f:Flow)-[:TO|:FROM]->(d:Region),
   (f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(ci:ClassifiedItem)<-[:HAS]-(c)
 WHERE
   s.type = "Local" AND
@@ -26,7 +26,7 @@ WITH c
 MATCH
   (f:Flow),
   (f:Flow)-[:TRANSCRIBED_FROM]->(s:Source),
-  (f:Flow)-[:TO|:FROM]->(d:Direction),
+  (f:Flow)-[:TO|:FROM]->(d:Region),
   (f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(ci:ClassifiedItem)<-[:HAS]-(c)
 WHERE
   s.type = "Local" AND
@@ -47,7 +47,7 @@ WITH c
 MATCH
   (f:Flow),
   (f:Flow)-[:TRANSCRIBED_FROM]->(s:Source),
-  (f:Flow)-[:TO|:FROM]->(d:Direction),
+  (f:Flow)-[:TO|:FROM]->(d:Region),
   (f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(ci:ClassifiedItem)<-[:HAS]-(c)
 WHERE
   s.type = "Local" AND
@@ -70,7 +70,7 @@ WITH c
 MATCH
   (f:Flow),
   (f:Flow)-[:TRANSCRIBED_FROM]->(s:Source),
-  (f:Flow)-[:TO|:FROM]->(d:Direction),
+  (f:Flow)-[:TO|:FROM]->(d:Region),
   (f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(ci:ClassifiedItem)<-[:HAS]-(c)
 WHERE
   s.type <> "Local" AND
@@ -92,7 +92,7 @@ WITH c
 MATCH
   (f:Flow),
   (f:Flow)-[:TRANSCRIBED_FROM]->(s:Source),
-  (f:Flow)-[:TO|:FROM]->(d:Direction),
+  (f:Flow)-[:TO|:FROM]->(d:Region),
   (f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(ci:ClassifiedItem)<-[:HAS]-(c)
 WHERE
   s.type <> "Local" AND
@@ -114,7 +114,7 @@ WITH c
 MATCH
   (f:Flow),
   (f:Flow)-[:TRANSCRIBED_FROM]->(s:Source),
-  (f:Flow)-[:TO|:FROM]->(d:Direction),
+  (f:Flow)-[:TO|:FROM]->(d:Region),
   (f:Flow)-[:OF]->(:Product)<-[:AGGREGATES*1..]-(ci:ClassifiedItem)<-[:HAS]-(c)
 WHERE
   s.type <> "Local" AND

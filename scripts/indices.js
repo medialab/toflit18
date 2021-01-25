@@ -29,7 +29,7 @@ const indices = [
   { type: "unique", label: "ClassifiedItem", property: "id" },
   { type: "unique", label: "Item", property: "id" },
   { type: "unique", label: "Classification", property: "id" },
-  { type: "unique", label: "Direction", property: "id" },
+  { type: "unique", label: "Region", property: "id" },
 ];
 
 async.eachSeries(

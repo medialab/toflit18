@@ -155,7 +155,7 @@ const buildQuery = (dataType, params) => {
 
   //-- region
   if (region && region !== "$all$") {
-    query.match("(d:Direction)");
+    query.match("(d:Region)");
     where.and("d.id = $region");
     where.and("f.region = d.name");
     query.params({ region });
