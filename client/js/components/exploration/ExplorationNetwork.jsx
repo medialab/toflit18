@@ -57,7 +57,7 @@ export default class ExplorationGlobals extends Component {
   cursors: {
     alert: ["ui", "alert"],
     classifications: ["data", "classifications", "flat"],
-    directions: ["data", "directions"],
+    regions: ["data", "regions"],
     sourceTypes: ["data", "sourceTypes"],
     state: ["explorationNetworkState"],
   },

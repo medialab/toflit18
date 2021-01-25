@@ -51,7 +51,7 @@ export default class ExplorationFlows extends Component {
     alert: ["ui", "alert"],
     classifications: ["data", "classifications", "flat"],
     classificationIndex: ["data", "classifications", "index"],
-    directions: ["data", "directions"],
+    regions: ["data", "regions"],
     sourceTypes: ["data", "sourceTypes"],
     state: ["explorationFlowsState"],
   },
@@ -95,7 +95,7 @@ class Flows extends Component {
       alert,
       actions,
       classifications,
-      directions,
+      regions,
       sourceTypes,
       state: { flows,nbFlows,loading, selectors, groups,page, CSVloading },
     } = this.props;
@@ -223,7 +223,7 @@ class Flows extends Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="direction" className="control-label">
+              <label htmlFor="region" className="control-label">
                 Customs region
               </label>
               <small className="help-block">
@@ -234,13 +234,13 @@ class Flows extends Component {
               </small>
               <ItemSelector
                 valueKey="id"
-                type="direction"
-                loading={!directions}
-                data={directions || []}
-                onChange={actions.update.bind(null, "direction")}
-                selected={selectors.direction}
-                onUpdate={v => actions.update("direction", v)}
-                defaultValue={defaultSelectors.flows["selectors.direction"]}
+                type="region"
+                loading={!regions}
+                data={regions || []}
+                onChange={actions.update.bind(null, "region")}
+                selected={selectors.region}
+                onUpdate={v => actions.update("region", v)}
+                defaultValue={defaultSelectors.flows["selectors.region"]}
               />
             </div>
             <div className="form-group">

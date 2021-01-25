@@ -24,14 +24,14 @@ export default function(state, client) {
         },
       },
 
-      // Accessing the directions' list
+      // Accessing the regions' list
       {
-        path: ["data", "directions"],
+        path: ["data", "regions"],
         get() {
-          return client.directions(function(err, data) {
+          return client.regions(function(err, data) {
             if (err) return;
 
-            state.set(["data", "directions"], data.result);
+            state.set(["data", "regions"], data.result);
           });
         },
       },

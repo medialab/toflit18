@@ -161,7 +161,7 @@
     }
     .row-offcanvas-right.active {
       display: flex;
-      flex-direction: row;
+      flex-region: row;
 
       .aside-right {
         display: block !important;

@@ -53,7 +53,7 @@ const renderTooltip = unit => data => {
  */
 export default class DataQualityBarChart extends Component {
   render() {
-    const { unit = "directions", data, syncId = "data-quality-barchart", yAxis = false } = this.props;
+    const { unit = "regions", data, syncId = "data-quality-barchart", yAxis = false } = this.props;
     if (!data || !data.length) return null;
 
     return (

@@ -4,7 +4,7 @@
 .progress-container {
     @include position(absolute, 0, 0, null, 0, 100);
     @include flexbox;
-    @include flex-direction(column);
+    @include flex-region(column);
     @include align-items(center);
     @include justify-content(center);
     @include square(100%);

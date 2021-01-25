@@ -15,7 +15,7 @@ const { Expression, Query } = decypher;
 
 const ModelNetwork = {
   /**
-   * Building the (directions)--(partner) network.
+   * Building the (regions)--(partner) network.
    */
   network(classification, params, callback) {
     const { sourceType, kind, dateMin, dateMax, productClassification, product } = params;
@@ -67,8 +67,8 @@ const ModelNetwork = {
     }
 
     if (match.length > 0) query.match(match);
-    //restrict flows to those which has direction
-    where.and("exists(f.direction)");
+    //restrict flows to those which has region
+    where.and("exists(f.region)");
 
     if (dateMin) {
       where.and("f.year >= $flowYearMin");
@@ -84,7 +84,7 @@ const ModelNetwork = {
     
     if (!where.isEmpty()) query.where(where);
 
-    query.return("cci.name as partner, f.direction AS direction, count(f) AS count, sum(f.value) AS value");
+    query.return("cci.name as partner, f.region AS region, count(f) AS count, sum(f.value) AS value");
 
     database.cypher(query.build(), function(err, data) {
       if (err) return callback(err);

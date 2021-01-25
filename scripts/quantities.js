@@ -44,7 +44,7 @@ const QUERY_GET_FLOWS = `
     id(f) AS id,
     f.rawUnit AS rawUnit,
     f.quantity AS quantity,
-    f.direction AS direction,
+    f.region AS region,
     f.import AS import,
     p.name AS simplifiedProduct,
     c.name AS partnerGrouping;
@@ -78,14 +78,14 @@ const HASH_METRIC2_ADD = data => {
     data.simplification,
     data.partnerGrouping || NONE,
     data.simplifiedProduct || NONE,
-    data.direction || NONE,
+    data.region || NONE,
   ]
     .join("§|§")
     .toLowerCase();
 };
 
 const HASH_METRIC2_GET = data => {
-  return [data.import, data.unit, data.partnerGrouping, data.simplifiedProduct, data.direction || NONE]
+  return [data.import, data.unit, data.partnerGrouping, data.simplifiedProduct, data.region || NONE]
     .join("§|§")
     .toLowerCase();
 };
@@ -214,7 +214,7 @@ async.series(
                   factor: cleanNumber(line.conv_simplification_to_metric),
                   import: IMPORT_REGEX.test(line.exportsimports),
                   partnerGrouping: cleanText(line.partner_grouping),
-                  direction: cleanText(line.tax_region),
+                  region: cleanText(line.tax_region),
                   simplifiedProduct: cleanText(line.product_simplification),
                 };
 

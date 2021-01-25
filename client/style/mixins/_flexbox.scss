@@ -46,33 +46,33 @@
 // Values: row | row-reverse | column | column-reverse
 // --------------------------------------------------
 
-@mixin flex-direction($value: row) {
+@mixin flex-region($value: row) {
     @if $value == row-reverse {
-        -webkit-box-direction: reverse;
+        -webkit-box-region: reverse;
         -webkit-box-orient: horizontal;
     }
     @else if $value == column {
-        -webkit-box-direction: normal;
+        -webkit-box-region: normal;
         -webkit-box-orient: vertical;
     }
     @else if $value == column-reverse {
-        -webkit-box-direction: reverse;
+        -webkit-box-region: reverse;
         -webkit-box-orient: vertical;
     }
     @else {
-        -webkit-box-direction: normal;
+        -webkit-box-region: normal;
         -webkit-box-orient: horizontal;
     }
 
-    -webkit-flex-direction: $value;
-    -moz-flex-direction: $value;
-    -ms-flex-direction: $value;
-    flex-direction: $value;
+    -webkit-flex-region: $value;
+    -moz-flex-region: $value;
+    -ms-flex-region: $value;
+    flex-region: $value;
 }
 
 // Shorter version:
 @mixin flex-dir($args...) {
-    @include flex-direction($args...);
+    @include flex-region($args...);
 }
 
 //
@@ -97,7 +97,7 @@
 
 //
 // Flexbox Flow (shorthand)
-// Values: <flex-direction> | <flex-wrap>
+// Values: <flex-region> | <flex-wrap>
 // --------------------------------------------------
 
 @mixin flex-flow($values: row nowrap) {

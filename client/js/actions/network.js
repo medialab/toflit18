@@ -86,14 +86,14 @@ export function addNetwork(tree) {
     const kind = cursor.get("selectors", "kind");
 
     result.forEach(function(row) {
-      const directionId = "$d$" + row.direction,
+      const regionId = "$d$" + row.region,
         partnerId = "$c$" + row.partner;
 
-      if (!nodes[directionId]) {
-        nodes[directionId] = {
-          id: directionId,
-          label: row.direction,
-          community: "direction",
+      if (!nodes[regionId]) {
+        nodes[regionId] = {
+          id: regionId,
+          label: row.region,
+          community: "region",
           color: palette[0],
           size: row.count,
           flows: row.count,
@@ -103,10 +103,10 @@ export function addNetwork(tree) {
           y: Math.random(),
         };
       } else {
-        nodes[directionId].degree++;
-        nodes[directionId].size += row.count;
-        nodes[directionId].flows += row.count;
-        nodes[directionId].value += row.value;
+        nodes[regionId].degree++;
+        nodes[regionId].size += row.count;
+        nodes[regionId].flows += row.count;
+        nodes[regionId].value += row.value;
       }
 
       if (!nodes[partnerId]) {
@@ -134,8 +134,8 @@ export function addNetwork(tree) {
         size: row.count,
         flows: row.count,
         value: row.value,
-        source: kind === "import" ? partnerId : directionId,
-        target: kind === "import" ? directionId : partnerId,
+        source: kind === "import" ? partnerId : regionId,
+        target: kind === "import" ? regionId : partnerId,
       });
     });
 

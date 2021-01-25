@@ -11,7 +11,7 @@
       "selectors.sourceType": "Best Guess national product x partner",
       "selectors.childClassification": "product_sitc_EN",
       "selectors.child": ["Raw_materials,_inedible,_except_fuels~product_sitc_EN"],
-      "selectors.direction": "$all$",
+      "selectors.region": "$all$",
       "selectors.kind": "total",
       "selectors.dateMin": "1750",
       "selectors.dateMax": "1750"
@@ -41,8 +41,8 @@
     "selectedParent": "product_orthographic"
   },
   "metadata": {
-    "dataModel": "direction",
-    "selectors.direction": "$all$",
+    "dataModel": "region",
+    "selectors.region": "$all$",
     "selectors.kind": "total"
   },
   "flows": {
@@ -53,11 +53,11 @@
       "selectors.sourceType": "Best Guess national product x partner",
       "selectors.productClassification": "product_sitc_EN",
       "selectors.product": ["Raw_materials,_inedible,_except_fuels~product_sitc_EN"],
-      "selectors.direction": "$all$",
+      "selectors.region": "$all$",
       "selectors.kind": "total",
       "selectors.dateMin": "1720",
       "selectors.dateMax": "1780",
-      "selectors.columns": ["product", "direction", "year", "partner", "import", "value", "source"]
+      "selectors.columns": ["product", "region", "year", "partner", "import", "value", "source"]
     }
   }
 }

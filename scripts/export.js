@@ -80,7 +80,7 @@ async.series(
                 operator = data[i].operator,
                 transcription = data[i].transcription.properties,
                 partner = data[i].partner,
-                direction = data[i].direction,
+                region = data[i].region,
                 office = data[i].office,
                 origin = data[i].origin;
 
@@ -101,7 +101,7 @@ async.series(
                 flow.import ? "import" : "export",
                 flow.rawYear,
                 flow.year,
-                direction,
+                region,
                 office,
                 partner,
                 origin,

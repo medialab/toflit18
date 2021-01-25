@@ -83,7 +83,7 @@ function formatArrayToCSV(data) {
     classificationsRaw: ["data", "classifications", "raw"],
     classifications: ["data", "classifications", "flat"],
     classificationIndex: ["data", "classifications", "index"],
-    directions: ["data", "directions"],
+    regions: ["data", "regions"],
     sourceTypes: ["data", "sourceTypes"],
     state: ["metadataState"],
   },
@@ -128,7 +128,7 @@ export default class ExplorationMeta extends Component {
     const { state } = this.props;
 
     if (state.dataModel === "sourceType") return "source types";
-    if (state.dataModel === "direction") return "directions";
+    if (state.dataModel === "region") return "regions";
     if (state.dataModel === "product") return "products";
     if (state.dataModel === "partner") return "partners";
 
@@ -172,7 +172,7 @@ export default class ExplorationMeta extends Component {
   }
 
   render() {
-    const { alert, actions, classifications, classificationIndex, directions, sourceTypes, state } = this.props;
+    const { alert, actions, classifications, classificationIndex, regions, sourceTypes, state } = this.props;
 
     const { groups, loading, selectors } = state;
 
@@ -213,7 +213,7 @@ export default class ExplorationMeta extends Component {
     let unit = "classified items";
 
     if (state.dataModel === "sourceType") unit = "source types";
-    if (state.dataModel === "direction") unit = "directions";
+    if (state.dataModel === "region") unit = "regions";
     if (state.dataModel === "product") unit = "products";
     if (state.dataModel === "partner") unit = "partners";
 
@@ -353,7 +353,7 @@ export default class ExplorationMeta extends Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="direction" className="control-label">
+              <label htmlFor="region" className="control-label">
                 Sources
               </label>
               <small className="help-block">
@@ -375,7 +375,7 @@ export default class ExplorationMeta extends Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="direction" className="control-label">
+              <label htmlFor="region" className="control-label">
                 Customs region
               </label>
               <small className="help-block">
@@ -386,14 +386,14 @@ export default class ExplorationMeta extends Component {
               </small>
               <ItemSelector
                 valueKey="id"
-                type="direction"
-                loading={!directions}
-                disabled={state.dataModel === "direction"}
-                data={directions || []}
-                onChange={actions.update.bind(null, "direction")}
-                selected={selectors.direction}
-                onUpdate={v => actions.update("direction", v)}
-                defaultValue={defaultSelectors.metadata["selectors.direction"]}
+                type="region"
+                loading={!regions}
+                disabled={state.dataModel === "region"}
+                data={regions || []}
+                onChange={actions.update.bind(null, "region")}
+                selected={selectors.region}
+                onUpdate={v => actions.update("region", v)}
+                defaultValue={defaultSelectors.metadata["selectors.region"]}
               />
             </div>
             <div className="form-group">
@@ -452,7 +452,7 @@ export default class ExplorationMeta extends Component {
                 {state.perYear ? (
                   <div>
                     <p>Total number of {unit} per year</p>
-                    <DataQualityBarChart yAxis data={barData} unit={unit} syncId="sources-per-directions" />
+                    <DataQualityBarChart yAxis data={barData} unit={unit} syncId="sources-per-regions" />
                   </div>
                 ) : (
                   <Waiter />

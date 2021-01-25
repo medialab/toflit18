@@ -3,7 +3,7 @@
  * =================================================
  *
  * Series of bar charts displaying the amount of data coming from different
- * sources per directions.
+ * sources per regions.
  */
 import React, { Component } from "react";
 import { sortBy } from "lodash";
@@ -69,11 +69,11 @@ export default class SourcesPerDirections extends Component {
     //   means[i] = d.data.reduce((acc, j) => acc + j.flows, 0) / d.data.length;
     // });
 
-    // const directionIndex = {};
+    // const regionIndex = {};
 
-    // unsorted.forEach((d, i) => directionIndex[d.name] = i);
+    // unsorted.forEach((d, i) => regionIndex[d.name] = i);
 
-    const data = unsorted; //sortBy(unsorted, d => -means[directionIndex[d.name]]);
+    const data = unsorted; //sortBy(unsorted, d => -means[regionIndex[d.name]]);
 
     // Computing max values
     // NOTE: clearly not the optimal way to do it...
@@ -98,26 +98,26 @@ export default class SourcesPerDirections extends Component {
     const hash = year => year - minYear;
 
     return (
-      <div className="sources-per-directions">
-        {data.map(direction => {
+      <div className="sources-per-regions">
+        {data.map(region => {
           const d = new Array(maxYear - minYear + 1);
 
           for (let i = 0, l = d.length; i < l; i++) d[i] = { year: minYear + i };
 
-          direction.data.forEach(line => {
+          region.data.forEach(line => {
             const h = hash(line.year);
             d[h].flows = line.flows;
           });
 
           return (
-            <div key={direction.name}>
-              <span>{direction.name}</span>
+            <div key={region.name}>
+              <span>{region.name}</span>
               <ResponsiveContainer width="100%" height={100}>
-                <BarChart syncId="sources-per-directions" data={d} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <BarChart syncId="sources-per-regions" data={d} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="year" />
                   <YAxis domain={[0, maxFlows]} />
-                  <Tooltip isAnimationActive={false} content={renderTooltip(direction.name)} />
+                  <Tooltip isAnimationActive={false} content={renderTooltip(region.name)} />
                   <Bar dataKey="flows" fill="#4F7178" isAnimationActive={false} minPointSize={2} />
                 </BarChart>
               </ResponsiveContainer>

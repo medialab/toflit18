@@ -8,7 +8,7 @@ WITH flow SKIP $offset LIMIT $limit
 OPTIONAL MATCH (flow)-[:OF]->(product:Product)
 OPTIONAL MATCH (flow)-[transcription:TRANSCRIBED_FROM]->(source:Source)
 OPTIONAL MATCH (flow)-[:FROM|:TO]-(partner:Partner)
-OPTIONAL MATCH (flow)-[:FROM|:TO]-(direction:Direction)
+OPTIONAL MATCH (flow)-[:FROM|:TO]-(region:Direction)
 OPTIONAL MATCH (flow)-[:FROM|:TO]-(office:Office)
 OPTIONAL MATCH (flow)-[:TRANSCRIBED_BY]->(operator:Operator)
 OPTIONAL MATCH (flow)-[:ORIGINATES_FROM]->(origin:Origin)
@@ -19,7 +19,7 @@ RETURN
   source,
   transcription,
   operator.name AS operator,
-  direction.name AS direction,
+  region.name AS region,
   office.name AS office,
   partner.name AS partner,
   origin.name AS origin

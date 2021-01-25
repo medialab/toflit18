@@ -87,7 +87,7 @@ export default class ExplorationGlobalsTerms extends Component {
     alert: ["ui", "alert"],
     classifications: ["data", "classifications", "flat"],
     classificationIndex: ["data", "classifications", "index"],
-    directions: ["data", "directions"],
+    regions: ["data", "regions"],
     sourceTypes: ["data", "sourceTypes"],
     state: ["explorationTermsState"],
   },
@@ -160,7 +160,7 @@ class TermsPanel extends Component {
       actions,
       classifications,
       classificationIndex,
-      directions,
+      regions,
       sourceTypes,
       state: { graph, classification, nodeSize, edgeSize, labelSizeRatio, labelThreshold, loading, selectors, groups },
     } = this.props;
@@ -306,7 +306,7 @@ class TermsPanel extends Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="direction" className="control-label">
+              <label htmlFor="region" className="control-label">
                 Customs region
               </label>
               <small className="help-block">
@@ -317,13 +317,13 @@ class TermsPanel extends Component {
               </small>
               <ItemSelector
                 valueKey="id"
-                type="direction"
-                loading={!directions}
-                data={directions || []}
-                onChange={actions.update.bind(null, "direction")}
-                selected={selectors.direction}
-                onUpdate={v => actions.update("direction", v)}
-                defaultValue={defaultSelectors.terms["selectors.direction"]}
+                type="region"
+                loading={!regions}
+                data={regions || []}
+                onChange={actions.update.bind(null, "region")}
+                selected={selectors.region}
+                onUpdate={v => actions.update("region", v)}
+                defaultValue={defaultSelectors.terms["selectors.region"]}
               />
             </div>
             <div className="form-group">

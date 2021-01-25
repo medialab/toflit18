@@ -31,7 +31,7 @@ const controller = [
     //     product: '?string',
     //     partnerClassification: '?string',
     //     partner: '?string',
-    //     direction: '?string',
+    //     region: '?string',
     //     kind: '?string'
     //    limit: '?string'
     //    skip:'?string'
@@ -63,7 +63,7 @@ const controller = [
     //     product: '?string',
     //     partnerClassification: '?string',
     //     partner: '?string',
-    //     direction: '?string',
+    //     region: '?string',
     //     kind: '?string'
     //    limit: '?string'
     //    skip:'?string'
@@ -148,7 +148,7 @@ const controller = [
     //     partner: '?string',
     //     childClassification: '?string',
     //     child: '?string',
-    //     direction: '?string',
+    //     region: '?string',
     //     kind: '?string',
     //     dateMin: '?string',
     //     dateMax: '?string'

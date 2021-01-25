@@ -46,9 +46,9 @@
     animation-iteration-count: $iteration-count;
 }
 
-@mixin animation-direction($direction) {
-    -webkit-animation-direction: $direction;
-    animation-direction: $direction;
+@mixin animation-region($region) {
+    -webkit-animation-region: $region;
+    animation-region: $region;
 }
 
 @mixin animation-fill-mode($fill-mode) {

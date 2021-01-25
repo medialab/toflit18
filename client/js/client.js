@@ -32,7 +32,7 @@ const client = new Client({
       url: "/classification/group/:id",
     },
 
-    directions: "/directions",
+    regions: "/regions",
 
     sourceTypes: "/source_types",
 

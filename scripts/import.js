@@ -61,7 +61,7 @@ const POSSIBLE_NODE_PROPERTIES = [
   "password",
   "description",
   "source:boolean",
-  "direction",
+  "region",
   "originalDirection",
   "partner",
   "sourceType",
@@ -179,7 +179,7 @@ function indexedNode(index, label, key, data, idIndex) {
 
 // Indexes
 const INDEXES = {
-  direction: {},
+  region: {},
   partner: {},
   office: {},
   operator: {},
@@ -189,7 +189,7 @@ const INDEXES = {
 };
 
 const ID_INDEXES = {
-  direction: {},
+  region: {},
   partner: {},
   product: {},
   classifiedItem: {},
@@ -338,13 +338,13 @@ function importer(csvLine) {
   // filter source in Out
   if (csvLine.source_type === "Out") return;
 
-  //Patching directions names
+  //Patching regions names
   const originalDirection = csvLine.customs_region;
 
-  let direction = DIRECTIONS_INDEX[originalDirection];
+  let region = DIRECTIONS_INDEX[originalDirection];
 
-  if (!!originalDirection && direction === undefined) {
-    direction = originalDirection;
+  if (!!originalDirection && region === undefined) {
+    region = originalDirection;
     console.log("  !! Could not find simplified customs region for:", originalDirection, "In file:", csvLine.filepath);
   }
 
@@ -418,7 +418,7 @@ function importer(csvLine) {
 
   // Additional static indexed properties for convenience
   if (csvLine.partner) nodeData.partner = csvLine.partner;
-  if (direction) nodeData.direction = direction;
+  if (region) nodeData.region = region;
   if (originalDirection) nodeData.originalDirection = originalDirection;
 
   if (csvLine.product) {
@@ -503,38 +503,38 @@ function importer(csvLine) {
     if (!isImport) BUILDER.relate(flowNode, "FROM", officeNode);
     else BUILDER.relate(flowNode, "TO", officeNode);
 
-    if (direction && !EDGE_INDEXES.offices.has(csvLine.tax_office)) {
-      const directionNode = indexedNode(
-        INDEXES.direction,
+    if (region && !EDGE_INDEXES.offices.has(csvLine.tax_office)) {
+      const regionNode = indexedNode(
+        INDEXES.region,
         "Direction",
-        slugifyDirection(direction),
+        slugifyDirection(region),
         {
-          name: direction,
-          id: slugifyDirection(direction),
+          name: region,
+          id: slugifyDirection(region),
         },
-        ID_INDEXES.direction,
+        ID_INDEXES.region,
       );
 
-      BUILDER.relate(directionNode, "GATHERS", officeNode);
+      BUILDER.relate(regionNode, "GATHERS", officeNode);
       EDGE_INDEXES.offices.add(csvLine.tax_office);
     }
   }
 
   // Direction
-  if (direction) {
-    const directionNode = indexedNode(
-      INDEXES.direction,
+  if (region) {
+    const regionNode = indexedNode(
+      INDEXES.region,
       "Direction",
-      slugifyDirection(direction),
+      slugifyDirection(region),
       {
-        name: direction,
-        id: slugifyDirection(direction),
+        name: region,
+        id: slugifyDirection(region),
       },
-      ID_INDEXES.direction,
+      ID_INDEXES.region,
     );
 
-    if (!isImport) BUILDER.relate(flowNode, "FROM", directionNode);
-    else BUILDER.relate(flowNode, "TO", directionNode);
+    if (!isImport) BUILDER.relate(flowNode, "FROM", regionNode);
+    else BUILDER.relate(flowNode, "TO", regionNode);
   }
 
   // Partner
@@ -661,7 +661,7 @@ function makeClassificationConsumer(
  */
 async.series(
   {
-    directions(next) {
+    regions(next) {
       console.log("Processing customs regions...");
 
       const csvDirections = fs.readFileSync(DATA_PATH + BDD_CUSTOMS_REGIONS, "utf-8");

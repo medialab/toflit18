@@ -18,7 +18,7 @@ const ModelTerms = {
   terms(classification, params, callback) {
     const {
       sourceType,
-      direction,
+      region,
       kind,
       partner,
       child,
@@ -64,15 +64,15 @@ const ModelTerms = {
       match.push("(f:Flow)-[:OF]->(pci:Product)");
     }
 
-    //-- Should we match a precise direction?
-    if (direction && direction !== "$all$") {
+    //-- Should we match a precise region?
+    if (region && region !== "$all$") {
       // define import export edge type filter
       let exportImportFilter = ":FROM|:TO";
       if (kind === "import") exportImportFilter = ":TO";
       else if (kind === "export") exportImportFilter = ":FROM";
       match.push(`(d:Direction)<-[${exportImportFilter}]-(f:Flow)`);
-      where.and("d.id = $direction");
-      query.params({ direction });
+      where.and("d.id = $region");
+      query.params({ region });
     }
 
     //-- Do we need to match a child classification item?

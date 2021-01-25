@@ -18,7 +18,7 @@ export function getLineFootprint(line) {
     "color",
     "partner",
     "partnerClassification",
-    "direction",
+    "region",
     "kind",
     "product",
     "productClassification",

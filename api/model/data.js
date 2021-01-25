@@ -38,7 +38,7 @@ function retrieveClassificationNodes(model, classificationVariable, classificati
 const flowsQuery = (params) => {
   const {
     sourceType,
-    direction,
+    region,
     kind,
     productClassification,
     product,
@@ -63,12 +63,12 @@ const flowsQuery = (params) => {
   if (kind === "import") {
     exportImportFilterDirection = ":TO";
     exportImportFilterPartner = ":FROM";
-    // add a where clause an flow import index to match flows which doesn't have a partner or direction link
+    // add a where clause an flow import index to match flows which doesn't have a partner or region link
     where.and("f.import");
   } else if (kind === "export") {
     exportImportFilterDirection = ":FROM";
     exportImportFilterPartner = ":TO";
-    // add a where clause an flow import index to match flows which doesn't have a partner or direction link
+    // add a where clause an flow import index to match flows which doesn't have a partner or region link
     where.and("NOT f.import");
   }
 
@@ -89,11 +89,11 @@ const flowsQuery = (params) => {
   }
 
 
-  //-- Should we match a precise direction?
-  if (direction && direction !== "$all$") {
+  //-- Should we match a precise region?
+  if (region && region !== "$all$") {
     match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
-    where.and("d.id = $direction");
-    query.params({ direction });
+    where.and("d.id = $region");
+    query.params({ region });
   }
 
   //-- Do we need to match a source type
@@ -134,8 +134,8 @@ const Model = {
   /**
    * Directions.
    */
-  directions(callback) {
-    return database.cypher(queries.directions, callback);
+  regions(callback) {
+    return database.cypher(queries.regions, callback);
   },
 
   /**
@@ -180,7 +180,7 @@ const Model = {
     const query = flowsQuery(params);
     const {
       sourceType,
-      direction,
+      region,
       kind,
       productClassification,
       product,

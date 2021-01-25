@@ -14,7 +14,7 @@ const { Expression, Query } = decypher;
 const limits = config.get("api.limits");
 
 const buildQuery = (dataType, params) => {
-  const { sourceType, direction, kind, product, partner } = params;
+  const { sourceType, region, kind, product, partner } = params;
 
   let { productClassification, partnerClassification } = params;
 
@@ -25,7 +25,7 @@ const buildQuery = (dataType, params) => {
     where = new Expression(),
     withs = new Set();
   // handle clasification dataType
-  if (dataType !== "direction" && dataType !== "sourceType") {
+  if (dataType !== "region" && dataType !== "sourceType") {
     // a classification
     const [, classificationType, classificationId] = dataType.match(/([A-Za-z]+)_(\w+)/) || [];
 
@@ -151,21 +151,21 @@ const buildQuery = (dataType, params) => {
   }
 
   // Add a  match flow if not only done
-  if (dataType === "direction" || dataType === "sourceType") query.match("(f:Flow)");
+  if (dataType === "region" || dataType === "sourceType") query.match("(f:Flow)");
 
-  //-- direction
-  if (direction && direction !== "$all$") {
+  //-- region
+  if (region && region !== "$all$") {
     query.match("(d:Direction)");
-    where.and("d.id = $direction");
-    where.and("f.direction = d.name");
-    query.params({ direction });
+    where.and("d.id = $region");
+    where.and("f.region = d.name");
+    query.params({ region });
   }
 
   //-- Import/Export
   if (kind === "import") where.and("f.import");
   else if (kind === "export") where.and("not(f.import)");
 
-  if (dataType === "sourceType" || dataType === "direction") where.and(`exists(f.${dataType})`);
+  if (dataType === "sourceType" || dataType === "region") where.and(`exists(f.${dataType})`);
 
   where.and("f.year >= $limitMinYear");
   query.params({ limitMinYear: database.int(limits.minYear) });
@@ -196,7 +196,7 @@ const ModelFlowsPerYear = {
     const query = buildQuery(dataType, params);
     let dataTypeField;
     // dataType resolution
-    if (dataType === "sourceType" || dataType === "direction") dataTypeField = "f." + dataType;
+    if (dataType === "sourceType" || dataType === "region") dataTypeField = "f." + dataType;
     else dataTypeField = "classificationGroupName";
     query.with(dataTypeField + " AS dataType, count(f) AS nbflows, f.year AS year");
     query.return("{name:dataType, data:COLLECT({flows:nbflows,year:year})} as flowsByYear, sum(nbflows) as totalFlows");
@@ -216,7 +216,7 @@ const ModelFlowsPerYear = {
     const query = buildQuery(dataType, params);
     let dataTypeField;
     // dataType resolution
-    if (dataType === "sourceType" || dataType === "direction") dataTypeField = "f." + dataType;
+    if (dataType === "sourceType" || dataType === "region") dataTypeField = "f." + dataType;
     else dataTypeField = "classificationGroupName";
     query.return(`{year:f.year,data: count(distinct ${dataTypeField})} as data`);
     query.orderBy("data.year");

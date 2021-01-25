@@ -26,7 +26,7 @@
   height: calc(100vh - 2em);
 
   @include flexbox;
-  @include flex-direction(column);
+  @include flex-region(column);
   @include justify-content(center);
 
   // Home top

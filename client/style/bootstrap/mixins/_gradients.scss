@@ -26,7 +26,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($start-color)}', endColorstr='#{ie-hex-str($end-color)}', GradientType=0); // IE9 and down
 }
 
-@mixin gradient-directional($start-color: #555, $end-color: #333, $deg: 45deg) {
+@mixin gradient-regional($start-color: #555, $end-color: #333, $deg: 45deg) {
   background-repeat: repeat-x;
   background-image: -webkit-linear-gradient($deg, $start-color, $end-color); // Safari 5.1-6, Chrome 10+
   background-image: -o-linear-gradient($deg, $start-color, $end-color); // Opera 12

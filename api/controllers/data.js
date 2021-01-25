@@ -9,13 +9,13 @@ import { formatItemsParams } from "./viz";
 
 const controller = [
   {
-    url: "/directions",
+    url: "/regions",
     method: "GET",
     action(req, res) {
-      model.directions(function(err, directions) {
+      model.regions(function(err, regions) {
         if (err) return res.serverError(err);
 
-        return res.ok(directions);
+        return res.ok(regions);
       });
     },
   },
@@ -41,7 +41,7 @@ const controller = [
     //     product: '?string',
     //     partnerClassification: '?string',
     //     partner: '?string',
-    //     direction: '?string',
+    //     region: '?string',
     //     kind: '?string'
     //     dateMin: '?string',
     //     dateMax: '?string',
@@ -80,7 +80,7 @@ const controller = [
     //     product: '?string',
     //     partnerClassification: '?string',
     //     partner: '?string',
-    //     direction: '?string',
+    //     region: '?string',
     //     kind: '?string'
     //     dateMin: '?string',
     //     dateMax: '?string',

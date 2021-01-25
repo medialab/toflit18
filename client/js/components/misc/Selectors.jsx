@@ -17,7 +17,7 @@ import cls from 'classnames';
 const DEFAULT_VALUE_KEY = 'value';
 
 /**
- * Helpers to transform full data object to ID, in both directions.
+ * Helpers to transform full data object to ID, in both regions.
  */
 function _dataToId(value, valueKey = DEFAULT_VALUE_KEY) {
   if (!value) return value;
@@ -112,7 +112,7 @@ export class ClassificationSelector extends Component {
 const TEMPLATES = {
   product: [],
   partner: [],
-  direction: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
+  region: [{name: 'All', id: '$all$'}, {name: 'None (National)', id: '$none$'}],
   kind: [{name: 'Total', id: 'total'}, {name: 'Import', id: 'import'}, {name: 'Export', id: 'export'}],
   sourceType: [],
   dateMin: [],
@@ -122,7 +122,7 @@ const TEMPLATES = {
 const PLACEHOLDERS = {
   product: 'Product...',
   partner: 'Partner...',
-  direction: 'Customs region...',
+  region: 'Customs region...',
   kind: 'Import/Export...',
   sourceType: 'Source type...',
   dateMin: 'Date min...',

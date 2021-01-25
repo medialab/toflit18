@@ -3,7 +3,7 @@
  * ===========================
  *
  * Component displaying a sigma.js network showing the relations between
- * partners and directions.
+ * partners and regions.
  */
 import React, {Component} from 'react';
 import {format, formatPrefix} from 'd3-format';
@@ -54,7 +54,7 @@ const {
     alert: ["ui", "alert"],
     classifications: ["data", "classifications", "flat"],
     classificationIndex: ["data", "classifications", "index"],
-    directions: ["data", "directions"],
+    regions: ["data", "regions"],
     sourceTypes: ["data", "sourceTypes"],
     state: ["explorationFlowsState"],
   },

@@ -69,10 +69,10 @@ function buildDescription(line, data, index) {
     ]);
   }
 
-  if (selectors.direction && selectors.direction !== '$all$')
+  if (selectors.region && selectors.region !== '$all$')
     content = content.concat([
       ' from ',
-      <strong key="direction">{selectors.direction}</strong>
+      <strong key="region">{selectors.region}</strong>
     ]);
 
   if (selectors.partner)
@@ -107,7 +107,7 @@ function buildDescription(line, data, index) {
     alert: ['ui', 'alert'],
     classifications: ['data', 'classifications', 'flat'],
     classificationsIndex: ['data', 'classifications', 'index'],
-    directions: ['data', 'directions'],
+    regions: ['data', 'regions'],
     sourceTypes: ['data', 'sourceTypes'],
     state: ['indicatorsState']
   }
@@ -135,7 +135,7 @@ export default class ExplorationIndicators extends Component {
     let arrayDataLines = [];
     (this.props.state.lines || []).forEach(l => {
       const data = this.props.state.dataIndex[getLineFootprint(l)];
-      // add info about classification, product, partner, direction, kind
+      // add info about classification, product, partner, region, kind
       // add all column even if the info is not selected for the line
       // copy element to add info keys
       const dataLines = [];
@@ -157,7 +157,7 @@ export default class ExplorationIndicators extends Component {
           'partner',
           'product',
           'kind',
-          'direction'
+          'region'
         ].forEach(param => {
           if (param === 'product') {
             elemCopy[param] = l[param]
@@ -170,8 +170,8 @@ export default class ExplorationIndicators extends Component {
         });
 
         if (data[i].value !== null && data[i].count !== 0) {
-          elemCopy.nb_direction = data[i].nb_direction.length
-            ? data[i].nb_direction
+          elemCopy.nb_region = data[i].nb_region.length
+            ? data[i].nb_region
             : null;
         }
 
@@ -206,7 +206,7 @@ export default class ExplorationIndicators extends Component {
       actions,
       classifications,
       classificationsIndex,
-      directions,
+      regions,
       sourceTypes,
       state: {groups, lines, selectors, dataIndex}
     } = this.props;
@@ -335,7 +335,7 @@ export default class ExplorationIndicators extends Component {
                 defaultValue={defaultSelectors.indicators['selectors.partner']} />
             </div>
             <div className="form-group">
-              <label htmlFor="direction" className="control-label">
+              <label htmlFor="region" className="control-label">
                 Customs region
               </label>
               <small className="help-block">
@@ -345,15 +345,15 @@ export default class ExplorationIndicators extends Component {
                 </a>
               </small>
               <ItemSelector
-                type="direction"
+                type="region"
                 valueKey="id"
-                loading={!directions}
-                data={directions || []}
-                onChange={actions.update.bind(null, 'direction')}
-                selected={selectors.direction}
-                onUpdate={v => actions.update('direction', v)}
+                loading={!regions}
+                data={regions || []}
+                onChange={actions.update.bind(null, 'region')}
+                selected={selectors.region}
+                onUpdate={v => actions.update('region', v)}
                 defaultValue={
-                  defaultSelectors.indicators['selectors.direction']
+                  defaultSelectors.indicators['selectors.region']
                 } />
             </div>
             <div className="form-group">
@@ -485,7 +485,7 @@ class Charts extends Component {
 
     const quantitiesOpened = this.state.quantitiesOpened;
 
-    // Computing bar chart's data by keeping a count of distinct directions
+    // Computing bar chart's data by keeping a count of distinct regions
     let barData = [];
 
     if (lines.some(line => !!line.data.length)) {
@@ -516,8 +516,8 @@ class Charts extends Component {
           const h = hash(line.data[j].year);
           barData[h].data = barData[h].data || new Set();
 
-          for (let k = 0, n = line.data[j].nb_direction.length; k < n; k++)
-            barData[h].data.add(line.data[j].nb_direction[k]);
+          for (let k = 0, n = line.data[j].nb_region.length; k < n; k++)
+            barData[h].data.add(line.data[j].nb_region[k]);
         }
       });
 

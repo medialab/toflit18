@@ -1,5 +1,5 @@
-// name: directions
-// Retrieving the list of the available directions.
+// name: regions
+// Retrieving the list of the available regions.
 //------------------------------------------------------------------------------
 MATCH (d:Direction)
 RETURN

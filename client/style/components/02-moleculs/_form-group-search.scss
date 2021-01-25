@@ -3,7 +3,7 @@
 // --------------------------------------------------
 .form-group-search {
     @include flexbox;
-    @include flex-direction(column);
+    @include flex-region(column);
     @include justify-content(center);
     @include align-items(center);
 

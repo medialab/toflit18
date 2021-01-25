@@ -15,7 +15,7 @@ const ModelCreateLine = {
    * Line creation.
    */
   createLine(params, callback) {
-    const { sourceType, direction, kind, productClassification, product, partnerClassification, partner } = params;
+    const { sourceType, region, kind, productClassification, product, partnerClassification, partner } = params;
 
     // Building the query
     const query = new Query(),
@@ -29,12 +29,12 @@ const ModelCreateLine = {
     if (kind === "import") {
       exportImportFilterDirection = ":TO";
       exportImportFilterPartner = ":FROM";
-      // add a where clause an flow import index to match flows which doesn't have a partner or direction link
+      // add a where clause an flow import index to match flows which doesn't have a partner or region link
       where.and("f.import");
     } else if (kind === "export") {
       exportImportFilterDirection = ":FROM";
       exportImportFilterPartner = ":TO";
-      // add a where clause an flow import index to match flows which doesn't have a partner or direction link
+      // add a where clause an flow import index to match flows which doesn't have a partner or region link
       where.and("NOT f.import");
     }
 
@@ -80,11 +80,11 @@ const ModelCreateLine = {
       }
     }
 
-    //-- Should we match a precise direction?
-    if (direction && direction !== "$all$") {
+    //-- Should we match a precise region?
+    if (region && region !== "$all$") {
       match.push(`(d:Direction)<-[${exportImportFilterDirection}]-(f:Flow)`);
-      where.and("d.id = $direction");
-      query.params({ direction });
+      where.and("d.id = $region");
+      query.params({ region });
     }
 
     //-- Do we need to match a source type
@@ -115,7 +115,7 @@ const ModelCreateLine = {
       "CASE WHEN exists(f.quantity_nbr) AND f.quantity_nbr > 0 THEN 1 ELSE 0 END AS nbr",
     ]);
     query.return(
-      "count(f) AS count, sum(f.value) AS value, sum(f.quantity_kg) AS kg, sum(f.quantity_nbr) AS nbr, sum(f.quantity_litre) AS litre, f.year AS year,  collect(distinct(f.direction)) as nb_direction, f.sourceType, " +
+      "count(f) AS count, sum(f.value) AS value, sum(f.quantity_kg) AS kg, sum(f.quantity_nbr) AS nbr, sum(f.quantity_litre) AS litre, f.year AS year,  collect(distinct(f.region)) as nb_region, f.sourceType, " +
         shares,
     );
     query.orderBy("f.year");
