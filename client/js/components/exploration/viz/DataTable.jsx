@@ -213,8 +213,8 @@ export default class FlowsTable extends Component {
         bestGuessNationalProductXPartner: {formatter:booleanFormatter},
         bestGuessNationalProduct: {formatter:booleanFormatter},
         bestGuessNationalPartner: {formatter:booleanFormatter},
-        bestGuessTaxDepartmentProductXPartner: {formatter:booleanFormatter},
-        bestGuessNationalTaxDepartment: {formatter:booleanFormatter}
+        bestGuessCustomsRegionProductXPartner: {formatter:booleanFormatter},
+        bestGuessNationalCustomsRegion: {formatter:booleanFormatter}
         
       }
       const columns = rows.length > 0 ? ['rowIndex',...columnsOrder].map(c =>{

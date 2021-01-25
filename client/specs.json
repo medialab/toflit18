@@ -6,7 +6,7 @@
       "value": "sourceType"
     },
     {
-      "name": "Tax department",
+      "name": "Customs region",
       "value": "direction"
     },
     {
@@ -40,8 +40,8 @@
     { "id":"year","name":"Year"},
     { "id":"rawYear","name":"Year (source)"},
     { "id":"product","name":"Product (source)"},
-    { "id":"direction","name":"Tax department"},
-    { "id":"originalDirection","name": "Tax department (source)"},
+    { "id":"direction","name":"Customs region"},
+    { "id":"originalDirection","name": "Customs region (source)"},
     { "id":"partner","name": "Partner"},
     { "id":"import","name": "Import/Export"},
     { "id":"source","name":"Source"},
@@ -60,8 +60,8 @@
     { "id":"bestGuessNationalProductXPartner","name":"Best Guess national product x partner"},
     { "id":"bestGuessNationalProduct","name": "Best Guess national product"},
     { "id":"bestGuessNationalPartner","name": "Best Guess national partner"},
-    { "id":"bestGuessTaxDepartmentProductXPartner","name": "Best Guess tax department product x partner"},
-    { "id":"bestGuessNationalTaxDepartment","name": "Best Guess national tax department"},
+    { "id":"bestGuessCustomsRegionProductXPartner","name": "Best Guess customs region product x partner"},
+    { "id":"bestGuessNationalCustomsRegion","name": "Best Guess national customs region"},
     { "id":"note","name": "Remarks"},
     { "id":"absurdObservation","name": "Absurd observation"}
     ]

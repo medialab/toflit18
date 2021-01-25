@@ -35,7 +35,7 @@ const SOURCES_HEADERS = [
   "import/export",
   "rawYear",
   "year",
-  "tax department",
+  "customs region",
   "bureau",
   "partner",
   "origin",

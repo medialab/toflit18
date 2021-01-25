@@ -146,8 +146,8 @@ const Model = {
       // add national best guess Source Type
       result.push({ type: "Best Guess national product x partner" });
       result.push({ type: "Best Guess national partner" });
-      result.push({ type: "Best Guess tax department product x partner" });
-      result.push({ type: "Best Guess national tax department" });
+      result.push({ type: "Best Guess customs region product x partner" });
+      result.push({ type: "Best Guess national customs region" });
       result.push({ type: "Best Guess national product" });
       result = sortBy(result, "type");
       if (err) return callback(err);

@@ -45,15 +45,15 @@ export default class Sources extends Component {
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
-              <h2>Best Guess tax department product x partner</h2>
+              <h2>Best Guess customs region product x partner</h2>
               <p className="lead">
-                This autoselects the best source about trade by product x partner x tax department in each year. The selected sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes directions tous partenaires". Some "Local" sources from Rouen imports are excluded as they do not include all products (1737, 1739-1749, 1754, 1756-1762). 1789 is nearly there, but does not include Asian trade nor all of Nantes trade at that time.
+                This autoselects the best source about trade by product x partner x customs region in each year. The selected sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes directions tous partenaires". Some "Local" sources from Rouen imports are excluded as they do not include all products (1737, 1739-1749, 1754, 1756-1762). 1789 is nearly there, but does not include Asian trade nor all of Nantes trade at that time.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
-              <h2>Best Guess national tax department</h2>
+              <h2>Best Guess national customs region</h2>
               <p className="lead">
-                This autoselects the best source about trade by tax department for the whole of France. It might not include all partners nor all goods. The selected source  is "National toutes directions tous partenaires" for 1750; "National toutes directions sans produits" for 1753, 1756, 1766, 1768, 1770-1, 1773-4 and 1777-80; and "National toutes directions partenaires manquants" otherwise.
+                This autoselects the best source about trade by customs region for the whole of France. It might not include all partners nor all goods. The selected source  is "National toutes directions tous partenaires" for 1750; "National toutes directions sans produits" for 1753, 1756, 1766, 1768, 1770-1, 1773-4 and 1777-80; and "National toutes directions partenaires manquants" otherwise.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
@@ -100,7 +100,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National toutes directions partenaires manquants</h2>
               <p className="lead">
-                They contain trade by product x partner x tax department for the whole of France and some partners.
+                They contain trade by product x partner x customs region for the whole of France and some partners.
               </p>
               <p>
                 <ul>
@@ -148,7 +148,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National toutes directions tous partenaires</h2>
               <p className="lead">
-                These sources contain trade by product x partner x tax department for the whole of France. They include values and quantities. They only exist for 1750. Notice that 1789 in AN F12 1666 and F12 1667 nearly makes it ; but trade with America (except the United States), Africa and Asia is missing. As a result, the 1789 is classified in "National toutes directions partenaires manquants".
+                These sources contain trade by product x partner x customs region for the whole of France. They include values and quantities. They only exist for 1750. Notice that 1789 in AN F12 1666 and F12 1667 nearly makes it ; but trade with America (except the United States), Africa and Asia is missing. As a result, the 1789 is classified in "National toutes directions partenaires manquants".
               </p>
               <p>
                 <ul>
@@ -162,7 +162,7 @@ export default class Sources extends Component {
 			<div className="col-sm-10 col-sm-offset-1">
               <h2>National toutes directions sans produits</h2>
               <p className="lead">
-                contain trade by partner x tax department for the whole of France. They include only values.They only exist for 1753, 1756, 1766, 1768, 1770-1, 1773-4, 1777-80.
+                contain trade by partner x customs region for the whole of France. They include only values.They only exist for 1753, 1756, 1766, 1768, 1770-1, 1773-4, 1777-80.
               </p>
               <p>
                 <ul>
@@ -179,7 +179,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Local</h2>
               <p className="lead">
-                sources contain data for trade by a specific tax department by product x partner x tax department. They include
+                sources contain data for trade by a specific customs region by product x partner x customs region. They include
                 unit prices and quantites (and sometimes also values). They exist from 1714 to 1780.
               </p>
               <p>

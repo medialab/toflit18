@@ -33,7 +33,7 @@ import gitlog from "gitlog";
 const ROOT_PATH = "/base",
   BDD_CENTRALE_PATH = path.join(ROOT_PATH, "/bdd_centrale.csv"),
   BDD_OUTSIDERS = path.join(ROOT_PATH, "/product_sourcees.csv"),
-  BDD_TAX_DEPARTMENTS = path.join(ROOT_PATH, "/bdd_tax_departments.csv"),
+  BDD_CUSTOMS_REGIONS = path.join(ROOT_PATH, "/bdd_customs_regions.csv"),
   // classifications index
   INDEX_CLASSIFICATIONS = path.join(ROOT_PATH, "/classifications_index.csv");
 
@@ -70,8 +70,8 @@ const POSSIBLE_NODE_PROPERTIES = [
   "bestGuessNationalProductXPartner:boolean",
   "bestGuessNationalPartner:boolean",
   "bestGuessNationalProduct:boolean",
-  "bestGuessTaxDepartmentProductXPartner:boolean",
-  "bestGuessNationalTaxDepartment:boolean",
+  "bestGuessCustomsRegionProductXPartner:boolean",
+  "bestGuessNationalCustomsRegion:boolean",
   "hash",
   "date",
   "repository",
@@ -339,13 +339,13 @@ function importer(csvLine) {
   if (csvLine.source_type === "Out") return;
 
   //Patching directions names
-  const originalDirection = csvLine.tax_department;
+  const originalDirection = csvLine.customs_region;
 
   let direction = DIRECTIONS_INDEX[originalDirection];
 
   if (!!originalDirection && direction === undefined) {
     direction = originalDirection;
-    console.log("  !! Could not find simplified tax department for:", originalDirection, "In file:", csvLine.filepath);
+    console.log("  !! Could not find simplified customs region for:", originalDirection, "In file:", csvLine.filepath);
   }
 
   // Import or Export
@@ -430,8 +430,8 @@ function importer(csvLine) {
   nodeData.bestGuessNationalProductXPartner = csvLine.best_guess_national_prodxpart === "1" ? "true" : "false";
   nodeData.bestGuessNationalPartner = csvLine.best_guess_national_partner === "1" ? "true" : "false";
   nodeData.bestGuessNationalProduct = csvLine.best_guess_national_product === "1" ? "true" : "false";
-  nodeData.bestGuessTaxDepartmentProductXPartner = csvLine.best_guess_department_prodxpart === "1" ? "true" : "false";
-  nodeData.bestGuessNationalTaxDepartment = csvLine.best_guess_national_department === "1" ? "true" : "false";
+  nodeData.bestGuessCustomsRegionProductXPartner = csvLine.best_guess_region_prodxpart === "1" ? "true" : "false";
+  nodeData.bestGuessNationalCustomsRegion = csvLine.best_guess_national_region === "1" ? "true" : "false";
 
   // Here, we filter some lines deemed irrelevant
   if (!nodeData.value && !nodeData.quantity && !nodeData.unitPrice) return;
@@ -662,9 +662,9 @@ function makeClassificationConsumer(
 async.series(
   {
     directions(next) {
-      console.log("Processing tax departments...");
+      console.log("Processing customs regions...");
 
-      const csvDirections = fs.readFileSync(DATA_PATH + BDD_TAX_DEPARTMENTS, "utf-8");
+      const csvDirections = fs.readFileSync(DATA_PATH + BDD_CUSTOMS_REGIONS, "utf-8");
       parseCsv(csvDirections, { delimiter: "," }, function(err, data) {
         data.forEach(row => {
           const sourceDirection = cleanText(row[0]),

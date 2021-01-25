@@ -307,7 +307,7 @@ class TermsPanel extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">
-                Tax department
+                Customs region
               </label>
               <small className="help-block">
                 Where, in France, the transactions were recorded.{" "}

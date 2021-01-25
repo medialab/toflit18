@@ -336,7 +336,7 @@ export default class ExplorationIndicators extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">
-                Tax department
+                Customs region
               </label>
               <small className="help-block">
                 Where, in France, the transactions were recorded.{' '}
@@ -550,7 +550,7 @@ class Charts extends Component {
               this.vizContainer = el;
             }}>
             <div className="box-viz">
-              <span className="title">Total number of tax departments per year</span>
+              <span className="title">Total number of customs regions per year</span>
               <DataQualityBarChart data={barData} syncId="indicators" yAxis />
             </div>
             <div className="box-viz">

@@ -159,7 +159,7 @@ class NetworkPanel extends Component {
     return (
       <VizLayout
         title="Partners"
-        description="Choose a partner classification and display a graph showing relations between partners & tax departments."
+        description="Choose a partner classification and display a graph showing relations between partners & customs regions."
         leftPanelName="Filters"
         rightPanelName="Caption"
         fullscreen={fullscreen}
@@ -377,7 +377,7 @@ class NetworkPanel extends Component {
               <ul className="list-unstyled list-legend list-legend-circle">
                 <li>
                   <span style={{ backgroundColor: "#E6830E" }} />
-                  <span>Tax department</span>
+                  <span>Customs region</span>
                 </li>
                 <li>
                   <span style={{ backgroundColor: "#049B9A" }} />

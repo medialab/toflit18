@@ -28,7 +28,7 @@ export default class Concepts extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Flows</h2>
               <p className="lead">
-                A flow is an observation of a trade exchange between France (or a "Tax department") and a partner in a
+                A flow is an observation of a trade exchange between France (or a "Customs region") and a partner in a
                 specific year for a specific commodity or commodity group.
               </p>
               <p className="hidden-xs">
@@ -36,13 +36,13 @@ export default class Concepts extends Component {
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
-              <h2>Tax department</h2>
+              <h2>Customs region</h2>
               <p className="lead">
-                A "Tax department" is a divison of the French geographical space (including colonies) reporting external
+                A "Customs region" is a divison of the French geographical space (including colonies) reporting external
                 trade.
               </p>
               <p>
-                They mostly are "directions des fermes". For example the "Nantes" tax department covers all the
+                They mostly are "directions des fermes". For example the "Nantes" customs region covers all the
                 Nantes region.
               </p>
             </div>
@@ -88,10 +88,10 @@ export default class Concepts extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Partners</h2>
               <p className="lead">
-                "Partners" are geographical entitites that are trading partners with France or French tax department.
+                "Partners" are geographical entitites that are trading partners with France or French customs region.
               </p>
               <p>
-                Partners are geographical entitites that are trading partners with France or French tax departments. They
+                Partners are geographical entitites that are trading partners with France or French customs regions. They
                 can either be geographical (Le Nord, Guinée, Italie...) or political entities (Espagne et ses
                 possessions)... Le Nord designates the Baltic area reached by sea. The same partner can designate
                 different geographical areas depending on the time and source. For example, "Le Nord" includes Russia in

@@ -376,7 +376,7 @@ export default class ExplorationMeta extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="direction" className="control-label">
-                Tax department
+                Customs region
               </label>
               <small className="help-block">
                 The French harbor where the transactions were recorded.{" "}
@@ -516,7 +516,7 @@ export default class ExplorationMeta extends Component {
               exports={compact([
                 state.perYear &&
                   state.dataModel && {
-                    label: "Export tax department by years",
+                    label: "Export customs region by years",
                     fn: () => {
                       this.exportPerYear();
                     },
