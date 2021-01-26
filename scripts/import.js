@@ -506,7 +506,7 @@ function importer(csvLine) {
     if (region && !EDGE_INDEXES.offices.has(csvLine.customs_office)) {
       const regionNode = indexedNode(
         INDEXES.region,
-        "REGION",
+        "Region",
         slugifyRegion(region),
         {
           name: region,
@@ -524,7 +524,7 @@ function importer(csvLine) {
   if (region) {
     const regionNode = indexedNode(
       INDEXES.region,
-      "REGION",
+      "Region",
       slugifyRegion(region),
       {
         name: region,
