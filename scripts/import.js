@@ -664,13 +664,13 @@ async.series(
     regions(next) {
       console.log("Processing customs regions...");
 
-      const csvREGIONs = fs.readFileSync(DATA_PATH + BDD_CUSTOMS_REGIONS, "utf-8");
-      parseCsv(csvREGIONs, { delimiter: "," }, function(err, data) {
+      const csvRegions = fs.readFileSync(DATA_PATH + BDD_CUSTOMS_REGIONS, "utf-8");
+      parseCsv(csvRegions, { delimiter: "," }, function(err, data) {
         data.forEach(row => {
-          const sourceREGION = cleanText(row[0]),
-            targetREGION = cleanText(row[1]);
+          const sourceRegion = cleanText(row[0]),
+            targetRegion = cleanText(row[1]);
 
-          REGIONS_INDEX[sourceREGION] = targetREGION;
+          REGIONS_INDEX[sourceRegion] = targetRegion;
         });
 
         return next();

@@ -32,7 +32,7 @@ export default class Concepts extends Component {
                 specific year for a specific commodity or commodity group.
               </p>
               <p className="hidden-xs">
-                Example: In 1764, Nantes exported 1,945,032 livres tournois of sugar to the Nord (2,380,233 kg)."
+                Example: In 1764, Nantes exported 1,945,032 livres tournois of sugar to the Nord (2,380,233 kg).
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
