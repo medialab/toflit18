@@ -196,9 +196,11 @@ export default class About extends Component {
                   <li>Konaté, Demba</li>
                   <li>Mai, Saadia</li>
                   <li>Maneuvrier-Hervieu, Paul</li>
+                  <li>Marzagalli, Silvia</li>
                   <li>Milewski, Sophie</li>
                   <li>Moutou, Laura</li>
                   <li>Nahoudha, Ahmed</li>
+                  <li>Nannini, Elisabeth</li>
                   <li>Omri, Hichem</li>
                   <li>Parungao, Ramillo</li>
                   <li>Rabetafika, Ben</li>
