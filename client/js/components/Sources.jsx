@@ -101,10 +101,11 @@ export default class Sources extends Component {
               <h2>National toutes regions partenaires manquants</h2>
               <p className="lead">
                 They contain trade by product x partner x customs region for the whole of France and some partners.
+                The 1787 data only covers imports for some customs regions.
               </p>
               <p>
                 <ul>
-                  <li>AN F12 1655</li>
+                  <li>AN F12 1665</li>
                   <li>AN F12 1666</li>
                   <li>AN F12 1667</li>
                   <li>AN F12 1667 et CCI Marseille I 31</li>
