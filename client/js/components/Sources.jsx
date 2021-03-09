@@ -101,7 +101,7 @@ export default class Sources extends Component {
               <h2>National toutes regions partenaires manquants</h2>
               <p className="lead">
                 They contain trade by product x partner x customs region for the whole of France and some partners.
-                The 1787 data only covers imports for some customs regions.
+                The 1787 data only cover imports for some customs regions.
               </p>
               <p>
                 <ul>
