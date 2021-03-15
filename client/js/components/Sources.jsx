@@ -47,7 +47,7 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Best Guess customs region product x partner</h2>
               <p className="lead">
-                This autoselects the best source about trade by product x partner x customs region in each year. The selected sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes regions tous partenaires". Some "Local" sources from Rouen imports are excluded as they do not include all products (1737, 1739-1749, 1754, 1756-1762). 1789 is nearly there, but does not include Asian trade nor all of Nantes trade at that time.
+                This autoselects the best source about trade by product x partner x customs region in each year. The selected sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes regions tous partenaires" and 1788-1789 when we use "Local" for colonial trade and "National toutes regions partenaires manquants" for the rest. Some "Local" sources from Rouen imports are excluded as they do not include all products (1737, 1739-1749, 1754, 1756-1762). We include 1789, despite not missing Asian trade because these data are very rich. We also include Marseille’s imports in 1787.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
