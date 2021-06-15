@@ -349,11 +349,12 @@ export default class Sources extends Component {
             <div className="col-sm-10 col-sm-offset-1">
               <h2>National partenaires manquants</h2>
               <p className="lead">
-                contain trade by product x partner for the whole of France and a sub-set of all partners : only Angleterre, Barbarie, États-Unis, Russie for individual years in the 1780s).
+                contain trade by product x partner for the whole of France and a sub-set of all partners : only Angleterre, Barbarie, États-Unis, Russie for individual years in the 1780s, and the Colonies for 1790
               </p>
               <p>
                 <ul>
                   <li>AN F12 1835</li>
+                  <li>ANOM 07 DFC 305</li>
                 </ul>
               </p>
             </div>

@@ -188,15 +188,27 @@ export default class About extends Component {
                 </ul>
               </p>
               <p>
-                <b>Data collectors:</b>
+                <b>Data contributors:</b>
                 <ul>
+                  <li>Arnold, Torsten</li>
+                  <li>Benbassat, Esther</li>
+                  <li>Benyagoub, Karim</li>
+                  <li>Cassagnes, David</li>
+                  <li>Chagnaud, Paul</li>
+                  <li>Chabih, Mohamed</li>
                   <li>Chevret, Paul</li>
+                  <li>Duprez, Frédéric</li>
+                  <li>El Adel, Hasna</li>
+                  <li>Flaux, Romain</li>
+                  <li>Fontaine, Pascal</li>
+                  <li>Gouttenegre, Pascale</li>
                   <li>H., Eszter</li>
-                  <li>Hanzaoui, Chaker</li>
+                  <li>Hamzaoui, Chaker</li>
                   <li>Konaté, Demba</li>
                   <li>Mai, Saadia</li>
                   <li>Maneuvrier-Hervieu, Paul</li>
                   <li>Marzagalli, Silvia</li>
+                  <li>Medina, Kathleya</li>
                   <li>Milewski, Sophie</li>
                   <li>Moutou, Laura</li>
                   <li>Nahoudha, Ahmed</li>
@@ -205,7 +217,9 @@ export default class About extends Component {
                   <li>Parungao, Ramillo</li>
                   <li>Rabetafika, Ben</li>
                   <li>Rebours, Anthony</li>
+                  <li>Requia</li>
                   <li>Shahban, Muhammed</li>
+                  <li>Sidorowiez, Christophe</li>
                   <li>Souchaire, Isabelle</li>
                   <li>Varela, Gabriel</li>
                   <li>Vergne, Isabelle</li>
