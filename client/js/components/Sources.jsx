@@ -111,33 +111,33 @@ export default class Sources extends Component {
                   <li>AN F12 1667 et CCI Marseille I 31</li>
                   <li>AN F12 1835</li>
                   <li>AN F12 835</li>
-                  <li>AN Marine B 7 514 et ANOM Col F 2B 14</li>
-                  <li>AN Marine B 7 514 et ANOM Col F 2B 14 (tableau 17)</li>
-                  <li>AN Marine B 7 514 et ANOM Col F 2B 14 (tableau 18)</li>
-                  <li>AN Marine B 7 514 et ANOM Col F 2B 14 (tableau 21)</li>
-                  <li>AN Marine B 7 514 et ANOM Col F 2B 14 (tableau 22)</li>
-                  <li>AN Marine B 7 514 et ANOM Col F 2B 14 (tableau 23)</li>
-                  <li>AN Marine B 7 514 et ANOM Col F 2B 14 (tableau 24)</li>
-                  <li>ANOM Col F 2B 13</li>
-                  <li>ANOM Col F 2B 13 (tableau 19)</li>
-                  <li>ANOM Col F 2B 13 (tableau 20)</li>
-                  <li>ANOM Col F 2B 13 (tableau 21)</li>
-                  <li>ANOM Col F 2B 13 (tableau 22)</li>
-                  <li>ANOM Col F 2B 13 (tableau 23)</li>
-                  <li>ANOM Col F 2B 13 (tableau 24)</li>
-                  <li>ANOM Col F 2B 13 (tableau 25)</li>
-                  <li>ANOM Col F 2B 13 (tableau 26)</li>
-                  <li>ANOM Col F 2B 13 (tableau 27)</li>
-                  <li>ANOM Col F 2B 14 (tableau 16)</li>
-                  <li>ANOM Col F 2B 14 (tableau 17)</li>
-                  <li>ANOM Col F 2B 14 (tableau 18)</li>
-                  <li>ANOM Col F 2B 14 (tableau 19)</li>
-                  <li>ANOM Col F 2B 14 (tableau 20)</li>
-                  <li>ANOM Col F 2B 14 (tableau 21)</li>
-                  <li>ANOM Col F 2B 14 (tableau 22)</li>
-                  <li>ANOM Col F 2B 14 (tableau 23)</li>
-                  <li>ANOM Col F 2B 14 (tableau 24)</li>
-                  <li>ANOM Col F 2B 14 (tableau 25)</li>
+                  <li>AN Marine B 7 514 et ANOM Col F2 B 14</li>
+                  <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 17)</li>
+                  <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 18)</li>
+                  <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 21)</li>
+                  <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 22)</li>
+                  <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 23)</li>
+                  <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 24)</li>
+                  <li>ANOM Col F2 B 13</li>
+                  <li>ANOM Col F2 B 13 (tableau 19)</li>
+                  <li>ANOM Col F2 B 13 (tableau 20)</li>
+                  <li>ANOM Col F2 B 13 (tableau 21)</li>
+                  <li>ANOM Col F2 B 13 (tableau 22)</li>
+                  <li>ANOM Col F2 B 13 (tableau 23)</li>
+                  <li>ANOM Col F2 B 13 (tableau 24)</li>
+                  <li>ANOM Col F2 B 13 (tableau 25)</li>
+                  <li>ANOM Col F2 B 13 (tableau 26)</li>
+                  <li>ANOM Col F2 B 13 (tableau 27)</li>
+                  <li>ANOM Col F2 B 14 (tableau 16)</li>
+                  <li>ANOM Col F2 B 14 (tableau 17)</li>
+                  <li>ANOM Col F2 B 14 (tableau 18)</li>
+                  <li>ANOM Col F2 B 14 (tableau 19)</li>
+                  <li>ANOM Col F2 B 14 (tableau 20)</li>
+                  <li>ANOM Col F2 B 14 (tableau 21)</li>
+                  <li>ANOM Col F2 B 14 (tableau 22)</li>
+                  <li>ANOM Col F2 B 14 (tableau 23)</li>
+                  <li>ANOM Col F2 B 14 (tableau 24)</li>
+                  <li>ANOM Col F2 B 14 (tableau 25)</li>
                   <li>BNF N. Acq. 20538</li>
                   <li>BNF N. Acq. 20541</li>
                   <li>Fonds Gournay - M85</li>
@@ -321,8 +321,8 @@ export default class Sources extends Component {
                   <li>AD44 C718</li>
                   <li>AD64 2 ETP 104</li>
                   <li>AD64 2 ETP 105</li>
-                  <li>ANOM Col F 2B 13 (tableaux 37 et 38)</li>
-                  <li>ANOM Col F 2B 14 (tableau 25)</li>
+                  <li>ANOM Col F2 B 13 (tableaux 37 et 38)</li>
+                  <li>ANOM Col F2 B 14 (tableau 25)</li>
                   <li>Archives de la CCI de Marseille - I 21</li>
                   <li>Archives de la CCI de Marseille - I 22</li>
                   <li>Archives de la CCI de Marseille - I 23</li>
