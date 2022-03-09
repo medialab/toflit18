@@ -26,7 +26,17 @@ export default class Sources extends Component {
         </div>
         <div className="container content">
           <div className="row">
+            <p className="lead">
+          TOFLIT18 data come from a multitude of sources that, while they all have roughly the same origin, have large differences in coverage and accuracy. The sources are grouped into 12 source types (from "Objet Général" to "Tableau Général"). Each source type covers the same thing with the same accuracy.
+            </p>
+        <p className="lead">
+  In order to have a complete view, over as many years as possible, of a facet of French trade (for example, trade by direction of farm), it is often necessary to cross-reference different types of sources depending on the year. This work requires a certain familiarity with the sources. It was therefore done upstream by creating "meta-sources types" called "Best Guesses". 
+    	</p>
+    	 </div>
             <div className="col-sm-10 col-sm-offset-1">
+              <h1>Meta-source types</h1>
+        	</div>
+			<div className="col-sm-10 col-sm-offset-1">
               <h2>Best Guess national product x partner</h2>
               <p className="lead">
                 This autoselects the best source about trade by product x partner for the whole of France in each year. This is "National toutes regions tous partenaires" for 1750, "Objet Général" from 1754 to 1780, "Résumé" in 1787-1789 and 1797-1821. These sources are supplemented by data from "Compagnie des Indes"
@@ -56,6 +66,9 @@ export default class Sources extends Component {
                 This autoselects the best source about trade by customs region for the whole of France. It might not include all partners nor all goods. The selected source  is "National toutes regions tous partenaires" for 1750; "National toutes regions sans produits" for 1753, 1756, 1766, 1768, 1770-1, 1773-4 and 1777-80; and "National toutes regions partenaires manquants" otherwise.
               </p>
             </div>
+                 <div className="col-sm-10 col-sm-offset-1">
+              	<h1>Source types</h1>
+	        	</div>
             <div className="col-sm-10 col-sm-offset-1">
               <h2>Objet Général</h2>
               <p className="lead">
