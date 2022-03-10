@@ -27,10 +27,10 @@ export default class Sources extends Component {
         <div className="container content">
           <div className="row">
             <p className="lead">
-              TOFLIT18 data come from a multitude of sources that, while they all have roughly the same origin, have large differences in coverage and accuracy. The sources are grouped into 12 source types (from "Objet Général" to "Tableau Général"). Each source type covers the same thing with the same accuracy.
+              TOFLIT18 data come from a multitude of sources that have large differences in coverage and the information they provide. TOFLIT18 sources are thus grouped into 12 source types (from "Objet Général" to "Tableau Général") that provide the same information and have the same coverage.
             </p>
             <p className="lead">
-              In order to have a complete view, over as many years as possible, of a facet of French trade (for example, trade by direction of farm), it is often necessary to cross-reference different types of sources depending on the year. This work requires a certain familiarity with the sources. It was therefore done upstream by creating "meta-sources types" called "Best Guesses".
+              In order to observe over as many years as possible a specific aspect of French trade (for example, trade by customs region), it is often necessary to put together different types of sources across years. This work requires familiarity with the sources. It was therefore done for the main cases by the TOFLIT18 teams by creating "meta-sources types" called "Best Guesses".
             </p>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
