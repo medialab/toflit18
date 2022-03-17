@@ -29,7 +29,7 @@ function retrieveClassificationNodes(model, classificationVariable, classificati
     where = new Expression(`${classificationVariable}.id = $${classificationVariable}`);
     params ={ [classificationVariable]:classification };
   }
-  else 
+  else
     optionalMatch = `(f:Flow)-[${model == 'product' ? ':OF' : ':FROM|:TO'}]->(${itemVariable}:${capitalize(model)})`;
 
   return {optionalMatch, where, params}
@@ -105,19 +105,19 @@ const flowsQuery = (params) => {
     } else where.and(`f.${camelCase(sourceType)} = true`);
   }
 
-  if (dateMin) { 
+  if (dateMin) {
     where.and("f.year >= $dateMin");
     query.params({dateMin: +dateMin})
   }
-  if (dateMax) { 
+  if (dateMax) {
     where.and("f.year <= $dateMax");
     query.params({dateMax: +dateMax})
   }
-  if (valueMin) { 
+  if (valueMin) {
     where.and("f.value >= $valueMin");
     query.params({valueMin: +valueMin})
   }
-  if (valueMax) { 
+  if (valueMax) {
     where.and("f.value <= $valueMax");
     query.params({valueMax: +valueMax})
   }
@@ -163,9 +163,9 @@ const Model = {
    * Flows.
    */
   countFlows(params, callback) {
-    
+
     const query = flowsQuery(params);
-    
+
     //-- Returning data
     query.return("count(f) as nbFlows");
 
@@ -176,7 +176,7 @@ const Model = {
     });
   },
   flows(params, callback) {
-    
+
     const query = flowsQuery(params);
     const {
       sourceType,
@@ -192,7 +192,7 @@ const Model = {
       columns
     } = params;
     //-- Returning data
-    
+
     const fieldsDefinitions = (fieldname) => {
       const fields = {
       kg: "f.quantity_kg",
@@ -205,10 +205,10 @@ const Model = {
       };
       // first option, special cases listed in fields
       if (fields[fieldname]) return fields[fieldname];
-      // second option, classification cases 
+      // second option, classification cases
       if (fieldname.startsWith('product_') || fieldname.startsWith('partner_')) return `${fieldname}.name`;
       // finally let's try a flow metadata
-      return `f.${fieldname}`; 
+      return `f.${fieldname}`;
     };
     const fields = columns && columns.length > 0 ? columns : ['product', 'value'];
       // should we match classification to feed columns
@@ -229,7 +229,7 @@ const Model = {
     if (orders && orders.length > 0)
      query.orderBy(orders.map(s => {
       //don't clean text on numbers...
-      if (['value', 'kg', 'nb', 'litre', 'unitPrice', 'import', 'quantity'].includes(s.key))
+      if (['value', 'kg', 'nb', 'litre', 'unitPrice', 'import', 'quantity', 'year'].includes(s.key))
         return `${fieldsDefinitions(s.key)} ${s.order}`
       else
         return  `apoc.text.clean(${fieldsDefinitions(s.key)}) ${s.order}`}).join(', '));
