@@ -24,55 +24,22 @@ export default class Sources extends Component {
             </div>
           </div>
         </div>
-        <div className="container content">
+        <div className="col-sm-10 col-sm-offset-1">
           <div className="row">
             <p className="lead">
-              TOFLIT18 data come from a multitude of sources that have large differences in coverage and the information they provide. TOFLIT18 sources are thus grouped into 12 source types (from "Objet Général" to "Tableau Général") that provide the same information and have the same coverage.
+              TOFLIT18 data come from a multitude of sources that have large differences in coverage and in the information they provide. TOFLIT18 sources are thus grouped into 12 source types (from "Objet Général" to "Tableau Général") that provide the same information and have the same coverage.
             </p>
             <p className="lead">
-              In order to observe over as many years as possible a specific aspect of French trade (for example, trade by customs region), it is often necessary to put together different types of sources across years. This work requires familiarity with the sources. It was therefore done for the main cases by the TOFLIT18 teams by creating "meta-sources types" called "Best Guesses".
+              In order to observe accross as many years as possible a specific aspect of French trade (for example, trade by customs region), it is often necessary to put together different types of sources. This work requires familiarity with the sources. It was therefore done for the main cases by the TOFLIT18 teams by creating "meta-sources types" called "Best Guesses".
             </p>
           </div>
-          <div className="col-sm-10 col-sm-offset-1">
-            <h1>Meta-source types</h1>
-          </div>
-          <div className="col-sm-10 col-sm-offset-1">
-            <h2>Best Guess national product x partner</h2>
-            <p className="lead">
-              This autoselects the best source about trade by product x partner for the whole of France in each year. This is "National toutes regions tous partenaires" for 1750, "Objet Général" from 1754 to 1780, "Résumé" in 1787-1789 and 1797-1821. These sources are supplemented by data from "Compagnie des Indes"
-            </p>
-          </div>
-          <div className="col-sm-10 col-sm-offset-1">
-            <h2>Best Guess national partner</h2>
-            <p className="lead">
-              This autoselects the best source about trade by partner for the whole of France in each year. This is "Tableau Général" for 1716-1780 and 1792, and "Résumé" in 1787-1789 and 1797-1821.
-            </p>
-          </div>
-          <div className="col-sm-10 col-sm-offset-1">
-            <h2>Best Guess national product</h2>
-            <p className="lead">
-              This autoselects the best source about trade by product for the whole of France in each year. Sources are the same as "Best Guess national product x partner", but they are supplemented by "Tableau des Quantités" for 1822-1823.
-            </p>
-          </div>
-          <div className="col-sm-10 col-sm-offset-1">
-            <h2>Best Guess customs region product x partner</h2>
-            <p className="lead">
-              This autoselects the best source about trade by product x partner x customs region in each year. The selected sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes regions tous partenaires" and 1788-1789 when we use "Local" for colonial trade and "National toutes regions partenaires manquants" for the rest. Some "Local" sources from Rouen imports are excluded as they do not include all products (1737, 1739-1749, 1754, 1756-1762). We include 1789, despite not missing Asian trade because these data are very rich. We also include Marseille’s imports in 1787.
-            </p>
-          </div>
-          <div className="col-sm-10 col-sm-offset-1">
-            <h2>Best Guess national customs region</h2>
-            <p className="lead">
-              This autoselects the best source about trade by customs region for the whole of France. It might not include all partners nor all goods. The selected source  is "National toutes regions tous partenaires" for 1750; "National toutes regions sans produits" for 1753, 1756, 1766, 1768, 1770-1, 1773-4 and 1777-80; and "National toutes regions partenaires manquants" otherwise.
-            </p>
-          </div>
-          <div className="col-sm-10 col-sm-offset-1">
+     <div className="col-sm-10 col-sm-offset-1">
             <h1>Source types</h1>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Objet Général</h2>
             <p className="lead">
-              "Objet Généraux" is the title of documents that were produced from 1752 to 1788. They contain trade by product x partner for the whole of France. They always include the value of the flows. From 1771, they include quantities and / or unit prices. The 1752 Objet Général does not include imports from the West Indies. The 1782 and 1787 Objets Généraux do not include trade with America (except the United States), Asia or Africa). We have added to the Objet Général imports through the French East Indian Company when available on the same year (up to 1771)
+              "Objet Généraux" is the title of documents that were produced from 1752 to 1788. They contain trade by product x partner for the whole of France. They always include the value of the flows. From 1771, they include quantities and / or unit prices. The 1752 Objet Général does not include imports from the West Indies. The 1782 and 1787 Objets Généraux do not include trade with America (except the United States), Asia or Africa. We have added to the Objet Général imports through the French East Indian Company when available on the same year (up to 1771)
             </p>
             <p>
               <ul>
@@ -95,14 +62,13 @@ export default class Sources extends Component {
                 <li>IIHS-122E</li>
                 <li>IIHS-122F</li>
                 <li>IIHS-122G</li>
-
               </ul>
             </p>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Résumé</h2>
             <p className="lead">
-              "Résumés" cover 1787-1789 and 1797-1821. They contain trade by  products x partner for the whole of France, including all products and all partner. They give the value of the flows, but not the quantities.
+              These sources cover 1787-1789 and 1797-1821. They contain trade by product x partner for the whole of France, including all products and all partners. They give the value of the flows, but not the quantities.
             </p>
             <p>
               <ul>
@@ -113,7 +79,7 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>National toutes regions partenaires manquants</h2>
             <p className="lead">
-              They contain trade by product x partner x customs region for the whole of France and some partners.
+              These sources contain trade by product x partner x customs region for the whole of France and some partners.
               The 1787 data only cover imports for some customs regions.
             </p>
             <p>
@@ -177,7 +143,7 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>National toutes regions sans produits</h2>
             <p className="lead">
-              contain trade by partner x customs region for the whole of France. They include only values.They only exist for 1753, 1756, 1766, 1768, 1770-1, 1773-4, 1777-80.
+              These sources contain trade by partner x customs region for the whole of France. They include only values.They only exist for 1753, 1756, 1766, 1768, 1770-1, 1773-4, 1777-80.
             </p>
             <p>
               <ul>
@@ -194,7 +160,7 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Local</h2>
             <p className="lead">
-              sources contain data for trade by a specific customs region by product x partner x customs region. They include
+              These sources contain data for trade by a specific customs region by product x partner x customs region. They include
               unit prices and quantites (and sometimes also values). They exist from 1714 to 1780.
             </p>
             <p>
@@ -354,15 +320,15 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>1792 first semester</h2>
             <p className="lead">
-              contains trade by product x partner for the whole of France for the first semester of 1792. They include
+              These sources contains trade by product x partner for the whole of France for the first semester of 1792. They include
               mainly quantities.
             </p>
-            <p>AN F12 252</p>
+            <li>AN F12 252</li>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
             <h2>National partenaires manquants</h2>
             <p className="lead">
-              contain trade by product x partner for the whole of France and a sub-set of all partners : only Angleterre, Barbarie, États-Unis, Russie for individual years in the 1780s, and the Colonies for 1790
+              These sources contain trade by product x partner for the whole of France and a sub-set of all partners : only Angleterre, Barbarie, États-Unis, Russie for individual years in the 1780s, and the Colonies for 1790
             </p>
             <p>
               <ul>
@@ -375,16 +341,14 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>1792-both semester</h2>
             <p className="lead">
-              contains trade by product x continent for the whole of Frane for 1792. They contain a mix of quantities
-              and values (but never both for a single flow)
+              Thes source contains trade by product x continent for the whole of Frane for 1792. They contain a mix of quantities and values (but never both for a single flow)
             </p>
-            <p>AN F12 252</p>
+            <li>AN F12 252</li>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Tableau des quantités</h2>
             <p className="lead">
-              covers 1822 and 1823. It contains trade by product x partner for the whole of France. They include
-              mainly quantities.
+              These sources contain trade by product x partner for the whole of France for 1822 and 1823. They include mainly quantities.
             </p>
             <p>
               <ul>
@@ -395,8 +359,7 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Tableau des marchandises</h2>
             <p className="lead">
-              covers 1819 and 1821. It contains trade by product for the whole of France. They include mainly
-              quantites and tolls paid.
+              These sources contains trade by product for the whole of France for 1819 and 1821. They include mainly quantites and tolls paid.
             </p>
             <p>
               <ul>
@@ -407,8 +370,7 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Tableau Général</h2>
             <p className="lead">
-              include bilateral trade from 1716. We have completed the original "Tableau Général" with various other
-              sources giving the same information at various date (up to 1792) or for the French East India Compagny.
+              These sources contain trade by partner from 1716 to 1792, with gaps. We have completed the original "Tableau Général" with various other sources giving the same information at various date (up to 1792) or for the French East India Compagny.
             </p>
             <p>
               <ul>
@@ -417,6 +379,39 @@ export default class Sources extends Component {
                 <li>WEBER Commerce de la compagnie des Indes 1904</li>
                 <li>WEBER Commerce de la compagnie des Indes 1904</li>
               </ul>
+            </p>
+          </div>
+                   <div className="col-sm-10 col-sm-offset-1">
+            <h1>Meta-source types</h1>
+          </div>
+          <div className="col-sm-10 col-sm-offset-1">
+            <h2>Best Guess national product x partner</h2>
+            <p className="lead">
+              This "Best Guess" gathers the best sources about trade by product x partner for the whole of France in each year. This is "National toutes regions tous partenaires" for 1750, "Objet Général" from 1754 to 1780, "Résumé" in 1787-1789 and 1797-1821. These sources are supplemented by data from "Compagnie des Indes"
+            </p>
+          </div>
+          <div className="col-sm-10 col-sm-offset-1">
+            <h2>Best Guess national partner</h2>
+            <p className="lead">
+              This "Best Guess" gathers the best sources about trade by partner for the whole of France in each year. This is "Tableau Général" for 1716-1780 and 1792, and "Résumé" in 1787-1789 and 1797-1821.
+            </p>
+          </div>
+          <div className="col-sm-10 col-sm-offset-1">
+            <h2>Best Guess national product</h2>
+            <p className="lead">
+              This "Best Guess" gathers the best sources about trade by product for the whole of France in each year. Sources are the same as "Best Guess national product x partner", but they are supplemented by "Tableau des Quantités" for 1822-1823.
+            </p>
+          </div>
+          <div className="col-sm-10 col-sm-offset-1">
+            <h2>Best Guess customs region product x partner</h2>
+            <p className="lead">
+              This "Best Guess" gathers the best sources about trade by product x partner x customs region in each year. The selected sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes regions tous partenaires" and 1788-1789 when we use "Local" for colonial trade and "National toutes regions partenaires manquants" for the rest. Some "Local" sources from Rouen imports are excluded as they do not include all products (1737, 1739-1749, 1754, 1756-1762). We include 1789, despite not missing Asian trade because these data are very rich. We also include Marseille’s imports in 1787.
+            </p>
+          </div>
+          <div className="col-sm-10 col-sm-offset-1">
+            <h2>Best Guess national customs region</h2>
+            <p className="lead">
+              This "Best Guess" gathers the best sources about trade by customs region for the whole of France. It might not include all partners nor all goods. The selected source  is "National toutes regions tous partenaires" for 1750; "National toutes regions sans produits" for 1753, 1756, 1766, 1768, 1770-1, 1773-4 and 1777-80; and "National toutes regions partenaires manquants" otherwise.
             </p>
           </div>
         </div>
