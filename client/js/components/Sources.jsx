@@ -24,7 +24,7 @@ export default class Sources extends Component {
             </div>
           </div>
         </div>
-        <div className="col-sm-10 col-sm-offset-1">
+        <div className="container content">
           <div className="row">
             <p className="lead">
               TOFLIT18 data come from a multitude of sources that have large differences in coverage and in the information they provide. TOFLIT18 sources are thus grouped into 12 source types (from "Objet Général" to "Tableau Général") that provide the same information and have the same coverage.
