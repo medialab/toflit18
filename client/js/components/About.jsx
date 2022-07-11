@@ -134,28 +134,24 @@ export default class About extends Component {
                   </li>
                          
                   <li>
-                  Guillaume Daudin «Back to TOFLIT18 / TOFLIT18 le retour», <em>Dialogue</em>, n°53, April 2019 
-                  <a https://dial.ird.fr/wp-content/uploads/2021/10/Dialogue-53.pdf>
-                 https://dial.ird.fr/wp-content/uploads/2021/10/Dialogue-53.pdf</a>
+                  Guillaume Daudin «Coming back to TOFLIT18 / TOFLIT18 le retour», <em>Dialogue</em>, n°53, April 2019 
+                  <a https://dial.ird.fr/wp-content/uploads/2021/10/focus-dialogue53eng.pdf>
+                 https://dial.ird.fr/wp-content/uploads/2021/10/focus-dialogue53eng.pdf</a>
                   </li>
 				<li>
 				  Alexandre Aubourg, Loïc Charles and Guillaume Daudin «La collecte du chiffre commercial au XVIIIe siècle» with Alexandre Aubourg and Loïc Charles, 
 				  <em>Cahiers d’histoire des Douanes et des Droits Indirects</em>, n°59, 2nd semestre 2016
-				   <a href="http://asso-ahad.blogspot.fr/2016/08/cahier-numero-59.html" 
-				   title="http://asso-ahad.blogspot.fr/2016/08/cahier-numero-59.html">link</a>
+				   <a href="https://histoire-de-la-douane.org/sommaire-des-cahiers-dhistoire-des-douanes/" 
+				   title="https://histoire-de-la-douane.org/sommaire-des-cahiers-dhistoire-des-douanes/">link</a>
 				</li>
 
 				<li>
 					Guillaume Daudin, Corentin Ponton and Quentin Vidal, «Historical Analysis of France’s Foreign Trade : the TOFLIT18 project» 
 					, <em>Dialogue</em>, n°43, July 2016 
-					<a href="http://en.dial.ird.fr/content/view/full/241870" title="http://en.dial.ird.fr/content/view/full/241870">link</a>
+					<a href="https://dial.ird.fr/wp-content/uploads/2021/10/focus-dialogue-juillet2016english.pdf"
+					 title="https://dial.ird.fr/wp-content/uploads/2021/10/focus-dialogue-juillet2016english.pdf">link</a>
 				</li>
 
-				<li>
-					Guillaume Daudin, Corentin Ponton and Quentin Vidal, «Analyse historique du commerce extérieur français : le projet TOFLIT18» 
-					with Corentin Ponton et Quentin Vidal, <em>Dialogue</em>, n°43, July 2016 
-					<a href="http://en.dial.ird.fr/content/view/full/241870" title="http://en.dial.ird.fr/content/view/full/241870">link</a>
-				</li>  
                   <li>
                     Charles, Loïc, Daudin, Guillaume. « Cross-checking the Sound database with the French Balance du
                     Commerce data », in The Baltic in European maritime history, 1600-1800, sous la dir. de Jan Willem
