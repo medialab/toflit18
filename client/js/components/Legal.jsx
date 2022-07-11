@@ -77,8 +77,10 @@ export default class Legal extends Component {
                 <a href="http://opendatacommons.org/licenses/odbl/1.0/">license ODbL</a>.
               </p>
               <p>
-                The full data collected by the project is available on github.{" "}
-                	<a href="https://github.com/medialab/toflit18_data">https://github.com/medialab/toflit18_data</a>
+                The full data collected by the project is available on github {" "}
+                	<a href="https://github.com/medialab/toflit18_data">https://github.com/medialab/toflit18_data</a>,
+                	and as a Zenodo release. {" "}
+                	<a href="https://doi.org/10.5281/zenodo.6573397"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.6573397.svg" alt="DOI"></a>.
               </p>
               <p className="lead">misc</p>
               <p>

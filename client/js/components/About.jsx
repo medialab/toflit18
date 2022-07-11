@@ -99,20 +99,63 @@ export default class About extends Component {
               <p>
                 Similar projects:
                 <ul>
-                  <li>Irish data: http://duanaire.ie/dbases/trade_ireland</li>
+                  <li>Irish data: <a href="http://duanaire.ie/dbases/trade_ireland"> http://duanaire.ie/dbases/trade_ireland</a></li>
                   <li>
                     Italian data (1862-1950):
-                    http://www.bancaditalia.it/statistiche/tematiche/stat-storiche/stat-storiche-microdati/index.html
+                    <a href="http://www.bancaditalia.it/statistiche/tematiche/stat-storiche/stat-storiche-microdati/index.html"> http://www.bancaditalia.it/statistiche/tematiche/stat-storiche/stat-storiche-microdati/index.html</a>
                   </li>
-                  <li>Navigocorpus http://navigocorpus.org</li>
-                  <li>Norwegian data (1786-1836) http://toll.lokalhistorie.no/english</li>
-                  <li>STRO http://soundtoll.nl</li>
-                  <li>RICARDO http://ricardo.medialab.sciences-po.fr</li>
+                  <li>Navigocorpus <a href="http://navigocorpus.org"> http://navigocorpus.org</a></li>
+                  <li>Norwegian data (1786-1836) <a href="http://toll.lokalhistorie.no/english"> http://toll.lokalhistorie.no/english</a></li>
+                  <li>STRO <a href="http://soundtoll.nl"> http://soundtoll.nl</a></li>
+                  <li>RICARDO <a href="http://ricardo.medialab.sciences-po.fr"> http://ricardo.medialab.sciences-po.fr</a></li>
                 </ul>
               </p>
               <p>
-                Publications:
+                Selected publications:
                 <ul>
+                  <li>Loïc Charles, Guillaume Daudin, Paul Girard, Guillaume Plique « Exploring the Transformation of French and European Trade and 
+                	Economy in the Long Eighteenth Century (1713-1823) : the TOFLIT18 Project », 
+                	<em>Historical Methods: A Journal of Quantitative and Interdisciplinary History</em> 
+                	(2022) <a href="https://doi.org/10.1080/01615440.2022.2032522">DOI: 10.1080/01615440.2022.2032522</a>
+                  </li>
+                  
+                  <li>
+                  Marzagalli, Silvia, Asselin, Cécile, Bouju, Alain, Charles, Loïc, Daudin, Guillaume, Geoffroy, Géraldine, 
+                  Girard, Paul, Gourlet, Pauline, Mazoyer, Béatrice, de Mourat, Robin, Ooghe-Tabanou, Benjamin, Plique, Guillaume, 
+                  Plumejeaud, Christine, Pourchasse, Pierrick, Sauzeau, Thierry, Théro, Héloïse, &amp; 
+                  Zoffoli, Maxime. (2021). Commerce multi-échelles autour du port de La Rochelle au XVIIIe siècle (1.0.1). Zenodo. 
+                  <a href="https://doi.org/10.5281/zenodo.5717883" title="https://doi.org/10.5281/zenodo.5717883">https://doi.org/10.5281/zenodo.5717883</a>
+                  </li>
+                  
+                  <li>
+                  Guillaume Daudin and Edouard Pignède «French Trade in the 18th century: Inflation and Revolution», <em>Dialogue</em>, n°62, Septembre 2021
+                  <a https://dial.ird.fr/wp-content/uploads/2021/10/Dialogue_Eng_62_def.pdf>
+                  (https://dial.ird.fr/wp-content/uploads/2021/10/Dialogue_Eng_62_def.pdf </a>
+                  </li>
+                         
+                  <li>
+                  Guillaume Daudin «Back to TOFLIT18 / TOFLIT18 le retour», <em>Dialogue</em>, n°53, April 2019 
+                  <a https://dial.ird.fr/wp-content/uploads/2021/10/Dialogue-53.pdf>
+                 https://dial.ird.fr/wp-content/uploads/2021/10/Dialogue-53.pdf</a>
+                  </li>
+				<li>
+				  Alexandre Aubourg, Loïc Charles and Guillaume Daudin «La collecte du chiffre commercial au XVIIIe siècle» with Alexandre Aubourg and Loïc Charles, 
+				  <em>Cahiers d’histoire des Douanes et des Droits Indirects</em>, n°59, 2nd semestre 2016
+				   <a href="http://asso-ahad.blogspot.fr/2016/08/cahier-numero-59.html" 
+				   title="http://asso-ahad.blogspot.fr/2016/08/cahier-numero-59.html">link</a>
+				</li>
+
+				<li>
+					Guillaume Daudin, Corentin Ponton and Quentin Vidal, «Historical Analysis of France’s Foreign Trade : the TOFLIT18 project» 
+					, <em>Dialogue</em>, n°43, July 2016 
+					<a href="http://en.dial.ird.fr/content/view/full/241870" title="http://en.dial.ird.fr/content/view/full/241870">link</a>
+				</li>
+
+				<li>
+					Guillaume Daudin, Corentin Ponton and Quentin Vidal, «Analyse historique du commerce extérieur français : le projet TOFLIT18» 
+					with Corentin Ponton et Quentin Vidal, <em>Dialogue</em>, n°43, July 2016 
+					<a href="http://en.dial.ird.fr/content/view/full/241870" title="http://en.dial.ird.fr/content/view/full/241870">link</a>
+				</li>  
                   <li>
                     Charles, Loïc, Daudin, Guillaume. « Cross-checking the Sound database with the French Balance du
                     Commerce data », in The Baltic in European maritime history, 1600-1800, sous la dir. de Jan Willem
@@ -122,23 +165,22 @@ export default class About extends Component {
                     Charles, Loïc, Daudin, Guillaume (editors) Eighteenth-century international trade statistics,
                     Sources and Methods. special issue of Revue de l’OFCE: Observations et diagnostics économiques (33
                     contributors), July, n°140, 396 p., 2015
-                    (http://www.ofce.sciences-po.fr/pdf/revue/140/revue-140.pdf)
+                    (<a href="http://www.ofce.sciences-po.fr/pdf/revue/140/revue-140.pdf"> http://www.ofce.sciences-po.fr/pdf/revue/140/revue-140.pdf</a>)
                   </li>
                   <li>
                     Charles, Loïc, Daudin, Guillaume. «France, c. 1716- c.1821» with Loïc Charles, Revue de l'OFCE
-                    2015/4 (N° 140)
+                    2015/4 (N° 140) <a href="https://doi.org/10.3917/reof.140.0237"> https://doi.org/10.3917/reof.140.0237</a>
                   </li>
                   <li>
-                    Charles, Loïc, Daudin, Guillaume «La collecte du chiffre au xviiie siècle: Le Bureau de la Balance
-                    du Commerce et la production de données sur le commerce extérieur de la France», with Loïc Charles,
-                    Revue d’Histoire Moderne et Contemporaine, vol. 58, n°1, p. 128-155, 2011
-                    (https://www.cairn.info/revue-d-histoire-moderne-et-contemporaine-2011-1-page-128.htm)
+                    «La collecte du chiffre au xviiie siècle: Le Bureau de la Balance du Commerce et la production de données sur le commerce extérieur 
+                    de la France», with Loïc Charles, <em>Revue d’Histoire Moderne et Contemporaine</em>, vol. 58, n°1, p. 128-155, 2011 
+                    <a href="https://doi.org/10.3917/rhmc.581.0128" title="https://doi.org/10.3917/rhmc.581.0128">https://doi.org/10.3917/rhmc.581.0128</a>
                   </li>
                   <li>
-                    Girard, Paul, ,Guillaume, Plique. «Organizing the reversible chain of transformations From trade
+                    Girard, Paul and Guillaume, Plique. «Organizing the reversible chain of transformations From trade
                     statistics records to datascapes ». présenté à From Quantitative to Qualitative Analysis: New
                     Perspectives on Research in Social History, Neubauer Collegium for Culture and Society, Chicago, 14
-                    octobre 2016. http://medialab.github.io/toflit18/chicago/#/.
+                    octobre 2016. <a href="http://medialab.github.io/toflit18/chicago/#/"> http://medialab.github.io/toflit18/chicago/#/</a> .
                   </li>
                 </ul>
               </p>
