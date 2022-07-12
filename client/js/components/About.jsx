@@ -116,7 +116,7 @@ export default class About extends Component {
                   <li>Loïc Charles, Guillaume Daudin, Paul Girard, Guillaume Plique « Exploring the Transformation of French and European Trade and 
                 	Economy in the Long Eighteenth Century (1713-1823) : the TOFLIT18 Project », 
                 	<em>Historical Methods: A Journal of Quantitative and Interdisciplinary History</em> 
-                	(2022) <a href="https://doi.org/10.1080/01615440.2022.2032522">DOI: 10.1080/01615440.2022.2032522</a>
+                	(2022) <a href="https://doi.org/10.1080/01615440.2022.2032522"> DOI: 10.1080/01615440.2022.2032522</a>
                   </li>
                   
                   <li>
@@ -124,13 +124,13 @@ export default class About extends Component {
                   Girard, Paul, Gourlet, Pauline, Mazoyer, Béatrice, de Mourat, Robin, Ooghe-Tabanou, Benjamin, Plique, Guillaume, 
                   Plumejeaud, Christine, Pourchasse, Pierrick, Sauzeau, Thierry, Théro, Héloïse, &amp; 
                   Zoffoli, Maxime. (2021). Commerce multi-échelles autour du port de La Rochelle au XVIIIe siècle (1.0.1). Zenodo. 
-                  <a href="https://doi.org/10.5281/zenodo.5717883" title="https://doi.org/10.5281/zenodo.5717883">https://doi.org/10.5281/zenodo.5717883</a>
+                  <a href="https://doi.org/10.5281/zenodo.5717883" title="https://doi.org/10.5281/zenodo.5717883"> https://doi.org/10.5281/zenodo.5717883</a>
                   </li>
                   
                   <li>
                   Guillaume Daudin and Edouard Pignède «French Trade in the 18th century: Inflation and Revolution», <em>Dialogue</em>, n°62, Septembre 2021
                   <a https://dial.ird.fr/wp-content/uploads/2021/10/Dialogue_Eng_62_def.pdf>
-                  (https://dial.ird.fr/wp-content/uploads/2021/10/Dialogue_Eng_62_def.pdf </a>
+                  https://dial.ird.fr/wp-content/uploads/2021/10/Dialogue_Eng_62_def.pdf </a>
                   </li>
                          
                   <li>
@@ -161,7 +161,7 @@ export default class About extends Component {
                     Charles, Loïc, Daudin, Guillaume (editors) Eighteenth-century international trade statistics,
                     Sources and Methods. special issue of Revue de l’OFCE: Observations et diagnostics économiques (33
                     contributors), July, n°140, 396 p., 2015
-                    (<a href="http://www.ofce.sciences-po.fr/pdf/revue/140/revue-140.pdf"> http://www.ofce.sciences-po.fr/pdf/revue/140/revue-140.pdf</a>)
+                    <a href="http://www.ofce.sciences-po.fr/pdf/revue/140/revue-140.pdf"> http://www.ofce.sciences-po.fr/pdf/revue/140/revue-140.pdf</a>
                   </li>
                   <li>
                     Charles, Loïc, Daudin, Guillaume. «France, c. 1716- c.1821» with Loïc Charles, Revue de l'OFCE
@@ -170,7 +170,7 @@ export default class About extends Component {
                   <li>
                     «La collecte du chiffre au xviiie siècle: Le Bureau de la Balance du Commerce et la production de données sur le commerce extérieur 
                     de la France», with Loïc Charles, <em>Revue d’Histoire Moderne et Contemporaine</em>, vol. 58, n°1, p. 128-155, 2011 
-                    <a href="https://doi.org/10.3917/rhmc.581.0128" title="https://doi.org/10.3917/rhmc.581.0128">https://doi.org/10.3917/rhmc.581.0128</a>
+                    <a href="https://doi.org/10.3917/rhmc.581.0128" title="https://doi.org/10.3917/rhmc.581.0128"> https://doi.org/10.3917/rhmc.581.0128</a>
                   </li>
                   <li>
                     Girard, Paul and Guillaume, Plique. «Organizing the reversible chain of transformations From trade
