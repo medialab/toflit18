@@ -106,7 +106,7 @@ export default class Legal extends Component {
                 <br />
                 By accessing an outside site, through a hypertext link, you accept that this access is carried out at
                 your own risk. Therefore, Sciences Po will in no way be held responsible for any direct or indirect
-                damages resulting from your access to an outside site through a hypertext link"
+                damages resulting from your access to an outside site through a hypertext link
               </p>
             </div>
           </div>

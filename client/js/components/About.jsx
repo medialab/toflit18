@@ -71,11 +71,11 @@ export default class About extends Component {
               <p className="lead">Get inspired or contribute to the project!</p>
               <p>
                 Tools produced in the TOFLIT18 project are in free access and available on github under license AGPLv3
-                https://github.com/medialab/toflit18.
+                <a href="//github.com/medialab/toflit18"> https://github.com/medialab/toflit18</a>.
               </p>
               <p>
                 The data of TOFLIT18 are in free access and available on github under license ODbl
-                https://github.com/medialab/toflit18_data.
+                <a href="https://github.com/medialab/toflit18_data"> https://github.com/medialab/toflit18_data</a>.
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
@@ -114,7 +114,7 @@ export default class About extends Component {
                 Selected publications:
                 <ul>
                   <li>Loïc Charles, Guillaume Daudin, Paul Girard, Guillaume Plique « Exploring the Transformation of French and European Trade and
-                	Economy in the Long Eighteenth Century (1713-1823) : the TOFLIT18 Project »,
+                	Economy in the Long Eighteenth Century (1713-1823) : the TOFLIT18 Project », 
                 	<em>Historical Methods: A Journal of Quantitative and Interdisciplinary History</em>
                 	(2022) <a href="https://doi.org/10.1080/01615440.2022.2032522"> DOI: 10.1080/01615440.2022.2032522</a>
                   </li>
@@ -140,14 +140,14 @@ export default class About extends Component {
                   </li>
 				<li>
 				  Alexandre Aubourg, Loïc Charles and Guillaume Daudin «La collecte du chiffre commercial au XVIIIe siècle» with Alexandre Aubourg and Loïc Charles,
-				  <em>Cahiers d’histoire des Douanes et des Droits Indirects</em>, n°59, 2nd semestre 2016
+				  <em>Cahiers d’histoire des Douanes et des Droits Indirects</em>, n°59, 2nd semestre 2016 
 				   <a href="https://histoire-de-la-douane.org/sommaire-des-cahiers-dhistoire-des-douanes/"
-				   title="https://histoire-de-la-douane.org/sommaire-des-cahiers-dhistoire-des-douanes/">link</a>
+				   title="https://histoire-de-la-douane.org/sommaire-des-cahiers-dhistoire-des-douanes/"> link</a>
 				</li>
 
 				<li>
 					Guillaume Daudin, Corentin Ponton and Quentin Vidal, «Historical Analysis of France’s Foreign Trade : the TOFLIT18 project»
-					, <em>Dialogue</em>, n°43, July 2016
+					, <em>Dialogue</em>, n°43, July 2016 
 					<a href="https://dial.ird.fr/wp-content/uploads/2021/10/focus-dialogue-juillet2016english.pdf"
 					 title="https://dial.ird.fr/wp-content/uploads/2021/10/focus-dialogue-juillet2016english.pdf">link</a>
 				</li>
