@@ -164,6 +164,7 @@ const defaultState = {
       valueMax: null,
       orders: null,
       columns: null,
+      columnsWidth: null,
     },
     groups: {
       partner: [],
