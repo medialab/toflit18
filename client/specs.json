@@ -32,37 +32,125 @@
     "minYear": 1719,
     "maxYear": 1839
   },
-  "indicatorsMaxNbLine":15, 
+  "indicatorsMaxNbLine": 15,
   "flowsRowsMax": 100,
   "flowsExportMax": 200000,
-  "flowsColumns": [    
-    { "id":"value","name":"Value"},
-    { "id":"year","name":"Year"},
-    { "id":"rawYear","name":"Year (source)"},
-    { "id":"product","name":"Product (source)"},
-    { "id":"region","name":"Customs region"},
-    { "id":"originalRegion","name": "Customs region (source)"},
-    { "id":"partner","name": "Partner"},
-    { "id":"import","name": "Import/Export"},
-    { "id":"source","name":"Source"},
-    { "id":"path","name":"Source filepath"},
-    { "id":"line","name": "Line number"},
-    { "id":"sheet","name":"Sheet"},
-    { "id":"sourceType","name": "Source type"},
-    { "id":"normalizedUnit","name": "Unit normalised"},
-    { "id":"unit","name":"Quantity unit"},
-    { "id":"unitPrice","name":"Unit price"},
-    { "id":"rawUnit","name":"Quantity unit (source)"},
-    { "id":"quantity","name":"Quantity (source)"},
-    { "id":"quantity_kg","name": "Quantity in Kg"},
-    { "id":"quantity_litre","name":"Quantity in litre"},
-    { "id":"quantity_nbr","name": "Quantity in number"},
-    { "id":"bestGuessNationalProductXPartner","name":"Best Guess national product x partner"},
-    { "id":"bestGuessNationalProduct","name": "Best Guess national product"},
-    { "id":"bestGuessNationalPartner","name": "Best Guess national partner"},
-    { "id":"bestGuessCustomsRegionProductXPartner","name": "Best Guess customs region product x partner"},
-    { "id":"bestGuessNationalCustomsRegion","name": "Best Guess national customs region"},
-    { "id":"note","name": "Remarks"},
-    { "id":"absurdObservation","name": "Absurd observation"}
-    ]
+  "flowsColumns": [
+    {
+      "id": "value",
+      "name": "Value"
+    },
+    {
+      "id": "year",
+      "name": "Year"
+    },
+    {
+      "id": "rawYear",
+      "name": "Year (source)"
+    },
+    {
+      "id": "product",
+      "name": "Product (source)"
+    },
+    {
+      "id": "region",
+      "name": "Customs region"
+    },
+    {
+      "id": "originalRegion",
+      "name": "Customs region (source)"
+    },
+    {
+      "id": "office",
+      "name": "Customs office (source)"
+    },
+    {
+      "id": "partner",
+      "name": "Partner"
+    },
+    {
+      "id": "import",
+      "name": "Import/Export"
+    },
+    {
+      "id": "source",
+      "name": "Source"
+    },
+    {
+      "id": "path",
+      "name": "Source filepath"
+    },
+    {
+      "id": "line",
+      "name": "Line number"
+    },
+    {
+      "id": "sheet",
+      "name": "Sheet"
+    },
+    {
+      "id": "sourceType",
+      "name": "Source type"
+    },
+    {
+      "id": "normalizedUnit",
+      "name": "Unit normalised"
+    },
+    {
+      "id": "unit",
+      "name": "Quantity unit"
+    },
+    {
+      "id": "unitPrice",
+      "name": "Unit price"
+    },
+    {
+      "id": "rawUnit",
+      "name": "Quantity unit (source)"
+    },
+    {
+      "id": "quantity",
+      "name": "Quantity (source)"
+    },
+    {
+      "id": "quantity_kg",
+      "name": "Quantity in Kg"
+    },
+    {
+      "id": "quantity_litre",
+      "name": "Quantity in litre"
+    },
+    {
+      "id": "quantity_nbr",
+      "name": "Quantity in number"
+    },
+    {
+      "id": "bestGuessNationalProductXPartner",
+      "name": "Best Guess national product x partner"
+    },
+    {
+      "id": "bestGuessNationalProduct",
+      "name": "Best Guess national product"
+    },
+    {
+      "id": "bestGuessNationalPartner",
+      "name": "Best Guess national partner"
+    },
+    {
+      "id": "bestGuessCustomsRegionProductXPartner",
+      "name": "Best Guess customs region product x partner"
+    },
+    {
+      "id": "bestGuessNationalCustomsRegion",
+      "name": "Best Guess national customs region"
+    },
+    {
+      "id": "note",
+      "name": "Remarks"
+    },
+    {
+      "id": "absurdObservation",
+      "name": "Absurd observation"
+    }
+  ]
 }
