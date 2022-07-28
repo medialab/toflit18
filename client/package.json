@@ -4,7 +4,10 @@
   "private": true,
   "description": "Web interface for the TOFLIT18's datascape.",
   "main": "./js/main.jsx",
-  "engines" : { "node" : "<=7.9", "npm": "<=4.2" },
+  "engines": {
+    "node": "<=7.9",
+    "npm": "<=4.2"
+  },
   "scripts": {
     "build": "kotatsu build client -c webpack.config.build.js --progress --minify",
     "dev": "kotatsu serve -c webpack.config.js --progress --public ./ --index index.html",
