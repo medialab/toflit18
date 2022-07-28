@@ -5,8 +5,8 @@
   "description": "Web interface for the TOFLIT18's datascape.",
   "main": "./js/main.jsx",
   "engines": {
-    "node": "<=7.9",
-    "npm": "<=4.2"
+    "node": "=8.9.3",
+    "npm": "=5.5.1"
   },
   "scripts": {
     "build": "kotatsu build client -c webpack.config.build.js --progress --minify",
