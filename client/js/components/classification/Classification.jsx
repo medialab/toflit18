@@ -5,16 +5,16 @@
  *
  * Displaying the existing classifications..
  */
-import {compact} from 'lodash';
-import Select from 'react-select';
-import React, {Component} from 'react';
-import {branch} from 'baobab-react/decorators';
-import {exportCSV} from '../../lib/exports';
-import Icon from '../misc/Icon.jsx';
-import VizLayout from '../misc/VizLayout.jsx';
-import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
+import { compact } from "lodash";
+import Select from "react-select";
+import React, { Component } from "react";
+import { branch } from "baobab-react/decorators";
+import { exportCSV } from "../../lib/exports";
+import Icon from "../misc/Icon.jsx";
+import VizLayout from "../misc/VizLayout.jsx";
+import { ClassificationSelector, ItemSelector } from "../misc/Selectors.jsx";
 
-import specs from '../../../specs.json';
+import specs from "../../../specs.json";
 
 // Actions
 import {
@@ -25,11 +25,11 @@ import {
   updateSelector,
   setState,
   checkFootprint,
-} from '../../actions/classification';
+} from "../../actions/classification";
 
-const defaultSelectors = require('../../../config/defaultVizSelectors.json');
+const defaultSelectors = require("../../../config/defaultVizSelectors.json");
 
-const ClassificationWell = ({description, groupsCount, itemsCount, unclassifiedItemsCount, completion}) => (
+const ClassificationWell = ({ description, groupsCount, itemsCount, unclassifiedItemsCount, completion }) => (
   <div className="well">
     <p>{description}</p>
     <p>{`${groupsCount} groups for ${itemsCount} items.`}</p>
@@ -54,24 +54,24 @@ const ClassificationWell = ({description, groupsCount, itemsCount, unclassifiedI
     checkFootprint,
   },
   cursors: {
-    rows: ['classificationsState', 'rows'],
-    kind: ['classificationsState', 'kind'],
-    loading: ['classificationsState', 'loading'],
-    orderBy: ['classificationsState', 'orderBy'],
-    selected: ['classificationsState', 'selected'],
-    selectedParent: ['classificationsState', 'selectedParent'],
-    fullSelected: ['classificationsState', 'fullSelected'],
-    fullSelectedParent: ['classificationsState', 'fullSelectedParent'],
-    queryItem: ['classificationsState', 'queryItem'],
-    queryGroup: ['classificationsState', 'queryGroup'],
-    classifications: ['data', 'classifications', 'flat'],
-    classificationsIndex: ['data', 'classifications', 'index'],
+    rows: ["classificationsState", "rows"],
+    kind: ["classificationsState", "kind"],
+    loading: ["classificationsState", "loading"],
+    orderBy: ["classificationsState", "orderBy"],
+    selected: ["classificationsState", "selected"],
+    selectedParent: ["classificationsState", "selectedParent"],
+    fullSelected: ["classificationsState", "fullSelected"],
+    fullSelectedParent: ["classificationsState", "fullSelectedParent"],
+    queryItem: ["classificationsState", "queryItem"],
+    queryGroup: ["classificationsState", "queryGroup"],
+    classifications: ["data", "classifications", "flat"],
+    classificationsIndex: ["data", "classifications", "index"],
   },
 })
 export default class Classification extends Component {
   componentDidMount() {
     // Check inital state:
-    const {kind, selected} = this.props;
+    const { kind, selected } = this.props;
 
     // Handle default state:
     if (!kind && !selected) {
@@ -86,6 +86,11 @@ export default class Classification extends Component {
   componentDidUpdate() {
     this.props.actions.checkFootprint();
   }
+
+  localFilterState = {
+    queryGroup: "",
+    queryItem: "",
+  };
 
   handleScroll() {
     const end = this.refs.lastRow;
@@ -118,7 +123,7 @@ export default class Classification extends Component {
 
       obj[this.props.selected] = row.name;
       obj.nbItems = row.nbItems;
-      obj[this.props.selectedParent] = row.item.map(e => e.name).join(', ');
+      obj[this.props.selectedParent] = row.item.map(e => e.name).join(", ");
     });
 
     const now = new Date();
@@ -144,6 +149,13 @@ export default class Classification extends Component {
       classificationsIndex,
     } = this.props;
 
+    const updateSearchFilters = orderBy => {
+      if (orderBy) {
+        actions.updateSelector("orderBy", orderBy);
+      }
+      actions.updateSelector("queryGroup", this.refs.queryGroup.value || null);
+    };
+
     const parents = [];
     let tmp = fullSelected;
     while (tmp && tmp.parent) {
@@ -156,7 +168,8 @@ export default class Classification extends Component {
         title="Classifications"
         description="Select a type of data (partners or products) and check the content of each classification. If you spot an error or want to create another classification, please send an email to guillaume.daudin@dauphine.psl.eu"
         leftPanelName="Filters"
-        rightPanelName="Caption">
+        rightPanelName="Caption"
+      >
         {/* Top of the left panel */}
         <div className="box-selection box-selection-lg">
           <h2 className="hidden-xs">
@@ -174,7 +187,7 @@ export default class Classification extends Component {
               data={specs.classificationSelectors}
               onChange={val => {
                 actions.select(null);
-                actions.updateSelector('kind', val);
+                actions.updateSelector("kind", val);
               }}
             />
           </div>
@@ -189,7 +202,7 @@ export default class Classification extends Component {
                   Classifications
                 </label>
                 <small className="help-block">
-                  Choose a classification and search its group names{' '}
+                  Choose a classification and search its group names{" "}
                   <a href="#/glossary/concepts">
                     <Icon name="icon-info" />
                   </a>
@@ -212,7 +225,7 @@ export default class Classification extends Component {
                   Classifications parent
                 </label>
                 <small className="help-block">
-                  Choose a parent classification and explore its item names{' '}
+                  Choose a parent classification and explore its item names{" "}
                   <a href="#/glossary/concepts">
                     <Icon name="icon-info" />
                   </a>
@@ -241,10 +254,13 @@ export default class Classification extends Component {
                   <legend className="text-center">{fullSelected.name}</legend>
                   <div className="row">
                     <div className="col-sm-6 col-lg-6">
-                      <form className="form-group" onSubmit={e => {
-                        actions.updateSelector('queryGroup', this.refs.queryGroup.value || null);
-                        e.preventDefault();
-                      }}>
+                      <form
+                        className="form-group"
+                        onSubmit={e => {
+                          updateSearchFilters();
+                          e.preventDefault();
+                        }}
+                      >
                         <label className="sr-only" htmlFor="search-simplification">
                           Search
                         </label>
@@ -255,15 +271,16 @@ export default class Classification extends Component {
                             className="form-control"
                             id="search-simplification"
                             placeholder="Search"
-                            defaultValue={queryGroup || ''}
-                            style={{borderColor: '#d9d9d9'}}
+                            defaultValue={queryGroup || ""}
+                            style={{ borderColor: "#d9d9d9" }}
                           />
                           <div className="input-group-btn">
                             <button
                               className="btn btn-default btn-search"
                               type="submit"
                               onClick={() => this.submit()}
-                              style={{borderColor: '#d9d9d9'}}>
+                              style={{ borderColor: "#d9d9d9" }}
+                            >
                               <Icon name="icon-search-lg" />
                             </button>
                           </div>
@@ -278,23 +295,22 @@ export default class Classification extends Component {
                           searchable={false}
                           options={compact([
                             {
-                              value: 'size',
-                              label: 'Order by number of items',
+                              value: "size",
+                              label: "Order by number of items",
                             },
                             {
-                              value: 'name',
-                              label: 'Order by name',
+                              value: "name",
+                              label: "Order by name",
                             },
                             !!queryItem && {
-                              value: 'nbMatches',
-                              label: 'Order with matching items first',
+                              value: "nbMatches",
+                              label: "Order with matching items first",
                             },
                           ])}
                           defaultValue="size"
                           value={orderBy}
-                          onChange={({value}) => {
-                            actions.updateSelector('orderBy', value);
-                            this.submit();
+                          onChange={({ value }) => {
+                            updateSearchFilters(value);
                           }}
                         />
                       </div>
@@ -309,10 +325,13 @@ export default class Classification extends Component {
                   <legend className="text-center">{fullSelectedParent.name}</legend>
                   <div className="row">
                     <div className="col-sm-12 col-lg-8 col-lg-offset-2">
-                      <form className="form-group" onSubmit={e => {
-                        actions.updateSelector('queryItem', this.refs.queryItem.value || null);
-                        e.preventDefault();
-                      }}>
+                      <form
+                        className="form-group"
+                        onSubmit={e => {
+                          updateSearchFilters();
+                          e.preventDefault();
+                        }}
+                      >
                         <label className="sr-only" htmlFor="search-source">
                           Search
                         </label>
@@ -323,15 +342,16 @@ export default class Classification extends Component {
                             className="form-control"
                             id="search-source"
                             placeholder="Search"
-                            defaultValue={queryItem || ''}
-                            style={{borderColor: '#d9d9d9'}}
+                            defaultValue={queryItem || ""}
+                            style={{ borderColor: "#d9d9d9" }}
                           />
                           <div className="input-group-btn">
                             <button
                               className="btn btn-default btn-search"
                               type="submit"
                               onClick={() => this.submit()}
-                              style={{borderColor: '#d9d9d9'}}>
+                              style={{ borderColor: "#d9d9d9" }}
+                            >
                               <Icon name="icon-search-lg" />
                             </button>
                           </div>
@@ -346,16 +366,16 @@ export default class Classification extends Component {
               <div ref="list" className="col-sm-12" onScroll={() => this.handleScroll()}>
                 <div className="row">
                   {(rows || []).map((row, i, a) => (
-                    <div key={row.id} ref={i === a.length - 1 ? 'lastRow' : undefined} className="group-list">
+                    <div key={row.id} ref={i === a.length - 1 ? "lastRow" : undefined} className="group-list">
                       <div className="col-sm-6">
-                        <div className="group-list-title well" style={{display: 'block'}}>
+                        <div className="group-list-title well" style={{ display: "block" }}>
                           <h4>{row.name}</h4>
                           <div>
                             {compact([
-                              `${row.nbItems} item${row.nbItems > 1 ? 's' : ''}`,
-                              typeof row.nbMatchedItems === 'number' &&
-                                `(${row.nbMatchedItems} matching item${row.nbMatchedItems > 1 ? 's' : ''})`,
-                            ]).join(' ')}
+                              `${row.nbItems} item${row.nbItems > 1 ? "s" : ""}`,
+                              typeof row.nbMatchedItems === "number" &&
+                                `(${row.nbMatchedItems} matching item${row.nbMatchedItems > 1 ? "s" : ""})`,
+                            ]).join(" ")}
                           </div>
                         </div>
                       </div>
@@ -380,7 +400,8 @@ export default class Classification extends Component {
                                   type="submit"
                                   onClick={() => {
                                     this.expandGroup(row.id, row.items.length);
-                                  }}>
+                                  }}
+                                >
                                   <Icon name="icon-zoom-in" />
                                 </button>
                               </li>
@@ -410,7 +431,8 @@ export default class Classification extends Component {
               className="btn btn-default"
               onClick={() => {
                 this.exportCsv();
-              }}>
+              }}
+            >
               Export
             </button>
           </div>
