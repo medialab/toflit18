@@ -32,7 +32,7 @@
     "minYear": 1719,
     "maxYear": 1839
   },
-  "indicatorsMaxNbLine": 15,
+  "indicatorsMaxNbLine": 6,
   "flowsRowsMax": 100,
   "flowsExportMax": 200000,
   "flowsColumns": [
