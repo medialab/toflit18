@@ -321,7 +321,7 @@ export default class ExplorationMeta extends Component {
                 {state.dataModel === "partner" ? "Child partner" : "Partner"}
               </label>
               <small className="help-block">
-                The partner whence we got the products or wither we are sending them.
+                The partner which imported/exported the products.
                 <a href="#/glossary/concepts">
                   <Icon name="icon-info" />
                 </a>
