@@ -230,6 +230,10 @@ const Model = {
       return `f.${fieldname}`;
     };
     const fields = columns && columns.length > 0 ? columns : ["product", "value"];
+
+    // add year as a required column as it is needed to compute the currency see https://github.com/medialab/toflit18/issues/197
+    if (!fields.includes("year")) fields.push("year");
+
     // should we match classification to feed columns
     fields
       .filter(n => n.startsWith("product_") || n.startsWith("partner_"))
