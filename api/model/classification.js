@@ -12,9 +12,7 @@ import Batch from "../../lib/batch";
 import { groupBy, find, map } from "lodash";
 import { checkIntegrity, solvePatch, applyOperations, rewire } from "../../lib/patch";
 
-const {
-  helpers: { searchPattern },
-} = decypher;
+const searchPattern = query => (query ? `(?im).*${query}.*` : ".*");
 
 /**
  * Helpers.
@@ -100,7 +98,7 @@ const Model = {
     if (opts.queryItemFrom) params.queryItemFrom = opts.queryItemFrom;
 
     const query = params.queryItemFrom ? queries.groupFrom : queries.group;
-
+    console.log({ query, params });
     return database.cypher({ query, params }, function(err, result) {
       if (err) return callback(err);
       if (!result.length) return callback(null, null);
@@ -130,8 +128,8 @@ const Model = {
       params = {
         ...opts,
         id,
-        queryGroup: opts.queryGroup ? `(?im).*${opts.queryGroup}.*` : ".*",
-        queryItem: opts.queryItem ? `(?im).*${opts.queryItem}.*` : ".*",
+        queryGroup: searchPattern(opts.queryGroup),
+        queryItem: searchPattern(opts.queryItem),
       };
     } else {
       queryString = queries.searchGroupsSource;
