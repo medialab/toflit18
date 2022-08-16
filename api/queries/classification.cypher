@@ -9,13 +9,21 @@ RETURN c AS classification
 //------------------------------------------------------------------------------
 MATCH (c:Classification)-[:CREATED_BY]->(a:User)
 OPTIONAL MATCH (c)-[:BASED_ON]->(p:Classification)
+WITH
+  c,
+  a,
+  p,
+  size((p)-[:HAS]->()) AS itemsCount,
+  size((c)-[:HAS]->()) AS groupsCount,
+  size((c)-[:HAS]->(:ClassifiedItem)-[:AGGREGATES]->(:ClassifiedItem)) AS classifiedItemsCount
 RETURN
 	  c AS classification,
   	a.name AS author,
     p.id AS parent,
-    size((p)-[:HAS]->()) AS itemsCount,
-    size((c)-[:HAS]->()) AS groupsCount,
-    size([(c)-[:HAS]->()-[:AGGREGATES]->()]) AS unclassifiedItemsCount
+    itemsCount,
+    groupsCount,
+    classifiedItemsCount,
+    itemsCount - classifiedItemsCount AS unclassifiedItemsCount
 ORDER BY c.id
 
 // name: rawGroups
