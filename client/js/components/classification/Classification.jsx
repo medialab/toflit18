@@ -154,6 +154,7 @@ export default class Classification extends Component {
         actions.updateSelector("orderBy", orderBy);
       }
       actions.updateSelector("queryGroup", this.refs.queryGroup.value || null);
+      actions.updateSelector("queryItem", this.refs.queryItem.value || null);
     };
 
     const parents = [];
