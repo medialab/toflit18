@@ -211,6 +211,7 @@ export default class FlowsTable extends Component {
           else return <div style={{ textAlign: "right" }}>N/A</div>;
         },
       },
+      source: { width: 400 },
       bestGuessNationalProductXPartner: { formatter: booleanFormatter },
       bestGuessNationalProduct: { formatter: booleanFormatter },
       bestGuessNationalPartner: { formatter: booleanFormatter },
@@ -232,6 +233,7 @@ export default class FlowsTable extends Component {
                 ...this.props.orders.find(s => s.key === o.id),
                 index: this.props.orders.findIndex(s => s.key === o.id),
               },
+              width: 100, // default width
               ...columnsSpecificOpts[o.id],
             };
             if (selectors.columnsWidth && selectors.columnsWidth[c]) options.width = selectors.columnsWidth[c];
@@ -247,10 +249,10 @@ export default class FlowsTable extends Component {
           rowsCount={rows.length}
           rowHeight={this.rowHeight}
           headerRowHeight={this.headerRowHeight}
-          minHeight={900}
+          minHeight={800}
           enableCellSelect={false}
           onColumnResize={(e, width) => {
-            updateSelector("columnsWidth", { ...selectors.columnsWidth, [columns[e].key]: width });
+            if (width > 50) updateSelector("columnsWidth", { ...selectors.columnsWidth, [columns[e].key]: width });
           }}
         />
       </DraggableContainer>

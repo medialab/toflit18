@@ -17,13 +17,12 @@ import {
   checkDefaultState,
   checkGroups,
   changePage,
-  downloadFlowsCSV
+  downloadFlowsCSV,
 } from "../../actions/flows";
 import Icon from "../misc/Icon.jsx";
 const defaultSelectors = require("../../../config/defaultVizSelectors.json");
 
 import specs from "../../../specs.json";
-
 
 /**
  * Main component.
@@ -45,7 +44,7 @@ export default class ExplorationFlows extends Component {
     checkDefaultState,
     checkGroups,
     changePage,
-    downloadFlowsCSV
+    downloadFlowsCSV,
   },
   cursors: {
     alert: ["ui", "alert"],
@@ -73,7 +72,7 @@ class Flows extends Component {
     if (!hasInitialState) {
       this.props.actions.checkDefaultState(defaultSelectors.flows.initialValues);
     }
-    
+
     this.props.actions.checkGroups(this.props.actions.initFlowTable);
   }
 
@@ -89,7 +88,7 @@ class Flows extends Component {
   toggleFullscreen() {
     this.setState({ fullscreen: !this.state.fullscreen });
   }
-  
+
   render() {
     const {
       alert,
@@ -97,10 +96,10 @@ class Flows extends Component {
       classifications,
       regions,
       sourceTypes,
-      state: { flows,nbFlows,loading, selectors, groups,page, CSVloading },
+      state: { flows, nbFlows, loading, selectors, groups, page, CSVloading },
     } = this.props;
 
-    const {  fullscreen } = this.state;
+    const { fullscreen } = this.state;
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
@@ -120,10 +119,13 @@ class Flows extends Component {
       name: "" + d,
       id: "" + d,
     }));
-    const classifToColumnsChoices = (cs, model) => cs.map(cp => ({...cp, name:`${cp.name} (${model})`}))
-    const columnsOptions = [...specs.flowsColumns,
-    ...classifToColumnsChoices(classifications.product, 'products'),...classifToColumnsChoices(classifications.partner, 'partners')];
-    
+    const classifToColumnsChoices = (cs, model) => cs.map(cp => ({ ...cp, name: `${cp.name} (${model})` }));
+    const columnsOptions = [
+      ...specs.flowsColumns,
+      ...classifToColumnsChoices(classifications.product, "products"),
+      ...classifToColumnsChoices(classifications.partner, "partners"),
+    ];
+
     return (
       <VizLayout
         title="Trade flows"
@@ -131,7 +133,7 @@ class Flows extends Component {
         leftPanelName="Filters"
         fullscreen={fullscreen}
         rightPanelName="Caption"
-      >        
+      >
         {/* Left panel */}
         <div className="aside-filters">
           <h3>Filters</h3>
@@ -294,45 +296,60 @@ class Flows extends Component {
               <small className="help-block">Choose a min and/or max flow value</small>
               <div className="row">
                 <div className="col-xs-6">
-                  <input type="number" min="0" placeholder='minimal' onChange={e => actions.update("valueMin", e.target.value)} value={selectors.valueMin || ''}/>
+                  <input
+                    type="number"
+                    min="0"
+                    placeholder="minimal"
+                    onChange={e => actions.update("valueMin", e.target.value)}
+                    value={selectors.valueMin || ""}
+                  />
                 </div>
                 <div className="col-xs-6">
-                  <input type="number" min="0" placeholder='maximal' onChange={e => actions.update("valueMax", e.target.value)} value={selectors.valueMax || ''}/>
+                  <input
+                    type="number"
+                    min="0"
+                    placeholder="maximal"
+                    onChange={e => actions.update("valueMax", e.target.value)}
+                    value={selectors.valueMax || ""}
+                  />
                 </div>
               </div>
             </div>
-            
+
             <div className="form-group-fixed">
-              <button
-                className="btn btn-default"
-                data-loading={loading}
-                
-                onClick={() => actions.initFlowTable(0)}
-              >
+              <button className="btn btn-default" data-loading={loading} onClick={() => actions.initFlowTable(0)}>
                 Update
               </button>
             </div>
           </form>
         </div>
-        {/* Content panel */}<div  className="col-xs-12 col-sm-6 col-md-8">
-
-            {(alert || loading ||CSVloading) && (
-                <div className="progress-container progress-container-viz">
-                  {alert && (
-                    <div className="alert alert-danger" role="alert">
-                      {alert}
-                    </div>
-                  )}
-                  {(loading || CSVloading)&& (
-                    <div className="progress-line progress-line-viz">
-                      <span className="sr-only">Loading...</span>
-                    </div>
-                  )}
+        {/* Content panel */}
+        <div className="col-xs-12 col-sm-6 col-md-8" style={{ overflowX: "hidden", overflowY: "hidden", padding: 0 }}>
+          {(alert || loading || CSVloading) && (
+            <div className="progress-container progress-container-viz">
+              {alert && (
+                <div className="alert alert-danger" role="alert">
+                  {alert}
                 </div>
               )}
-            <FlowsTable flows={flows} columnsOrder={selectors.columns || []} columnsOptions={columnsOptions} loading={loading} alert={alert} nbFlows={flows} orders={selectors.orders || []}/> 
-        {/* Right panel */}
+              {(loading || CSVloading) && (
+                <div className="progress-line progress-line-viz">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              )}
+            </div>
+          )}
+          <FlowsTable
+            flows={flows}
+            columnsOrder={selectors.columns || []}
+            columnsOptions={columnsOptions}
+            loading={loading}
+            alert={alert}
+            nbFlows={flows}
+            orders={selectors.orders || []}
+          />
         </div>
+        {/* Right panel */}
         <div
           className="aside-legend"
           ref={el => {
@@ -341,86 +358,83 @@ class Flows extends Component {
         >
           <form onSubmit={e => e.preventDefault()}>
             {/*  COLUMNS SELECTION */}
-            <div className='form-group'>
-              <label  className="control-label">Columns selection</label>
-              <small className="help-block">
-                Change the columns order by draggin/dropping the table headers.
-              </small>
-              
-                <ItemSelector
-                    id="columnsSelector"
-                    valueKey="id"
-                    type="columns"
-                    //loading={selectors.partnerClassification && !groups.partner.length}
-                    data={columnsOptions}
-                    onChange={actions.update.bind(null, "columns")}
-                    selected={selectors.columns}
-                    onUpdate={v => actions.update("columns", v)}
-                    defaultValue={defaultSelectors.flows["selectors.columns"]}
-                  />
+            <div className="form-group">
+              <label className="control-label">Columns selection</label>
+              <small className="help-block">Change the columns order by draggin/dropping the table headers.</small>
+
+              <ItemSelector
+                id="columnsSelector"
+                valueKey="id"
+                type="columns"
+                //loading={selectors.partnerClassification && !groups.partner.length}
+                data={columnsOptions}
+                onChange={actions.update.bind(null, "columns")}
+                selected={selectors.columns}
+                onUpdate={v => actions.update("columns", v)}
+                defaultValue={defaultSelectors.flows["selectors.columns"]}
+              />
             </div>
             {/* PAGINATION */}
-            <div className='form-group'>
-              <label  className="control-label">Pagination</label>
-              <div><b>{nbFlows}</b> flows selected</div>
-              <small className="help-block">
-              A maximum of {specs.flowsRowsMax} flows are displayed per page.
-              </small>
+            <div className="form-group">
+              <label className="control-label">Pagination</label>
+              <div>
+                <b>{nbFlows}</b> flows selected
+              </div>
+              <small className="help-block">A maximum of {specs.flowsRowsMax} flows are displayed per page.</small>
               <div className="row">
                 <div className="col-xs-3">
-                <Button
-              size="small"
-              kind="default"
-                disabled={page === 0}
-                onClick={() => actions.changePage(page - 1)}
-              >
-                <b>{"<<"}</b>
-              </Button>
+                  <Button
+                    size="small"
+                    kind="default"
+                    disabled={page === 0}
+                    onClick={() => actions.changePage(page - 1)}
+                  >
+                    <b>{"<<"}</b>
+                  </Button>
                 </div>
                 <div className="col-xs-6">
-                <ItemSelector
+                  <ItemSelector
                     id="pageSelector"
                     valueKey="id"
                     type="page"
                     //loading={selectors.partnerClassification && !groups.partner.length}
-                    data={range(1,nbFlows / specs.flowsRowsMax).map(v => ({id:v, name:`page ${v}`}))}
+                    data={range(1, nbFlows / specs.flowsRowsMax).map(v => ({ id: v, name: `page ${v}` }))}
                     onChange={v => actions.changePage(v)}
-                    selected={page+1}
+                    selected={page + 1}
                     onUpdate={v => actions.changePage(v)}
                   />
                 </div>
                 <div className="col-xs-3">
-                <Button
-                  size="small"
-                  kind="default"
-                  disabled={!nbFlows || nbFlows < (specs.flowsRowsMax*(page+1))}
-                  onClick={() => actions.changePage(page + 1)}
-                >
-                   <b>{">>"}</b>
-                </Button>
+                  <Button
+                    size="small"
+                    kind="default"
+                    disabled={!nbFlows || nbFlows < specs.flowsRowsMax * (page + 1)}
+                    onClick={() => actions.changePage(page + 1)}
+                  >
+                    <b>{">>"}</b>
+                  </Button>
                 </div>
               </div>
-             
-                
             </div>
             <div className="form-group-fixed form-group-fixed-right">
               <ExportButton
                 loading={CSVloading}
-                disabled={nbFlows>specs.flowsExportMax}
+                disabled={nbFlows > specs.flowsExportMax}
                 exports={[
                   {
                     label: "Export CSV",
                     fn: () => {
                       actions.downloadFlowsCSV();
                     },
-                  }
+                  },
                 ]}
               />
-              {nbFlows>specs.flowsExportMax && 
+              {nbFlows > specs.flowsExportMax && (
                 <small className="help-block">
-                 Export in CSV only possible for less than {specs.flowsExportMax} flows. Adjust a more precise set of filters to be able to export.
+                  Export in CSV only possible for less than {specs.flowsExportMax} flows. Adjust a more precise set of
+                  filters to be able to export.
                 </small>
-                }
+              )}
             </div>
           </form>
         </div>
