@@ -49,8 +49,8 @@ deploy:
   before_script:
     - export KUBECONFIG=$kubeconfig_file
   script:
-    - kubectl -n ${NS} rollout restart deployment ${NS}-api
-    - kubectl -n ${NS} rollout restart deployment ${NS}-client
+    - kubectl -n toflit18 rollout restart deployment toflit18-api
+    - kubectl -n toflit18 rollout restart deployment toflit18-client
   environment:
     name: $CI_COMMIT_REF_SLUG
   only:
