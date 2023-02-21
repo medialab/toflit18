@@ -49,6 +49,8 @@ deploy:
   before_script:
     - export KUBECONFIG=$kubeconfig_file
   script:
+    - kubectl apply -f k8s/namespace.yml
+    - kubectl apply -k k8s/overlays/$CI_COMMIT_REF_SLUG
     - kubectl -n toflit18 rollout restart deployment toflit18-api
     - kubectl -n toflit18 rollout restart deployment toflit18-client
   environment:
