@@ -50,6 +50,8 @@ deploy:
     - export KUBECONFIG=$kubeconfig_file
   script:
     - kubectl apply -f k8s/namespace.yml
+    - cp ${NEO4J_SECRETS} k8s/overlays/$CI_COMMIT_REF_SLUG/neo4j.env
+    - cp ${TOFLIT18_SECRETS} k8s/overlays/$CI_COMMIT_REF_SLUG/toflit18.env
     - kubectl apply -k k8s/overlays/$CI_COMMIT_REF_SLUG
     - kubectl -n toflit18 rollout restart deployment toflit18-api
     - kubectl -n toflit18 rollout restart deployment toflit18-client
