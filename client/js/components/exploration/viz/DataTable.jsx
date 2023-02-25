@@ -217,6 +217,7 @@ export default class FlowsTable extends Component {
       bestGuessNationalPartner: { formatter: booleanFormatter },
       bestGuessCustomsRegionProductXPartner: { formatter: booleanFormatter },
       bestGuessNationalCustomsRegion: { formatter: booleanFormatter },
+      unverified: { formatter: booleanFormatter },
     };
     const columns =
       rows.length > 0
