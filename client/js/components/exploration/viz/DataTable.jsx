@@ -252,8 +252,9 @@ export default class FlowsTable extends Component {
           headerRowHeight={this.headerRowHeight}
           minHeight={800}
           enableCellSelect={false}
+          minColumnWidth={50}
           onColumnResize={(e, width) => {
-            if (width > 50) updateSelector("columnsWidth", { ...selectors.columnsWidth, [columns[e].key]: width });
+            updateSelector("columnsWidth", { ...selectors.columnsWidth, [columns[e].key]: width });
           }}
         />
       </DraggableContainer>
