@@ -65,6 +65,10 @@
       "name": "Customs office (source)"
     },
     {
+      "id": "origin",
+      "name": "Products' origin "
+    },
+    {
       "id": "partner",
       "name": "Partner"
     },
@@ -125,6 +129,10 @@
       "name": "Quantity in number"
     },
     {
+      "id": "width_in_line",
+      "name": "Width in line (fabrics)"
+    },
+    {
       "id": "bestGuessNationalProductXPartner",
       "name": "Best Guess national product x partner"
     },
@@ -145,12 +153,34 @@
       "name": "Best Guess national customs region"
     },
     {
-      "id": "note",
+      "id": "remarks",
       "name": "Remarks"
+    },
+    {
+      "id": "unverified",
+      "name": "Unverified"
+    },
+    {
+      "id": "data_collector",
+      "name": "Data collector"
     },
     {
       "id": "absurdObservation",
       "name": "Absurd observation"
-    }
+    },
+    { "id": "value_part_of_bundle", "name": "Value part of bundle" },
+    { "id": "value_total", "name": "Total Value (source)" },
+    { "id": "value_sub_total_1", "name": "Partial total 1" },
+    { "id": "value_sub_total_2", "name": "Partial total 2" },
+    { "id": "value_sub_total_3", "name": "Partial total 3" },
+    { "id": "value_minus_unit_val_x_qty", "name": "Value - unit value * quantity" },
+    { "id": "trade_deficit", "name": "Trade deficit" },
+    { "id": "trade_surplus", "name": "Trade surplus" },
+    { "id": "duty_quantity", "name": "Duty quantity" },
+    { "id": "duty_quantity_unit", "name": "Duty quantity unit" },
+    { "id": "duty_by_unit", "name": "Duty by unit" },
+    { "id": "duty_total", "name": "Duty total" },
+    { "id": "duty_part_of_bundle", "name": "Duty part of bundle" },
+    { "id": "duty_remarks", "name": "duty remarks" }
   ]
 }

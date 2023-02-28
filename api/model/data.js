@@ -251,7 +251,37 @@ const Model = {
         orders
           .map(s => {
             //don't clean text on numbers...
-            if (["value", "kg", "nb", "litre", "unitPrice", "import", "quantity", "year"].includes(s.key))
+            if (
+              [
+                "value",
+                "kg",
+                "nb",
+                "litre",
+                "unitPrice",
+                "import",
+                "quantity",
+                "year",
+                "unverified",
+                "value_part_of_bundle",
+                "duty_part_of_bundle",
+                "duty_total",
+                "duty_by_unit",
+                "duty_quantity",
+                "trade_surplus",
+                "trade_deficit",
+                "value_minus_unit_val_x_qty",
+                "value_total",
+                "value_sub_total_1",
+                "value_sub_total_2",
+                "value_sub_total_3",
+                "value_part_of_bundle",
+                "bestGuessNationalProductXPartner",
+                "bestGuessNationalPartner",
+                "bestGuessNationalProduct",
+                "bestGuessCustomsRegionProductXPartner",
+                "bestGuessNationalCustomsRegion",
+              ].includes(s.key)
+            )
               return `${fieldsDefinitions(s.key)} ${s.order}`;
             else return `apoc.text.clean(${fieldsDefinitions(s.key)}) ${s.order}`;
           })
