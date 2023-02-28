@@ -412,6 +412,8 @@ export default class Sources extends Component {
             <h2>Best Guess national customs region</h2>
             <p className="lead">
               This "Best Guess" gathers the best sources about trade by customs region for the whole of France. It might not include all partners nor all goods. The selected source  is "National toutes directions tous partenaires" for 1750; "National toutes directions sans produits" for 1753, 1756, 1766, 1768, 1770-1, 1773-4 and 1777-80; and "National toutes directions partenaires manquants" otherwise. For 1777, trade with the United Kingdom does not come from "National toutes directions sans produit" but from "National toutes directions partenaires manquants".
+              As a result, beware that only 1750, 1753, 1756, 1766, 1768, 1770-1, 1773-4, 1777-80 and 1789 cover all trade partners.
+              Even when all trade partners are covered, the list of customs region is not constant. Paris appears in 1771. 1789 splits many customs regions.
             </p>
           </div>
         </div>
