@@ -108,16 +108,14 @@ item.name =~ $queryItem AND
 ci.id=$queryItemFrom
 WITH DISTINCT group
 SKIP $offset
-LIMIT $
-LIMIT
+LIMIT $limit
 
 OPTIONAL MATCH (group)-[:AGGREGATES*1..]->(item)<-[:HAS]-(ci:Classification)
 WHERE ci.id=$queryItemFrom
 WITH group, item.name AS name, item.name =~$queryItem AS matched
  ORDER BY matched DESC, apoc.text.clean(name)
 WITH group, collect({ name:name, matched:matched }) AS items
-RETURN group, items[$offsetItem..$limitItem] AS items, size(items) AS nbItems, size(filter(item IN items
-WHERE item.matched)) AS nbMatchedItems
+RETURN group, items[$offsetItem..$limitItem] AS items, size(items) AS nbItems, size(filter(item in items where item.matched)) AS nbMatchedItems
 
 // name: searchGroupsSource
 // Searching a sample of groups for the given source classification.
@@ -127,8 +125,7 @@ WHERE c.id=$id AND group.name =~ $queryGroup
 WITH group
  ORDER BY apoc.text.clean(group.name)
 SKIP $offset
-LIMIT $
-LIMIT
+LIMIT $limit
 
 RETURN group, [] AS items, 0 AS nbItems
 
