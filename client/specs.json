@@ -62,6 +62,10 @@
     },
     {
       "id": "office",
+      "name": "Customs office"
+    },
+    {
+      "id": "customs_office_source",
       "name": "Customs office (source)"
     },
     {
