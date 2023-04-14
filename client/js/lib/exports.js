@@ -77,3 +77,30 @@ export function exportSVG({ nodes, name }) {
     finalize();
   });
 }
+
+export function exportIndicatorsChart({ vizContainer, legend, name, mode }) {
+  // add legend to the viz container to include it in the snapshot
+  const legendClone = legend.cloneNode(true);
+  vizContainer.appendChild(legendClone);
+
+  const options = {
+    style: { margin: 0, display: "flex", "flex-direction": "column" },
+    bgcolor: "#FFF",
+  };
+  if (mode === "PNG")
+    return d2i.toBlob(vizContainer, options).then(blob => {
+      // remove the legend
+      vizContainer.removeChild(legendClone);
+      return saveAs(blob, name);
+    });
+  if (mode === "SVG")
+    return d2i.toSvg(vizContainer, options).then(finalSvg => {
+      // remove the legend
+      vizContainer.removeChild(legendClone);
+      return saveAs(
+        new Blob([finalSvg.replace("data:image/svg+xml;charset=utf-8,", "")], { type: "text/svg;charset=utf-8" }),
+        name,
+      );
+    });
+  return null;
+}

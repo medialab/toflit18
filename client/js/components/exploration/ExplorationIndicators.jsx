@@ -14,7 +14,7 @@ import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import {capitalize, isEqual, mapValues, pick, omit} from 'lodash';
 import Icon from '../misc/Icon.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
-import {exportCSV, exportSVG} from '../../lib/exports';
+import {exportCSV, exportIndicatorsChart} from '../../lib/exports';
 import {
   updateSelector as update,
   addLine,
@@ -190,14 +190,10 @@ export default class ExplorationIndicators extends Component {
     });
   }
 
-  exportCharts() {
+  exportCharts(mode) {
     const now = new Date();
-    exportSVG({
-      nodes: [this.legendContainer, this.charts.vizContainer],
-      name: `TOFLIT18_Time_series_${now
-        .toLocaleString('se-SE')
-        .replace(' ', '_')}.svg`
-    });
+    const name = `TOFLIT18_Time_series_${now.toLocaleString("se-SE").replace(" ", "_")}.${mode}`;
+    exportIndicatorsChart({vizContainer:this.charts.vizContainer, legend:this.legendContainer, name, mode});
   }
 
   render() {
@@ -445,11 +441,13 @@ export default class ExplorationIndicators extends Component {
                         }
                       },
                       {
-                        label: 'Export SVG',
-                        fn: () => {
-                          this.exportCharts();
-                        }
-                      }
+                        label: "Export PNG",
+                        fn: () => {this.exportCharts("PNG")}
+                      },
+                      {
+                        label: "Export SVG",
+                        fn: () => {this.exportCharts("SVG")}
+                      },
                     ]
                   : []
               } />
