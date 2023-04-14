@@ -97,10 +97,19 @@
       "react/forbid-prop-types": 0,
       "react/jsx-indent": 0,
       "react/jsx-no-bind": 0,
+      "react/jsx-closing-bracket-location": [
+        1,
+        "tag-aligned"
+      ],
       "react/no-set-state": 0,
       "react/no-string-refs": 0,
       "react/prefer-stateless-function": 0,
-      "react/require-optimization": 0
+      "react/require-optimization": 0,
+      "quotes": 0,
+      "quote-props": [
+        1,
+        "as-needed"
+      ]
     }
   }
 }
