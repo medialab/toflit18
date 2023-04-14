@@ -4,13 +4,13 @@
  *
  * Displaying a network of product terms' decomposition.
  */
-import React, { Component } from "react";
-import { range } from "lodash";
-import { branch } from "baobab-react/decorators";
-import Button, { ExportButton } from "../misc/Button.jsx";
-import { ClassificationSelector, ItemSelector } from "../misc/Selectors.jsx";
-import FlowsTable from "./viz/DataTable.jsx";
-import VizLayout from "../misc/VizLayout.jsx";
+import React, {Component} from 'react';
+import {range} from 'lodash';
+import {branch} from 'baobab-react/decorators';
+import Button, {ExportButton} from '../misc/Button.jsx';
+import {ClassificationSelector, ItemSelector} from '../misc/Selectors.jsx';
+import FlowsTable from './viz/DataTable.jsx';
+import VizLayout from '../misc/VizLayout.jsx';
 import {
   updateSelector as update,
   initFlowTable,
@@ -18,11 +18,11 @@ import {
   checkGroups,
   changePage,
   downloadFlowsCSV,
-} from "../../actions/flows";
-import Icon from "../misc/Icon.jsx";
-const defaultSelectors = require("../../../config/defaultVizSelectors.json");
+} from '../../actions/flows';
+import Icon from '../misc/Icon.jsx';
+const defaultSelectors = require('../../../config/defaultVizSelectors.json');
 
-import specs from "../../../specs.json";
+import specs from '../../../specs.json';
 
 /**
  * Main component.
@@ -47,18 +47,18 @@ export default class ExplorationFlows extends Component {
     downloadFlowsCSV,
   },
   cursors: {
-    alert: ["ui", "alert"],
-    classifications: ["data", "classifications", "flat"],
-    classificationIndex: ["data", "classifications", "index"],
-    regions: ["data", "regions"],
-    sourceTypes: ["data", "sourceTypes"],
-    state: ["explorationFlowsState"],
+    alert: ['ui', 'alert'],
+    classifications: ['data', 'classifications', 'flat'],
+    classificationIndex: ['data', 'classifications', 'index'],
+    regions: ['data', 'regions'],
+    sourceTypes: ['data', 'sourceTypes'],
+    state: ['explorationFlowsState'],
   },
 })
 class Flows extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { selected: null, fullscreen: false };
+    this.state = {selected: null, fullscreen: false};
   }
 
   componentDidMount() {
@@ -66,7 +66,7 @@ class Flows extends Component {
     const state = this.props.state;
     const initialState = defaultSelectors.flows.initialValues;
     const hasInitialState = Object.keys(initialState).some(key =>
-      key.split(".").reduce((iter, step) => iter && iter[step], state),
+      key.split('.').reduce((iter, step) => iter && iter[step], state),
     );
 
     if (!hasInitialState) {
@@ -82,11 +82,11 @@ class Flows extends Component {
   }
 
   setSelectedNode(selectedNode) {
-    this.setState({ selectedNode });
+    this.setState({selectedNode});
   }
 
   toggleFullscreen() {
-    this.setState({ fullscreen: !this.state.fullscreen });
+    this.setState({fullscreen: !this.state.fullscreen});
   }
 
   render() {
@@ -96,10 +96,10 @@ class Flows extends Component {
       classifications,
       regions,
       sourceTypes,
-      state: { flows, nbFlows, loading, selectors, groups, page, CSVloading },
+      state: {flows, nbFlows, loading, selectors, groups, page, CSVloading},
     } = this.props;
 
-    const { fullscreen } = this.state;
+    const {fullscreen} = this.state;
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
@@ -110,20 +110,20 @@ class Flows extends Component {
 
     const dateMin = selectors.dateMin;
     const dateMaxOptions = range(dateMin || specs.limits.minYear, specs.limits.maxYear).map(d => ({
-      name: "" + d,
-      id: "" + d,
+      name: '' + d,
+      id: '' + d,
     }));
 
     const dateMax = selectors.dateMax;
     const dateMinOptions = range(specs.limits.minYear, dateMax ? +dateMax + 1 : specs.limits.maxYear).map(d => ({
-      name: "" + d,
-      id: "" + d,
+      name: '' + d,
+      id: '' + d,
     }));
-    const classifToColumnsChoices = (cs, model) => cs.map(cp => ({ ...cp, name: `${cp.name} (${model})` }));
+    const classifToColumnsChoices = (cs, model) => cs.map(cp => ({...cp, name: `${cp.name} (${model})`}));
     const columnsOptions = [
       ...specs.flowsColumns,
-      ...classifToColumnsChoices(classifications.product, "products"),
-      ...classifToColumnsChoices(classifications.partner, "partners"),
+      ...classifToColumnsChoices(classifications.product, 'products'),
+      ...classifToColumnsChoices(classifications.partner, 'partners'),
     ];
 
     return (
@@ -143,7 +143,7 @@ class Flows extends Component {
                 Source Type
               </label>
               <small className="help-block">
-                Type of sources the data comes from.{" "}
+                Type of sources the data comes from.{' '}
                 <a href="#/exploration/sources">
                   <Icon name="icon-info" />
                 </a>
@@ -153,10 +153,10 @@ class Flows extends Component {
                 type="sourceType"
                 data={sourceTypesOptions}
                 loading={!sourceTypesOptions.length}
-                onChange={actions.update.bind(null, "sourceType")}
+                onChange={actions.update.bind(null, 'sourceType')}
                 selected={selectors.sourceType}
-                onUpdate={v => actions.update("sourceType", v)}
-                defaultValue={defaultSelectors.flows["selectors.sourceType"]}
+                onUpdate={v => actions.update('sourceType', v)}
+                defaultValue={defaultSelectors.flows['selectors.sourceType']}
               />
             </div>
             <div className="form-group">
@@ -164,7 +164,7 @@ class Flows extends Component {
                 Product
               </label>
               <small className="help-block">
-                The type of product being shipped.{" "}
+                The type of product being shipped.{' '}
                 <a href="#/glossary/concepts">
                   <Icon name="icon-info" />
                 </a>
@@ -175,10 +175,10 @@ class Flows extends Component {
                 placeholder="Product classification..."
                 loading={!classifications.product.length}
                 data={classifications.product.filter(c => !c.source)}
-                onChange={actions.update.bind(null, "productClassification")}
+                onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification}
-                onUpdate={v => actions.update("productClassification", v)}
-                defaultValue={defaultSelectors.flows["selectors.productClassification"]}
+                onUpdate={v => actions.update('productClassification', v)}
+                defaultValue={defaultSelectors.flows['selectors.productClassification']}
               />
               <ItemSelector
                 valueKey="id"
@@ -186,10 +186,10 @@ class Flows extends Component {
                 disabled={!selectors.productClassification || !groups.product.length}
                 loading={selectors.productClassification && !groups.product.length}
                 data={groups.product}
-                onChange={actions.update.bind(null, "product")}
+                onChange={actions.update.bind(null, 'product')}
                 selected={selectors.product}
-                onUpdate={v => actions.update("product", v)}
-                defaultValue={defaultSelectors.flows["selectors.product"]}
+                onUpdate={v => actions.update('product', v)}
+                defaultValue={defaultSelectors.flows['selectors.product']}
               />
             </div>
             <div className="form-group">
@@ -197,7 +197,7 @@ class Flows extends Component {
                 Partner
               </label>
               <small className="help-block">
-                Whence products are exchanged.{" "}
+                Whence products are exchanged.{' '}
                 <a href="#/glossary/concepts">
                   <Icon name="icon-info" />
                 </a>
@@ -207,10 +207,10 @@ class Flows extends Component {
                 type="partner"
                 loading={!classifications.partner.length}
                 data={classifications.partner.filter(c => !c.source)}
-                onChange={actions.update.bind(null, "partnerClassification")}
+                onChange={actions.update.bind(null, 'partnerClassification')}
                 selected={selectors.partnerClassification}
-                onUpdate={v => actions.update("partnerClassification", v)}
-                defaultValue={defaultSelectors.flows["selectors.partnerClassification"]}
+                onUpdate={v => actions.update('partnerClassification', v)}
+                defaultValue={defaultSelectors.flows['selectors.partnerClassification']}
               />
               <ItemSelector
                 valueKey="id"
@@ -218,10 +218,10 @@ class Flows extends Component {
                 disabled={!selectors.partnerClassification || !groups.partner.length}
                 loading={selectors.partnerClassification && !groups.partner.length}
                 data={groups.partner}
-                onChange={actions.update.bind(null, "partner")}
+                onChange={actions.update.bind(null, 'partner')}
                 selected={selectors.partner}
-                onUpdate={v => actions.update("partner", v)}
-                defaultValue={defaultSelectors.flows["selectors.partner"]}
+                onUpdate={v => actions.update('partner', v)}
+                defaultValue={defaultSelectors.flows['selectors.partner']}
               />
             </div>
             <div className="form-group">
@@ -229,7 +229,7 @@ class Flows extends Component {
                 Customs region
               </label>
               <small className="help-block">
-                Where, in France, the transactions were recorded.{" "}
+                Where, in France, the transactions were recorded.{' '}
                 <a href="#/glossary/concepts">
                   <Icon name="icon-info" />
                 </a>
@@ -239,10 +239,10 @@ class Flows extends Component {
                 type="region"
                 loading={!regions}
                 data={regions || []}
-                onChange={actions.update.bind(null, "region")}
+                onChange={actions.update.bind(null, 'region')}
                 selected={selectors.region}
-                onUpdate={v => actions.update("region", v)}
-                defaultValue={defaultSelectors.flows["selectors.region"]}
+                onUpdate={v => actions.update('region', v)}
+                defaultValue={defaultSelectors.flows['selectors.region']}
               />
             </div>
             <div className="form-group">
@@ -253,10 +253,10 @@ class Flows extends Component {
               <ItemSelector
                 valueKey="id"
                 type="kind"
-                onChange={actions.update.bind(null, "kind")}
+                onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
-                onUpdate={v => actions.update("kind", v)}
-                defaultValue={defaultSelectors.flows["selectors.kind"]}
+                onUpdate={v => actions.update('kind', v)}
+                defaultValue={defaultSelectors.flows['selectors.kind']}
               />
             </div>
             <div className="form-group">
@@ -270,10 +270,10 @@ class Flows extends Component {
                     valueKey="id"
                     type="dateMin"
                     data={dateMinOptions}
-                    onChange={actions.update.bind(null, "dateMin")}
+                    onChange={actions.update.bind(null, 'dateMin')}
                     selected={selectors.dateMin}
-                    onUpdate={v => actions.update("dateMin", v)}
-                    defaultValue={defaultSelectors.flows["selectors.dateMin"]}
+                    onUpdate={v => actions.update('dateMin', v)}
+                    defaultValue={defaultSelectors.flows['selectors.dateMin']}
                   />
                 </div>
                 <div className="col-xs-6">
@@ -281,10 +281,10 @@ class Flows extends Component {
                     valueKey="id"
                     type="dateMax"
                     data={dateMaxOptions}
-                    onChange={actions.update.bind(null, "dateMax")}
+                    onChange={actions.update.bind(null, 'dateMax')}
                     selected={selectors.dateMax}
-                    onUpdate={v => actions.update("dateMax", v)}
-                    defaultValue={defaultSelectors.flows["selectors.dateMax"]}
+                    onUpdate={v => actions.update('dateMax', v)}
+                    defaultValue={defaultSelectors.flows['selectors.dateMax']}
                   />
                 </div>
               </div>
@@ -300,8 +300,8 @@ class Flows extends Component {
                     type="number"
                     min="0"
                     placeholder="minimal"
-                    onChange={e => actions.update("valueMin", e.target.value)}
-                    value={selectors.valueMin || ""}
+                    onChange={e => actions.update('valueMin', e.target.value)}
+                    value={selectors.valueMin || ''}
                   />
                 </div>
                 <div className="col-xs-6">
@@ -309,8 +309,8 @@ class Flows extends Component {
                     type="number"
                     min="0"
                     placeholder="maximal"
-                    onChange={e => actions.update("valueMax", e.target.value)}
-                    value={selectors.valueMax || ""}
+                    onChange={e => actions.update('valueMax', e.target.value)}
+                    value={selectors.valueMax || ''}
                   />
                 </div>
               </div>
@@ -324,7 +324,7 @@ class Flows extends Component {
           </form>
         </div>
         {/* Content panel */}
-        <div className="col-xs-12 col-sm-6 col-md-8" style={{ overflowX: "hidden", overflowY: "hidden", padding: 0 }}>
+        <div className="col-xs-12 col-sm-6 col-md-8" style={{overflowX: 'hidden', overflowY: 'hidden', padding: 0}}>
           {(alert || loading || CSVloading) && (
             <div className="progress-container progress-container-viz">
               {alert && (
@@ -368,10 +368,10 @@ class Flows extends Component {
                 type="columns"
                 //loading={selectors.partnerClassification && !groups.partner.length}
                 data={columnsOptions}
-                onChange={actions.update.bind(null, "columns")}
+                onChange={actions.update.bind(null, 'columns')}
                 selected={selectors.columns}
-                onUpdate={v => actions.update("columns", v)}
-                defaultValue={defaultSelectors.flows["selectors.columns"]}
+                onUpdate={v => actions.update('columns', v)}
+                defaultValue={defaultSelectors.flows['selectors.columns']}
               />
             </div>
             {/* PAGINATION */}
@@ -389,7 +389,7 @@ class Flows extends Component {
                     disabled={page === 0}
                     onClick={() => actions.changePage(page - 1)}
                   >
-                    <b>{"<<"}</b>
+                    <b>{'<<'}</b>
                   </Button>
                 </div>
                 <div className="col-xs-6">
@@ -398,7 +398,7 @@ class Flows extends Component {
                     valueKey="id"
                     type="page"
                     //loading={selectors.partnerClassification && !groups.partner.length}
-                    data={range(1, nbFlows / specs.flowsRowsMax).map(v => ({ id: v, name: `page ${v}` }))}
+                    data={range(1, nbFlows / specs.flowsRowsMax).map(v => ({id: v, name: `page ${v}`}))}
                     onChange={v => actions.changePage(v)}
                     selected={page + 1}
                     onUpdate={v => actions.changePage(v)}
@@ -411,7 +411,7 @@ class Flows extends Component {
                     disabled={!nbFlows || nbFlows < specs.flowsRowsMax * (page + 1)}
                     onClick={() => actions.changePage(page + 1)}
                   >
-                    <b>{">>"}</b>
+                    <b>{'>>'}</b>
                   </Button>
                 </div>
               </div>
@@ -422,7 +422,7 @@ class Flows extends Component {
                 disabled={nbFlows > specs.flowsExportMax}
                 exports={[
                   {
-                    label: "Export CSV",
+                    label: 'Export CSV',
                     fn: () => {
                       actions.downloadFlowsCSV();
                     },
