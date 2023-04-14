@@ -9,7 +9,6 @@ import React, {Component} from 'react';
 import {format, formatPrefix} from 'd3-format';
 import {updateSelector} from '../../../actions/flows';
 
-import csvParse from 'papaparse';
 import {branch} from 'baobab-react/decorators';
 /**
  * Formats.
@@ -126,11 +125,19 @@ export default class FlowsTable extends Component {
         </div>
       );
     };
-    const booleanFormatter = ({value}) => (value ? <div>true</div> : <div>false</div>);
+    const booleanFormatter = ({value}) => {
+      if (value) return <div>true</div>;
+      else return <div>false</div>;
+    };
     const columnsSpecificOpts = {
       rowIndex: {name: '#', width: rows.length > 0 ? (rows[rows.length - 1].rowIndex + '').length * 8 + 16 : 0},
-      import: {width: 70, formatter: ({value}) => (value ? <div>import</div> : <div>export</div>)},
-      year: {width: 50},
+      import: {
+        width: 70,
+        formatter: ({value}) => {
+          if (value) return <div>import</div>;
+          else return <div>export</div>;
+        },
+      },
       value: {
         formatter: ({row}) => {
           if (row.value)
@@ -195,6 +202,7 @@ export default class FlowsTable extends Component {
       },
       year: {
         //TODO: create a generic numeric value formater
+        width: 50,
         formatter: ({row}) => {
           if (row.year)
             return (
@@ -250,7 +258,7 @@ export default class FlowsTable extends Component {
           rowsCount={rows.length}
           rowHeight={this.rowHeight}
           headerRowHeight={this.headerRowHeight}
-          minHeight={800}
+          minHeight={this.props.containerHeight ? this.props.containerHeight : 500}
           enableCellSelect={false}
           minColumnWidth={50}
           onColumnResize={(e, width) => {

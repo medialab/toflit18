@@ -58,7 +58,7 @@ export default class ExplorationFlows extends Component {
 class Flows extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {selected: null, fullscreen: false};
+    this.state = {selected: null, fullscreen: false, contentPanelHeight: 0};
   }
 
   componentDidMount() {
@@ -74,13 +74,22 @@ class Flows extends Component {
     }
 
     this.props.actions.checkGroups(this.props.actions.initFlowTable);
+
+    window.addEventListener('resize', this.handleResize);
+
+    this.handleResize();
   }
 
   componentDidUpdate() {
     // Check for defaults:
     this.props.actions.checkDefaultState(defaultSelectors.flows.defaultValues);
   }
-
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+  handleResize = () => {
+    if (this.contentPanel) this.setState({contentPanelHeight: this.contentPanel.clientHeight});
+  };
   setSelectedNode(selectedNode) {
     this.setState({selectedNode});
   }
@@ -324,7 +333,13 @@ class Flows extends Component {
           </form>
         </div>
         {/* Content panel */}
-        <div className="col-xs-12 col-sm-6 col-md-8" style={{overflowX: 'hidden', overflowY: 'hidden', padding: 0}}>
+        <div
+          className="col-xs-12 col-sm-6 col-md-8"
+          style={{overflowX: 'hidden', overflowY: 'hidden', padding: 0}}
+          ref={el => {
+            this.contentPanel = el;
+          }}
+        >
           {(alert || loading || CSVloading) && (
             <div className="progress-container progress-container-viz">
               {alert && (
@@ -347,6 +362,7 @@ class Flows extends Component {
             alert={alert}
             nbFlows={flows}
             orders={selectors.orders || []}
+            containerHeight={this.state.contentPanelHeight}
           />
         </div>
         {/* Right panel */}
