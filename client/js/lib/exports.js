@@ -82,21 +82,26 @@ export function exportIndicatorsChart({vizContainer, legend, name, mode}) {
   // add legend to the viz container to include it in the snapshot
   const legendClone = legend.cloneNode(true);
   vizContainer.appendChild(legendClone);
-
+  vizContainer.className = vizContainer.className + ' export-image';
   const options = {
-    style: {margin: 0, display: 'flex', 'flex-direction': 'column'},
+    style: {
+      'margin-top': '1px',
+      'margin-left': '1px',
+    },
     bgcolor: '#FFF',
   };
   if (mode === 'PNG')
     return d2i.toBlob(vizContainer, options).then(blob => {
       // remove the legend
       vizContainer.removeChild(legendClone);
+      vizContainer.className = vizContainer.className.replace(' export-image', '');
       return saveAs(blob, name);
     });
   if (mode === 'SVG')
     return d2i.toSvg(vizContainer, options).then(finalSvg => {
       // remove the legend
       vizContainer.removeChild(legendClone);
+      vizContainer.className = vizContainer.className.replace(' export-image', '');
       return saveAs(
         new Blob([finalSvg.replace('data:image/svg+xml;charset=utf-8,', '')], {type: 'text/svg;charset=utf-8'}),
         name,

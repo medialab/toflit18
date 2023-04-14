@@ -90,6 +90,13 @@
   &-expand {
     margin-bottom: 3.3em;
   }
+
+  &.export-image {
+    svg {
+      font-family: Arial, Helvetica, sans-serif !important;
+      font-size: 12px !important;
+    }
+  }
 }
 
 // Content Viz with .box-selection
