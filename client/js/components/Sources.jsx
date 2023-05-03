@@ -160,8 +160,8 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Local</h2>
             <p className="lead">
-              These sources contain data for trade by a specific customs region by product x partner x customs region. They include
-              unit prices and quantites (and sometimes also values). They exist from 1714 to 1780.
+              These sources contain data for trade by a specific customs region by product x partner x customs region. They include unit prices and quantites (and sometimes also values). They exist from 1714 to 1780. We have added in that category some information on Saint-Domingue’s imports in 1709, 1715, 1716, 1719 and 1734.
+
             </p>
             <p>
               <ul>
@@ -300,6 +300,11 @@ export default class Sources extends Component {
                 <li>AD44 C718</li>
                 <li>AD64 2 ETP 104</li>
                 <li>AD64 2 ETP 105</li>
+                <li>ANOM C9A 11</li>
+                <li>ANOM C9A 12</li>
+                <li>ANOM C9A 40</li>
+                <li>ANOM C9B 01</li>
+                <li>ANOM C9B 05</li>
                 <li>ANOM Col F2 B 13 (tableaux 37 et 38)</li>
                 <li>ANOM Col F2 B 14 (tableau 25)</li>
                 <li>Archives de la CCI de Marseille - I 21</li>
