@@ -47,6 +47,16 @@ export default class Concepts extends Component {
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
+              <h2>Imports and Exports</h2>
+              <p className="lead">
+                The terms "Imports" and "Exports" are mostly used from the point of view of Metropolitan France.
+                For a quite limited number of  flows, the "Customs region" is not in Metropolitan France
+                (e.g. when the "Customs region" is "Colonies Françaises de l'Amérique").
+                In that case, the terms "Imports" and "Exports" are used
+                from the point of view of the "Customs region".
+              </p>
+            </div>
+            <div className="col-sm-10 col-sm-offset-1">
               <h2>Classifications</h2>
               <p className="lead">
                 A "Classification" is a taxonomy of commodities or partners recorded in the database.
