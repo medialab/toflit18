@@ -4,11 +4,11 @@
  *
  * Accessing generic data from the database.
  */
+import { Expression, Query } from "decypher";
+import { camelCase, capitalize, sortBy } from "lodash";
 import database from "../connection";
 import { data as queries } from "../queries";
-import { sortBy, camelCase, capitalize } from "lodash";
 import filterItemsByIdsRegexps from "./utils";
-import { interpolate, Query, Expression } from "decypher";
 
 function addClassificationFilter(model, classificationVariable, classification, itemVariable, itemValues) {
   const match = `(f:Flow)-[${model == "product" ? ":OF" : ":FROM|:TO"}]->(${model}:${capitalize(
@@ -257,7 +257,7 @@ const Model = {
                 "kg",
                 "nb",
                 "litre",
-                "unitPrice",
+                "value_per_unit",
                 "import",
                 "quantity",
                 "year",

@@ -5,11 +5,11 @@
  * Component displaying a sigma.js network showing the relations between
  * partners and regions.
  */
-import React, {Component} from 'react';
-import {format, formatPrefix} from 'd3-format';
-import {updateSelector} from '../../../actions/flows';
+import { format, formatPrefix } from 'd3-format';
+import React, { Component } from 'react';
+import { updateSelector } from '../../../actions/flows';
 
-import {branch} from 'baobab-react/decorators';
+import { branch } from 'baobab-react/decorators';
 /**
  * Formats.
  */
@@ -33,6 +33,7 @@ const UNITS = {
   nbr: () => 'pieces',
 };
 
+import { isNil } from 'lodash';
 import ReactDataGrid from 'react-data-grid';
 const {
   DraggableHeader: {DraggableContainer},
@@ -140,7 +141,7 @@ export default class FlowsTable extends Component {
       },
       value: {
         formatter: ({row}) => {
-          if (row.value)
+          if (!isNil(row.value))
             return (
               <div style={{textAlign: 'right'}}>
                 {row.value % 1 === 0 ? (
@@ -159,22 +160,22 @@ export default class FlowsTable extends Component {
           else return <div style={{textAlign: 'right'}}>N/A</div>;
         },
       },
-      unitPrice: {
+      value_per_unit: {
         //TODO: create a generic numeric value formater
         formatter: ({row}) => {
-          if (row.unitPrice)
+          if (!isNil(row.value_per_unit))
             return (
               <div style={{textAlign: 'right'}}>
-                {row.unitPrice % 1 === 0 ? (
+                {row.value_per_unit % 1 === 0 ? (
                   // integer
                   <span>
-                    {format(',')(row.unitPrice)} {row.year < '1797' ? 'lt.' : 'Fr.'}
+                    {format(',')(row.value_per_unit)} {row.year < '1797' ? 'lt.' : 'Fr.'}
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </span>
                 ) : (
                   // float
                   <span>
-                    {format(',.4f')(row.unitPrice)} {row.year < '1797' ? 'lt.' : 'Fr.'}
+                    {format(',.4f')(row.value_per_unit)} {row.year < '1797' ? 'lt.' : 'Fr.'}
                   </span>
                 )}
               </div>
@@ -185,7 +186,7 @@ export default class FlowsTable extends Component {
       quantity: {
         //TODO: create a generic numeric value formater
         formatter: ({row}) => {
-          if (row.quantity)
+          if (!isNil(row.quantity))
             return (
               <div style={{textAlign: 'right'}}>
                 {row.quantity % 1 === 0 ? (
@@ -204,7 +205,7 @@ export default class FlowsTable extends Component {
         //TODO: create a generic numeric value formater
         width: 50,
         formatter: ({row}) => {
-          if (row.year)
+          if (!isNil(row.year))
             return (
               <div style={{textAlign: 'right'}}>
                 {row.year % 1 === 0 ? (

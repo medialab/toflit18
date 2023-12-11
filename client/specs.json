@@ -109,8 +109,8 @@
       "name": "Quantity unit"
     },
     {
-      "id": "unitPrice",
-      "name": "Unit price"
+      "id": "value_per_unit",
+      "name": "Value per unit"
     },
     {
       "id": "rawUnit",

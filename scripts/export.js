@@ -5,13 +5,13 @@
  *
  * Script aiming at exporting raw CSV data from the datascape's Neo4j database.
  */
-import database from "../api/connection";
-import { exporter as queries } from "../api/queries";
-import { parse, stringify } from "csv";
 import async from "async";
+import { parse, stringify } from "csv";
+import fs from "fs";
 import { default as h } from "highland";
 import _, { fill, keyBy, uniq } from "lodash";
-import fs from "fs";
+import database from "../api/connection";
+import { exporter as queries } from "../api/queries";
 
 /**
  * Useful constants
@@ -30,7 +30,7 @@ const SOURCES_HEADERS = [
   "value",
   "rawUnit",
   "unit",
-  "unitPrice",
+  "value_per_unit",
   "problem",
   "import/export",
   "rawYear",
@@ -96,8 +96,8 @@ async.series(
                 flow.value,
                 flow.rawUnit,
                 flow.unit,
-                flow.unitPrice,
-                flow.unitPrice && flow.value && flow.quantity ? flow.value - flow.unitPrice * flow.quantity : "",
+                flow.value_per_unit,
+                flow.value_per_unit && flow.value && flow.quantity ? flow.value - flow.value_per_unit * flow.quantity : "",
                 flow.import ? "import" : "export",
                 flow.rawYear,
                 flow.year,
