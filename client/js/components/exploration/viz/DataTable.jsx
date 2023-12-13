@@ -160,22 +160,22 @@ export default class FlowsTable extends Component {
           else return <div style={{textAlign: 'right'}}>N/A</div>;
         },
       },
-      value_per_unit: {
+      unit_price_metric: {
         //TODO: create a generic numeric value formater
         formatter: ({row}) => {
-          if (!isNil(row.value_per_unit))
+          if (!isNil(row.unit_price_metric))
             return (
               <div style={{textAlign: 'right'}}>
-                {row.value_per_unit % 1 === 0 ? (
+                {row.unit_price_metric % 1 === 0 ? (
                   // integer
                   <span>
-                    {format(',')(row.value_per_unit)} {row.year < '1797' ? 'lt.' : 'Fr.'}
+                    {format(',')(row.unit_price_metric)} {row.year < '1797' ? 'lt.' : 'Fr.'}
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   </span>
                 ) : (
                   // float
                   <span>
-                    {format(',.4f')(row.value_per_unit)} {row.year < '1797' ? 'lt.' : 'Fr.'}
+                    {format(',.4f')(row.unit_price_metric)} {row.year < '1797' ? 'lt.' : 'Fr.'}
                   </span>
                 )}
               </div>
