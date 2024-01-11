@@ -257,7 +257,7 @@ const Model = {
                 "kg",
                 "nb",
                 "litre",
-                "unit_price_metric",
+                "value_per_unit",
                 "import",
                 "quantity",
                 "year",
