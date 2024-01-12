@@ -181,7 +181,7 @@ export default class FlowsTable extends Component {
       year: {
         width: 50,
         formatter: ({row}) => {
-          return numberFormater(row.quantity,',.1f');
+          return numberFormater(row.year, ',.1f');
         },
       },
       source: {width: 400},
