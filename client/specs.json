@@ -110,7 +110,11 @@
     },
     {
       "id": "value_per_unit",
-      "name": "Value per unit"
+      "name": "Unit price (source)"
+    },
+    {
+      "id": "value_per_unit_metric",
+      "name": "Unit price (metric)"
     },
     {
       "id": "rawUnit",
@@ -119,6 +123,10 @@
     {
       "id": "quantity",
       "name": "Quantity (source)"
+    },
+    {
+      "id": "quantity_metric",
+      "name": "Quantity (metric)"
     },
     {
       "id": "quantity_kg",
@@ -172,19 +180,19 @@
       "id": "absurdObservation",
       "name": "Absurd observation"
     },
-    { "id": "value_part_of_bundle", "name": "Value part of bundle" },
-    { "id": "value_total", "name": "Total Value (source)" },
-    { "id": "value_sub_total_1", "name": "Partial total 1" },
-    { "id": "value_sub_total_2", "name": "Partial total 2" },
-    { "id": "value_sub_total_3", "name": "Partial total 3" },
-    { "id": "value_minus_unit_val_x_qty", "name": "Value - unit value * quantity" },
-    { "id": "trade_deficit", "name": "Trade deficit" },
-    { "id": "trade_surplus", "name": "Trade surplus" },
-    { "id": "duty_quantity", "name": "Duty quantity" },
-    { "id": "duty_quantity_unit", "name": "Duty quantity unit" },
-    { "id": "duty_by_unit", "name": "Duty by unit" },
-    { "id": "duty_total", "name": "Duty total" },
-    { "id": "duty_part_of_bundle", "name": "Duty part of bundle" },
-    { "id": "duty_remarks", "name": "duty remarks" }
+    {"id": "value_part_of_bundle", "name": "Value part of bundle"},
+    {"id": "value_total", "name": "Total Value (source)"},
+    {"id": "value_sub_total_1", "name": "Partial total 1"},
+    {"id": "value_sub_total_2", "name": "Partial total 2"},
+    {"id": "value_sub_total_3", "name": "Partial total 3"},
+    {"id": "value_minus_unit_val_x_qty", "name": "Value - unit value * quantity"},
+    {"id": "trade_deficit", "name": "Trade deficit"},
+    {"id": "trade_surplus", "name": "Trade surplus"},
+    {"id": "duty_quantity", "name": "Duty quantity"},
+    {"id": "duty_quantity_unit", "name": "Duty quantity unit"},
+    {"id": "duty_by_unit", "name": "Duty by unit"},
+    {"id": "duty_total", "name": "Duty total"},
+    {"id": "duty_part_of_bundle", "name": "Duty part of bundle"},
+    {"id": "duty_remarks", "name": "duty remarks"}
   ]
 }
