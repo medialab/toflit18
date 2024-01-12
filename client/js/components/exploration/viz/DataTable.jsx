@@ -5,39 +5,53 @@
  * Component displaying a sigma.js network showing the relations between
  * partners and regions.
  */
-import { format, formatPrefix } from 'd3-format';
-import React, { Component } from 'react';
-import { updateSelector } from '../../../actions/flows';
-
 import { branch } from 'baobab-react/decorators';
-/**
- * Formats.
- */
-const SI_FORMAT = formatPrefix(',.0s', 1.3e3);
-const Y_AXIS_FORMAT = nb => {
-  if (nb < 1000) return '' + (nb | 0);
-
-  return SI_FORMAT(nb);
-};
-
-const PERCENTAGE_FORMAT = format('.0%');
-
-/**
- * Custom tooltip.
- */
-const UNITS = {
-  count: () => 'flows',
-  value: payload => (payload.year < 1797 ? 'lt.' : 'Fr.'),
-  kg: () => 'kg',
-  litre: () => 'litres',
-  nbr: () => 'pieces',
-};
-
+import { format } from 'd3-format';
 import { isNil } from 'lodash';
+import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 const {
   DraggableHeader: {DraggableContainer},
 } = require('react-data-grid-addons');
+
+
+import { updateSelector } from '../../../actions/flows';
+
+
+function valueFormater(value, year) {
+  if (!isNil(value))
+  return (
+    <div style={{textAlign: 'right'}}>
+      {value % 1 === 0 ? (
+        // integer
+        <span>
+          {format(',')(value)} {year < '1797' ? 'lt.' : 'Fr.'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </span>
+      ) : (
+        // float
+        <span>
+          {format(',.2f')(value)} {year < '1797' ? 'lt.' : 'Fr.'}
+        </span>
+      )}
+    </div>
+  );
+  else return <div style={{textAlign: 'right'}}>N/A</div>;
+}
+function numberFormater(value, floatFormat = ',.2f') {
+  if (!isNil(value))
+    return (
+      <div style={{textAlign: 'right'}}>
+        {value % 1 === 0 ? (
+          // integer
+          <span>{format(',')(value)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        ) : (
+          // float
+          <span>{format(floatFormat)(value)}</span>
+        )}
+      </div>
+    );
+  else return <div style={{textAlign: 'right'}}>N/A</div>;
+}
 
 @branch({
   actions: {
@@ -61,7 +75,7 @@ export default class FlowsTable extends Component {
 
   onHeaderClick(e) {
     const {key} = e;
-    let sort = this.props.orders.find(s => s.key === key);
+    const sort = this.props.orders.find(s => s.key === key);
     if (sort) {
       this.props.actions.updateSelector(
         'orders',
@@ -141,83 +155,33 @@ export default class FlowsTable extends Component {
       },
       value: {
         formatter: ({row}) => {
-          if (!isNil(row.value))
-            return (
-              <div style={{textAlign: 'right'}}>
-                {row.value % 1 === 0 ? (
-                  // integer
-                  <span>
-                    {format(',')(row.value)} {row.year < '1797' ? 'lt.' : 'Fr.'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  </span>
-                ) : (
-                  // float
-                  <span>
-                    {format(',.2f')(row.value)} {row.year < '1797' ? 'lt.' : 'Fr.'}
-                  </span>
-                )}
-              </div>
-            );
-          else return <div style={{textAlign: 'right'}}>N/A</div>;
+          return valueFormater(row.value, row.year);
         },
       },
       value_per_unit: {
-        //TODO: create a generic numeric value formater
         formatter: ({row}) => {
-          if (!isNil(row.value_per_unit))
-            return (
-              <div style={{textAlign: 'right'}}>
-                {row.value_per_unit % 1 === 0 ? (
-                  // integer
-                  <span>
-                    {format(',')(row.value_per_unit)} {row.year < '1797' ? 'lt.' : 'Fr.'}
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  </span>
-                ) : (
-                  // float
-                  <span>
-                    {format(',.4f')(row.value_per_unit)} {row.year < '1797' ? 'lt.' : 'Fr.'}
-                  </span>
-                )}
-              </div>
-            );
-          else return <div style={{textAlign: 'right'}}>N/A</div>;
+          return valueFormater(row.value_per_unit, row.year);
+        },
+      },
+      value_per_unit_metric: {
+        formatter: ({row}) => {
+          return valueFormater(row.value_per_unit_metric, row.year);
         },
       },
       quantity: {
-        //TODO: create a generic numeric value formater
         formatter: ({row}) => {
-          if (!isNil(row.quantity))
-            return (
-              <div style={{textAlign: 'right'}}>
-                {row.quantity % 1 === 0 ? (
-                  // integer
-                  <span>{format(',')(row.quantity)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                ) : (
-                  // float
-                  <span>{format(',.2f')(row.quantity)}</span>
-                )}
-              </div>
-            );
-          else return <div style={{textAlign: 'right'}}>N/A</div>;
+          return numberFormater(row.quantity);
+        },
+      },
+      quantity_metric: {
+        formatter: ({row}) => {
+          return numberFormater(row.quantity_metric);
         },
       },
       year: {
-        //TODO: create a generic numeric value formater
         width: 50,
         formatter: ({row}) => {
-          if (!isNil(row.year))
-            return (
-              <div style={{textAlign: 'right'}}>
-                {row.year % 1 === 0 ? (
-                  // integer
-                  <span>{format('')(row.year)}&nbsp;&nbsp;</span>
-                ) : (
-                  // float
-                  <span>{format(',.1f')(row.year)}</span>
-                )}
-              </div>
-            );
-          else return <div style={{textAlign: 'right'}}>N/A</div>;
+          return numberFormater(row.quantity,',.1f');
         },
       },
       source: {width: 400},
