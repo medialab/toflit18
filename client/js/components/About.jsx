@@ -264,6 +264,10 @@ export default class About extends Component {
                   <li>Vergne, Isabelle</li>
                   <li>Zahra, Fatima</li>
                 </ul>
+                <b>Thanks also to:</b>
+                <ul>
+                  <li>Avellino, Lorenzo</li>
+                </ul>
               </p>
             </div>
             <div className="col-sm-10 col-sm-offset-1">
