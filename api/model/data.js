@@ -4,11 +4,11 @@
  *
  * Accessing generic data from the database.
  */
+import { Expression, Query } from "decypher";
+import { camelCase, capitalize, sortBy } from "lodash";
 import database from "../connection";
 import { data as queries } from "../queries";
-import { sortBy, camelCase, capitalize } from "lodash";
 import filterItemsByIdsRegexps from "./utils";
-import { interpolate, Query, Expression } from "decypher";
 
 function addClassificationFilter(model, classificationVariable, classification, itemVariable, itemValues) {
   const match = `(f:Flow)-[${model == "product" ? ":OF" : ":FROM|:TO"}]->(${model}:${capitalize(
@@ -143,9 +143,9 @@ const flowsQuery = params => {
 
   if (match.length > 0) query.match(match);
   else query.match("(f:Flow)");
-  if (optionalMatch.length > 0) query.optionalMatch(optionalMatch);
 
   if (!where.isEmpty()) query.where(where);
+  if (optionalMatch.length > 0) query.optionalMatch(optionalMatch);
 
   return query;
 };
@@ -251,7 +251,37 @@ const Model = {
         orders
           .map(s => {
             //don't clean text on numbers...
-            if (["value", "kg", "nb", "litre", "unitPrice", "import", "quantity", "year"].includes(s.key))
+            if (
+              [
+                "value",
+                "kg",
+                "nb",
+                "litre",
+                "value_per_unit",
+                "import",
+                "quantity",
+                "year",
+                "unverified",
+                "value_part_of_bundle",
+                "duty_part_of_bundle",
+                "duty_total",
+                "duty_by_unit",
+                "duty_quantity",
+                "trade_surplus",
+                "trade_deficit",
+                "value_minus_unit_val_x_qty",
+                "value_total",
+                "value_sub_total_1",
+                "value_sub_total_2",
+                "value_sub_total_3",
+                "value_part_of_bundle",
+                "bestGuessNationalProductXPartner",
+                "bestGuessNationalPartner",
+                "bestGuessNationalProduct",
+                "bestGuessCustomsRegionProductXPartner",
+                "bestGuessNationalCustomsRegion",
+              ].includes(s.key)
+            )
               return `${fieldsDefinitions(s.key)} ${s.order}`;
             else return `apoc.text.clean(${fieldsDefinitions(s.key)}) ${s.order}`;
           })
@@ -259,6 +289,7 @@ const Model = {
       );
     if (skip) query.skip("" + skip);
     if (limit) query.limit("" + limit);
+
     return database.cypher(query.build(), function(err, result) {
       if (err) return callback(err);
 

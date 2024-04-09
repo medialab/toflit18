@@ -217,9 +217,8 @@ export class ItemSelector extends Component {
       type,
     } = this.props;
 
-    const trulyDisabled = disabled || loading || data.length === 0;
     const allData = this.compulsoryOptions.concat(data);
-
+    const trulyDisabled = disabled || loading || allData.length === 0;
     const commonProps = {
       className: "selector",
       isLoading: loading,

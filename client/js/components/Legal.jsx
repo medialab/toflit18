@@ -69,7 +69,7 @@ export default class Legal extends Component {
               <p className="lead">source code</p>
               <p>
                 The source code of this web application is available on{" "}
-                <a href="https://github.com/medialab/toflit18">github</a> under license AGPLv3.
+                <a href="https://github.com/medialab/toflit18">https://github.com/medialab/toflit18</a> under license AGPLv3.
               </p>
               <p className="lead">data</p>
               <p>

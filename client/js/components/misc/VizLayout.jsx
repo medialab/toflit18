@@ -23,8 +23,7 @@ export default class Header extends Component {
 
     if (fullscreen) {
       this.expand();
-    }
-    else {
+    } else {
       this.collapse();
     }
   }
@@ -37,25 +36,14 @@ export default class Header extends Component {
   }
 
   togglePanel(panel) {
-    if (this.state.deployedPanel === panel)
-      this.setState({deployedPanel: null});
-    else
-      this.setState({deployedPanel: panel});
+    if (this.state.deployedPanel === panel) this.setState({deployedPanel: null});
+    else this.setState({deployedPanel: panel});
   }
 
   render() {
-    const {
-      title,
-      fullscreen,
-      description,
-      leftPanelName,
-      rightPanelName,
-      children = []
-    } = this.props;
+    const {title, fullscreen, description, leftPanelName, rightPanelName, children = []} = this.props;
 
-    const {
-      deployedPanel
-    } = this.state;
+    const {deployedPanel} = this.state;
 
     let boxSelection;
     let sidebarLeft;
@@ -67,8 +55,7 @@ export default class Header extends Component {
       sidebarLeft = children[1];
       contentViz = children[2];
       sidebarRight = children[3];
-    }
-    else {
+    } else {
       sidebarLeft = children[0];
       contentViz = children[1];
       sidebarRight = children[2];
@@ -90,57 +77,27 @@ export default class Header extends Component {
         </div>
         <div
           ref="fullscreenRoot"
-          className={
-            cls(
-              'section-viz',
-              !boxSelection && 'sections-viz-no-box-selection',
-              fullscreen && 'fullscreen'
-            )
-          }>
+          className={cls('section-viz', !boxSelection && 'sections-viz-no-box-selection', fullscreen && 'fullscreen')}
+        >
           {boxSelection}
           <div className="container-fluid">
-            <div
-              className={
-                cls(
-                  'row',
-                  'row-offcanvas',
-                  'row-offcanvas-left',
-                  deployedPanel === 'left' && 'active'
-                )
-              }>
-              <div
-                className={
-                  cls(
-                    'row-offcanvas',
-                    'row-offcanvas-right',
-                    deployedPanel === 'right' && 'active'
-                  )
-                }>
-                <aside
-                  className="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-left"
-                  id="sidebarLeft">
+            <div className={cls('row', 'row-offcanvas', 'row-offcanvas-left', deployedPanel === 'left' && 'active')}>
+              <div className={cls('row-offcanvas', 'row-offcanvas-right', deployedPanel === 'right' && 'active')}>
+                <aside className="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-left" id="sidebarLeft">
                   {sidebarLeft}
                 </aside>
                 <div className="content-viz">
-                  <button
-                    type="button"
-                    className="aside-btn-left"
-                    onClick={() => this.togglePanel('left')} >
+                  <button type="button" className="aside-btn-left" onClick={() => this.togglePanel('left')}>
                     <span>{leftPanelName}</span>
                     <Icon name="icon-close" />
                   </button>
-                  <button
-                    type="button"
-                    className="aside-btn-right"
-                    onClick={() => this.togglePanel('right')} >
+                  <button type="button" className="aside-btn-right" onClick={() => this.togglePanel('right')}>
                     <span>{rightPanelName}</span>
                     <Icon name="icon-close" />
                   </button>
                   {contentViz}
                 </div>
-                <aside
-                  className="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-right"
-                  id="sidebarRight" >
+                <aside className="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas aside-right" id="sidebarRight">
                   {sidebarRight}
                 </aside>
               </div>

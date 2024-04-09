@@ -77,7 +77,7 @@ export default class Sources extends Component {
             </p>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
-            <h2>National toutes regions partenaires manquants</h2>
+            <h2>National toutes directions partenaires manquants</h2>
             <p className="lead">
               These sources contain trade by product x partner x customs region for the whole of France and some partners.
               The 1787 data only cover imports for some customs regions.
@@ -127,9 +127,9 @@ export default class Sources extends Component {
             </p>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
-            <h2>National toutes regions tous partenaires</h2>
+            <h2>National toutes directions tous partenaires</h2>
             <p className="lead">
-              These sources contain trade by product x partner x customs region for the whole of France. They include values and quantities. They only exist for 1750. Notice that 1789 in AN F12 1666 and F12 1667 nearly makes it ; but trade with America (except the United States), Africa and Asia is missing. As a result, the 1789 is classified in "National toutes regions partenaires manquants".
+              These sources contain trade by product x partner x customs region for the whole of France. They include values and quantities. They only exist for 1750. Notice that 1789 in AN F12 1666 and F12 1667 nearly makes it ; but trade with America (except the United States), Africa and Asia is missing. As a result, the 1789 is classified in "National toutes directions partenaires manquants".
             </p>
             <p>
               <ul>
@@ -141,7 +141,7 @@ export default class Sources extends Component {
             </p>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
-            <h2>National toutes regions sans produits</h2>
+            <h2>National toutes directions sans produits</h2>
             <p className="lead">
               These sources contain trade by partner x customs region for the whole of France. They include only values.They only exist for 1753, 1756, 1766, 1768, 1770-1, 1773-4, 1777-80.
             </p>
@@ -160,8 +160,8 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Local</h2>
             <p className="lead">
-              These sources contain data for trade by a specific customs region by product x partner x customs region. They include
-              unit prices and quantites (and sometimes also values). They exist from 1714 to 1780.
+              These sources contain data for trade by a specific customs region by product x partner x customs region. They include unit prices and quantites (and sometimes also values). They exist from 1714 to 1780. We have added in that category some information on Saint-Domingue’s imports in 1709, 1715, 1716, 1719 and 1734.
+
             </p>
             <p>
               <ul>
@@ -300,6 +300,11 @@ export default class Sources extends Component {
                 <li>AD44 C718</li>
                 <li>AD64 2 ETP 104</li>
                 <li>AD64 2 ETP 105</li>
+                <li>ANOM C9A 11</li>
+                <li>ANOM C9A 12</li>
+                <li>ANOM C9A 40</li>
+                <li>ANOM C9B 01</li>
+                <li>ANOM C9B 05</li>
                 <li>ANOM Col F2 B 13 (tableaux 37 et 38)</li>
                 <li>ANOM Col F2 B 14 (tableau 25)</li>
                 <li>Archives de la CCI de Marseille - I 21</li>
@@ -387,7 +392,7 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Best Guess national product x partner</h2>
             <p className="lead">
-              This "Best Guess" gathers the best sources about trade by product x partner for the whole of France in each year. This is "National toutes regions tous partenaires" for 1750, "Objet Général" from 1754 to 1780, "Résumé" in 1787-1789 and 1797-1821. These sources are supplemented by data from "Compagnie des Indes"
+              This "Best Guess" gathers the best sources about trade by product x partner for the whole of France in each year. This is "National toutes directions tous partenaires" for 1750, "Objet Général" from 1754 to 1780, "Résumé" in 1787-1789 and 1797-1821. These sources are supplemented by data from "Compagnie des Indes"
             </p>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
@@ -405,13 +410,15 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Best Guess customs region product x partner</h2>
             <p className="lead">
-              This "Best Guess" gathers the best sources about trade by product x partner x customs region in each year. The selected sources are mostly of the "Local" (1714-1780), except for 1750 when we use "National toutes regions tous partenaires" and 1788-1789 when we use "Local" for colonial trade and "National toutes regions partenaires manquants" for the rest. Some "Local" sources from Rouen imports are excluded as they do not include all products (1737, 1739-1749, 1754, 1756-1762). We include 1789, despite not missing Asian trade because these data are very rich. We also include Marseille’s imports in 1787.
+              This "Best Guess" gathers the best sources about trade by product x partner x customs region in each year. The selected sources are mostly "Local" ones (1714-1780), except for 1750 when we use "National toutes directions tous partenaires" and 1788-1789 when we use "Local" for colonial trade and "National toutes directions partenaires manquants" for the rest. Some "Local" sources from Rouen imports are excluded as they do not include all products (1737, 1739-1749, 1754, 1756-1762). We include 1789, despite it missing Asian trade because these data are very rich. We also include Marseille’s imports in 1787.
             </p>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Best Guess national customs region</h2>
             <p className="lead">
-              This "Best Guess" gathers the best sources about trade by customs region for the whole of France. It might not include all partners nor all goods. The selected source  is "National toutes regions tous partenaires" for 1750; "National toutes regions sans produits" for 1753, 1756, 1766, 1768, 1770-1, 1773-4 and 1777-80; and "National toutes regions partenaires manquants" otherwise.
+              This "Best Guess" gathers the best sources about trade by customs region for the whole of France. It might not include all partners nor all goods. The selected source  is "National toutes directions tous partenaires" for 1750; "National toutes directions sans produits" for 1753, 1756, 1766, 1768, 1770-1, 1773-4 and 1777-80; and "National toutes directions partenaires manquants" otherwise. For 1777, trade with the United Kingdom does not come from "National toutes directions sans produit" but from "National toutes directions partenaires manquants".
+              As a result, beware that only 1750, 1753, 1756, 1766, 1768, 1770-1, 1773-4, 1777-80 and 1789 cover all trade partners.
+              Even when all trade partners are covered, the list of customs region is not constant. Paris appears in 1771. 1789 splits many customs regions.
             </p>
           </div>
         </div>

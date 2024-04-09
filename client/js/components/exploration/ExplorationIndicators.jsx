@@ -14,17 +14,17 @@ import DataQualityBarChart from './viz/DataQualityBarChart.jsx';
 import {capitalize, isEqual, mapValues, pick, omit} from 'lodash';
 import Icon from '../misc/Icon.jsx';
 import VizLayout from '../misc/VizLayout.jsx';
-import {exportCSV, exportSVG} from '../../lib/exports';
+import {exportCSV, exportIndicatorsChart} from '../../lib/exports';
 import {
   updateSelector as update,
   addLine,
   dropLine,
   checkLines,
   getLineFootprint,
-  createLineFromSelectors
+  createLineFromSelectors,
 } from '../../actions/indicators';
 
-import specs from "../../../specs.json";
+import specs from '../../../specs.json';
 
 const defaultSelectors = require('../../../config/defaultVizSelectors.json');
 import {checkDefaultValues} from './utils';
@@ -49,45 +49,33 @@ function buildDescription(line, data, index) {
     }
   });
 
-  let content = [
-    <strong key="flows">
-      {capitalize(selectors.kind || 'total') + ' flows'}
-    </strong>
-  ];
+  let content = [<strong key="flows">{capitalize(selectors.kind || 'total') + ' flows'}</strong>];
 
   if (selectors.product) {
     if (!Array.isArray(data) || data.length) content.push('of ');
     else content = ['No data for '];
 
     content = content.concat([
-      <strong key="product">
-        {(selectors.product || []).map(o => o.name)}
-      </strong>,
+      <strong key="product">{(selectors.product || []).map(o => o.name)}</strong>,
       ' (',
       <em key="product-classes">{selectors.productClassification}</em>,
-      ')'
+      ')',
     ]);
   }
 
   if (selectors.region && selectors.region !== '$all$')
-    content = content.concat([
-      ' from ',
-      <strong key="region">{selectors.region}</strong>
-    ]);
+    content = content.concat([' from ', <strong key="region">{selectors.region}</strong>]);
 
   if (selectors.partner)
     content = content.concat([
       ' to ',
-      <strong key="partner">
-        {(selectors.partner || []).map(o => o.name)}
-      </strong>,
+      <strong key="partner">{(selectors.partner || []).map(o => o.name)}</strong>,
       ' (',
       <em key="partner-classes">{selectors.partnerClassification}</em>,
-      ')'
+      ')',
     ]);
 
-  if (selectors.sourceType)
-    content = content.concat([`- (source type: ${selectors.sourceType})`]);
+  if (selectors.sourceType) content = content.concat([`- (source type: ${selectors.sourceType})`]);
 
   return <span>{content}</span>;
 }
@@ -101,7 +89,7 @@ function buildDescription(line, data, index) {
     dropLine,
     update,
     checkLines,
-    createLineFromSelectors
+    createLineFromSelectors,
   },
   cursors: {
     alert: ['ui', 'alert'],
@@ -109,8 +97,8 @@ function buildDescription(line, data, index) {
     classificationsIndex: ['data', 'classifications', 'index'],
     regions: ['data', 'regions'],
     sourceTypes: ['data', 'sourceTypes'],
-    state: ['indicatorsState']
-  }
+    state: ['indicatorsState'],
+  },
 })
 export default class ExplorationIndicators extends Component {
   componentDidMount() {
@@ -141,14 +129,7 @@ export default class ExplorationIndicators extends Component {
       const dataLines = [];
 
       for (let i = 0, len = data.length; i < len; i++) {
-        const elemCopy = pick(data[i], [
-          'year',
-          'count',
-          'value',
-          'kg',
-          'litre',
-          'nbr'
-        ]);
+        const elemCopy = pick(data[i], ['year', 'count', 'value', 'kg', 'litre', 'nbr']);
 
         [
           'sourceType',
@@ -157,22 +138,17 @@ export default class ExplorationIndicators extends Component {
           'partner',
           'product',
           'kind',
-          'region'
+          'region',
         ].forEach(param => {
           if (param === 'product') {
-            elemCopy[param] = l[param]
-              ? l[param].map(p => p.name).join(', ')
-              : null;
-          }
- else {
+            elemCopy[param] = l[param] ? l[param].map(p => p.name).join(', ') : null;
+          } else {
             elemCopy[param] = l[param] ? l[param] : null;
           }
         });
 
         if (data[i].value !== null && data[i].count !== 0) {
-          elemCopy.nb_region = data[i].nb_region.length
-            ? data[i].nb_region
-            : null;
+          elemCopy.nb_region = data[i].nb_region.length ? data[i].nb_region : null;
         }
 
         dataLines.push(elemCopy);
@@ -184,20 +160,14 @@ export default class ExplorationIndicators extends Component {
     const now = new Date();
     exportCSV({
       data: arrayDataLines,
-      name: `TOFLIT18_Time_series_${now
-        .toLocaleString('se-SE')
-        .replace(' ', '_')}.csv`
+      name: `TOFLIT18_Time_series_${now.toLocaleString('se-SE').replace(' ', '_')}.csv`,
     });
   }
 
-  exportCharts() {
+  exportCharts(mode) {
     const now = new Date();
-    exportSVG({
-      nodes: [this.legendContainer, this.charts.vizContainer],
-      name: `TOFLIT18_Time_series_${now
-        .toLocaleString('se-SE')
-        .replace(' ', '_')}.svg`
-    });
+    const name = `TOFLIT18_Time_series_${now.toLocaleString('se-SE').replace(' ', '_')}.${mode}`;
+    exportIndicatorsChart({vizContainer: this.charts.vizContainer, legend: this.legendContainer, name, mode});
   }
 
   render() {
@@ -208,19 +178,19 @@ export default class ExplorationIndicators extends Component {
       classificationsIndex,
       regions,
       sourceTypes,
-      state: {groups, lines, selectors, dataIndex}
+      state: {groups, lines, selectors, dataIndex},
     } = this.props;
 
     const newLine = createLineFromSelectors(selectors, groups);
     const lineAlreadyExisting = (lines || []).some(line => {
-      const existingLine = omit(line,['color']);
+      const existingLine = omit(line, ['color']);
       return isEqual(existingLine, newLine);
     });
 
     const sourceTypesOptions = (sourceTypes || []).map(type => {
       return {
         name: type,
-        value: type
+        value: type,
       };
     });
 
@@ -235,7 +205,8 @@ export default class ExplorationIndicators extends Component {
         title="Time series"
         description="By selecting the following criteria, you'll be able to add the line you need on the graph that will be created for you below."
         leftPanelName="Filters"
-        rightPanelName="Curves">
+        rightPanelName="Curves"
+      >
         {/* Left panel */}
         <div className="aside-filters">
           <h3>Filters</h3>
@@ -258,9 +229,8 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'sourceType')}
                 selected={selectors.sourceType}
                 onUpdate={v => actions.update('sourceType', v)}
-                defaultValue={
-                  defaultSelectors.indicators['selectors.sourceType']
-                } />
+                defaultValue={defaultSelectors.indicators['selectors.sourceType']}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="product" className="control-label">
@@ -280,23 +250,19 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'productClassification')}
                 selected={selectors.productClassification}
                 onUpdate={v => actions.update('productClassification', v)}
-                defaultValue={
-                  defaultSelectors.indicators['selectors.productClassification']
-                } />
+                defaultValue={defaultSelectors.indicators['selectors.productClassification']}
+              />
               <ItemSelector
                 type="product"
                 valueKey="value"
-                disabled={
-                  !selectors.productClassification || !groups.product.length
-                }
-                loading={
-                  selectors.productClassification && !groups.product.length
-                }
+                disabled={!selectors.productClassification || !groups.product.length}
+                loading={selectors.productClassification && !groups.product.length}
                 data={groups.product}
                 onChange={actions.update.bind(null, 'product')}
                 selected={selectors.product}
                 onUpdate={v => actions.update('product', v)}
-                defaultValue={defaultSelectors.indicators['selectors.product']} />
+                defaultValue={defaultSelectors.indicators['selectors.product']}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="partner" className="control-label">
@@ -316,23 +282,19 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'partnerClassification')}
                 selected={selectors.partnerClassification}
                 onUpdate={v => actions.update('partnerClassification', v)}
-                defaultValue={
-                  defaultSelectors.indicators['selectors.partnerClassification']
-                } />
+                defaultValue={defaultSelectors.indicators['selectors.partnerClassification']}
+              />
               <ItemSelector
                 type="partner"
                 valueKey="value"
-                disabled={
-                  !selectors.partnerClassification || !groups.partner.length
-                }
-                loading={
-                  selectors.partnerClassification && !groups.partner.length
-                }
+                disabled={!selectors.partnerClassification || !groups.partner.length}
+                loading={selectors.partnerClassification && !groups.partner.length}
                 data={groups.partner}
                 onChange={actions.update.bind(null, 'partner')}
                 selected={selectors.partner}
                 onUpdate={v => actions.update('partner', v)}
-                defaultValue={defaultSelectors.indicators['selectors.partner']} />
+                defaultValue={defaultSelectors.indicators['selectors.partner']}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="region" className="control-label">
@@ -352,38 +314,39 @@ export default class ExplorationIndicators extends Component {
                 onChange={actions.update.bind(null, 'region')}
                 selected={selectors.region}
                 onUpdate={v => actions.update('region', v)}
-                defaultValue={
-                  defaultSelectors.indicators['selectors.region']
-                } />
+                defaultValue={defaultSelectors.indicators['selectors.region']}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="kind" className="control-label">
                 Export/Import
               </label>
-              <small className="help-block">
-                Should we look at import, export, or total?
-              </small>
+              <small className="help-block">Should we look at import, export, or total?</small>
               <ItemSelector
                 type="kind"
                 valueKey="id"
                 onChange={actions.update.bind(null, 'kind')}
                 selected={selectors.kind}
                 onUpdate={v => actions.update('kind', v)}
-                defaultValue={defaultSelectors.indicators['selectors.kind']} />
+                defaultValue={defaultSelectors.indicators['selectors.kind']}
+              />
             </div>
             <div className="form-group-fixed">
-            {(lineAlreadyExisting || (lines && lines.length >= specs.indicatorsMaxNbLine)) && 
-              <small className="help-block">
-                {lineAlreadyExisting  && 'This line has already been drawn.'}
-                {lineAlreadyExisting  && lines && lines.length >= specs.indicatorsMaxNbLine && <br/>}
-                {lines.length >= specs.indicatorsMaxNbLine && `You can select a maximum of ${specs.indicatorsMaxNbLine} lines.`}
-              </small>}
+              {(lineAlreadyExisting || (lines && lines.length >= specs.indicatorsMaxNbLine)) && (
+                <small className="help-block">
+                  {lineAlreadyExisting && 'This line has already been drawn.'}
+                  {lineAlreadyExisting && lines && lines.length >= specs.indicatorsMaxNbLine && <br />}
+                  {lines.length >= specs.indicatorsMaxNbLine &&
+                    `You can select a maximum of ${specs.indicatorsMaxNbLine} lines.`}
+                </small>
+              )}
               <button
                 type="submit"
                 className="btn btn-default"
-                disabled={lineAlreadyExisting || (lines && lines.length >= specs.indicatorsMaxNbLine) }
+                disabled={lineAlreadyExisting || (lines && lines.length >= specs.indicatorsMaxNbLine)}
                 onClick={() => actions.addLine()}
-                data-loading={isLoading}>
+                data-loading={isLoading}
+              >
                 Add line
               </button>
             </div>
@@ -397,20 +360,22 @@ export default class ExplorationIndicators extends Component {
           lines={dataLines}
           ref={el => {
             this.charts = el;
-          }} />
+          }}
+        />
 
         {/* Right panel */}
         <div
           className="aside-legend"
           ref={el => {
             this.legendContainer = el;
-          }}>
+          }}
+        >
           <ul className="list-unstyled list-labels">
             {(lines || []).map(function(line, i) {
               const data = dataIndex[getLineFootprint(line)],
                 style = {
                   color: 'white',
-                  backgroundColor: line.color
+                  backgroundColor: line.color,
                 };
 
               if (!data)
@@ -426,7 +391,8 @@ export default class ExplorationIndicators extends Component {
                   <button
                     type="button"
                     className="btn btn-link btn-xs btn-icon"
-                    onClick={actions.dropLine.bind(null, i)}>
+                    onClick={actions.dropLine.bind(null, i)}
+                  >
                     <Icon name="icon-close" />
                   </button>
                 </li>
@@ -442,17 +408,24 @@ export default class ExplorationIndicators extends Component {
                         label: 'Export CSV',
                         fn: () => {
                           this.exportCSV();
-                        }
+                        },
+                      },
+                      {
+                        label: 'Export PNG',
+                        fn: () => {
+                          this.exportCharts('PNG');
+                        },
                       },
                       {
                         label: 'Export SVG',
                         fn: () => {
-                          this.exportCharts();
-                        }
-                      }
+                          this.exportCharts('SVG');
+                        },
+                      },
                     ]
                   : []
-              } />
+              }
+            />
           </div>
         </div>
       </VizLayout>
@@ -468,7 +441,7 @@ class Charts extends Component {
     super(props, context);
 
     this.state = {
-      quantitiesOpened: false
+      quantitiesOpened: false,
     };
 
     this.toggleQuantities = this.toggleQuantities.bind(this);
@@ -492,15 +465,11 @@ class Charts extends Component {
       /* eslint-disable no-confusing-arrow */
       const minYear = Math.min.apply(
         null,
-        lines.map(line => (line.data[0] ? line.data[0].year : 9999))
+        lines.map(line => (line.data[0] ? line.data[0].year : 9999)),
       );
       const maxYear = Math.max.apply(
         null,
-        lines.map(line =>
-          line.data[line.data.length - 1]
-            ? line.data[line.data.length - 1].year
-            : 0
-        )
+        lines.map(line => (line.data[line.data.length - 1] ? line.data[line.data.length - 1].year : 0)),
       );
       /* eslint-enable no-confusing-arrow */
 
@@ -508,16 +477,14 @@ class Charts extends Component {
 
       const hash = year => year - minYear;
 
-      for (let i = 0, l = barData.length; i < l; i++)
-        barData[i] = {year: minYear + i};
+      for (let i = 0, l = barData.length; i < l; i++) barData[i] = {year: minYear + i};
 
       lines.forEach(line => {
         for (let j = 0, m = line.data.length; j < m; j++) {
           const h = hash(line.data[j].year);
           barData[h].data = barData[h].data || new Set();
 
-          for (let k = 0, n = line.data[j].nb_region.length; k < n; k++)
-            barData[h].data.add(line.data[j].nb_region[k]);
+          for (let k = 0, n = line.data[j].nb_region.length; k < n; k++) barData[h].data.add(line.data[j].nb_region[k]);
         }
       });
 
@@ -548,7 +515,8 @@ class Charts extends Component {
             className="viz-data"
             ref={el => {
               this.vizContainer = el;
-            }}>
+            }}
+          >
             <div className="box-viz">
               <span className="title">Total number of customs regions per year</span>
               <DataQualityBarChart data={barData} syncId="indicators" yAxis />
@@ -563,28 +531,19 @@ class Charts extends Component {
             </div>
             {quantitiesOpened && (
               <div className="box-viz">
-                <span className="title">
-                  Quantities of flows per year (kilograms)
-                </span>
+                <span className="title">Quantities of flows per year (kilograms)</span>
                 <LineChart shareKey="kg_share" valueKey="kg" data={lines} />
               </div>
             )}
             {quantitiesOpened && (
               <div className="box-viz">
-                <span className="title">
-                  Quantities of flows per year (litres)
-                </span>
-                <LineChart
-                  shareKey="litre_share"
-                  valueKey="litre"
-                  data={lines} />
+                <span className="title">Quantities of flows per year (litres)</span>
+                <LineChart shareKey="litre_share" valueKey="litre" data={lines} />
               </div>
             )}
             {quantitiesOpened && (
               <div className="box-viz">
-                <span className="title">
-                  Quantities of flows per year (pieces)
-                </span>
+                <span className="title">Quantities of flows per year (pieces)</span>
                 <LineChart shareKey="nbr_share" valueKey="nbr" data={lines} />
               </div>
             )}
@@ -593,10 +552,7 @@ class Charts extends Component {
 
         {!!lines.length && (
           <div className="viz-data-expand">
-            <button
-              type="submit"
-              onClick={this.toggleQuantities}
-              className="btn btn-default">
+            <button type="submit" onClick={this.toggleQuantities} className="btn btn-default">
               {quantitiesOpened ? 'Collapse quantities' : 'Expand quantities'}
             </button>
           </div>
