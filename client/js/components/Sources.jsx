@@ -294,12 +294,12 @@ export default class Sources extends Component {
                 <li>AD44 C716 n°30</li>
                 <li>AD44 C716 n°34</li>
                 <li>AD44 C717</li>
-                <li>AD44 C717</li>
-                <li>AD44 C717</li>
                 <li>AD44 C717 n°14</li>
                 <li>AD44 C718</li>
                 <li>AD64 2 ETP 104</li>
                 <li>AD64 2 ETP 105</li>
+                <li>AD67 C1047</li>
+                <li>AN F12 1669 (Exportations de Marseille en 1790)</li>
                 <li>ANOM C9A 11</li>
                 <li>ANOM C9A 12</li>
                 <li>ANOM C9A 40</li>
@@ -344,20 +344,21 @@ export default class Sources extends Component {
           </div>
 
           <div className="col-sm-10 col-sm-offset-1">
-            <h2>1792-both semester</h2>
+            <h2>1792-both semesters</h2>
             <p className="lead">
-              Thes source contains trade by product x continent for the whole of Frane for 1792. They contain a mix of quantities and values (but never both for a single flow)
+              This source contains trade by product x continent for the whole of France for 1792. It contains a mix of quantities and values (but never both for a single flow).
             </p>
             <li>AN F12 252</li>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Tableau des quantités</h2>
             <p className="lead">
-              These sources contain trade by product x partner for the whole of France for 1822 and 1823. They include mainly quantities.
+              These sources contain trade by product x partner for the whole of France for 1793, 1822 and 1823. They include mainy quantities and all values
             </p>
             <p>
               <ul>
                 <li>AN F12 251</li>
+                <li>AN F12 1834B</li>
               </ul>
             </p>
           </div>
@@ -404,7 +405,7 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Best Guess national product</h2>
             <p className="lead">
-              This "Best Guess" gathers the best sources about trade by product for the whole of France in each year. Sources are the same as "Best Guess national product x partner", but they are supplemented by "Tableau des Quantités" for 1822-1823.
+              This "Best Guess" gathers the best sources about trade by product for the whole of France in each year. Sources are the same as "Best Guess national product partner", but they are supplemented by "1792&1793"  for these years and "Tableau des Quantités" for 1822-1823.
             </p>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
