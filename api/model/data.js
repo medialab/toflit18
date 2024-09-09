@@ -169,6 +169,7 @@ const Model = {
       result.push({ type: "Best Guess customs region product x partner" });
       result.push({ type: "Best Guess national customs region" });
       result.push({ type: "Best Guess national product" });
+      result.push({ type: "Best Guess national" });
       result = sortBy(result, "type");
       if (err) return callback(err);
 
