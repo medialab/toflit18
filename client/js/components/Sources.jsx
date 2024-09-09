@@ -405,7 +405,13 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Best Guess national product</h2>
             <p className="lead">
-              This "Best Guess" gathers the best sources about trade by product for the whole of France in each year. Sources are the same as "Best Guess national product partner", but they are supplemented by "1792&1793"  for these years and "Tableau des Quantités" for 1822-1823.
+              This "Best Guess" gathers the best sources about trade by product for the whole of France in each year. Sources are the same as "Best Guess national product partner", but they are supplemented by "Tableau des Quantités" for 1793, 1822-1823.
+            </p>
+          </div>
+           <div className="col-sm-10 col-sm-offset-1">
+            <h2>Best Guess national</h2>
+            <p className="lead">
+              This "Best Guess" gathers the best sources about total trade for the whole of France in each year. Sources are the same as "Best Guess national product product", but they are supplemented by "Tableau Général" for 1792.
             </p>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
