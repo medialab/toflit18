@@ -165,6 +165,10 @@
       "name": "Best Guess national customs region"
     },
     {
+      "id": "bestGuessNational",
+      "name": "Best Guess national"
+    },
+    {
       "id": "remarks",
       "name": "Remarks"
     },
