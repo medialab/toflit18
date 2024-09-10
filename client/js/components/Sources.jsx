@@ -46,22 +46,11 @@ export default class Sources extends Component {
                 <li>AN F12 1835</li>
                 <li>AN F12 242</li>
                 <li>AN F12 243</li>
-                <li>AN F12 245</li>
-                <li>AN F12 246</li>
-                <li>AN F12 247</li>
-                <li>AN F12 248</li>
-                <li>AN F12 249</li>
-                <li>AN F12 250</li>
+                <li>AN F12 245 to AN F12 250</li>
                 <li>BM Rouen, Fonds Montbret, 155-1</li>
                 <li>BM Rouen, Fonds Montbret, 155-2</li>
                 <li>BNF Ms. 6431 (Compagnie des Indes)</li>
-                <li>IIHS-122A</li>
-                <li>IIHS-122B</li>
-                <li>IIHS-122C</li>
-                <li>IIHS-122D</li>
-                <li>IIHS-122E</li>
-                <li>IIHS-122F</li>
-                <li>IIHS-122G</li>
+                <li>IIHS-122A to IIHS-122G</li>
               </ul>
             </p>
           </div>
@@ -93,35 +82,13 @@ export default class Sources extends Component {
                 <li>AN Marine B 7 514 et ANOM Col F2 B 14</li>
                 <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 17)</li>
                 <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 18)</li>
-                <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 21)</li>
-                <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 22)</li>
-                <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 23)</li>
-                <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 24)</li>
+                <li>AN Marine B 7 514 et ANOM Col F2 B 14 (tableau 21 to tableau 24) </li>
                 <li>ANOM Col F2 B 13</li>
-                <li>ANOM Col F2 B 13 (tableau 19)</li>
-                <li>ANOM Col F2 B 13 (tableau 20)</li>
-                <li>ANOM Col F2 B 13 (tableau 21)</li>
-                <li>ANOM Col F2 B 13 (tableau 22)</li>
-                <li>ANOM Col F2 B 13 (tableau 23)</li>
-                <li>ANOM Col F2 B 13 (tableau 24)</li>
-                <li>ANOM Col F2 B 13 (tableau 25)</li>
-                <li>ANOM Col F2 B 13 (tableau 26)</li>
-                <li>ANOM Col F2 B 13 (tableau 27)</li>
-                <li>ANOM Col F2 B 14 (tableau 16)</li>
-                <li>ANOM Col F2 B 14 (tableau 17)</li>
-                <li>ANOM Col F2 B 14 (tableau 18)</li>
-                <li>ANOM Col F2 B 14 (tableau 19)</li>
-                <li>ANOM Col F2 B 14 (tableau 20)</li>
-                <li>ANOM Col F2 B 14 (tableau 21)</li>
-                <li>ANOM Col F2 B 14 (tableau 22)</li>
-                <li>ANOM Col F2 B 14 (tableau 23)</li>
-                <li>ANOM Col F2 B 14 (tableau 24)</li>
-                <li>ANOM Col F2 B 14 (tableau 25)</li>
+                <li>ANOM Col F2 B 13 (tableau 19 to tableau 27)</li>
+                <li>ANOM Col F2 B 14 (tableau 16 to tableau 25)</li>
                 <li>BNF N. Acq. 20538</li>
                 <li>BNF N. Acq. 20541</li>
-                <li>Fonds Gournay - M85</li>
-                <li>Fonds Gournay - M86</li>
-                <li>Fonds Gournay - M87</li>
+                <li>Fonds Gournay - M85 to MS87</li>
                 <li>IIHS-133</li>
               </ul>
             </p>
@@ -133,10 +100,7 @@ export default class Sources extends Component {
             </p>
             <p>
               <ul>
-                <li>Fonds Gournay - M84</li>
-                <li>Fonds Gournay - M85</li>
-                <li>Fonds Gournay - M86</li>
-                <li>Fonds Gournay - M87</li>
+                <li>Fonds Gournay - M84 to MS87</li>
               </ul>
             </p>
           </div>
@@ -147,11 +111,7 @@ export default class Sources extends Component {
             </p>
             <p>
               <ul>
-                <li>AN F12 245</li>
-                <li>AN F12 246</li>
-                <li>AN F12 247</li>
-                <li>AN F12 248</li>
-                <li>AN F12 248</li>
+                <li>AN F12 245 to 248</li>
                 <li>BM Rouen, Fonds Montbret, 155-1</li>
                 <li>IIHS-123</li>
               </ul>
@@ -165,128 +125,10 @@ export default class Sources extends Component {
             </p>
             <p>
               <ul>
-                <li>AD17 41 ETP 270/9385</li>
-                <li>AD17 41 ETP 270/9386</li>
-                <li>AD17 41 ETP 270/9387</li>
-                <li>AD17 41 ETP 270/9388</li>
-                <li>AD17 41 ETP 270/9389</li>
-                <li>AD17 41 ETP 270/9390</li>
-                <li>AD17 41 ETP 270/9391</li>
-                <li>AD17 41 ETP 270/9392</li>
-                <li>AD17 41 ETP 270/9393</li>
-                <li>AD17 41 ETP 270/9394</li>
-                <li>AD17 41 ETP 270/9395</li>
-                <li>AD17 41 ETP 270/9396</li>
-                <li>AD17 41 ETP 270/9397</li>
-                <li>AD17 41 ETP 270/9398</li>
-                <li>AD17 41 ETP 270/9399</li>
-                <li>AD17 41 ETP 270/9400</li>
-                <li>AD17 41 ETP 270/9401</li>
-                <li>AD17 41 ETP 270/9402</li>
-                <li>AD17 41 ETP 270/9403</li>
-                <li>AD17 41 ETP 270/9404</li>
-                <li>AD17 41 ETP 270/9406</li>
-                <li>AD17 41 ETP 270/9407</li>
-                <li>AD17 41 ETP 270/9408</li>
-                <li>AD17 41 ETP 270/9409</li>
-                <li>AD17 41 ETP 270/9410</li>
-                <li>AD17 41 ETP 270/9411</li>
-                <li>AD17 41 ETP 270/9412</li>
-                <li>AD17 41 ETP 270/9413</li>
-                <li>AD17 41 ETP 270/9414</li>
-                <li>AD17 41 ETP 270/9415</li>
-                <li>AD17 41 ETP 270/9416</li>
-                <li>AD17 41 ETP 270/9417</li>
-                <li>AD17 41 ETP 270/9418</li>
-                <li>AD17 41 ETP 270/9419</li>
-                <li>AD17 41 ETP 270/9420</li>
-                <li>AD17 41 ETP 270/9421</li>
-                <li>AD17 41 ETP 270/9422</li>
-                <li>AD17 41 ETP 270/9423</li>
-                <li>AD17 41 ETP 270/9424</li>
-                <li>AD17 41 ETP 270/9425</li>
-                <li>AD17 41 ETP 270/9426</li>
-                <li>AD17 41 ETP 270/9427</li>
-                <li>AD17 41 ETP 270/9428</li>
-                <li>AD17 41 ETP 270/9429</li>
-                <li>AD17 41 ETP 270/9430</li>
-                <li>AD17 41 ETP 270/9431</li>
-                <li>AD17 41 ETP 270/9432</li>
-                <li>AD17 41 ETP 270/9433</li>
-                <li>AD17 41 ETP 270/9434</li>
-                <li>AD17 41 ETP 270/9435</li>
-                <li>AD17 41 ETP 270/9436</li>
-                <li>AD17 41 ETP 270/9437</li>
-                <li>AD17 41 ETP 270/9438</li>
-                <li>AD17 41 ETP 270/9439</li>
-                <li>AD17 41 ETP 270/9440</li>
-                <li>AD17 41 ETP 270/9441</li>
-                <li>AD17 41 ETP 270/9442</li>
-                <li>AD17 41 ETP 271/9443</li>
-                <li>AD17 41 ETP 271/9445</li>
-                <li>AD17 41 ETP 271/9446</li>
-                <li>AD17 41 ETP 271/9448</li>
-                <li>AD17 41 ETP 271/9449</li>
-                <li>AD17 41 ETP 271/9450</li>
-                <li>AD17 41 ETP 271/9451</li>
-                <li>AD17 41 ETP 271/9452</li>
-                <li>AD17 41 ETP 271/9453</li>
-                <li>AD17 41 ETP 271/9454</li>
-                <li>AD17 41 ETP 271/9455</li>
-                <li>AD17 41 ETP 271/9456</li>
-                <li>AD17 41 ETP 271/9457</li>
-                <li>AD17 41 ETP 271/9458</li>
-                <li>AD17 41 ETP 271/9459</li>
-                <li>AD17 41 ETP 271/9460</li>
-                <li>AD17 41 ETP 271/9461</li>
-                <li>AD17 41 ETP 271/9462</li>
-                <li>AD17 41 ETP 271/9463</li>
-                <li>AD17 41 ETP 271/9464</li>
-                <li>AD17 41 ETP 271/9465</li>
-                <li>AD17 41 ETP 271/9466</li>
-                <li>AD17 41 ETP 271/9467</li>
-                <li>AD17 41 ETP 271/9468</li>
-                <li>AD17 41 ETP 271/9469</li>
-                <li>AD17 41 ETP 271/9470</li>
-                <li>AD17 41 ETP 271/9471</li>
-                <li>AD17 41 ETP 271/9472</li>
-                <li>AD17 41 ETP 271/9473</li>
-                <li>AD17 41 ETP 271/9474</li>
-                <li>AD17 41 ETP 271/9475</li>
-                <li>AD17 41 ETP 271/9476</li>
-                <li>AD17 41 ETP 271/9477</li>
-                <li>AD17 41 ETP 271/9478</li>
-                <li>AD17 41 ETP 271/9479</li>
-                <li>AD17 41 ETP 271/9480</li>
-                <li>AD17 41 ETP 271/9481</li>
-                <li>AD17 41 ETP 271/9482</li>
-                <li>AD17 41 ETP 271/9483</li>
-                <li>AD17 41 ETP 271/9484</li>
-                <li>AD17 41 ETP 271/9485</li>
-                <li>AD17 41 ETP 271/9487</li>
-                <li>AD17 41 ETP 271/9488</li>
-                <li>AD17 41 ETP 271/9489</li>
-                <li>AD17 41 ETP 271/9490</li>
-                <li>AD17 41 ETP 271/9491</li>
-                <li>AD17 41 ETP 271/9492</li>
-                <li>AD17 41 ETP 271/9493</li>
-                <li>AD17 41 ETP 271/9494</li>
-                <li>AD17 41 ETP 271/9495</li>
-                <li>AD17 41 ETP 271/9496</li>
-                <li>AD17 41 ETP 271/9497</li>
-                <li>AD17 41 ETP 271/9498</li>
-                <li>AD17 41 ETP 271/9499</li>
-                <li>AD17 41 ETP 271/9500</li>
-                <li>AD17 41 ETP 271/9501</li>
+                <li>AD17 41 ETP 270/9385 to 9501</li>
                 <li>AD33 C4268</li>
                 <li>AD33 C4269</li>
-                <li>AD33 C4386</li>
-                <li>AD33 C4387</li>
-                <li>AD33 C4388</li>
-                <li>AD33 C4389</li>
-                <li>AD33 C4389</li>
-                <li>AD33 C4390</li>
-                <li>AD33 C4390</li>
+                <li>AD33 C4386 to C4390</li>
                 <li>AD34 C5488</li>
                 <li>AD44 C706</li>
                 <li>AD44 C716</li>
@@ -307,15 +149,8 @@ export default class Sources extends Component {
                 <li>ANOM C9B 05</li>
                 <li>ANOM Col F2 B 13 (tableaux 37 et 38)</li>
                 <li>ANOM Col F2 B 14 (tableau 25)</li>
-                <li>Archives de la CCI de Marseille - I 21</li>
-                <li>Archives de la CCI de Marseille - I 22</li>
-                <li>Archives de la CCI de Marseille - I 23</li>
-                <li>Archives de la CCI de Marseille - I 24</li>
-                <li>Archives de la CCI de Marseille - I 25</li>
-                <li>Archives de la CCI de Marseille - I 29</li>
-                <li>Archives de la CCI de Marseille - I 29</li>
-                <li>Archives de la CCI de Marseille - I 30</li>
-                <li>Archives de la CCI de Marseille - I 31</li>
+                <li>Archives de la CCI de Marseille - I 21 to 25</li>
+                <li>Archives de la CCI de Marseille - I 29 to 31</li>
                 <li>Archives de la CCI de Rouen Carton VIII 110</li>
                 <li>Archives de la CCI Rouen Carton VIII</li>
                 <li>BM Lyon ms 1490</li>
@@ -382,7 +217,6 @@ export default class Sources extends Component {
               <ul>
                 <li>AN F12 252 et F12 1843B</li>
                 <li>Romano1957+Velde+IIHS-128</li>
-                <li>WEBER Commerce de la compagnie des Indes 1904</li>
                 <li>WEBER Commerce de la compagnie des Indes 1904</li>
               </ul>
             </p>
