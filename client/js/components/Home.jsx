@@ -178,7 +178,9 @@ export default class Home extends Component {
                     </p>
                   <b>Graph and screen capture</b>
                    <p>
-                  Cite the website, but use the full permalink of the graph or screen capture.
+                  You can re-use graphs or screen captures from the website under the licence CC-BY-SA 4.0.{" "}
+                	<a href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a>{" "}
+                	Cite the website (including the date of consultation), but use the full permalink of the graph or screen capture.
                    </p>
               </div>
               <div className="col-sm-6">

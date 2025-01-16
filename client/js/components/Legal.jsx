@@ -82,7 +82,7 @@ export default class Legal extends Component {
                 	and as a Zenodo release. {" "}
                 	<a href="https://doi.org/10.5281/zenodo.6573397"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.6573397.svg" alt="DOI" /></a>.
               </p>
-              <p className="lead">Graphs, texts and screen captures</p>
+              <p className="lead">graphs, texts and screen captures</p>
                   <p>
                   Graphs, texts and screen captures from the site are under the licence CC-BY-SA 4.0.{" "}
                 	<a href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a>
