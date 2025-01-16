@@ -82,9 +82,18 @@ export default class Legal extends Component {
                 	and as a Zenodo release. {" "}
                 	<a href="https://doi.org/10.5281/zenodo.6573397"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.6573397.svg" alt="DOI" /></a>.
               </p>
+              <p className="lead">Graphs, texts and screen captures</p>
+                  <p>
+                  Graphs, texts and screen captures from the site are under the licence CC-BY-SA 4.0.{" "}
+                	<a href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a>
+                  </p>
+                  <p>
+                  To cite: Loïc Charles, Guillaume Daudin, Guillaume Plique and Paul Girard, TOFLIT18 website (year month day of
+                  consultation). Retrieved from "(use full permalink)""{" "}
+                  </p>
               <p className="lead">misc</p>
               <p>
-                Except for explicitly licensed elements (website source codes), all information on this web site (text,
+                Except for explicitly licensed elements (website, source codes, graphs, screen captures, text), all information on this web site (text,
                 photos, logos…) is protected by the copyrights held by Sciences Po or their partners.
                 <br />
                 Therefore, the information may not be reproduced, modified, republished, re-aired, translated,

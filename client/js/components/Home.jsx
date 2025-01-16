@@ -62,8 +62,8 @@ export default class Home extends Component {
                       className="img-responsive"
                       src="./assets/images/products.png"
                       alt="Products"
-                      
-       
+
+
                     />
                     <figcaption>
                       <span>Products</span>
@@ -79,7 +79,7 @@ export default class Home extends Component {
                       className="img-responsive"
                       src="./assets/images/partners.png"
                       alt="Partners"
-        
+
                     />
                     <figcaption>
                       <span>Partners</span>
@@ -95,7 +95,7 @@ export default class Home extends Component {
                       className="img-responsive"
                       src="./assets/images/flows.png"
                       alt="Time series"
-                      
+
                     />
                     <figcaption>
                       <span>Trade flows</span>
@@ -151,7 +151,7 @@ export default class Home extends Component {
                       className="img-responsive"
                       src="./assets/images/classification.png"
                       alt="Classifications"
-             
+
                     />
                     <figcaption>
                       <span>Classifications</span>
@@ -171,10 +171,15 @@ export default class Home extends Component {
             <div className="row">
               <div className="col-sm-6">
                 <h2>How to cite</h2>
-                <p>
+                  <b>Website</b>
+                    <p>
                   Loïc Charles, Guillaume Daudin, Guillaume Plique and Paul Girard, TOFLIT18 website (year month day of
                   consultation). Retrieved from http://toflit18.medialab.sciences-po.fr{" "}
-                </p>
+                    </p>
+                  <b>Graph and screen capture</b>
+                   <p>
+                  Cite the website, but use the full permalink of the graph or screen capture.
+                   </p>
               </div>
               <div className="col-sm-6">
                 <h2>Open Science</h2>
@@ -194,6 +199,11 @@ export default class Home extends Component {
                 <p>
                   The full data collected by the project is available on github under ODbl license.{" "}
                 	<a href="https://github.com/medialab/toflit18_data">https://github.com/medialab/toflit18_data</a>
+                </p>
+                <b>Graphs and texts</b>
+                  <p>
+                  Graphs, texts and screen captures from the site are under the licence CC-BY-SA 4.0.{" "}
+                	<a href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a>
                 </p>
               </div>
             </div>
