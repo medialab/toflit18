@@ -84,12 +84,12 @@ export default class Legal extends Component {
               </p>
               <p className="lead">graphs, texts and screen captures</p>
                   <p>
-                  Graphs, texts and screen captures from the site are under the licence CC-BY-SA 4.0.{" "}
+                  Graphs, texts and screen captures from the website are under the licence CC-BY-SA 4.0.{" "}
                 	<a href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a>
                   </p>
                   <p>
                   To cite: Loïc Charles, Guillaume Daudin, Guillaume Plique and Paul Girard, TOFLIT18 website (year month day of
-                  consultation). Retrieved from "(use full permalink)""{" "}
+                  consultation). Retrieved from "(use full permalink)"{" "}
                   </p>
               <p className="lead">misc</p>
               <p>

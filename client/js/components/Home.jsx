@@ -176,11 +176,11 @@ export default class Home extends Component {
                   Loïc Charles, Guillaume Daudin, Guillaume Plique and Paul Girard, TOFLIT18 website (year month day of
                   consultation). Retrieved from http://toflit18.medialab.sciences-po.fr{" "}
                     </p>
-                  <b>Graph and screen capture</b>
+                  <b>Graphs and screen captures</b>
                    <p>
                   You can re-use graphs or screen captures from the website under the licence CC-BY-SA 4.0.{" "}
                 	<a href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a>{" "}
-                	Cite the website (including the date of consultation), but use the full permalink of the graph or screen capture.
+                	Cite the website (including the date of consultation), replacing http://toflit18.medialab.sciences-po.fr by the full permalink of the graph or screen capture.
                    </p>
               </div>
               <div className="col-sm-6">
