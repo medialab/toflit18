@@ -171,16 +171,17 @@ export default class Home extends Component {
             <div className="row">
               <div className="col-sm-6">
                 <h2>How to cite</h2>
-                  <b>Website</b>
+                  <b>General</b>
                     <p>
-                  Loïc Charles, Guillaume Daudin, Guillaume Plique and Paul Girard, TOFLIT18 website (year month day of
-                  consultation). Retrieved from http://toflit18.medialab.sciences-po.fr{" "}
+                 Loïc Charles, Guillaume Daudin, Paul Girard, Guillaume Plique « Exploring the Transformation of French and European Trade and Economy in the Long Eighteenth Century (1713-1823) : the TOFLIT18 Project », {" "}
+                 <i>Historical Methods: A Journal of Quantitative and Interdisciplinary History</i>, 55:4, p. 228-258 (2022) [DOI: 10.1080/01615440.2022.2032522]
                     </p>
                   <b>Graphs and screen captures</b>
                    <p>
                   You can re-use graphs or screen captures from the website under the licence CC-BY-SA 4.0.{" "}
                 	<a href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a>{" "}
-                	Cite the website (including the date of consultation), replacing http://toflit18.medialab.sciences-po.fr by the full permalink of the graph or screen capture.
+                	Cite: Loïc Charles, Guillaume Daudin, Guillaume Plique and Paul Girard, TOFLIT18 website (year month day of
+                  consultation). Retrieved from (https:full permalink of the graph or screen capture).
                    </p>
               </div>
               <div className="col-sm-6">
