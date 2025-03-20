@@ -200,9 +200,10 @@ export default class Home extends Component {
                   </a>
                 </p>
                 <p>
-                  The full data collected by the project is available on github under ODbl license.{" "}
-                	<a href="https://github.com/medialab/toflit18_data">https://github.com/medialab/toflit18_data</a>
-                </p>
+                  The full data collected by the project is available under ODbL license on github {" "}
+                	<a href="https://github.com/medialab/toflit18_data">https://github.com/medialab/toflit18_data</a>,
+                	and as a Zenodo release. {" "}
+                	<a href="https://doi.org/10.5281/zenodo.6573397"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.6573397.svg" alt="DOI" /></a>.
                 <b>Graphs and texts</b>
                   <p>
                   Graphs, texts and screen captures from the site are under the licence CC-BY-SA 4.0.{" "}
