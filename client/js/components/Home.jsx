@@ -204,6 +204,7 @@ export default class Home extends Component {
                 	<a href="https://github.com/medialab/toflit18_data">https://github.com/medialab/toflit18_data</a>,
                 	and as a Zenodo release. {" "}
                 	<a href="https://doi.org/10.5281/zenodo.6573397"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.6573397.svg" alt="DOI" /></a>.
+                	</p>
                 <b>Graphs and texts</b>
                   <p>
                   Graphs, texts and screen captures from the site are under the licence CC-BY-SA 4.0.{" "}
