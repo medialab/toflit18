@@ -111,7 +111,7 @@ const flowsQuery = params => {
     where.and("d.id = $region");
     query.params({ region });
   }
-  if (columns.includes("office")) {
+  if (columns !== undefined && columns.includes("office")) {
     optionalMatch.push(`(o:Office)<-[${exportImportFilterRegion}]-(f:Flow)`);
   }
 
