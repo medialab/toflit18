@@ -218,6 +218,7 @@ export default class About extends Component {
                   <li>Jackson, Stephen</li>
                   <li>Loise, Matthias</li>
                   <li>Mouton, Cyril</li>
+                  <li>Oudot, Jules</li>
                   <li>Perret, Florence</li>
                   <li>Ponton, Corentin</li>
                   <li>Stricot, Maëlle</li>
@@ -260,6 +261,7 @@ export default class About extends Component {
                   <li>Shahban, Muhammed</li>
                   <li>Sidorowiez, Christophe</li>
                   <li>Souchaire, Isabelle</li>
+                  <li>Teklia</li>
                   <li>Varela, Gabriel</li>
                   <li>Vergne, Isabelle</li>
                   <li>Zahra, Fatima</li>
