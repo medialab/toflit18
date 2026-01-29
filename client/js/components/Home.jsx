@@ -28,8 +28,7 @@ export default class Home extends Component {
                 <p>
                   TOFLIT18 is the result of the collaboration of data scientists, economists and historians. It started
                   as a project funded by the Agence Nationale de la Recherche in 2013 for the period 2014-2017
-                  <a href="Projet ANR-13-BSHI-0005">https://anr.fr/Projet-ANR-13-BSH1-0005</a>
-                  See the <a href="Blog">http://toflit18.hypotheses.org</a>.
+                  (<a href="https://anr.fr/Projet-ANR-13-BSH1-0005 ">Projet ANR-13-BSHI-0005</a>). You can find more in the <a href="http://toflit18.hypotheses.org">project’s blog</a>.
                 </p>
               </div>
             </div>
