@@ -32,6 +32,9 @@ export default class Sources extends Component {
             <p className="lead">
               In order to observe accross as many years as possible a specific aspect of French trade (for example, trade by customs region), it is often necessary to put together different types of sources. This work requires familiarity with the sources. It was therefore done for the main cases by the TOFLIT18 teams by creating "meta-sources types" called "Best Guesses".
             </p>
+            <p className="lead">
+              In the following, AN means "Archives Nationales (France)", BNF means "Bibliothèque Nationale de France", BM means "Bibliothèque Municipale", AD means "Archives Départementales", ANOM means "Archives Nationales d'Outre-Mer (France)", CCI means "Chambre de Commerce et d’Industrie", IIHS means "International Instituut voor Sociale Geschiedenis, Nederlandsch Economisch-Historisch Archief (NEHA) Bc, 601, Collection Bruyard", Romano means Romano 1957 = Ruggiero Romano, "Documenti e prime considerazioni intorno alla Balance du Commerce della Francia dal 1716 al 1780”, in: <i>Studi in onore di Armando Sapori</i>, Milan, Istituto Editoriale Cisalpino, 1957, t. II, p. 1265-1300, and Velde refers to personnal communication with François Velde in 2006 who corrected retranscription errors by Romano.
+            </p>
           </div>
      <div className="col-sm-10 col-sm-offset-1">
             <h1>Source types</h1>
@@ -76,7 +79,7 @@ export default class Sources extends Component {
                 <li>AN F12 1665</li>
                 <li>AN F12 1666</li>
                 <li>AN F12 1667</li>
-                <li>AN F12 1667 et CCI Marseille I 31</li>
+                <li>AN F12 1667 et Archives de la CCI Marseille I 31</li>
                 <li>AN F12 1835</li>
                 <li>AN F12 835</li>
                 <li>AN Marine B 7 514 et ANOM Col F2 B 14</li>
@@ -88,7 +91,7 @@ export default class Sources extends Component {
                 <li>ANOM Col F2 B 14 (tableau 16 to tableau 25)</li>
                 <li>BNF N. Acq. 20538</li>
                 <li>BNF N. Acq. 20541</li>
-                <li>Fonds Gournay - M85 to MS87</li>
+                <li>BM Saint-Brieuc, Fonds Gournay - M85 to M87</li>
                 <li>IIHS-133</li>
               </ul>
             </p>
@@ -100,7 +103,7 @@ export default class Sources extends Component {
             </p>
             <p>
               <ul>
-                <li>Fonds Gournay - M84 to MS87</li>
+                <li>BM Saint-Brieuc,  Fonds Gournay - M84 to M87</li>
               </ul>
             </p>
           </div>
