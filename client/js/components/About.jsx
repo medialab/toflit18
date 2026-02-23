@@ -239,6 +239,7 @@ export default class About extends Component {
                   <li>Cordier, Camille</li>
                   <li>Duprez, Frédéric</li>
                   <li>El Adel, Hasna</li>
+                  <li>Engsi, Marie</li>
                   <li>Flaux, Romain</li>
                   <li>Fontaine, Pascal</li>
                   <li>Gouttenegre, Pascale</li>
@@ -261,10 +262,11 @@ export default class About extends Component {
                   <li>Shahban, Muhammed</li>
                   <li>Sidorowiez, Christophe</li>
                   <li>Souchaire, Isabelle</li>
-                  <li>Teklia</li>
+                  <li>TEKLIA <a href="https://www.teklia.com/"> Website</a></li>
                   <li>Varela, Gabriel</li>
                   <li>Vergne, Isabelle</li>
                   <li>Zahra, Fatima</li>
+                  
                 </ul>
                 <b>Thanks also to:</b>
                 <ul>
