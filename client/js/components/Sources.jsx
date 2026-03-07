@@ -145,11 +145,11 @@ export default class Sources extends Component {
                 <li>AD64 2 ETP 105</li>
                 <li>AD67 C1047</li>
                 <li>AN F12 1669 (Exportations de Marseille en 1790)</li>
-                <li>ANOM C9A 11</li>
-                <li>ANOM C9A 12</li>
-                <li>ANOM C9A 40</li>
-                <li>ANOM C9B 01</li>
-                <li>ANOM C9B 05</li>
+                <li>ANOM Col C9A 11</li>
+                <li>ANOM Col C9A 12</li>
+                <li>ANOM Col C9A 40</li>
+                <li>ANOM Col C9B 01</li>
+                <li>ANOM Col C9B 05</li>
                 <li>ANOM Col F2 B 13 (tableaux 37 et 38)</li>
                 <li>ANOM Col F2 B 14 (tableau 25)</li>
                 <li>Archives de la CCI de Marseille - I 21 to 25</li>
