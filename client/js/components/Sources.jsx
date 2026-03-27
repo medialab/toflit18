@@ -128,7 +128,7 @@ export default class Sources extends Component {
             </p>
             <p>
               <ul>
-                <li>AD17 41 ETP 270/9385 to 9501</li>
+                <li>AD17 41 ETP 270/9385 to 9442 and ETP271/9443 to 9501</li>
                 <li>AD33 C4268</li>
                 <li>AD33 C4269</li>
                 <li>AD33 C4386 to C4390</li>
@@ -144,6 +144,7 @@ export default class Sources extends Component {
                 <li>AD64 2 ETP 104</li>
                 <li>AD64 2 ETP 105</li>
                 <li>AD67 C1047</li>
+                <li>AD76 7F97 via Darnel</li>
                 <li>AN F12 1669 (Exportations de Marseille en 1790)</li>
                 <li>ANOM Col C9A 11</li>
                 <li>ANOM Col C9A 12</li>
@@ -155,7 +156,6 @@ export default class Sources extends Component {
                 <li>Archives de la CCI de Marseille - I 21 to 25</li>
                 <li>Archives de la CCI de Marseille - I 29 to 31</li>
                 <li>Archives de la CCI de Rouen Carton VIII 110</li>
-                <li>Archives de la CCI Rouen Carton VIII</li>
                 <li>BM Lyon ms 1490</li>
               </ul>
             </p>
@@ -171,12 +171,14 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>National partenaires manquants</h2>
             <p className="lead">
-              These sources contain trade by product x partner for the whole of France and a sub-set of all partners : only Angleterre, Barbarie, États-Unis, Russie for individual years in the 1780s, and the Colonies for 1790
+              These sources contain trade by product x partner for the whole of France and a sub-set of all partners : only Angleterre, Barbarie, États-Unis, Russie for individual years in the 1780s, and the Colonies for 1790, the Levant for 1771
             </p>
             <p>
               <ul>
                 <li>AN F12 1835</li>
-                <li>ANOM 07 DFC 305</li>
+                <li>ANOM 07 DFC 295, 305-307</li>
+                <li>ANOM Col F2 B 13 and ANOM Col F2 B 14</li>
+                <li>Bibliothèque Historique de la Ville de Paris, Fonds Montyon, 101FOSS</li>
               </ul>
             </p>
           </div>
