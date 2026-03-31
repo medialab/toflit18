@@ -19,6 +19,7 @@ export default class Sources extends Component {
                 <p className="hidden-xs">
                   The archives of French eighteenth century trade have been preserved in many different formats. We had
                   to integrate them into a limited number of types depending on their content.
+                  Some of the listed sources have not been yet retranscribed and included in the database.
                 </p>
               </div>
             </div>
@@ -157,6 +158,7 @@ export default class Sources extends Component {
                 <li>Archives de la CCI de Marseille - I 29 to 31</li>
                 <li>Archives de la CCI de Rouen Carton VIII 110</li>
                 <li>BM Lyon ms 1490</li>
+                <li>BNF Manuscrits Français 6430 et 6431</li>
               </ul>
             </p>
           </div>
@@ -175,14 +177,14 @@ export default class Sources extends Component {
           <div className="col-sm-10 col-sm-offset-1">
             <h2>National partenaires manquants</h2>
             <p className="lead">
-              These sources contain trade by product x partner for the whole of France and a sub-set of all partners : only Angleterre, Barbarie, États-Unis, Russie for individual years in the 1780s, and the Colonies for 1790, the Levant for 1771
+              These sources contain trade by product x partner for the whole of France and a sub-set of all partners: only Angleterre, États-Unis, Russie for individual years in the 1780s, and the Colonies for 1790, the Levant for 1771
             </p>
             <p>
               <ul>
                 <li>AN F12 1835, pièces 3-4, 28-31 and 37</li>
                 <li>ANOM 07 DFC 295, 305-307</li>
                 <li>ANOM Col F2 B 13 and ANOM Col F2 B 14</li>
-                <li>Bibliothèque Historique de la Ville de Paris, Fonds Montyon, 101FOSS</li>
+                <li>Archives de l’Assistance Publique - Hôpitaux de Paris, Fonds Montyon, 101FOSS/25</li>
               </ul>
             </p>
           </div>
