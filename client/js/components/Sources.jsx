@@ -166,7 +166,11 @@ export default class Sources extends Component {
               These sources contains trade by product x partner for the whole of France for the first semester of 1792. They include
               mainly quantities.
             </p>
-            <li>AN F12 252</li>
+              <p>
+              <ul>
+               <li>AN F12 252</li>
+              </ul>
+              </p>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
             <h2>National partenaires manquants</h2>
@@ -175,7 +179,7 @@ export default class Sources extends Component {
             </p>
             <p>
               <ul>
-                <li>AN F12 1835</li>
+                <li>AN F12 1835, pièces 3-4, 28-31 and 37</li>
                 <li>ANOM 07 DFC 295, 305-307</li>
                 <li>ANOM Col F2 B 13 and ANOM Col F2 B 14</li>
                 <li>Bibliothèque Historique de la Ville de Paris, Fonds Montyon, 101FOSS</li>
@@ -188,7 +192,11 @@ export default class Sources extends Component {
             <p className="lead">
               This source contains trade by product x continent for the whole of France for 1792. It contains a mix of quantities and values (but never both for a single flow).
             </p>
-            <li>AN F12 252</li>
+              <p>
+              <ul>
+               <li>AN F12 252</li>
+              </ul>
+              </p>
           </div>
           <div className="col-sm-10 col-sm-offset-1">
             <h2>Tableau des quantités</h2>
