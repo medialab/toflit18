@@ -217,6 +217,7 @@ export default class About extends Component {
                   <li>Hollegien, Pierre</li>
                   <li>Jackson, Stephen</li>
                   <li>Loise, Matthias</li>
+                  <li>Merville, Marion</li>
                   <li>Mouton, Cyril</li>
                   <li>Oudot, Jules</li>
                   <li>Perret, Florence</li>
