@@ -82,7 +82,7 @@
     "history": "^2.0.0",
     "ladda": "^1.0.0",
     "lodash": "^4.17.4",
-    "papaparse": "^4.1.2",
+    "papaparse": "^5.2.0",
     "react": "~15.4.2",
     "react-data-grid": "^6.0.0",
     "react-data-grid-addons": "^5.0.5",
